@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.androidimpact'
+    namespace 'com.androidimpact.app'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.androidimpact"
+        applicationId "com.androidimpact.app"
         minSdk 24
         targetSdk 32
         versionCode 1

@@ -1,8 +1,10 @@
-package com.example.androidimpact;
+package com.androidimpact.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.androidimpact.app.R;
 
 public class MainActivity extends AppCompatActivity {
 

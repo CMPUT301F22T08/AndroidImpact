@@ -1,4 +1,4 @@
-package com.example.androidimpact;
+package com.androidimpact.app;
 
 import org.junit.Test;
 
