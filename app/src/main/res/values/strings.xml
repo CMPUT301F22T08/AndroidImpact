@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidImpact</string>
+    <string name="add_ingredient">Add</string>
 </resources>
