@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 public class Ingredient {
+
     protected String description;
     protected float amount;
     protected String unit;
