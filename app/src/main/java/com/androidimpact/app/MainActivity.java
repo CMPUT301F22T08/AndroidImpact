@@ -101,10 +101,14 @@ public class MainActivity extends AppCompatActivity {
         collectionReference.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
             ingredientDataList.clear();
+
+            if (queryDocumentSnapshots == null) {
+                return;
+            }
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                ingredientDataList.add(new Ingredient(description)); // Adding the cities and provinces from FireStore
+                ingredientDataList.add(new Ingredient(description, 0, "", "")); // Adding the cities and provinces from FireStore
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
             for (Ingredient i : ingredientDataList) {
