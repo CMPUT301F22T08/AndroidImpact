@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "873446321179",
+    "project_id": "androidimpact-f0629",
+    "storage_bucket": "androidimpact-f0629.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873446321179:android:f8aac3245249f33d789cbe",
+        "android_client_info": {
+          "package_name": "com.androidimpact.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873446321179-3qm9kkl5mekdk6mji9hvljajgfqj054r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCpBU22rLpEvIj6trcAIlocYY6TbLp90M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873446321179-3qm9kkl5mekdk6mji9hvljajgfqj054r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
