@@ -7,6 +7,14 @@ public class Ingredient {
     protected String unit;
     protected String category;
 
+    public Ingredient(String description){
+        this.description = description;
+        this.amount = 0;
+        this.unit = "kg";
+        this.category = "test";
+    }
+
+
     public Ingredient(String description, float amount, String unit, String category) {
         this.description = description;
         this.amount = amount;
