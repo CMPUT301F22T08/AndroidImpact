@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Ingredient> ingredientDataList;
 
     // adding cities to firebase
-    final String TAG = "Sample";
+    final String TAG = "MainActivity";
     Button addIngredientBtn;
     EditText addIngredientDescriptionText;
     FirebaseFirestore db;
@@ -96,28 +97,6 @@ public class MainActivity extends AppCompatActivity {
             // to our recycler view.
         }).attachToRecyclerView(ingredientListView);
 
-        addIngredientBtn.setOnClickListener(view -> {
-            final String description = addIngredientDescriptionText.getText().toString();
-            HashMap<String, String> data = new HashMap<>();
-
-            if (description.length() > 0) {
-                data.put("Province Name", description);
-
-                collectionReference
-                        .document(description)
-                        .set(data)
-                        .addOnSuccessListener(aVoid -> {
-                            // task succeeded
-                            Log.d(TAG, "Data has been added successfully!");
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.d(TAG, "Data could not be added!" + e);
-                        });
-
-                addIngredientDescriptionText.setText("");
-            }
-        });
-
         // on snapshot listener for the collection
         collectionReference.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
@@ -133,5 +112,29 @@ public class MainActivity extends AppCompatActivity {
             }
             ingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
+    }
+
+    public void addIngredient(View view)  {
+        final CollectionReference collectionReference = db.collection("test");
+
+        final String description = addIngredientDescriptionText.getText().toString();
+        HashMap<String, String> data = new HashMap<>();
+
+        if (description.length() > 0) {
+            data.put("Province Name", description);
+
+            collectionReference
+                    .document(description)
+                    .set(data)
+                    .addOnSuccessListener(aVoid -> {
+                        // task succeeded
+                        Log.d(TAG + "AddIngredient", "Data has been added successfully!");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.d(TAG + "AddIngredient", "Data could not be added!" + e);
+                    });
+
+            addIngredientDescriptionText.setText("");
+        }
     }
 }

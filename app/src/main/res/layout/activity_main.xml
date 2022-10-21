@@ -23,6 +23,7 @@
             android:id="@+id/add_ingredient_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="addIngredient"
             android:text="@string/add_ingredient" />
     </LinearLayout>
 
