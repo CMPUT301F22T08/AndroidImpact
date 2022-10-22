@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class IngredientViewList extends RecyclerView.Adapter<IngredientViewList.IngredientViewHolder> {
+public class IngredientViewAdapter extends RecyclerView.Adapter<IngredientViewAdapter.IngredientViewHolder> {
 
     // creating a variable for our array list and context.
     private ArrayList<Ingredient> ingredientArrayList;
     private Context mContext;
 
     // creating a constructor class.
-    public IngredientViewList(Context mContext, ArrayList<Ingredient> ingredientArrayList) {
+    public IngredientViewAdapter(Context mContext, ArrayList<Ingredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
     }
