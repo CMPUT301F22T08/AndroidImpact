@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void addIngredient(View view)  {
         Log.i(TAG + ":addIngredient", "Adding ingredient!");
-        Intent intent = new Intent(this, IngredientStorageAdd.class);
+        Intent intent = new Intent(this, IngredientStorageAddActivity.class);
         startActivity(intent);
     }
 }
