@@ -30,7 +30,7 @@ public class Ingredient {
     }
 
     /**
-     * Getter for ingredient description
+     * Get the ingredient description
      * @return (String) The description of the ingredient
      */
     public String getDescription() {
