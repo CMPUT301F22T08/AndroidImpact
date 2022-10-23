@@ -19,6 +19,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Look through platforms
+        shell: bash
+        run: |
+          ls -al ~/Android/Sdk/platforms/
+
       # Execute unit tests
       - name: Find Android Javadocs
         shell: bash
