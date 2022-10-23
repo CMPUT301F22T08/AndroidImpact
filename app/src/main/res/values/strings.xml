@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">AndroidImpact</string>
     <string name="add_ingredient">Add</string>
+    <string name="description">Description</string>
+    <string name="ingredientStoreAdd_title">Add Ingredient to Storage</string>
+    <string name="location">Location</string>
+    <string name="amount">Amount</string>
+    <string name="unit">Unit</string>
+    <string name="category">Category</string>
+    <string name="bestBefore">Best Before</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
 </resources>
