@@ -6,6 +6,8 @@ package com.androidimpact.app;
  * - amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
  * - unit (String) - The unit that amount is measuring e.g. g in 300g
  * - category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+ * @author Kailash Seshadri
+ * @version 1.0
  */
 public class Ingredient {
     protected String description;
@@ -15,11 +17,13 @@ public class Ingredient {
 
     /**
      * Constructor for the Ingredient class
-     * - description (String) - A short description of the ingredient e.g. peppercorn ranch
-     * - amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
-     * - unit (String) - The unit that amount is measuring e.g. g in 300g
-     * - category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
-     */
+     * @author Kailash Seshadri
+     * @version 1.0
+     * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
+     * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
+     * @param unit (String) - The unit that amount is measuring e.g. g in 300g
+     * @param category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+     * */
     public Ingredient(String description, float amount, String unit, String category) {
         this.description = description;
         this.amount = amount;
@@ -29,6 +33,8 @@ public class Ingredient {
 
     /**
      * Getter for ingredient description
+     * @author Kailash Seshadri
+     * @version 1.0
      * @return this.description (String)
      */
     public String getDescription() {
@@ -37,6 +43,8 @@ public class Ingredient {
 
     /**
      * Rename the ingredient
+     * @author Kailash Seshadri
+     * @version 1.0
      * @param description (String) - The new description to be used
      */
     public void setDescription(String description) {
@@ -45,6 +53,8 @@ public class Ingredient {
 
     /**
      * Get the amount of the ingredient
+     * @author Kailash Seshadri
+     * @version 1.0
      * @return this.amount (float)
      */
     public float getAmount() {
@@ -53,6 +63,8 @@ public class Ingredient {
 
     /**
      * Set a new amount of the ingredient
+     * @author Kailash Seshadri
+     * @version 1.0
      * @param amount (float) - The new amount to be used
      */
     public void setAmount(float amount) {
@@ -61,6 +73,8 @@ public class Ingredient {
 
     /**
      * Get the units that amount is measuring
+     * @author Kailash Seshadri
+     * @version 1.0
      * @return this.unit (String)
      */
     public String getUnit() {
@@ -69,6 +83,8 @@ public class Ingredient {
 
     /**
      * Change the unit of measurement
+     * @author Kailash Seshadri
+     * @version 1.0
      * @param unit (String) - The new unit of measurement
      */
     public void setUnit(String unit) {
@@ -77,6 +93,8 @@ public class Ingredient {
 
     /**
      * Get the ingredient category
+     * @author Kailash Seshadri
+     * @version 1.0
      * @return this.category (String)
      */
     public String getCategory() {
@@ -85,6 +103,8 @@ public class Ingredient {
 
     /**
      * Give the ingredient a new category
+     * @author Kailash Seshadri
+     * @version 1.0
      * @param category (String) - The new category of the ingredient
      */
     public void setCategory(String category) {
