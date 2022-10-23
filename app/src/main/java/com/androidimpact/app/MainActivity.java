@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -29,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
     // adding cities to firebase
     final String TAG = "MainActivity";
-    Button addIngredientBtn;
-    EditText addIngredientDescriptionText;
     FirebaseFirestore db;
 
     @Override
