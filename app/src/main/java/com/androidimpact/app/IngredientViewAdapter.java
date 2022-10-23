@@ -54,7 +54,7 @@ public class IngredientViewAdapter extends RecyclerView.Adapter<IngredientViewAd
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
-            ingredientDescription = itemView.findViewById(R.id.ingredient_description);
+            ingredientDescription = itemView.findViewById(R.id.store_ingredient_description);
         }
     }
 }
