@@ -48,4 +48,5 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.4.0'
     androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.6.3'
 
+    implementation files('/Users/joshuaji/Library/Android/sdk/platforms/android-32/android.jar')
 }
