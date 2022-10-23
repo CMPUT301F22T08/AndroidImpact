@@ -27,7 +27,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     @Override
     public StoreIngredientViewAdapter.StoreIngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate Layout
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_in_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_storage_item, parent, false);
         return new StoreIngredientViewAdapter.StoreIngredientViewHolder(view);
     }
 
