@@ -2,10 +2,10 @@ package com.androidimpact.app;
 
 /**
  * Ingredient class: Holds the information of an ingredient to be used in recipes and the shopping list
- * - description - A short description of the ingredient e.g. peppercorn ranch
- * - amount - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
- * - unit - The unit that amount is measuring e.g. g in 300g
- * - category - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+ * - description (String) - A short description of the ingredient e.g. peppercorn ranch
+ * - amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
+ * - unit (String) - The unit that amount is measuring e.g. g in 300g
+ * - category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
  */
 public class Ingredient {
     protected String description;
@@ -13,6 +13,13 @@ public class Ingredient {
     protected String unit;
     protected String category;
 
+    /**
+     * Constructor for the Ingredient class
+     * - description (String) - A short description of the ingredient e.g. peppercorn ranch
+     * - amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
+     * - unit (String) - The unit that amount is measuring e.g. g in 300g
+     * - category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+     */
     public Ingredient(String description, float amount, String unit, String category) {
         this.description = description;
         this.amount = amount;
@@ -61,7 +68,7 @@ public class Ingredient {
     }
 
     /**
-     * Set a new unit of measurement
+     * Change the unit of measurement
      * @param unit (String) - The new unit of measurement
      */
     public void setUnit(String unit) {
@@ -77,7 +84,7 @@ public class Ingredient {
     }
 
     /**
-     * Set a new ingredient category
+     * Give the ingredient a new category
      * @param category (String) - The new category of the ingredient
      */
     public void setCategory(String category) {
