@@ -14,7 +14,6 @@ public class IngredientStorage {
         this.ingredientStorageList = new ArrayList<StoreIngredient>();
     }
 
-    //should I remove this function?
     /**
      * this function returns the ingredientStorageList
      * @return ingredientStorageList
@@ -24,16 +23,16 @@ public class IngredientStorage {
     }
 
     /**
-     *
+     * this function returns the element at i index in the list
      * @param i
-     * @return
+     * @return StoreIngredient
      */
     public StoreIngredient get(int i) {
         return ingredientStorageList.get(i);
     }
 
     /**
-     *
+     * this function sets the ingredients to index i in ingredientStorageList
      * @param i
      * @param ingredient
      */
@@ -42,7 +41,7 @@ public class IngredientStorage {
     }
 
     /**
-     *
+     * this function adds the ingredient to ingredientStorageList
      * @param ingredient
      */
     public void add(StoreIngredient ingredient)
@@ -71,14 +70,17 @@ public class IngredientStorage {
     }
 
     /**
-     *
-     * @return
+     * this function returns the size of the list
+     * @return int
      */
     public int size()
     {
         return this.ingredientStorageList.size();
     }
 
+    /**
+     * this function clears the ingredientStorageList
+     */
     public void clear()
     {
         this.ingredientStorageList.clear();
