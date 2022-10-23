@@ -2,6 +2,13 @@ package com.androidimpact.app;
 
 import java.util.ArrayList;
 
+/**
+ * IngredientStorage class
+ * ingredientStorageList (ArrayList<StoreIngredient>)
+ * @version 1.0
+ * @author vedantvyas
+ */
+
 public class IngredientStorage {
     private ArrayList<StoreIngredient> ingredientStorageList;
 
@@ -16,7 +23,7 @@ public class IngredientStorage {
 
     /**
      * this function returns the ingredientStorageList
-     * @return ingredientStorageList
+     * @return ingredientStorageList (ArrayList<StoreIngredient>)
      */
     public ArrayList<StoreIngredient> getIngredientStorageList() {
         return ingredientStorageList;
@@ -24,8 +31,8 @@ public class IngredientStorage {
 
     /**
      * this function returns the element at i index in the list
-     * @param i
-     * @return StoreIngredient
+     * @param i (int)
+     * @return (StoreIngredient)
      */
     public StoreIngredient get(int i) {
         return ingredientStorageList.get(i);
@@ -33,8 +40,8 @@ public class IngredientStorage {
 
     /**
      * this function sets the ingredients to index i in ingredientStorageList
-     * @param i
-     * @param ingredient
+     * @param i (int)
+     * @param ingredient (StoreIngredient)
      */
     public void set(int i, StoreIngredient ingredient){
         this.ingredientStorageList.set(i, ingredient);
@@ -42,7 +49,7 @@ public class IngredientStorage {
 
     /**
      * this function adds the ingredient to ingredientStorageList
-     * @param ingredient
+     * @param ingredient (StoreIngredient)
      */
     public void add(StoreIngredient ingredient)
     {
@@ -51,7 +58,7 @@ public class IngredientStorage {
 
     /**
      * This function removes the element from ingredientStorageList at index i
-     * @param i
+     * @param i (int)
      */
     public void remove(int i)
     {
@@ -61,7 +68,7 @@ public class IngredientStorage {
 
     /**
      * This function removes the ingredient from ingredientStorageList
-     * @param ingredient
+     * @param ingredient (StoreIngredient)
      */
     public void remove(StoreIngredient ingredient)
     {
@@ -71,7 +78,7 @@ public class IngredientStorage {
 
     /**
      * this function returns the size of the list
-     * @return int
+     * @return (int)
      */
     public int size()
     {
