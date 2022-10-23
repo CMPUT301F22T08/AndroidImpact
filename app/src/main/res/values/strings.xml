@@ -5,6 +5,7 @@
     <string name="ingredientStoreAdd_title">Add Ingredient to Storage</string>
     <string name="ingredientStoreAdd_location">Location</string>
     <string name="ingredientStoreAdd_amount">Amount</string>
-    <string name="ingredientStoreAdd_unitCost">Unit cost</string>
+    <string name="ingredientStoreAdd_unit">Unit cost</string>
     <string name="ingredientStoreAdd_category">Category</string>
+    <string name="ingredientStoreAdd_bestBefore">Best Before</string>
 </resources>
