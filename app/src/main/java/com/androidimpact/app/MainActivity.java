@@ -16,9 +16,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -105,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                Date date = new Date();
-                ingredientDataList.add(new StoreIngredient(description, 0, "", "",date, "trial")); // Adding the cities and provinces from FireStore
+                Calendar rightNow = Calendar.getInstance();
+                ingredientDataList.add(new StoreIngredient(description, 0, "", "", rightNow, "trial")); // Adding the cities and provinces from FireStore
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
             for (StoreIngredient i : ingredientDataList.getIngredientStorageList()) {
