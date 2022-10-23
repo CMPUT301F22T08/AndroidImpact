@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddStoreIngredientActivity"
+    android:id="@+id/content">
+
+    <TextView
+        android:id="@+id/ingredientStoreAdd_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/ingredientStoreAdd_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/ingredientStoreAdd_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/description"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_title" />
+
+    <EditText
+        android:id="@+id/ingredientStoreAdd_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/amount"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_description" />
+
+    <EditText
+        android:id="@+id/ingredientStoreAdd_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/location"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
+
+    <EditText
+        android:id="@+id/ingredientStoreAdd_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/unit"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />
+
+    <EditText
+        android:id="@+id/ingredientStoreAdd_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/category"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_unit" />
+
+    <EditText
+        android:id="@+id/ingredientStoreAdd_bestBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date"
+        android:minHeight="48dp"
+        android:onClick="pickDate"
+        android:hint="@string/bestBefore"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_category" />
+
+    <Button
+        android:id="@+id/ingredientStoreAdd_cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/cancel"
+        android:onClick="cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_bestBefore" />
+
+    <Button
+        android:id="@+id/ingredientStoreAdd_confirmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"
+        android:onClick="confirm"
+        app:layout_constraintStart_toEndOf="@+id/ingredientStoreAdd_cancelBtn"
+        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_cancelBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

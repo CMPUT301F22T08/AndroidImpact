@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -32,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
     // adding cities to firebase
     final String TAG = "MainActivity";
-    Button addIngredientBtn;
-    EditText addIngredientDescriptionText;
     FirebaseFirestore db;
 
     @Override
@@ -44,10 +41,6 @@ public class MainActivity extends AppCompatActivity {
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("test");
-
-        // Initialize views
-        addIngredientBtn = findViewById(R.id.add_ingredient_button);
-        addIngredientDescriptionText = findViewById(R.id.add_ingredient_description);
 
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
@@ -123,27 +116,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * ADD INGREDIENT
+     *
+     * This is executed when the Add ingredient FAB is clicked. It redirects to a new activity.
+     * This new activity is basically just a form that creates a new ingredient in the storage
+     *
+     * @param view
+     */
     public void addIngredient(View view)  {
-        final CollectionReference collectionReference = db.collection("test");
-
-        final String description = addIngredientDescriptionText.getText().toString();
-        HashMap<String, String> data = new HashMap<>();
-
-        if (description.length() > 0) {
-            data.put("Province Name", description);
-
-            collectionReference
-                    .document(description)
-                    .set(data)
-                    .addOnSuccessListener(aVoid -> {
-                        // task succeeded
-                        Log.d(TAG + "AddIngredient", "Data has been added successfully!");
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.d(TAG + "AddIngredient", "Data could not be added!" + e);
-                    });
-
-            addIngredientDescriptionText.setText("");
-        }
+        Log.i(TAG + ":addIngredient", "Adding ingredient!");
+        Intent intent = new Intent(this, AddStoreIngredientActivity.class);
+        startActivity(intent);
     }
 }
