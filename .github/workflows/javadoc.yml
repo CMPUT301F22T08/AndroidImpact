@@ -1,0 +1,31 @@
+name: Generate Javadocs
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  javadoc:
+    name: Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: set up Java 17
+        uses: actions/setup-java@v3.6.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # Execute unit tests
+      - name: Find Android Javadocs
+        shell: bash
+        run: |
+          FILE=~/Android/Sdk/platforms/android-32/android.jar
+          if [ -f "$FILE" ]; then
+              echo "$FILE exists."
+          else 
+              echo "$FILE does not exist."
+          fi
