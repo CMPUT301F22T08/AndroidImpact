@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.androidimpact.app.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
-    IngredientViewList ingredientViewAdapter;
+    IngredientViewAdapter ingredientViewAdapter;
     ArrayList<Ingredient> ingredientDataList;
 
     // adding cities to firebase
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
         ingredientDataList = new ArrayList<>();
-        ingredientViewAdapter = new IngredientViewList(this, ingredientDataList);
+        ingredientViewAdapter = new IngredientViewAdapter(this, ingredientDataList);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
