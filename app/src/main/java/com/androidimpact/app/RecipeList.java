@@ -7,4 +7,7 @@ package com.androidimpact.app;
  */
 public class RecipeList {
 
+    public RecipeList() {
+
+    }
 }
