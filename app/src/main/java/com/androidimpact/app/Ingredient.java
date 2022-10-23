@@ -22,21 +22,6 @@ public class Ingredient {
         this.category = category;
     }
 
-    public Ingredient(String description, double amount, String unit, String category) {
-        this.description = description;
-        this.amount = (float) amount;
-        this.unit = unit;
-        this.category = category;
-    }
-
-    public Ingredient(String description, int amount, String unit, String category) {
-        this.description = description;
-        this.amount = (float) amount;
-        this.unit = unit;
-        this.category = category;
-    }
-
-
     public String getDescription() {
         return description;
     }
