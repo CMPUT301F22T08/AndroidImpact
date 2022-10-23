@@ -6,8 +6,12 @@ package com.androidimpact.app;
  * @version 1.0
  */
 public class RecipeList {
-
+    /**
+     * Constructor for RecipeList
+     */
     public RecipeList() {
+
+
 
     }
 }
