@@ -7,35 +7,12 @@ public class Ingredient {
     protected String unit;
     protected String category;
 
-    public Ingredient(String description){
-        this.description = description;
-        this.amount = 0;
-        this.unit = "kg";
-        this.category = "test";
-    }
-
-
     public Ingredient(String description, float amount, String unit, String category) {
         this.description = description;
         this.amount = amount;
         this.unit = unit;
         this.category = category;
     }
-
-    public Ingredient(String description, double amount, String unit, String category) {
-        this.description = description;
-        this.amount = (float) amount;
-        this.unit = unit;
-        this.category = category;
-    }
-
-    public Ingredient(String description, int amount, String unit, String category) {
-        this.description = description;
-        this.amount = (float) amount;
-        this.unit = unit;
-        this.category = category;
-    }
-
 
     public String getDescription() {
         return description;
@@ -52,13 +29,6 @@ public class Ingredient {
     public void setAmount(float amount) {
         this.amount = amount;
     }
-    public void setAmount(double amount) {
-        this.amount = (float) amount;
-    }
-    public void setAmount(int amount) {
-        this.amount = (float) amount;
-    }
-
     public String getUnit() {
         return unit;
     }
