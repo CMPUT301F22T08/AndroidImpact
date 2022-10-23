@@ -11,31 +11,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class IngredientViewAdapter extends RecyclerView.Adapter<IngredientViewAdapter.IngredientViewHolder> {
+public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngredientViewAdapter.StoreIngredientViewHolder>{
 
     // creating a variable for our array list and context.
-    private ArrayList<Ingredient> ingredientArrayList;
+    private ArrayList<StoreIngredient> ingredientArrayList;
     private Context mContext;
 
     // creating a constructor class.
-    public IngredientViewAdapter(Context mContext, ArrayList<Ingredient> ingredientArrayList) {
+    public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
     }
 
     @NonNull
     @Override
-    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StoreIngredientViewAdapter.StoreIngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate Layout
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_in_list, parent, false);
-        return new IngredientViewHolder(view);
+        return new StoreIngredientViewAdapter.StoreIngredientViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StoreIngredientViewAdapter.StoreIngredientViewHolder holder, int position) {
         // Set the data to textview from our modal class.
         Ingredient recyclerData = ingredientArrayList.get(position);
-        holder.ingredientDescription.setText(recyclerData.getDescription());
+        holder.storeIngredientDescription.setText(recyclerData.getDescription());
     }
 
     @Override
@@ -46,16 +46,16 @@ public class IngredientViewAdapter extends RecyclerView.Adapter<IngredientViewAd
     }
 
     // View Holder Class to handle Recycler View.
-    public class IngredientViewHolder extends RecyclerView.ViewHolder {
+    public class StoreIngredientViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view.
-        private TextView ingredientDescription;
+        private TextView storeIngredientDescription;
 
-        public IngredientViewHolder(@NonNull View itemView) {
+        public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
-            ingredientDescription = itemView.findViewById(R.id.store_ingredient_description);
+            //Need to be changed for now
+            storeIngredientDescription = itemView.findViewById(R.id.store_ingredient_description);
         }
     }
 }
-

@@ -17,13 +17,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
-    IngredientViewAdapter ingredientViewAdapter;
-    ArrayList<Ingredient> ingredientDataList;
+    StoreIngredientViewAdapter storeingredientViewAdapter;
+    //ArrayList<Ingredient> ingredientDataList;
+    IngredientStorage ingredientDataList;
+
 
     // adding cities to firebase
     final String TAG = "MainActivity";
@@ -40,13 +44,15 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
-        ingredientDataList = new ArrayList<>();
-        ingredientViewAdapter = new IngredientViewAdapter(this, ingredientDataList);
+       // ingredientDataList = new ArrayList<>();
+        ingredientDataList = new IngredientStorage();
+
+        storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
         ingredientListView.setLayoutManager(manager);
-        ingredientListView.setAdapter(ingredientViewAdapter);
+        ingredientListView.setAdapter(storeingredientViewAdapter);
 
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -99,13 +105,14 @@ public class MainActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                ingredientDataList.add(new Ingredient(description, 0, "", "")); // Adding the cities and provinces from FireStore
+                Date date = new Date();
+                ingredientDataList.add(new StoreIngredient(description, 0, "", "",date, "trial")); // Adding the cities and provinces from FireStore
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
-            for (Ingredient i : ingredientDataList) {
+            for (StoreIngredient i : ingredientDataList.getIngredientStorageList()) {
                 Log.i(TAG, "Snapshot listener: Added " + i.getDescription() + " to elements");
             }
-            ingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+            storeingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
     }
 

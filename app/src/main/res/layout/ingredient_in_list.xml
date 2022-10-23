@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/ingredient_description"
+        android:id="@+id/store_ingredient_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
