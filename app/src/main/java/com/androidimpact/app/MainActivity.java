@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void addIngredient(View view)  {
         Log.i(TAG + ":addIngredient", "Adding ingredient!");
-        Intent intent = new Intent(this, IngredientStorageAddActivity.class);
+        Intent intent = new Intent(this, AddStoreIngredientActivity.class);
         startActivity(intent);
     }
 }

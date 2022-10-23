@@ -17,9 +17,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class IngredientStorageAddActivity extends AppCompatActivity {
+public class AddStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
-    final String TAG = "IngredientStorageAddActivity";
+    final String TAG = "AddStoreIngredientActivity";
 
     // declare all view variables
     private EditText descriptionEdit;
