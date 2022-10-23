@@ -175,7 +175,6 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             throw new Exception("Best before date must be a future date.");
         }
 
-
         try {
             return new StoreIngredient(description, amount, unit, category, bestBefore, location);
         } catch(Exception e) {
