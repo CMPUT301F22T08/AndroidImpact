@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    branches: [ main ]
+    branches:
+    - main
   pull_request:
-    branches: [ main ]
 
 jobs:
   unit-test:
@@ -30,7 +30,7 @@ jobs:
   # https://github.com/marketplace/actions/android-emulator-runner
   e2e-test:
     name: E2E Test
-    runs-on: macos-latest
+    runs-on: macos-12
     steps:
       - name: checkout
         uses: actions/checkout@v3
