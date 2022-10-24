@@ -66,20 +66,26 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
      * This is executed when the "confirm" button is clicked
      */
     public void confirm(View view) {
-       Log.i(TAG + ":cancel", "Confirm ingredient add");
+        Log.i(TAG + ":cancel", "Confirm ingredient add");
 
-       String snackbarStr = "Not implemented!";
-       try {
-           StoreIngredient newStoreIngredient = createIngredient();
-       } catch (Exception e){
-           snackbarStr = e.getMessage();
-       }
+        try {
+            StoreIngredient newStoreIngredient = createIngredient();
+            String snackbarStr = "Not implemented!";
 
-        // right now, just make a snack-bar saying the error or not implemented
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar.make(parentLayout, snackbarStr, Snackbar.LENGTH_LONG)
-                .setAction("Ok", view1 -> {})
-                .show();
+            // Error - add a snackbar
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar.make(parentLayout, snackbarStr, Snackbar.LENGTH_LONG)
+                    .setAction("Ok", view1 -> {})
+                    .show();
+        } catch (Exception e){
+            String snackbarStr = e.getMessage();
+
+           // Error - add a snackbar
+           View parentLayout = findViewById(android.R.id.content);
+           Snackbar.make(parentLayout, snackbarStr, Snackbar.LENGTH_LONG)
+                   .setAction("Ok", view1 -> {})
+                   .show();
+        }
     }
 
     /**
