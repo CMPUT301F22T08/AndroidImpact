@@ -31,6 +31,10 @@ android {
 }
 
 dependencies {
+//    implementation files(sdkDir+'/platforms/android-33/android.jar')
+    // Joshua - uncomment to run javadocs
+//    implementation files('/Users/joshuaji/Library/Android/sdk/platforms/android-33/android.jar')
+
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'com.firebase:firebase-client-android:2.5.0'
@@ -47,6 +51,4 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
     androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.6.3'
-
-    // JAVADOC
 }
