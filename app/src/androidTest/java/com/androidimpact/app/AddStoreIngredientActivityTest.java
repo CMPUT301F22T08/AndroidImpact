@@ -59,7 +59,63 @@ public class AddStoreIngredientActivityTest {
     }
 
     /**
-     * Checks to see if the "confirm" button doesn't go back to MainActivity when the user hasn't inputted anything.
+     * INVALID INPUT: when amount is a non-integer
+     */
+    @Test
+    public void confirmBtnCheckInvalid1() {
+        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
+        AddStoreIngredientActivity a = (AddStoreIngredientActivity) solo.getCurrentActivity();
+
+        // fill in description
+        EditText description = a.findViewById(R.id.ingredientStoreAdd_description);
+        EditText amount = a.findViewById(R.id.ingredientStoreAdd_amount);
+        EditText location = a.findViewById(R.id.ingredientStoreAdd_location);
+        EditText unit = a.findViewById(R.id.ingredientStoreAdd_unit);
+        EditText category = a.findViewById(R.id.ingredientStoreAdd_category);
+        DatePicker bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
+
+        // BULKING
+        solo.enterText(description, "eggs");
+        solo.enterText(amount, "abc");
+        solo.enterText(location, "Cabinet");
+        solo.enterText(unit, "kg");
+        solo.enterText(category, "bulk");
+        solo.setDatePicker(bestBefore, 2025, 10, 10);
+
+        solo.clickOnButton("Confirm");
+        solo.assertCurrentActivity("Wrong Activity!", MainActivity.class);
+    }
+
+    /**
+     * INVALID INPUT: when amount is a non-positive
+     */
+    @Test
+    public void confirmBtnCheckInvalid2() {
+        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
+        AddStoreIngredientActivity a = (AddStoreIngredientActivity) solo.getCurrentActivity();
+
+        // fill in description
+        EditText description = a.findViewById(R.id.ingredientStoreAdd_description);
+        EditText amount = a.findViewById(R.id.ingredientStoreAdd_amount);
+        EditText location = a.findViewById(R.id.ingredientStoreAdd_location);
+        EditText unit = a.findViewById(R.id.ingredientStoreAdd_unit);
+        EditText category = a.findViewById(R.id.ingredientStoreAdd_category);
+        DatePicker bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
+
+        // BULKING
+        solo.enterText(description, "eggs");
+        solo.enterText(amount, "-100");
+        solo.enterText(location, "Cabinet");
+        solo.enterText(unit, "kg");
+        solo.enterText(category, "bulk");
+        solo.setDatePicker(bestBefore, 2025, 10, 10);
+
+        solo.clickOnButton("Confirm");
+        solo.assertCurrentActivity("Wrong Activity!", MainActivity.class);
+    }
+
+    /**
+     * On a valid input, checks to see if the "confirm" does back to MainActivity
      */
     @Test
     public void confirmBtnCheckFilled() {
