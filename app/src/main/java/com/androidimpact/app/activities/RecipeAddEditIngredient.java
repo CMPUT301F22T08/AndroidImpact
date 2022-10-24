@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import com.androidimpact.app.R;
 
+/**
+ * This class is the activity for ingredient adding/viewing/editing to recipe
+ * @author Curtis Kan
+ * @version 1.0
+ */
 public class RecipeAddEditIngredient extends AppCompatActivity {
 
     Button cancel;
