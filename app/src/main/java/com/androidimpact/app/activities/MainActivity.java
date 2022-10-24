@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.androidimpact.app.Ingredient;
+import com.androidimpact.app.IngredientViewAdapter;
+import com.androidimpact.app.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
