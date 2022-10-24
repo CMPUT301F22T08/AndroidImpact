@@ -25,13 +25,6 @@
             android:layout_height="wrap_content"
             android:onClick="addIngredient"
             android:text="@string/add_ingredient" />
-
-        <Button
-            android:id="@+id/gotorecipes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="tmpgotorecipelist"
-            android:text="Go to Recipes" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

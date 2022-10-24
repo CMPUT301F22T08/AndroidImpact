@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,17 +18,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Activity class for Recipe List
+ * @author Aneeljyot Alagh, Clare Chen
+ * @version 1.0
+ */
+public class RecipeListActivity extends AppCompatActivity {
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
-    IngredientViewAdapter ingredientViewAdapter;
-    ArrayList<Ingredient> ingredientDataList;
+    RecipeList ingredientViewAdapter;
+    ArrayList<Recipe> ingredientDataList;
 
     // adding cities to firebase
-    final String TAG = "MainActivity";
+    final String TAG = "RecipeListActivity";
     Button addIngredientBtn;
     EditText addIngredientDescriptionText;
     FirebaseFirestore db;
@@ -37,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe_list_activity);
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        final CollectionReference collectionReference = db.collection("test");
+        final CollectionReference collectionReference = db.collection("recipe");
 
         // Initialize views
         addIngredientBtn = findViewById(R.id.add_ingredient_button);
@@ -50,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
         ingredientDataList = new ArrayList<>();
-        ingredientViewAdapter = new IngredientViewAdapter(this, ingredientDataList);
+        ingredientViewAdapter = new RecipeList(this, ingredientDataList);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -74,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
-                Ingredient deletedIngredient = ingredientDataList.get(position);
-                String description = deletedIngredient.getDescription();
+                Recipe deletedIngredient = ingredientDataList.get(position);
+                String description = deletedIngredient.getTitle();
 
                 Log.d(TAG, "Swiped " + description + " at position " + position);
 
@@ -108,18 +113,18 @@ public class MainActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                ingredientDataList.add(new Ingredient(description, 0, "", "")); // Adding the cities and provinces from FireStore
+                ingredientDataList.add(new Recipe(new ArrayList<>(Arrays.asList(new Ingredient[]{new Ingredient("")})), description, 0, 0, "breakfast", "hello i like food test")); // Adding the cities and provinces from FireStore
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
-            for (Ingredient i : ingredientDataList) {
-                Log.i(TAG, "Snapshot listener: Added " + i.getDescription() + " to elements");
+            for (Recipe i : ingredientDataList) {
+                Log.i(TAG, "Snapshot listener: Added " + i.getTitle() + " to elements");
             }
             ingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
     }
 
     public void addIngredient(View view)  {
-        final CollectionReference collectionReference = db.collection("test");
+        final CollectionReference collectionReference = db.collection("recipe");
 
         final String description = addIngredientDescriptionText.getText().toString();
         HashMap<String, String> data = new HashMap<>();
@@ -140,10 +145,5 @@ public class MainActivity extends AppCompatActivity {
 
             addIngredientDescriptionText.setText("");
         }
-    }
-
-    public void tmpgotorecipelist(View view) {
-        Intent intent = new Intent(this, RecipeListActivity.class);
-        startActivity(intent);
     }
 }
