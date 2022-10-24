@@ -2,6 +2,7 @@ package com.androidimpact.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -59,6 +60,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
     public void cancel(View view) {
         Log.i(TAG + ":cancel", "Cancel ingredient add");
         Intent intent = new Intent(this, MainActivity.class);
+        setResult(Activity.RESULT_CANCELED, intent);
         startActivity(intent);
     }
 
@@ -69,14 +71,14 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         Log.i(TAG + ":cancel", "Confirm ingredient add");
 
         try {
+            // try to create an ingredient.
             StoreIngredient newStoreIngredient = createIngredient();
-            String snackbarStr = "Not implemented!";
+            Intent intent = new Intent(this, MainActivity.class);
 
-            // Error - add a snackbar
-            View parentLayout = findViewById(android.R.id.content);
-            Snackbar.make(parentLayout, snackbarStr, Snackbar.LENGTH_LONG)
-                    .setAction("Ok", view1 -> {})
-                    .show();
+            // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
+            intent.putExtra("ingredient", newStoreIngredient);
+            setResult(Activity.RESULT_OK, intent);
+            startActivity(intent);
         } catch (Exception e){
             String snackbarStr = e.getMessage();
 

@@ -1,5 +1,6 @@
 package com.androidimpact.app;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Calendar;
  * @version 1.0
  * @see Ingredient
  */
-public class StoreIngredient extends Ingredient{
+public class StoreIngredient extends Ingredient implements Serializable {
     private Calendar bestBeforeDate;
     private String location;
 

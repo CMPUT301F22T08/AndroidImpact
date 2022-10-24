@@ -83,7 +83,7 @@ public class AddStoreIngredientActivityTest {
         solo.setDatePicker(bestBefore, 2025, 10, 10);
 
         solo.clickOnButton("Confirm");
-        solo.assertCurrentActivity("Wrong Activity!", MainActivity.class);
+        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
     }
 
     /**
@@ -111,7 +111,7 @@ public class AddStoreIngredientActivityTest {
         solo.setDatePicker(bestBefore, 2025, 10, 10);
 
         solo.clickOnButton("Confirm");
-        solo.assertCurrentActivity("Wrong Activity!", MainActivity.class);
+        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
     }
 
     /**
