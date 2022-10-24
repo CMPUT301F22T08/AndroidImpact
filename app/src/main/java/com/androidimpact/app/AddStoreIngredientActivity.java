@@ -68,8 +68,6 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
      * This is executed when the "confirm" button is clicked
      */
     public void confirm(View view) {
-        Log.i(TAG + ":cancel", "Confirm ingredient add");
-
         try {
             // try to create an ingredient.
             StoreIngredient newStoreIngredient = createIngredient();
@@ -78,6 +76,8 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
             intent.putExtra("ingredient", newStoreIngredient);
             setResult(Activity.RESULT_OK, intent);
+
+            Log.i(TAG + ":cancel", "Returning to MainActivity");
             startActivity(intent);
         } catch (Exception e){
             String snackbarStr = e.getMessage();
@@ -122,9 +122,12 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         float amount;
         try {
             amount = Float.parseFloat(amountRaw);
-            assert amount>0;
         } catch (Exception e) {
-            throw new Exception("Amount must be positive.");
+            throw new Exception("Amount must be a float!");
+        }
+
+        if (amount < 0) {
+            throw new Exception("Amount must be positive!");
         }
 
         if (location.equals("")) {

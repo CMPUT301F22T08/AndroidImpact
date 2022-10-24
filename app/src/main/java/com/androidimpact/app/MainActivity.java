@@ -1,5 +1,6 @@
 package com.androidimpact.app;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -119,6 +120,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
+     * AddStoreIngredientActivity
+     */
+    final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Bundle bundle = result.getData().getExtras();
+                Log.i(TAG + ":addIngredientResult", "Got bundle");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // Ok - we have an ingredient!
+                    Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
+                    Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
+                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    // cancelled request - do nothing.
+                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                }
+            });
+
+    /**
      * ADD INGREDIENT
      *
      * This is executed when the Add ingredient FAB is clicked. It redirects to a new activity.
@@ -132,26 +153,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddStoreIngredientActivity.class);
         addStoreIngredientLauncher.launch(intent);
     }
-
-    /**
-     * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
-     * AddStoreIngredientActivity
-     */
-    ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Bundle bundle = result.getData().getExtras();
-
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    // Ok - we have an ingredient!
-                    Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
-                    Log.i(TAG + ":addIngredientResult", "hi");
-                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-                    // cancelled request - do nothing.
-                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
-                }
-            });
-
 
 
 }
