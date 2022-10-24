@@ -61,7 +61,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
-            recipeTitle = itemView.findViewById(R.id.recipe_title);
+            recipeTitle = itemView.findViewById(R.id.recipe_name);
         }
     }
 }
