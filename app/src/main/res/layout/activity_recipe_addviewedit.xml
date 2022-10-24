@@ -4,53 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.RecipeAddActivity">
+    tools:context=".activities.RecipeAddViewEditActivity">
+
+    <TextView
+        android:id="@+id/activity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/activity_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/recipe_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
+        android:contentDescription="@string/recipe_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <EditText
-        android:id="@+id/recipes_add_title"
+        android:id="@+id/recipe_title"
         android:layout_width="232dp"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="@string/recipe_title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/recipe_image"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
-        android:id="@+id/recipes_add_prep"
+        android:id="@+id/recipe_prep"
         android:layout_width="130dp"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/recipe_prep_time"
         android:importantForAutofill="no"
         android:inputType="number"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/recipes_add_comments"
+        app:layout_constraintEnd_toStartOf="@+id/recipe_comments"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_image" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName4"
+        android:id="@+id/recipe_servings"
         android:layout_width="130dp"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
@@ -61,12 +73,12 @@
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/recipes_add_comments"
+        app:layout_constraintEnd_toStartOf="@+id/recipe_comments"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipes_add_prep" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_prep" />
 
     <EditText
-        android:id="@+id/recipes_add_comments"
+        android:id="@+id/recipe_comments"
         android:layout_width="229dp"
         android:layout_height="254dp"
         android:layout_marginTop="10dp"
@@ -78,10 +90,10 @@
         android:inputType="textMultiLine"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipes_add_title" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_title" />
 
     <EditText
-        android:id="@+id/recipe_add_category"
+        android:id="@+id/recipe_category"
         android:layout_width="130dp"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
@@ -92,9 +104,9 @@
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/recipes_add_comments"
+        app:layout_constraintEnd_toStartOf="@+id/recipe_comments"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_servings" />
 
     <LinearLayout
         android:id="@+id/recipe_ingredients_list"
@@ -104,7 +116,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipes_add_comments" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_comments" />
 
     <TextView
         android:id="@+id/recipe_ingredients_text"
@@ -128,16 +140,27 @@
         app:layout_constraintStart_toEndOf="@+id/recipe_ingredients_text"
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredients_text"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true" />
+        android:focusable="true"
+        android:contentDescription="@string/recipe_title" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginBottom="16dp"
-        android:text="Button"
+        android:layout_marginStart="70dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
