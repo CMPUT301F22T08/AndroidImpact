@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AndroidImpact</string>
     <string name="add_ingredient">Add</string>
+    <string name="recipe_title_in_list">Recipe Title</string>
+    <string name="recipe_category_in_list">Recipe Category</string>
+    <string name="recipe_prep_time_in_list">Prep: %d m</string>
+    <string name="recipe_comment_size_in_list">%d</string>
 </resources>
