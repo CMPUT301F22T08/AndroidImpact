@@ -24,4 +24,4 @@ jobs:
           curl \
             -H "Content-Type: application/json" \
             -d "{ \"embeds\": [{ \"title\": \"$TITLE\", \"description\": \"$DESCRIPTION\", \"timestamp\": \"$DATE\", \"url\": \"$URL\" }]}" \
-            "${{ secrets.DISCORD_WEBHOOK }}"
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
