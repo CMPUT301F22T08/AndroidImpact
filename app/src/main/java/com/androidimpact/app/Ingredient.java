@@ -1,5 +1,7 @@
 package com.androidimpact.app;
 
+import java.io.Serializable;
+
 /**
  * Ingredient class: Holds the information of an ingredient to be used in recipes and the shopping list
  * - description (String) - A short description of the ingredient e.g. peppercorn ranch
@@ -9,7 +11,7 @@ package com.androidimpact.app;
  * @author Kailash Seshadri
  * @version 1.0
  */
-public class Ingredient {
+public class Ingredient implements Serializable  {
     protected String description;
     protected float amount;
     protected String unit;

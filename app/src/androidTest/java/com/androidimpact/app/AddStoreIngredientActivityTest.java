@@ -45,6 +45,7 @@ public class AddStoreIngredientActivityTest {
         // so we have to hardcode this XD
         solo.clickOnButton("Cancel");
         solo.assertCurrentActivity("Wrong Activity after cancel!", MainActivity.class);
+        
     }
 
     /**

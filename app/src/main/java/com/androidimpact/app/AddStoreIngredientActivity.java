@@ -78,7 +78,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, intent);
 
             Log.i(TAG + ":cancel", "Returning to MainActivity");
-            startActivity(intent);
+            finish();
         } catch (Exception e){
             String snackbarStr = e.getMessage();
 
