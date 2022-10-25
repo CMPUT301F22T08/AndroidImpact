@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * This class defines a recipe list
@@ -21,6 +23,10 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
 
     private ArrayList<Recipe> recipeArrayList;
     private Context context;
+    private final String[] sortChoices;
+    private int sortIndex;
+
+    public static Comparator<Recipe> defaultComparator, titleComparator, prepTimeComparator, servingsComparator, categoryComparator;
 
     /**
      * Constructor for RecipeList
@@ -28,6 +34,15 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     public RecipeList(Context context, ArrayList<Recipe> recipeArrayList) {
         this.recipeArrayList = recipeArrayList;
         this.context = context;
+        this.sortChoices = new String[]{"default", "title", "preparation time", "number of servings", "recipe category"};
+        this.sortIndex = 0;
+
+
+        //defaultComparator = Comparator.comparing(Recipe::getTitle);
+        titleComparator = Comparator.comparing(Recipe::getTitle);
+        prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
+        servingsComparator = Comparator.comparingInt(Recipe::getServings);
+        categoryComparator = Comparator.comparing(Recipe::getCategory);
     }
 
     @NonNull
@@ -62,6 +77,33 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
             super(itemView);
             // initializing our text views.
             recipeTitle = itemView.findViewById(R.id.recipe_name);
+        }
+    }
+
+    public String getSortChoice() {
+        return this.sortChoices[this.sortIndex];
+    }
+
+    public void setSortChoice(int index) {
+        this.sortIndex = index;
+    }
+
+    public String[] getSortChoices() {
+        return this.sortChoices;
+    }
+
+    public void sortByChoice() {
+        switch(this.sortIndex) {
+            case 0:
+                break;
+            case 1:
+                Collections.sort(recipeArrayList, titleComparator); break;
+            case 2:
+                Collections.sort(recipeArrayList, prepTimeComparator); break;
+            case 3:
+                Collections.sort(recipeArrayList, servingsComparator); break;
+            case 4:
+                Collections.sort(recipeArrayList, categoryComparator); break;
         }
     }
 }
