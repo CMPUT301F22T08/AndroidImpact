@@ -19,11 +19,14 @@ jobs:
           python-version: 3.8
       
       # https://stackoverflow.com/a/64649397
+      # echo "COMMIT_NAME=$(python .github/workflows/parse_commit.py \"${{ github.event.head_commit.message }}\")" >> $GITHUB_ENV
       - name: Dynamically set $DATE
         run: echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S.000Z')" >> $GITHUB_ENV
       
       - name: Get github commit name
-        run: echo "COMMIT_NAME=$(python .github/workflows/parse_commit.py \"${{ github.event.head_commit.message }}\")" >> $GITHUB_ENV
+        run: |
+          echo ${{ github.event.head_commit.message }} > commit_msg.txt 
+          echo "COMMIT_NAME=$(python .github/workflows/parse_commit.py commit_msg.txt)" >> $GITHUB_ENV
 
       - name: Send webhook
         env:
