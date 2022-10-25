@@ -30,9 +30,9 @@ jobs:
 
       - name: Send webhook
         env:
-          TITLE: 'New commit on main!'
-          DESCRIPTION: '**Content:** ${{ env.COMMIT_NAME }}\n\n**Repo:** ${{ github.repository }}'
-          URL: 'https://github.com/CMPUT301F22T08/AndroidImpact/commit/${{ github.sha }}'
+          TITLE: '${{ env.COMMIT_NAME }}'
+          DESCRIPTION: 'New commit on main!\n\n**Repo:** ${{ github.repository }}'
+          URL: 'https://github.com/CMPUT301F22T08/${{ github.repository }}/commit/${{ github.sha }}'
         # The backslashes around double quotes are annoying but if I use single quotes, discord will say the JSON is invalid for some reason
         run: |
           curl \
