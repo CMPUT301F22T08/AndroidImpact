@@ -10,14 +10,25 @@ jobs:
     name: 'Webhook'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo 
+        uses: actions/checkout@v3
+
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      
       # https://stackoverflow.com/a/64649397
       - name: Dynamically set $DATE
         run: echo "DATE=$(date +'%Y-%m-%dT%H:%M:%S.000Z')" >> $GITHUB_ENV
+      
+      - name: Get github commit name
+        run: echo "COMMIT_NAME=$(python .github/workflows/parse_commit.py \"${{ github.event.head_commit.message }}\")" >> $GITHUB_ENV
 
       - name: Send webhook
         env:
-          TITLE: ':rocket: New Commit on Main!'
-          DESCRIPTION: '**Repo:** ${{ github.repository }}'
+          TITLE: 'New commit on main!'
+          DESCRIPTION: '**Content:** ${{ env.COMMIT_NAME }}\n\n**Repo:** ${{ github.repository }}'
           URL: 'https://github.com/CMPUT301F22T08/AndroidImpact/commit/${{ github.sha }}'
         # The backslashes around double quotes are annoying but if I use single quotes, discord will say the JSON is invalid for some reason
         run: |
