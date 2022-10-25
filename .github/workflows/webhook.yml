@@ -1,13 +1,15 @@
-name: Webhook Test
+name: Discord Webhook Notif
+
+# Notify the Discord channel when a push to main is published
 
 on:
   push:
     branches:
-      - webhooks
+      - main
 
 jobs:
   deploy:
-    name: 'Webhook'
+    name: Run Webhook
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo 
