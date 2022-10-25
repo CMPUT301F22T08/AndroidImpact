@@ -7,6 +7,22 @@
     android:orientation="vertical"
     tools:context="com.androidimpact.app.MainActivity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipe List"
+        android:textSize="32dp"/>
+
+
+    <Button
+        android:id="@+id/sort_recipe_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort By" />
+
+
+
     <LinearLayout
         android:id="@+id/ingredient_input"
         android:layout_width="match_parent"
