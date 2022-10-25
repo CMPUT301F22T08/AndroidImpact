@@ -14,8 +14,8 @@
 
         <TextView
             android:id="@+id/store_ingredient_description"
-            android:layout_width="246dp"
-            android:layout_height="40dp"
+            android:layout_width="194dp"
+            android:layout_height="37dp"
             android:padding="0dp"
             android:paddingTop="10dp"
             android:text="Description"
