@@ -29,14 +29,14 @@ import java.util.HashMap;
 public class RecipeListActivity extends AppCompatActivity {
 
     // Declare the variables so that you will be able to reference it later.
-    RecyclerView ingredientListView;
-    RecipeList ingredientViewAdapter;
-    ArrayList<Recipe> ingredientDataList;
+    RecyclerView recipeListView;
+    RecipeList recipeViewAdapter;
+    ArrayList<Recipe> recipeDataList;
 
     // adding cities to firebase
     final String TAG = "RecipeListActivity";
-    Button addIngredientBtn;
-    EditText addIngredientDescriptionText;
+    Button addRecipeBtn;
+    EditText addRecipeDescriptionText;
     FirebaseFirestore db;
 
     @Override
@@ -49,18 +49,18 @@ public class RecipeListActivity extends AppCompatActivity {
         final CollectionReference collectionReference = db.collection("recipe");
 
         // Initialize views
-        addIngredientBtn = findViewById(R.id.add_ingredient_button);
-        addIngredientDescriptionText = findViewById(R.id.add_ingredient_description);
+        addRecipeBtn = findViewById(R.id.add_recipe_button);
+        addRecipeDescriptionText = findViewById(R.id.add_recipe_description);
 
         // initialize adapters and customList, connect to DB
-        ingredientListView = findViewById(R.id.ingredient_listview);
-        ingredientDataList = new ArrayList<>();
-        ingredientViewAdapter = new RecipeList(this, ingredientDataList);
+        recipeListView = findViewById(R.id.recipe_listview);
+        recipeDataList = new ArrayList<>();
+        recipeViewAdapter = new RecipeList(this, recipeDataList);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        ingredientListView.setLayoutManager(manager);
-        ingredientListView.setAdapter(ingredientViewAdapter);
+        recipeListView.setLayoutManager(manager);
+        recipeListView.setAdapter(recipeViewAdapter);
 
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -79,8 +79,8 @@ public class RecipeListActivity extends AppCompatActivity {
 
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
-                Recipe deletedIngredient = ingredientDataList.get(position);
-                String description = deletedIngredient.getTitle();
+                Recipe deletedRecipe = recipeDataList.get(position);
+                String description = deletedRecipe.getTitle();
 
                 Log.d(TAG, "Swiped " + description + " at position " + position);
 
@@ -91,21 +91,21 @@ public class RecipeListActivity extends AppCompatActivity {
                             // task succeeded
                             // cityAdapter will automatically update. No need to remove it from out list
                             Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(ingredientListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
-                            Snackbar.make(ingredientListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, description + " could not be deleted!" + e);
                         });
             }
             // at last we are adding this
             // to our recycler view.
-        }).attachToRecyclerView(ingredientListView);
+        }).attachToRecyclerView(recipeListView);
 
         // on snapshot listener for the collection
         collectionReference.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
-            ingredientDataList.clear();
+            recipeDataList.clear();
 
             if (queryDocumentSnapshots == null) {
                 return;
@@ -113,20 +113,21 @@ public class RecipeListActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                ingredientDataList.add(new Recipe(new ArrayList<>(Arrays.asList(new Ingredient[]{new Ingredient("")})), description, 0, 0, "breakfast", "hello i like food test")); // Adding the cities and provinces from FireStore
+                recipeDataList.add(new Recipe(new ArrayList<>(Arrays.asList(new Ingredient[]{new Ingredient("")})), description, 0, 0, "breakfast", "hello i like food test")); // Adding the cities and provinces from FireStore
             }
-            Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
-            for (Recipe i : ingredientDataList) {
+
+            Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");
+            for (Recipe i : recipeDataList) {
                 Log.i(TAG, "Snapshot listener: Added " + i.getTitle() + " to elements");
             }
-            ingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+            recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
     }
 
     public void addIngredient(View view)  {
         final CollectionReference collectionReference = db.collection("recipe");
 
-        final String description = addIngredientDescriptionText.getText().toString();
+        final String description = addRecipeDescriptionText.getText().toString();
         HashMap<String, String> data = new HashMap<>();
 
         if (description.length() > 0) {
@@ -137,13 +138,13 @@ public class RecipeListActivity extends AppCompatActivity {
                     .set(data)
                     .addOnSuccessListener(aVoid -> {
                         // task succeeded
-                        Log.d(TAG + "AddIngredient", "Data has been added successfully!");
+                        Log.d(TAG + "AddRecipe", "Data has been added successfully!");
                     })
                     .addOnFailureListener(e -> {
-                        Log.d(TAG + "AddIngredient", "Data could not be added!" + e);
+                        Log.d(TAG + "AddRecipe", "Data could not be added!" + e);
                     });
 
-            addIngredientDescriptionText.setText("");
+            addRecipeDescriptionText.setText("");
         }
     }
 }
