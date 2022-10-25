@@ -25,7 +25,7 @@ jobs:
       
       - name: Get github commit name
         run: |
-          echo ${{ github.event.head_commit.message }} > commit_msg.txt 
+          echo "${{ github.event.head_commit.message }}" > commit_msg.txt 
           echo "COMMIT_NAME=$(python .github/workflows/parse_commit.py commit_msg.txt)" >> $GITHUB_ENV
 
       - name: Send webhook
