@@ -142,13 +142,14 @@ public class RecipeListActivity extends AppCompatActivity {
                 return;
             }
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
+                Log.d(TAG, String.valueOf(doc.getId()));
+                Log.d(TAG, String.valueOf(doc.getData()));
                 String description = doc.getId();
                 recipeDataList.add(new Recipe(
                         new ArrayList<>(Arrays.asList(
                                 new Ingredient[]{new Ingredient("")})),
                         description,
-                        Integer.valueOf((String) doc.getData().get("prep time")),
+                        0,//Integer.valueOf((String) doc.getData().get("prep time")),
                         0,
                         "breakfast",
                         "hello i like food test",
@@ -172,6 +173,7 @@ public class RecipeListActivity extends AppCompatActivity {
 
         if (description.length() > 0) {
             data.put("Province Name", description);
+            data.put("prep time", "5");
 
             collectionReference
                     .document(description)
