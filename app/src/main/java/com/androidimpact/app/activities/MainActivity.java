@@ -15,7 +15,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.androidimpact.app.Ingredient;
-import com.androidimpact.app.IngredientViewAdapter;
+import com.androidimpact.app.IngredientStorage;
+import com.androidimpact.app.StoreIngredient;
+import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
