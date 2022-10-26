@@ -32,6 +32,8 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
 
     /**
      * Constructor for RecipeList
+     * @param context           the context for the parent view
+     * @param recipeArrayList   the recipes to consider in the RecipeList object
      */
     public RecipeList(Context context, ArrayList<Recipe> recipeArrayList) {
         this.recipeArrayList = recipeArrayList;
@@ -117,30 +119,30 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     }
 
     /**
-     *
-     * @return
+     * Return the current sorting choice for the recipe list
+     * @return the index of the sorting choices for the user
      */
     public String getSortChoice() {
         return this.sortChoices[this.sortIndex];
     }
 
     /**
-     *
-     * @param index
+     * Set the sorting choice for the recipe list
+     * @param index the index of the sorting choices for the user
      */
     public void setSortChoice(int index) {
         this.sortIndex = index;
     }
 
     /**
-     *
-     * @return
+     * Return the sorting choices for the recipe list
+     * @return list of available sorting choices
      */
     public static String[] getSortChoices() {
         return sortChoices.clone(); }
 
     /**
-     *
+     * This function allows us to sort the recipe list by the user's choice
      */
     public void sortByChoice() {
         switch(this.sortIndex) {
