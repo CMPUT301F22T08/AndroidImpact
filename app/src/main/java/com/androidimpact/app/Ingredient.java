@@ -1,13 +1,17 @@
 package com.androidimpact.app;
 
+import java.io.Serializable;
+
 /**
  * Ingredient class: Holds the information of an ingredient to be used in recipes and the shopping list
  * - description (String) - A short description of the ingredient e.g. peppercorn ranch
  * - amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
  * - unit (String) - The unit that amount is measuring e.g. g in 300g
  * - category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+ * @author Kailash Seshadri
+ * @version 1.0
  */
-public class Ingredient {
+public class Ingredient implements Serializable  {
     protected String description;
     protected float amount;
     protected String unit;
@@ -15,11 +19,11 @@ public class Ingredient {
 
     /**
      * Constructor for the Ingredient class
-     * - description (String) - A short description of the ingredient e.g. peppercorn ranch
-     * - amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
-     * - unit (String) - The unit that amount is measuring e.g. g in 300g
-     * - category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
-     */
+     * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
+     * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
+     * @param unit (String) - The unit that amount is measuring e.g. g in 300g
+     * @param category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+     * */
     public Ingredient(String description, float amount, String unit, String category) {
         this.description = description;
         this.amount = amount;
@@ -28,8 +32,8 @@ public class Ingredient {
     }
 
     /**
-     * Getter for ingredient description
-     * @return this.description (String)
+     * Get the ingredient description
+     * @return (String) The description of the ingredient
      */
     public String getDescription() {
         return description;
@@ -45,7 +49,7 @@ public class Ingredient {
 
     /**
      * Get the amount of the ingredient
-     * @return this.amount (float)
+     * @return (float) The amount of the ingredient
      */
     public float getAmount() {
         return amount;
@@ -61,7 +65,7 @@ public class Ingredient {
 
     /**
      * Get the units that amount is measuring
-     * @return this.unit (String)
+     * @return (String) The units that amount is measuring
      */
     public String getUnit() {
         return unit;
@@ -77,7 +81,7 @@ public class Ingredient {
 
     /**
      * Get the ingredient category
-     * @return this.category (String)
+     * @return (String) The category of the ingredient
      */
     public String getCategory() {
         return category;

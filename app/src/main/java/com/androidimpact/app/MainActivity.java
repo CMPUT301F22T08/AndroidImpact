@@ -1,11 +1,14 @@
 package com.androidimpact.app;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +22,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
     StoreIngredientViewAdapter storeingredientViewAdapter;
@@ -105,28 +108,48 @@ public class MainActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                Date date = new Date();
-                ingredientDataList.add(new StoreIngredient(description, 0, "", "",date, "trial")); // Adding the cities and provinces from FireStore
+                Calendar rightNow = Calendar.getInstance();
+                ingredientDataList.add(new StoreIngredient(description, 0, "", "", rightNow, "trial")); // Adding the cities and provinces from FireStore
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
-            for (StoreIngredient i : ingredientDataList.getIngredientStorageList()) {
-                Log.i(TAG, "Snapshot listener: Added " + i.getDescription() + " to elements");
-            }
             storeingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
     }
 
     /**
-     * ADD INGREDIENT
+     * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
+     * AddStoreIngredientActivity
+     */
+    final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Bundle bundle = result.getData().getExtras();
+                Log.i(TAG + ":addIngredientResult", "Got bundle");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // Ok - we have an ingredient!
+                    Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
+                    Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
+                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    // cancelled request - do nothing.
+                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                }
+            });
+
+    /**
+     * ADD STORE INGREDIENT
      *
      * This is executed when the Add ingredient FAB is clicked. It redirects to a new activity.
      * This new activity is basically just a form that creates a new ingredient in the storage
+     * Since this activity returns data, we need to use the `ActivityResultLauncher` APIs
      *
      * @param view
      */
-    public void addIngredient(View view)  {
-        Log.i(TAG + ":addIngredient", "Adding ingredient!");
+    public void addStoreIngredient(View view)  {
+        Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
         Intent intent = new Intent(this, AddStoreIngredientActivity.class);
-        startActivity(intent);
+        addStoreIngredientLauncher.launch(intent);
     }
+
+
 }
