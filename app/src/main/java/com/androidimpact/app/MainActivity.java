@@ -1,9 +1,6 @@
 package com.androidimpact.app;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,9 +22,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    // variables
-    private final int ADD_STORE_INGREDIENT_ACTIVITY = 0;
-
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
     StoreIngredientViewAdapter storeingredientViewAdapter;
@@ -140,16 +134,16 @@ public class MainActivity extends AppCompatActivity {
             });
 
     /**
-     * ADD INGREDIENT
+     * ADD STORE INGREDIENT
      *
      * This is executed when the Add ingredient FAB is clicked. It redirects to a new activity.
      * This new activity is basically just a form that creates a new ingredient in the storage
-     * Since this activity returns data, we need to use `startActivityForResult`
+     * Since this activity returns data, we need to use the `ActivityResultLauncher` APIs
      *
      * @param view
      */
-    public void addIngredient(View view)  {
-        Log.i(TAG + ":addIngredient", "Adding ingredient!");
+    public void addStoreIngredient(View view)  {
+        Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
         Intent intent = new Intent(this, AddStoreIngredientActivity.class);
         addStoreIngredientLauncher.launch(intent);
     }
