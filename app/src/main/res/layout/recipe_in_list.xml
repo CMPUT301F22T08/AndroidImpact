@@ -54,6 +54,7 @@
                 android:id="@+id/recipe_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 app:chipMinHeight="30dp"
                 app:chipSurfaceColor="#FFFFFF"
                 tools:text="@string/recipe_category_in_list"
@@ -70,7 +71,7 @@
                 tools:textSize="16sp" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/recipe_comment_size"
+                android:id="@+id/recipe_servings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -78,7 +79,7 @@
                 app:chipIconTint="@color/white"
                 app:chipMinHeight="30dp"
                 app:chipSurfaceColor="#7286FC"
-                tools:text="@string/recipe_comment_size_in_list"
+                tools:text="@string/recipe_servings_in_list"
                 tools:textSize="16sp" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

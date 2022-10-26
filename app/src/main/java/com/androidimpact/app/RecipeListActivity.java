@@ -55,7 +55,7 @@ public class RecipeListActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        final CollectionReference collectionReference = db.collection("recipe");
+        final CollectionReference collectionReference = db.collection("recipes");
 
         // Initialize views
         addRecipeBtn = findViewById(R.id.add_recipe_button);
@@ -78,11 +78,11 @@ public class RecipeListActivity extends AppCompatActivity {
         sortSpinner.setAdapter(sortingOptionsAdapter);
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             /**
-             *
-             * @param adapterView
-             * @param view
-             * @param i
-             * @param l
+             * This function implements sorting based on a selection
+             * @param adapterView   The adapterView where the user picked sorting choice
+             * @param view          The view for the spinner choice picked
+             * @param i             The index the user has picked
+             * @param l             The row id of the user choice
              */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -92,8 +92,8 @@ public class RecipeListActivity extends AppCompatActivity {
             }
 
             /**
-             *
-             * @param adapterView
+             * This function ensures default sorting if no other sorting selected
+             * @param adapterView   The adapterView that does not contain any user selection
              */
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -176,11 +176,11 @@ public class RecipeListActivity extends AppCompatActivity {
                         new ArrayList<>(Arrays.asList(
                                 new Ingredient[]{new Ingredient("")})),
                         description,
-                        0,//Integer.valueOf((String) doc.getData().get("prep time")),
-                        0,
-                        "breakfast",
-                        "hello i like food test",
-                        "date"
+                        Integer.valueOf((String) doc.getData().get("prep time")),
+                        Integer.valueOf((String) doc.getData().get("servings")),
+                        (String) doc.getData().get("category"),
+                        (String) doc.getData().get("comments"),
+                        (String) doc.getData().get("date")
                 )); // Adding the cities and provinces from FireStore
             }
 

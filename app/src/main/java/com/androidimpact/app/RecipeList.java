@@ -82,7 +82,9 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
                 this.context.getResources().getString(R.string.recipe_prep_time_in_list
                 ), recyclerData.getPrep_time())
         );
-        //holder.recipeComments.setText()
+        holder.recipeServings.setText(String.format(
+                this.context.getResources().getString(R.string.recipe_servings_in_list
+                ), recyclerData.getPrep_time()));
 
     }
 
@@ -102,7 +104,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view.
-        private TextView recipeTitle, recipeCategory, recipePrepTime, recipeComments;
+        private TextView recipeTitle, recipeCategory, recipePrepTime, recipeServings;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +112,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
             recipeTitle = itemView.findViewById(R.id.recipe_name);
             recipeCategory = itemView.findViewById(R.id.recipe_category);
             recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
-            recipeComments = itemView.findViewById(R.id.recipe_comment_size);
+            recipeServings = itemView.findViewById(R.id.recipe_servings);
         }
     }
 
