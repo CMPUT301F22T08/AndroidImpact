@@ -114,7 +114,7 @@ public class IngredientStorageTest {
         ingredientList.remove(1);
         assertEquals(1, ingredientList.size());
 
-        // test deleting invalid city
+        // test deleting invalid store ingredient
         assertThrows( ArrayIndexOutOfBoundsException.class, () -> {
             ingredientList.remove(5); });
 
