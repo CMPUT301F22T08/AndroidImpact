@@ -175,4 +175,22 @@ public class Recipe {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+    /**
+     * This gets the date of the recipe
+     * @return
+     *     This is the date of the recipe
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * This sets the date of the recipe
+     * @param date
+     *     This is the date to set
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
 }
