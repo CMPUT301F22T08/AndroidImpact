@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("ingredients");
+        ingredientsCollection = db.collection("ingredientStorage");
 
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
