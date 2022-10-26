@@ -1,5 +1,7 @@
 package com.androidimpact.app;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
 
 public class Ingredient implements Serializable {
@@ -54,9 +56,13 @@ public class Ingredient implements Serializable {
     public void setAmount(float amount) {
         this.amount = amount;
     }
+
+    @Exclude
     public void setAmount(double amount) {
         this.amount = (float) amount;
     }
+
+    @Exclude
     public void setAmount(int amount) {
         this.amount = (float) amount;
     }

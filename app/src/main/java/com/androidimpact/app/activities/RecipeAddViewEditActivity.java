@@ -89,8 +89,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 toast.show();
             }
             else {
-                HashMap<String, String> data = new HashMap<>();
-                HashMap<String, Ingredient> ingredientData = new HashMap<>();
+                HashMap<String, Object> data = new HashMap<>();
+                HashMap<String, Object> ingredientData = new HashMap<>();
                 for (Ingredient ingredient : ingredients) {
                     ingredientData.put(ingredient.getDescription(), ingredient);
                 }
@@ -104,6 +104,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 data.put("category", category.getText().toString());
                 data.put("comments", comments.getText().toString());
                 data.put("photo", comments.getText().toString());
+                data.put("ingredients", ingredientData);
 
                 collectionReference
                         .document(title.getText().toString())
@@ -111,7 +112,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
                         .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
 
-                finish();
             }
         });
 
