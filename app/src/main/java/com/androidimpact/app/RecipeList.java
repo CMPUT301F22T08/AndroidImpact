@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -23,7 +24,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
 
     private ArrayList<Recipe> recipeArrayList;
     private Context context;
-    private final String[] sortChoices;
+    private static String[] sortChoices;
     private int sortIndex;
 
     public static Comparator<Recipe> defaultComparator, titleComparator, prepTimeComparator, servingsComparator, categoryComparator;
@@ -34,7 +35,13 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     public RecipeList(Context context, ArrayList<Recipe> recipeArrayList) {
         this.recipeArrayList = recipeArrayList;
         this.context = context;
-        this.sortChoices = new String[]{"default", "title", "preparation time", "number of servings", "recipe category"};
+        this.sortChoices = new String[]{
+                "Default",
+                "Title",
+                "Preparation Time",
+                "Number of Servings",
+                "Recipe Category"
+        };
         this.sortIndex = 0;
 
 
@@ -98,9 +105,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         this.sortIndex = index;
     }
 
-    public String[] getSortChoices() {
-        return this.sortChoices;
-    }
+    public static String[] getSortChoices() { return sortChoices.clone(); }
 
     public void sortByChoice() {
         switch(this.sortIndex) {

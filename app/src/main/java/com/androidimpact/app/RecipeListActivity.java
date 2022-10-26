@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -32,8 +35,10 @@ public class RecipeListActivity extends AppCompatActivity {
     RecyclerView recipeListView;
     RecipeList recipeViewAdapter;
     ArrayList<Recipe> recipeDataList;
+    String[] sortingOptions;
+    Spinner sortSpinner;
 
-    // adding cities to firebase
+    // adding recipes to firebase
     final String TAG = "RecipeListActivity";
     Button addRecipeBtn;
     EditText addRecipeDescriptionText;
@@ -51,11 +56,37 @@ public class RecipeListActivity extends AppCompatActivity {
         // Initialize views
         addRecipeBtn = findViewById(R.id.add_recipe_button);
         addRecipeDescriptionText = findViewById(R.id.add_recipe_description);
+        sortSpinner = findViewById(R.id.sort_recipe_spinner);
 
         // initialize adapters and customList, connect to DB
         recipeListView = findViewById(R.id.recipe_listview);
         recipeDataList = new ArrayList<>();
         recipeViewAdapter = new RecipeList(this, recipeDataList);
+        sortingOptions = RecipeList.getSortChoices();
+        ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                sortingOptions
+                );
+        sortingOptionsAdapter.setDropDownViewResource(
+                android.R.layout.simple_list_item_1
+        );
+        sortSpinner.setAdapter(sortingOptionsAdapter);
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                recipeViewAdapter.setSortChoice(i);
+                recipeViewAdapter.sortByChoice();
+                recipeViewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                recipeViewAdapter.setSortChoice(0);
+                recipeViewAdapter.sortByChoice();
+                recipeViewAdapter.notifyDataSetChanged();
+            }
+        });
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -113,7 +144,16 @@ public class RecipeListActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                recipeDataList.add(new Recipe(new ArrayList<>(Arrays.asList(new Ingredient[]{new Ingredient("")})), description, 0, 0, "breakfast", "hello i like food test", "date")); // Adding the cities and provinces from FireStore
+                recipeDataList.add(new Recipe(
+                        new ArrayList<>(Arrays.asList(
+                                new Ingredient[]{new Ingredient("")})),
+                        description,
+                        Integer.valueOf((String) doc.getData().get("prep time")),
+                        0,
+                        "breakfast",
+                        "hello i like food test",
+                        "date"
+                )); // Adding the cities and provinces from FireStore
             }
 
             Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");
