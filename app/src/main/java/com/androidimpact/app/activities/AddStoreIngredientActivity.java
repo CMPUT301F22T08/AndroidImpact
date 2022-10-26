@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.androidimpact.app.R;
+import com.androidimpact.app.StoreIngredient;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;

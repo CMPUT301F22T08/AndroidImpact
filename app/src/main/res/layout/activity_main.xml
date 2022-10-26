@@ -5,17 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.androidimpact.app.MainActivity">
+    tools:context="com.androidimpact.app.activities.MainActivity">
 
     <LinearLayout
+        android:background="@color/background"
+        android:id="@+id/ingredient_input"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ingredient_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/background"
+        android:id="@+id/ingredient_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     </LinearLayout>
 

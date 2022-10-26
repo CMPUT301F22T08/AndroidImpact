@@ -2,15 +2,14 @@ package com.androidimpact.app;
 
 import static org.junit.Assert.assertTrue;
 
-import android.app.Activity;
 import android.content.res.Resources;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.androidimpact.app.activities.AddStoreIngredientActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;

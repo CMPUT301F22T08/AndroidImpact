@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.androidimpact.app.Ingredient;
+import com.androidimpact.app.IngredientViewAdapter;
+import com.androidimpact.app.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
