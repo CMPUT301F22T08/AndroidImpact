@@ -63,7 +63,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         Log.i(TAG + ":cancel", "Cancel ingredient add");
         Intent intent = new Intent(this, MainActivity.class);
         setResult(Activity.RESULT_CANCELED, intent);
-        startActivity(intent);
+        finish();
     }
 
     /**
