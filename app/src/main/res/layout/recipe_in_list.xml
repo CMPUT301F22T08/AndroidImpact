@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                app:chipIcon="@drawable/recipe_comment_vector"
+                app:chipIcon="@drawable/recipe_serving_vector"
                 app:chipIconTint="@color/white"
                 app:chipMinHeight="30dp"
                 app:chipSurfaceColor="#7286FC"
