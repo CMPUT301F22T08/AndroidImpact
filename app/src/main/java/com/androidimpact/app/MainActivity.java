@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     // adding cities to firebase
     final String TAG = "MainActivity";
     FirebaseFirestore db;
+    CollectionReference ingredientsCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        final CollectionReference collectionReference = db.collection("test");
+        ingredientsCollection = db.collection("ingredients");
 
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Swiped " + description + " at position " + position);
 
                 // delete item from firebase
-                collectionReference.document(description)
+                ingredientsCollection.document(description)
                         .delete()
                         .addOnSuccessListener(aVoid -> {
                             // task succeeded
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }).attachToRecyclerView(ingredientListView);
 
         // on snapshot listener for the collection
-        collectionReference.addSnapshotListener((queryDocumentSnapshots, error) -> {
+        ingredientsCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
             ingredientDataList.clear();
 
@@ -106,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
-                String description = doc.getId();
+                String description = (String) doc.get("description");
                 Calendar rightNow = Calendar.getInstance();
                 ingredientDataList.add(new StoreIngredient(description, 0, "", "", rightNow, "trial")); // Adding the cities and provinces from FireStore
             }
@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     // Ok - we have an ingredient!
                     Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
+                    ingredientsCollection.add(ingredient);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
