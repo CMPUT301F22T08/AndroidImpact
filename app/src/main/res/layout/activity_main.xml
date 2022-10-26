@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.androidimpact.app.MainActivity">
+    tools:context="com.androidimpact.app.activities.MainActivity">
 
     <LinearLayout
+        android:background="@color/background"
         android:id="@+id/ingredient_input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/add_ingredient_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="8" />
-
-        <Button
-            android:id="@+id/add_ingredient_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="addIngredient"
-            android:text="@string/add_ingredient" />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/background"
         android:id="@+id/ingredient_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addStoreIngredientFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:clickable="true"
+        android:contentDescription="Ingredient Storage Add FAB"
+        android:focusable="true"
+        android:onClick="addStoreIngredient"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+</FrameLayout>
