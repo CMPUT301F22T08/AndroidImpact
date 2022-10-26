@@ -2,6 +2,8 @@ package com.androidimpact.app;
 
 import java.util.ArrayList;
 
+
+//Need to implement compare to in ingredient storage
 /**
  * IngredientStorage class
  * ingredientStorageList (ArrayList<StoreIngredient>)
@@ -53,6 +55,7 @@ public class IngredientStorage {
      */
     public void add(StoreIngredient ingredient)
     {
+
         this.ingredientStorageList.add(ingredient);
     }
 
@@ -64,6 +67,8 @@ public class IngredientStorage {
     {
         if (i < this.size() && i >= 0)
             this.ingredientStorageList.remove(i);
+        else
+            throw new ArrayIndexOutOfBoundsException("please choose a i between 0 and list size");
     }
 
     /**
@@ -72,8 +77,10 @@ public class IngredientStorage {
      */
     public void remove(StoreIngredient ingredient)
     {
-        if (!this.ingredientStorageList.contains(ingredient))
+        if (this.ingredientStorageList.contains(ingredient))
             this.ingredientStorageList.remove(ingredient);
+        else
+            throw new IllegalArgumentException("Trying to remove ingredient which isn't in list");
     }
 
     /**
