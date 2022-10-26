@@ -24,7 +24,8 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_title" />
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_title"
+        android:maxLength="30"/>
 
     <EditText
         android:id="@+id/ingredientStoreAdd_amount"
