@@ -38,7 +38,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         this.sortIndex = 0;
 
 
-        //defaultComparator = Comparator.comparing(Recipe::getTitle);
+        defaultComparator = Comparator.comparing(Recipe::getDate);
         titleComparator = Comparator.comparing(Recipe::getTitle);
         prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
         servingsComparator = Comparator.comparingInt(Recipe::getServings);
@@ -58,6 +58,13 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         // Set the data to textview from our modal class.
         Recipe recyclerData = recipeArrayList.get(position);
         holder.recipeTitle.setText(recyclerData.getTitle());
+        holder.recipeCategory.setText(recyclerData.getCategory());
+        holder.recipePrepTime.setText(String.format(
+                this.context.getResources().getString(R.string.recipe_prep_time_in_list
+                ), recyclerData.getPrep_time())
+        );
+        //holder.recipeComments.setText()
+
     }
 
     @Override
@@ -71,12 +78,15 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view.
-        private TextView recipeTitle;
+        private TextView recipeTitle, recipeCategory, recipePrepTime, recipeComments;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
             recipeTitle = itemView.findViewById(R.id.recipe_name);
+            recipeCategory = itemView.findViewById(R.id.recipe_category);
+            recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
+            recipeComments = itemView.findViewById(R.id.recipe_comment_size);
         }
     }
 
@@ -95,7 +105,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     public void sortByChoice() {
         switch(this.sortIndex) {
             case 0:
-                break;
+                Collections.sort(recipeArrayList, defaultComparator); break;
             case 1:
                 Collections.sort(recipeArrayList, titleComparator); break;
             case 2:
