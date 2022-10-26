@@ -1,6 +1,8 @@
 package com.androidimpact.app;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
 
     protected String description;
     protected float amount;

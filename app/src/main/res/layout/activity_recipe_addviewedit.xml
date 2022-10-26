@@ -23,6 +23,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:contentDescription="@string/recipe_title"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="addPhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_foreground" />
@@ -108,7 +111,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_servings" />
 
-    <LinearLayout
+    <ListView
         android:id="@+id/recipe_ingredients_list"
         android:layout_width="0dp"
         android:layout_height="200dp"
@@ -141,6 +144,7 @@
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredients_text"
         app:srcCompat="@android:drawable/ic_input_add"
         android:focusable="true"
+        android:onClick="addIngredient"
         android:contentDescription="@string/recipe_title" />
 
     <Button
