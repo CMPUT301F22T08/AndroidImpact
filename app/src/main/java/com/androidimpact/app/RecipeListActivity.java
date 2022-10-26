@@ -113,7 +113,7 @@ public class RecipeListActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Log.d(TAG, String.valueOf(doc.getData().get("Province Name")));
                 String description = doc.getId();
-                recipeDataList.add(new Recipe(new ArrayList<>(Arrays.asList(new Ingredient[]{new Ingredient("")})), description, 0, 0, "breakfast", "hello i like food test")); // Adding the cities and provinces from FireStore
+                recipeDataList.add(new Recipe(new ArrayList<>(Arrays.asList(new Ingredient[]{new Ingredient("")})), description, 0, 0, "breakfast", "hello i like food test", "date")); // Adding the cities and provinces from FireStore
             }
 
             Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");
