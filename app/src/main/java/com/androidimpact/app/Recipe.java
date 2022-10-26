@@ -15,6 +15,7 @@ public class Recipe {
     private int servings;
     private String category;
     private String comments;
+    private String date;
 
     /**
      * Constructor for recipe
@@ -30,9 +31,11 @@ public class Recipe {
      *     This is the category of the recipe
      * @param comments
      *     This is the comments regarding the food
+     * @param date
+     *     This is the date the recipe was created
      */
     public Recipe(ArrayList<Ingredient> ingredients, String title, int prep_time, int servings,
-                  String category, String comments) {
+                  String category, String comments, String date) {
         this.ingredients = new ArrayList<>();
         for (Ingredient i : ingredients) {
             this.addIngredient(i);
@@ -42,6 +45,7 @@ public class Recipe {
         this.servings = servings;
         this.category = category;
         this.comments = comments;
+        this.date = date;
     }
 
     /**
@@ -170,5 +174,23 @@ public class Recipe {
      */
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    /**
+     * This gets the date of the recipe
+     * @return
+     *     This is the date of the recipe
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * This sets the date of the recipe
+     * @param date
+     *     This is the date to set
+     */
+    public void setDate(String date) {
+        this.date = date;
     }
 }
