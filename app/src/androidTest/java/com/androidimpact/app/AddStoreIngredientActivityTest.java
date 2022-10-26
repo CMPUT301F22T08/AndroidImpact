@@ -1,8 +1,10 @@
 package com.androidimpact.app;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.res.Resources;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -10,6 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.androidimpact.app.activities.AddStoreIngredientActivity;
+import com.androidimpact.app.activities.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -36,17 +39,20 @@ public class AddStoreIngredientActivityTest {
         solo.finishOpenedActivities();
     }
     /**
-     * Checks to see if the cancel button correctly goes back to the MainActivity
+     * Checks to see if the cancel and confirm button works
      */
     @Test
-    public void cancelBtnCheck() {
+    public void btnChecks() {
         solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
         // ensure this cancel text is the same as @string/cancel
         // we don't have access to the actual android context (https://stackoverflow.com/a/39577494)
         // so we have to hardcode this XD
-        solo.clickOnButton("Cancel");
-        solo.assertCurrentActivity("Wrong Activity after cancel!", MainActivity.class);
+        Button cancelBtn = (Button) solo.getView(R.id.ingredientStoreAdd_cancelBtn);
+        assertEquals("button should have cancel", "Cancel", cancelBtn.getText());
 
+        // check that confirm button exists
+        Button confirmBtn = (Button) solo.getView(R.id.ingredientStoreAdd_confirmBtn);
+        assertEquals("button should have cancel", "Confirm", confirmBtn.getText());
     }
 
     /**

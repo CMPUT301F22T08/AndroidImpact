@@ -84,9 +84,9 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         } catch (Exception e){
             String snackbarStr = e.getMessage();
 
-           // Error - add a snackbar
-           View parentLayout = findViewById(android.R.id.content);
-           Snackbar.make(parentLayout, snackbarStr, Snackbar.LENGTH_LONG)
+            // Error - add a snackbar
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar.make(parentLayout, snackbarStr, Snackbar.LENGTH_LONG)
                    .setAction("Ok", view1 -> {})
                    .show();
         }
