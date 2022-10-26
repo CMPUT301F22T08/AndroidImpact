@@ -44,6 +44,10 @@ public class RecipeListActivity extends AppCompatActivity {
     EditText addRecipeDescriptionText;
     FirebaseFirestore db;
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,13 @@ public class RecipeListActivity extends AppCompatActivity {
         );
         sortSpinner.setAdapter(sortingOptionsAdapter);
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             *
+             * @param adapterView
+             * @param view
+             * @param i
+             * @param l
+             */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 recipeViewAdapter.setSortChoice(i);
@@ -80,6 +91,10 @@ public class RecipeListActivity extends AppCompatActivity {
                 recipeViewAdapter.notifyDataSetChanged();
             }
 
+            /**
+             *
+             * @param adapterView
+             */
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 recipeViewAdapter.setSortChoice(0);
@@ -95,6 +110,13 @@ public class RecipeListActivity extends AppCompatActivity {
 
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            /**
+             *
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             */
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 // this method is called
@@ -102,6 +124,11 @@ public class RecipeListActivity extends AppCompatActivity {
                 return false;
             }
 
+            /**
+             *
+             * @param viewHolder
+             * @param direction
+             */
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 // below line is to get the position
@@ -165,6 +192,10 @@ public class RecipeListActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param view
+     */
     public void addIngredient(View view)  {
         final CollectionReference collectionReference = db.collection("recipe");
 

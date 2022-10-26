@@ -22,6 +22,7 @@ import java.util.Comparator;
  */
 public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder> {
 
+    // creating a variable for our array list and context.
     private ArrayList<Recipe> recipeArrayList;
     private Context context;
     private static String[] sortChoices;
@@ -44,7 +45,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         };
         this.sortIndex = 0;
 
-
+        // set compare variables
         defaultComparator = Comparator.comparing(Recipe::getDate);
         titleComparator = Comparator.comparing(Recipe::getTitle);
         prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
@@ -52,6 +53,13 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         categoryComparator = Comparator.comparing(Recipe::getCategory);
     }
 
+
+    /**
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public RecipeList.RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,9 +68,13 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         return new RecipeList.RecipeViewHolder(view);
     }
 
+    /**
+     * @param holder
+     * @param position
+     * Set the data to textview from our modal class
+     */
     @Override
     public void onBindViewHolder(@NonNull RecipeList.RecipeViewHolder holder, int position) {
-        // Set the data to textview from our modal class.
         Recipe recyclerData = recipeArrayList.get(position);
         holder.recipeTitle.setText(recyclerData.getTitle());
         holder.recipeCategory.setText(recyclerData.getCategory());
@@ -74,14 +86,19 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
 
     }
 
+    /**
+     * @return
+     * this method returns the size of recyclerview
+     */
     @Override
     public int getItemCount() {
-        // this method returns
-        // the size of recyclerview
         return recipeArrayList.size();
     }
 
-    // View Holder Class to handle Recycler View.
+
+    /**
+     * View Holder Class to handle Recycler View.
+     */
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view.
@@ -97,16 +114,32 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSortChoice() {
         return this.sortChoices[this.sortIndex];
     }
 
+    /**
+     *
+     * @param index
+     */
     public void setSortChoice(int index) {
         this.sortIndex = index;
     }
 
-    public static String[] getSortChoices() { return sortChoices.clone(); }
+    /**
+     *
+     * @return
+     */
+    public static String[] getSortChoices() {
+        return sortChoices.clone(); }
 
+    /**
+     *
+     */
     public void sortByChoice() {
         switch(this.sortIndex) {
             case 0:
