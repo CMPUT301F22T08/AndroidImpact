@@ -20,7 +20,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.RecipeAddEditIngredientActivity"
             android:name=".activities.AddStoreIngredientActivity"
             android:exported="false">
             <meta-data

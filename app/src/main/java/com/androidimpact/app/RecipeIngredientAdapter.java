@@ -29,7 +29,7 @@ public class RecipeIngredientAdapter extends ArrayAdapter<Ingredient> {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.ingredient_in_list, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.ingredient_storage_item, parent, false);
         }
 
         Ingredient ingredient = ingredients.get(position);

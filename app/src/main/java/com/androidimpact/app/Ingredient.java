@@ -4,8 +4,6 @@ import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable {
-
 /**
  * Ingredient class: Holds the information of an ingredient to be used in recipes and the shopping list
  * - description (String) - A short description of the ingredient e.g. peppercorn ranch
