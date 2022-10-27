@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.androidimpact.app.R;
@@ -18,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class AddStoreIngredientActivity extends AppCompatActivity {
@@ -31,11 +29,14 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
     private EditText locationEditText;
     private EditText unitEditText;
     private EditText categoryEditText;
-    private DatePicker bestBeforeDatePicker;
+    private EditText bestBeforeEditText;
 
     // buttons
     private Button cancelBtn;
     private Button confirmBtn;
+
+    // Calendar for bestBeforeDatePicker
+    final Calendar bestBeforeCalendar = Calendar.getInstance();
 
     // Misc
     @Override
@@ -51,9 +52,31 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
         cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
         confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
-        bestBeforeDatePicker = findViewById(R.id.ingredientStoreAdd_bestBefore);
-        bestBeforeDatePicker.setMinDate(System.currentTimeMillis());
+        bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
 
+        DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
+            //TODO: Update this calendar with initial values here when editing a StoreIngredient
+            bestBeforeCalendar.set(Calendar.YEAR, year);
+            bestBeforeCalendar.set(Calendar.MONTH,month);
+            bestBeforeCalendar.set(Calendar.DAY_OF_MONTH,day);
+            updateLabel();
+        };
+        bestBeforeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(AddStoreIngredientActivity.this,
+                        date,
+                        bestBeforeCalendar.get(Calendar.YEAR),
+                        bestBeforeCalendar.get(Calendar.MONTH),
+                        bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
+
+    private void updateLabel(){
+        String myFormat="dd MMMM yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        bestBeforeEditText.setText(dateFormat.format(bestBeforeCalendar.getTime()));
     }
 
     /**
@@ -82,11 +105,11 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             Log.i(TAG + ":cancel", "Returning to MainActivity");
             finish();
         } catch (Exception e){
-            String snackbarStr = e.getMessage();
+            String snackBarStr = e.getMessage();
 
-            // Error - add a snackbar
+            // Error - add a snackBar
             View parentLayout = findViewById(android.R.id.content);
-            Snackbar.make(parentLayout, snackbarStr, Snackbar.LENGTH_LONG)
+            Snackbar.make(parentLayout, snackBarStr, Snackbar.LENGTH_LONG)
                    .setAction("Ok", view1 -> {})
                    .show();
         }
@@ -106,12 +129,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         String location = locationEditText.getText().toString();
         String unit = unitEditText.getText().toString();
         String category = categoryEditText.getText().toString();
-        Calendar bestBeforeCalendar = Calendar.getInstance();
-        bestBeforeCalendar.set(
-                bestBeforeDatePicker.getYear(),
-                bestBeforeDatePicker.getMonth(),
-                bestBeforeDatePicker.getDayOfMonth()
-        );
+        String bestBefore = bestBeforeEditText.getText().toString();
 
         if (description.equals("")) {
             throw new Exception("Description cannot be empty.");
@@ -142,6 +160,14 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
 
         if (category.equals("")) {
             throw new Exception("Category cannot be empty.");
+        }
+
+        if (bestBefore.equals("")) {
+            throw new Exception("Best before cannot be empty.");
+        }
+
+        if (bestBeforeCalendar.compareTo(Calendar.getInstance()) <= 0) {
+            throw new Exception("Best before must be a future date.");
         }
 
         try {
