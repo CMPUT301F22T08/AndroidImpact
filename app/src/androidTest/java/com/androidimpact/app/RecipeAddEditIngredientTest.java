@@ -10,10 +10,11 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-public class RecipeAddEditIngredientTest {@Test
-public void useAppContext() {
-    // Context of the app under test.
-    Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-    assertEquals("com.androidimpact.app", appContext.getPackageName());
-}
+public class RecipeAddEditIngredientTest {
+    @Test
+    public void useAppContext() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertEquals("com.androidimpact.app", appContext.getPackageName());
+    }
 }
