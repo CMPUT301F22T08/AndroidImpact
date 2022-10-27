@@ -136,7 +136,7 @@ public class AddStoreIngredientActivityTest {
         EditText location = a.findViewById(R.id.ingredientStoreAdd_location);
         EditText unit = a.findViewById(R.id.ingredientStoreAdd_unit);
         EditText category = a.findViewById(R.id.ingredientStoreAdd_category);
-        DatePicker bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
+        EditText bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
 
         // BULKING
         solo.enterText(description, "eggs");
