@@ -1,7 +1,6 @@
 package com.androidimpact.app;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import android.content.res.Resources;
 import android.widget.Button;
@@ -12,7 +11,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.androidimpact.app.activities.AddStoreIngredientActivity;
-import com.androidimpact.app.activities.MainActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -34,10 +32,6 @@ public class AddStoreIngredientActivityTest {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
     }
 
-    @After
-    public void tearDown() throws Exception {
-        solo.finishOpenedActivities();
-    }
     /**
      * Checks to see if the cancel and confirm button works
      */
@@ -80,7 +74,7 @@ public class AddStoreIngredientActivityTest {
         EditText location = a.findViewById(R.id.ingredientStoreAdd_location);
         EditText unit = a.findViewById(R.id.ingredientStoreAdd_unit);
         EditText category = a.findViewById(R.id.ingredientStoreAdd_category);
-        DatePicker bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
+        EditText bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
 
         // BULKING
         solo.enterText(description, "eggs");
@@ -88,7 +82,10 @@ public class AddStoreIngredientActivityTest {
         solo.enterText(location, "Cabinet");
         solo.enterText(unit, "kg");
         solo.enterText(category, "bulk");
-        solo.setDatePicker(bestBefore, 2025, 10, 10);
+
+        solo.clickOnView(bestBefore);
+        solo.setDatePicker(0, 2025, 10, 10);
+        solo.clickOnText("OK");
 
         solo.clickOnButton("Confirm");
         solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
@@ -108,7 +105,7 @@ public class AddStoreIngredientActivityTest {
         EditText location = a.findViewById(R.id.ingredientStoreAdd_location);
         EditText unit = a.findViewById(R.id.ingredientStoreAdd_unit);
         EditText category = a.findViewById(R.id.ingredientStoreAdd_category);
-        DatePicker bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
+        EditText bestBefore = a.findViewById(R.id.ingredientStoreAdd_bestBefore);
 
         // BULKING
         solo.enterText(description, "eggs");
@@ -116,7 +113,10 @@ public class AddStoreIngredientActivityTest {
         solo.enterText(location, "Cabinet");
         solo.enterText(unit, "kg");
         solo.enterText(category, "bulk");
-        solo.setDatePicker(bestBefore, 2025, 10, 10);
+
+        solo.clickOnView(bestBefore);
+        solo.setDatePicker(0, 2025, 10, 10);
+        solo.clickOnText("OK");
 
         solo.clickOnButton("Confirm");
         solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
@@ -144,12 +144,20 @@ public class AddStoreIngredientActivityTest {
         solo.enterText(location, "Cabinet");
         solo.enterText(unit, "kg");
         solo.enterText(category, "bulk");
-        solo.setDatePicker(bestBefore, 2025, 10, 10);
+
+        solo.clickOnView(bestBefore);
+        solo.setDatePicker(0, 2025, 10, 10);
+        solo.clickOnText("OK");
 
         solo.clickOnButton("Confirm");
         // At this point, the activity finishes. But, we can't test this;
         // running the code below just fails for some reason...
 //        assertTrue(a.isFinishing());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
     }
 
 }
