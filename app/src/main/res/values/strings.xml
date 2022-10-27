@@ -26,4 +26,5 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
+    <string name="sampleDate">21-12-2023</string>
 </resources>
