@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,95 +12,124 @@
         android:id="@+id/ingredientStoreAdd_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/ingredientStoreAdd_title"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/activity_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/ingredientStoreAdd_description"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/description"
         android:inputType="textPersonName"
-        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_title"
+        app:layout_constraintTop_toTopOf="parent"
         android:maxLength="30"/>
 
     <EditText
         android:id="@+id/ingredientStoreAdd_amount"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/amount"
-        android:inputType="numberDecimal"
-        android:minHeight="48dp"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_description" />
 
     <EditText
-        android:id="@+id/ingredientStoreAdd_location"
-        android:layout_width="wrap_content"
+        android:id="@+id/ingredientStoreAdd_unit"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:ems="10"
-        android:hint="@string/location"
+        android:hint="@string/unit"
         android:inputType="textPersonName"
-        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
 
     <EditText
-        android:id="@+id/ingredientStoreAdd_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/unit"
-        android:inputType="text"
-        android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />
-
-    <EditText
         android:id="@+id/ingredientStoreAdd_category"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/category"
         android:inputType="textPersonName"
-        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_unit" />
+
+    <EditText
+        android:id="@+id/ingredientStoreAdd_location"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="@string/location"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_category" />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/ingredientStoreAdd_bestBefore"-->
+    <!--        android:layout_width="300dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="50dp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/sampleDate"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.495"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />-->
 
     <DatePicker
         android:id="@+id/ingredientStoreAdd_bestBefore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:minHeight="4dp"
-        android:hint="@string/bestBefore"
-        android:datePickerMode="spinner"
         android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:ems="10"
+        android:hint="@string/bestBefore"
+        android:minHeight="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_category" />
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />
 
     <Button
         android:id="@+id/ingredientStoreAdd_cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/cancel"
+        android:layout_marginStart="70dp"
+        android:layout_marginBottom="20dp"
         android:onClick="cancel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_bestBefore" />
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/ingredientStoreAdd_confirmBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/confirm"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="20dp"
         android:onClick="confirm"
-        app:layout_constraintStart_toEndOf="@+id/ingredientStoreAdd_cancelBtn"
-        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_cancelBtn" />
+        android:text="@string/confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
