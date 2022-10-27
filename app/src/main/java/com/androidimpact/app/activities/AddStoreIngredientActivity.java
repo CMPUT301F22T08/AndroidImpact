@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
@@ -24,6 +25,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
     final String TAG = "AddStoreIngredientActivity";
 
     // declare all view variables
+    private TextView titleTextView;
     private EditText descriptionEditText;
     private EditText amountEditText;
     private EditText locationEditText;
@@ -44,7 +46,13 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_storage_add);
 
-        // init view variables
+        // Init activity title
+        titleTextView = findViewById(R.id.ingredientStoreAdd_title);
+        //TODO: Make this edit if editing a StoreIngredient
+        String title = "Add ingredient to storage";
+        titleTextView.setText(title);
+
+        // Init EditText variables
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
         amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
         locationEditText = findViewById(R.id.ingredientStoreAdd_location);
