@@ -28,8 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:clickable="true"
+        android:backgroundTint="@color/purple_700"
         android:contentDescription="Ingredient Storage Add FAB"
         android:focusable="true"
+        app:borderWidth="0dp"
         android:onClick="addStoreIngredient"
         app:srcCompat="@android:drawable/ic_input_add" />
 
