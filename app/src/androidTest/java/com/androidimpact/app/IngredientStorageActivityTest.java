@@ -8,7 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.androidimpact.app.activities.AddStoreIngredientActivity;
-import com.androidimpact.app.activities.MainActivity;
+import com.androidimpact.app.activities.IngredientStorageActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robotium.solo.Solo;
 
@@ -23,8 +23,8 @@ public class IngredientStorageActivityTest {
 
     // TODO: Change to IngredientStorageActivity
     @Rule
-    public ActivityTestRule<MainActivity> rule =
-            new ActivityTestRule<>(MainActivity.class, true, true);
+    public ActivityTestRule<IngredientStorageActivity> rule =
+            new ActivityTestRule<>(IngredientStorageActivity.class, true, true);
 
     @Before
     public void setUp() throws Exception {
@@ -43,15 +43,15 @@ public class IngredientStorageActivityTest {
      */
     @Test
     public void addIngredientAndCancel() {
-        solo.assertCurrentActivity("Wrong Activity!", MainActivity.class);
-        MainActivity a = (MainActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity!", IngredientStorageActivity.class);
+        IngredientStorageActivity a = (IngredientStorageActivity) solo.getCurrentActivity();
 
         FloatingActionButton fab = a.findViewById(R.id.addStoreIngredientFAB);
         solo.clickOnView(fab);
 
         solo.assertCurrentActivity("Wrong activity after clicking FAB", AddStoreIngredientActivity.class);
         solo.clickOnButton("Cancel");
-        solo.assertCurrentActivity("Wrong activity after clicking cancel", MainActivity.class);
+        solo.assertCurrentActivity("Wrong activity after clicking cancel", IngredientStorageActivity.class);
     }
 
 
@@ -60,8 +60,8 @@ public class IngredientStorageActivityTest {
      */
     @Test
     public void addIngredientSuccess() {
-        solo.assertCurrentActivity("Wrong Activity!", MainActivity.class);
-        MainActivity a1 = (MainActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity!", IngredientStorageActivity.class);
+        IngredientStorageActivity a1 = (IngredientStorageActivity) solo.getCurrentActivity();
 
         FloatingActionButton fab = a1.findViewById(R.id.addStoreIngredientFAB);
         solo.clickOnView(fab);
@@ -86,6 +86,6 @@ public class IngredientStorageActivityTest {
         solo.setDatePicker(bestBefore, 2025, 10, 10);
 
         solo.clickOnButton("Confirm");
-        solo.assertCurrentActivity("Wrong activity after clicking cancel", MainActivity.class);
+        solo.assertCurrentActivity("Wrong activity after clicking cancel", IngredientStorageActivity.class);
     }
 }

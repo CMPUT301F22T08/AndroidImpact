@@ -92,7 +92,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
      */
     public void cancel(View view) {
         Log.i(TAG + ":cancel", "Cancel ingredient add");
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, IngredientStorageActivity.class);
         setResult(Activity.RESULT_CANCELED, intent);
         finish();
     }
@@ -104,7 +104,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         try {
             // try to create an ingredient.
             StoreIngredient newStoreIngredient = createIngredient();
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, IngredientStorageActivity.class);
 
             // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
             intent.putExtra("ingredient", newStoreIngredient);
