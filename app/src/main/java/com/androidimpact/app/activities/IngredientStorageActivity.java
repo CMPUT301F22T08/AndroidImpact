@@ -19,6 +19,7 @@ import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,6 +39,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
     FirebaseFirestore db;
     CollectionReference ingredientsCollection;
+    FloatingActionButton addIngredientFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
-       // ingredientDataList = new ArrayList<>();
+        addIngredientFAB = findViewById(R.id.addStoreIngredientFAB);
+        // ingredientDataList = new ArrayList<>();
         ingredientDataList = new IngredientStorage();
 
         storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());
@@ -60,7 +63,15 @@ public class IngredientStorageActivity extends AppCompatActivity {
         ingredientListView.setLayoutManager(manager);
         ingredientListView.setAdapter(storeingredientViewAdapter);
 
-        // drag to delete
+        // Launch AddStoreIngredientActivity when FAB is clicked
+        addIngredientFAB.setOnClickListener(v -> {
+            Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
+            Intent intent = new Intent(IngredientStorageActivity.this, AddStoreIngredientActivity.class);
+            addStoreIngredientLauncher.launch(intent);
+        });
+
+
+       // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -123,36 +134,19 @@ public class IngredientStorageActivity extends AppCompatActivity {
      * AddStoreIngredientActivity
      */
     final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Bundle bundle = result.getData().getExtras();
-                Log.i(TAG + ":addIngredientResult", "Got bundle");
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+            Bundle bundle = result.getData().getExtras();
+            Log.i(TAG + ":addIngredientResult", "Got bundle");
 
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    // Ok - we have an ingredient!
-                    Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
-                    Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
-                    ingredientsCollection.add(ingredient);
-                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-                    // cancelled request - do nothing.
-                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
-                }
-            });
-
-    /**
-     * ADD STORE INGREDIENT
-     *
-     * This is executed when the Add ingredient FAB is clicked. It redirects to a new activity.
-     * This new activity is basically just a form that creates a new ingredient in the storage
-     * Since this activity returns data, we need to use the `ActivityResultLauncher` APIs
-     *
-     * @param view
-     */
-    public void addStoreIngredient(View view)  {
-        Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
-        Intent intent = new Intent(this, AddStoreIngredientActivity.class);
-        addStoreIngredientLauncher.launch(intent);
-    }
-
-
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                // Ok - we have an ingredient!
+                Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
+                Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
+                ingredientsCollection.add(ingredient);
+            } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                // cancelled request - do nothing.
+                Log.i(TAG + ":addIngredientResult", "Received cancelled");
+            }
+        });
 }
