@@ -32,6 +32,8 @@
         android:contentDescription="Ingredient Storage Add FAB"
         android:focusable="true"
         android:onClick="addStoreIngredient"
+        android:backgroundTint="@color/purple_700"
+        app:borderWidth="0dp"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </FrameLayout>
