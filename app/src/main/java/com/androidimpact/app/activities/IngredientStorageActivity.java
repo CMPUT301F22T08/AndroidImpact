@@ -28,15 +28,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.Calendar;
 
 public class IngredientStorageActivity extends AppCompatActivity {
+    final String TAG = "IngredientStorageActivity";
+
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
     StoreIngredientViewAdapter storeingredientViewAdapter;
-    //ArrayList<Ingredient> ingredientDataList;
     IngredientStorage ingredientDataList;
 
-
     // adding cities to firebase
-    final String TAG = "IngredientStorageActivity";
     FirebaseFirestore db;
     CollectionReference ingredientsCollection;
     FloatingActionButton addIngredientFAB;
@@ -53,6 +52,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
         // initialize adapters and customList, connect to DB
         ingredientListView = findViewById(R.id.ingredient_listview);
         addIngredientFAB = findViewById(R.id.addStoreIngredientFAB);
+
         // ingredientDataList = new ArrayList<>();
         ingredientDataList = new IngredientStorage();
 
@@ -75,8 +75,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                // this method is called
-                // when the item is moved.
+                // this method is called when the item is moved.
                 return false;
             }
 
