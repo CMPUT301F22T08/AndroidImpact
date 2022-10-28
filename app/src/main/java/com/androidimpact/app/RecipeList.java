@@ -39,7 +39,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         this.recipeArrayList = recipeArrayList;
         this.context = context;
         this.sortChoices = new String[]{
-                "Default",
+                "Date Added",
                 "Title",
                 "Preparation Time",
                 "Number of Servings",
@@ -48,11 +48,11 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         this.sortIndex = 0;
 
         // set compare variables
-        defaultComparator = Comparator.comparing(Recipe::getDate);
-        titleComparator = Comparator.comparing(Recipe::getTitle);
+        defaultComparator = Comparator.comparing(Recipe::getDate, String.CASE_INSENSITIVE_ORDER);
+        titleComparator = Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER);
         prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
         servingsComparator = Comparator.comparingInt(Recipe::getServings);
-        categoryComparator = Comparator.comparing(Recipe::getCategory);
+        categoryComparator = Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER);
     }
 
 
