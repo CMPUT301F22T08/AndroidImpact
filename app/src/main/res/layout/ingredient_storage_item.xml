@@ -4,6 +4,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -47,14 +48,17 @@
         android:id="@+id/edit_store_ingredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
         android:layout_marginEnd="40dp"
         android:clickable="true"
         android:focusable="true"
         android:paddingTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/store_ingredient_description"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit"/>
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <TextView
         android:id="@+id/store_ingredient_expiry"
@@ -68,16 +72,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/store_ingredient_description" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="60dp"
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="28dp"-->
+<!--        android:layout_height="28dp"-->
+<!--        android:layout_marginStart="60dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/edit_store_ingredient"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/edit_store_ingredient"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@android:drawable/arrow_up_float" />-->
+
+    <Spinner
+        android:id="@+id/Spinner"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/edit_store_ingredient"
-        app:layout_constraintStart_toStartOf="@+id/edit_store_ingredient"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/arrow_up_float" />
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--        app:layout_constraintStart_toStartOf="@+id/edit_store_ingredient"-->
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
