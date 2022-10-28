@@ -1,7 +1,5 @@
 package com.androidimpact.app.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -9,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +14,6 @@ import android.widget.Toast;
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 
-import java.util.HashMap;
 
 /**
  * This class is the activity for ingredient adding/viewing/editing to recipe

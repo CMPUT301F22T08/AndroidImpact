@@ -3,7 +3,6 @@ package com.androidimpact.app.activities;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,7 +28,6 @@ import java.util.Date;
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.RecipeIngredientAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
