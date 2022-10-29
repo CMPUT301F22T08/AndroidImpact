@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.IngredientStorage;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     StoreIngredientViewAdapter storeingredientViewAdapter;
     //ArrayList<Ingredient> ingredientDataList;
     IngredientStorage ingredientDataList;
+
+    Button EditButton;
 
     // adding cities to firebase
     final String TAG = "MainActivity";
@@ -163,14 +166,20 @@ public class MainActivity extends AppCompatActivity {
         addStoreIngredientLauncher.launch(intent);
     }
 
+
+
     /**
+     * ADD STORE INGREDIENT
      *
+     * This is executed when the Add ingredient FAB is clicked. It redirects to a new activity.
+     * This new activity is basically just a form that creates a new ingredient in the storage
+     * Since this activity returns data, we need to use the `ActivityResultLauncher` APIs
+     *
+     * @param view
      */
     public void editStoreIngredient(View view)  {
         Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
         Intent intent = new Intent(this, AddStoreIngredientActivity.class);
         addStoreIngredientLauncher.launch(intent);
     }
-
-
 }
