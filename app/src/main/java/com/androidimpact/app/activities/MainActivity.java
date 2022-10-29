@@ -57,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, IngredientStorageActivity.class);
             startActivity(intent);
         });
+
+        Button recipeButton = findViewById(R.id.ButtonFromMain_recipe);
+        recipeButton.setOnClickListener(v -> {
+            Log.i(TAG + ":StoreIngredient", "Opening Storage!");
+            Intent intent = new Intent(MainActivity.this, RecipeAddViewEditActivity.class);
+            startActivity(intent);
+        });
     }
 
     /**
