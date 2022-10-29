@@ -1,7 +1,5 @@
 package com.androidimpact.app.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -17,7 +15,6 @@ import android.widget.Toast;
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 
-import java.util.HashMap;
 
 /**
  * This class is the activity for ingredient adding/viewing/editing to recipe
@@ -52,27 +49,29 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             String value = extras.getString("activity_name");
             activity_title.setText(value);
         }
-    }
 
-    public void confirm(View view) {
-        if (description.getText().toString().isBlank() || amount.getText().toString().isBlank() || unit.getText().toString().isBlank() || category.getText().toString().isBlank()) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Blank input!", Toast.LENGTH_LONG);
-            toast.show();
-        } else {
-            Ingredient ingredient = new Ingredient(description.getText().toString(), Float.parseFloat(amount.getText().toString()), unit.getText().toString(), category.getText().toString());
-            Log.i(TAG + ":confirmed", "Added ingredient");
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("ingredient", ingredient);
-            setResult(Activity.RESULT_OK, returnIntent);
+        // OnClickListeners on the page
+        Button addButton = findViewById(R.id.add_button);
+        addButton.setOnClickListener(v -> {
+            if (description.getText().toString().isBlank() || amount.getText().toString().isBlank() || unit.getText().toString().isBlank() || category.getText().toString().isBlank()) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Blank input!", Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                Ingredient ingredient = new Ingredient(description.getText().toString(), Float.parseFloat(amount.getText().toString()), unit.getText().toString(), category.getText().toString());
+                Log.i(TAG + ":confirmed", "Added ingredient");
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("ingredient", ingredient);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        });
+
+        Button cancelButton = findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(v -> {
+            Log.i(TAG + ":cancel", "Cancel ingredient add");
+            setResult(Activity.RESULT_CANCELED);
             finish();
-        }
-    }
-
-
-    public void cancel(View view) {
-        Log.i(TAG + ":cancel", "Cancel ingredient add");
-        setResult(Activity.RESULT_CANCELED);
-        finish();
+        });
     }
 
 }

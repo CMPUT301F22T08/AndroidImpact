@@ -18,21 +18,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Button;
 
-import com.androidimpact.app.Ingredient;
-import com.androidimpact.app.IngredientStorage;
-import com.androidimpact.app.StoreIngredient;
-import com.androidimpact.app.StoreIngredientViewAdapter;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.androidimpact.app.R;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     // Declare the variables so that you will be able to reference it later.
@@ -45,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     // adding cities to firebase
     final String TAG = "MainActivity";
+
+    //FireStore
     FirebaseFirestore db;
-    CollectionReference ingredientsCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,75 +50,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("PAIN");
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("ingredientStorage");
 
-        // initialize adapters and customList, connect to DB
-        ingredientListView = findViewById(R.id.ingredient_listview);
-       // ingredientDataList = new ArrayList<>();
-        ingredientDataList = new IngredientStorage();
-
-        storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());
-
-        // below line is to set layout manager for our recycler view.
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        ingredientListView.setLayoutManager(manager);
-        ingredientListView.setAdapter(storeingredientViewAdapter);
-
-        // drag to delete
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                // this method is called
-                // when the item is moved.
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // below line is to get the position
-                // of the item at that position.
-                int position = viewHolder.getAdapterPosition();
-
-                // this method is called when we swipe our item to right direction.
-                // on below line we are getting the item at a particular position.
-                Ingredient deletedIngredient = ingredientDataList.get(position);
-                String description = deletedIngredient.getDescription();
-
-                Log.d(TAG, "Swiped " + description + " at position " + position);
-
-                // delete item from firebase
-                ingredientsCollection.document(description)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> {
-                            // task succeeded
-                            // cityAdapter will automatically update. No need to remove it from out list
-                            Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(ingredientListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Snackbar.make(ingredientListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                            Log.d(TAG, description + " could not be deleted!" + e);
-                        });
-            }
-            // at last we are adding this
-            // to our recycler view.
-        }).attachToRecyclerView(ingredientListView);
-
-        // on snapshot listener for the collection
-        ingredientsCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            // Clear the old list
-            ingredientDataList.clear();
-
-            if (queryDocumentSnapshots == null) {
-                return;
-            }
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                String description = (String) doc.get("description");
-                Calendar rightNow = Calendar.getInstance();
-                ingredientDataList.add(new StoreIngredient(description, 0, "", "", rightNow, "trial")); // Adding the cities and provinces from FireStore
-            }
-            Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
-            storeingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+        Button ingredientStorageButton = findViewById(R.id.ButtonFromMain_ingredientStorage);
+        ingredientStorageButton.setOnClickListener(v -> {
+            Log.i(TAG + ":StoreIngredient", "Opening Storage!");
+            Intent intent = new Intent(MainActivity.this, IngredientStorageActivity.class);
+            startActivity(intent);
         });
     }
 

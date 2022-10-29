@@ -159,5 +159,4 @@ public class AddStoreIngredientActivityTest {
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
     }
-
 }
