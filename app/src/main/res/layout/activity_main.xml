@@ -14,16 +14,13 @@
         android:background="@color/background"
         android:orientation="vertical">
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredient_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background" />
-
-
-
-
-
+            android:background="@color/background"
+            android:paddingBottom="50dp"/>
 
     </LinearLayout>
 
@@ -47,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="0dp"
-                android:padding="0dp"
                 android:layout_marginEnd="0dp"
                 android:background="@android:color/transparent"
                 app:elevation="0dp"
@@ -68,6 +64,7 @@
             android:focusable="true"
             android:onClick="addStoreIngredient"
             app:borderWidth="0dp"
+            app:tint="@android:color/white"
             app:layout_anchor="@+id/bottom_app_bar"
             app:layout_anchorGravity="center"
             app:srcCompat="@android:drawable/ic_input_add"/>

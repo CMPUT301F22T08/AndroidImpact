@@ -36,6 +36,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // Set the data to textview from our modal class.
         Ingredient recyclerData = ingredientArrayList.get(position);
         holder.storeIngredientDescription.setText(recyclerData.getDescription());
+        holder.storeIngredientCategory.setText(recyclerData.getCategory());
     }
 
     @Override
@@ -51,11 +52,15 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // creating a variable for our text view.
         private TextView storeIngredientDescription;
 
+        // creating a variable for category
+        private TextView storeIngredientCategory;
+
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
             //Need to be changed for now
             storeIngredientDescription = itemView.findViewById(R.id.store_ingredient_description);
+            storeIngredientCategory = itemView.findViewById(R.id.store_ingredient_category);
         }
     }
 }

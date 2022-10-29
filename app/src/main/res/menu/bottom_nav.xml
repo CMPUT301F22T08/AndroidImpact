@@ -10,10 +10,10 @@
     <item android:title=""
         android:id="@+id/place_holder"
         />
-    <item android:title="shoppingList"
+    <item android:title="shopping list"
         android:id="@+id/cart_icon"
         android:icon="@drawable/shopping_cart"/>
-    <item android:title="mealPlan"
+    <item android:title="meal plan"
         android:id="@+id/meal_icon"
         android:icon="@drawable/calendar"/>
 
