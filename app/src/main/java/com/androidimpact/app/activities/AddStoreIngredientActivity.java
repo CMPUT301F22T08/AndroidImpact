@@ -65,40 +65,34 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         };
 
         Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG + ":cancel", "Cancel ingredient add");
-                Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
-                setResult(Activity.RESULT_CANCELED, intent);
-                finish();
-            }
+        cancelBtn.setOnClickListener(v -> {
+            Log.i(TAG + ":cancel", "Cancel ingredient add");
+            Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+            setResult(Activity.RESULT_CANCELED, intent);
+            finish();
         });
 
         Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    // try to create an ingredient.
-                    StoreIngredient newStoreIngredient = createIngredient();
-                    Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+        confirmBtn.setOnClickListener(v -> {
+            try {
+                // try to create an ingredient.
+                StoreIngredient newStoreIngredient = createIngredient();
+                Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
 
-                    // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
-                    intent.putExtra("ingredient", newStoreIngredient);
-                    setResult(Activity.RESULT_OK, intent);
+                // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
+                intent.putExtra("ingredient", newStoreIngredient);
+                setResult(Activity.RESULT_OK, intent);
 
-                    Log.i(TAG + ":cancel", "Returning to MainActivity");
-                    finish();
-                } catch (Exception e){
-                    String snackBarStr = e.getMessage();
+                Log.i(TAG + ":cancel", "Returning to MainActivity");
+                finish();
+            } catch (Exception e){
+                String snackBarStr = e.getMessage();
 
-                    // Error - add a snackBar
-                    View parentLayout = findViewById(android.R.id.content);
-                    Snackbar.make(parentLayout, snackBarStr, Snackbar.LENGTH_LONG)
-                            .setAction("Ok", view1 -> {})
-                            .show();
-                }
+                // Error - add a snackBar
+                View parentLayout = findViewById(android.R.id.content);
+                Snackbar.make(parentLayout, snackBarStr, Snackbar.LENGTH_LONG)
+                        .setAction("Ok", view1 -> {})
+                        .show();
             }
         });
 

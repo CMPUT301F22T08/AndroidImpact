@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,27 +49,29 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             String value = extras.getString("activity_name");
             activity_title.setText(value);
         }
-    }
 
-    public void confirm(View view) {
-        if (description.getText().toString().isBlank() || amount.getText().toString().isBlank() || unit.getText().toString().isBlank() || category.getText().toString().isBlank()) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Blank input!", Toast.LENGTH_LONG);
-            toast.show();
-        } else {
-            Ingredient ingredient = new Ingredient(description.getText().toString(), Float.parseFloat(amount.getText().toString()), unit.getText().toString(), category.getText().toString());
-            Log.i(TAG + ":confirmed", "Added ingredient");
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("ingredient", ingredient);
-            setResult(Activity.RESULT_OK, returnIntent);
+        // OnClickListeners on the page
+        Button addButton = findViewById(R.id.add_button);
+        addButton.setOnClickListener(v -> {
+            if (description.getText().toString().isBlank() || amount.getText().toString().isBlank() || unit.getText().toString().isBlank() || category.getText().toString().isBlank()) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Blank input!", Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                Ingredient ingredient = new Ingredient(description.getText().toString(), Float.parseFloat(amount.getText().toString()), unit.getText().toString(), category.getText().toString());
+                Log.i(TAG + ":confirmed", "Added ingredient");
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("ingredient", ingredient);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        });
+
+        Button cancelButton = findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(v -> {
+            Log.i(TAG + ":cancel", "Cancel ingredient add");
+            setResult(Activity.RESULT_CANCELED);
             finish();
-        }
-    }
-
-
-    public void cancel(View view) {
-        Log.i(TAG + ":cancel", "Cancel ingredient add");
-        setResult(Activity.RESULT_CANCELED);
-        finish();
+        });
     }
 
 }
