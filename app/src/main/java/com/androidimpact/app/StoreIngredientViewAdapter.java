@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngredientViewAdapter.StoreIngredientViewHolder>{
 
@@ -34,9 +36,12 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     @Override
     public void onBindViewHolder(@NonNull StoreIngredientViewAdapter.StoreIngredientViewHolder holder, int position) {
         // Set the data to textview from our modal class.
-        Ingredient recyclerData = ingredientArrayList.get(position);
+        StoreIngredient recyclerData = ingredientArrayList.get(position);
         holder.storeIngredientDescription.setText(recyclerData.getDescription());
         holder.storeIngredientCategory.setText(recyclerData.getCategory());
+        String myFormat="dd MMM yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        holder.storeIngredientDate.setText(dateFormat.format(recyclerData.getBestBeforeDate().getTime()));
     }
 
     @Override
@@ -55,10 +60,13 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // creating a variable for category
         private TextView storeIngredientCategory;
 
+        private TextView storeIngredientDate;
+
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
             //Need to be changed for now
+            storeIngredientDate = itemView.findViewById(R.id.store_ingredient_expiry);
             storeIngredientDescription = itemView.findViewById(R.id.store_ingredient_description);
             storeIngredientCategory = itemView.findViewById(R.id.store_ingredient_category);
         }

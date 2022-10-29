@@ -163,5 +163,14 @@ public class MainActivity extends AppCompatActivity {
         addStoreIngredientLauncher.launch(intent);
     }
 
+    /**
+     *
+     */
+    public void editStoreIngredient(View view)  {
+        Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
+        Intent intent = new Intent(this, AddStoreIngredientActivity.class);
+        addStoreIngredientLauncher.launch(intent);
+    }
+
 
 }
