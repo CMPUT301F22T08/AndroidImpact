@@ -39,13 +39,13 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/edit_store_ingredient"
+        app:layout_constraintEnd_toStartOf="@+id/store_ingredient_edit_FAB"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/store_ingredient_expiry"
         app:layout_constraintTop_toBottomOf="@+id/store_ingredient_description" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/edit_store_ingredient"
+        android:id="@+id/store_ingredient_edit_FAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
@@ -53,7 +53,6 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingTop="10dp"
-        android:onClick="editStoreIngredient"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
@@ -95,7 +94,7 @@
         android:spinnerMode="dropdown"
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_store_ingredient"
+        app:layout_constraintStart_toEndOf="@+id/store_ingredient_edit_FAB"
         app:layout_constraintTop_toTopOf="parent" />
     <!--        app:layout_constraintStart_toStartOf="@+id/edit_store_ingredient"-->
 

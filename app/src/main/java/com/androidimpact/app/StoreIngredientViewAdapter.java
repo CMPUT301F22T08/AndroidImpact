@@ -2,6 +2,7 @@ package com.androidimpact.app;
 
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -42,6 +46,10 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         String myFormat="dd MMM yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         holder.storeIngredientDate.setText(dateFormat.format(recyclerData.getBestBeforeDate().getTime()));
+        holder.storeIngredientEditFAB.setOnClickListener(v -> {
+            Log.i("EDIT", "Edit StoreIngredient button was clicked");
+            // Launch AddStoreIngredient using the clicked ingredient here
+        });
     }
 
     @Override
@@ -54,13 +62,11 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     // View Holder Class to handle Recycler View.
     public class StoreIngredientViewHolder extends RecyclerView.ViewHolder {
 
-        // creating a variable for our text view.
+        // creating variables for our views
         private TextView storeIngredientDescription;
-
-        // creating a variable for category
         private TextView storeIngredientCategory;
-
         private TextView storeIngredientDate;
+        private FloatingActionButton storeIngredientEditFAB;
 
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +75,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             storeIngredientDate = itemView.findViewById(R.id.store_ingredient_expiry);
             storeIngredientDescription = itemView.findViewById(R.id.store_ingredient_description);
             storeIngredientCategory = itemView.findViewById(R.id.store_ingredient_category);
+            storeIngredientEditFAB = itemView.findViewById(R.id.store_ingredient_edit_FAB);
         }
     }
 }
