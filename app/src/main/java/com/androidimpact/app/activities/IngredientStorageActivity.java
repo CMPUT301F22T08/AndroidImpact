@@ -48,13 +48,11 @@ public class IngredientStorageActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         ingredientsCollection = db.collection("ingredientStorage");
 
-        // initialize adapters and customList, connect to DB
+        // initialize adapters and customList
         ingredientListView = findViewById(R.id.ingredient_listview);
         addIngredientFAB = findViewById(R.id.addStoreIngredientFAB);
 
-        // ingredientDataList = new ArrayList<>();
         ingredientDataList = new IngredientStorage();
-
         storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());
 
         // below line is to set layout manager for our recycler view.
@@ -103,8 +101,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
                         Log.d(TAG, description + " could not be deleted!" + e);
                     });
             }
-            // at last we are adding this
-            // to our recycler view.
+            // finally, we add this to our recycler view.
         }).attachToRecyclerView(ingredientListView);
 
         // on snapshot listener for the collection
@@ -112,16 +109,15 @@ public class IngredientStorageActivity extends AppCompatActivity {
             // Clear the old list
             ingredientDataList.clear();
 
-            if (queryDocumentSnapshots == null) {
-                return;
-            }
+            if (queryDocumentSnapshots == null) { return; }
+
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 String description = (String) doc.get("description");
                 Calendar rightNow = Calendar.getInstance();
                 ingredientDataList.add(new StoreIngredient(description, 0, "", "", rightNow, "trial")); // Adding the cities and provinces from FireStore
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
-            storeingredientViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+            storeingredientViewAdapter.notifyDataSetChanged();
         });
     }
 
