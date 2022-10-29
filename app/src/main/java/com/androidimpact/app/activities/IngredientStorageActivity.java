@@ -73,6 +73,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
        // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 // this method is called when the item is moved.
@@ -80,13 +81,12 @@ public class IngredientStorageActivity extends AppCompatActivity {
             }
 
             @Override
+            // this method is called when we swipe our item to right direction.
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // below line is to get the position
-                // of the item at that position.
+                // get the position of the selected item
                 int position = viewHolder.getAdapterPosition();
 
-                // this method is called when we swipe our item to right direction.
-                // on below line we are getting the item at a particular position.
+                // Get the swiped item at a particular position.
                 Ingredient deletedIngredient = ingredientDataList.get(position);
                 String description = deletedIngredient.getDescription();
 
@@ -94,17 +94,15 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
                 // delete item from firebase
                 ingredientsCollection.document(description)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> {
-                            // task succeeded
-                            // cityAdapter will automatically update. No need to remove it from out list
-                            Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(ingredientListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Snackbar.make(ingredientListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                            Log.d(TAG, description + " could not be deleted!" + e);
-                        });
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, description + " has been deleted successfully!");
+                        Snackbar.make(ingredientListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Snackbar.make(ingredientListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                        Log.d(TAG, description + " could not be deleted!" + e);
+                    });
             }
             // at last we are adding this
             // to our recycler view.
