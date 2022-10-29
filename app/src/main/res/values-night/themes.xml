@@ -13,5 +13,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+<!--        <item name="android:menuCategory">@color/teal_700</item>-->
+<!--        <item name="android:itemBackground">@color/teal_700</item>-->
+        <item name="android:actionMenuTextColor">@color/black</item>
     </style>
 </resources>

@@ -4,15 +4,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.IngredientStorage;
@@ -36,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     //ArrayList<Ingredient> ingredientDataList;
     IngredientStorage ingredientDataList;
 
-
     // adding cities to firebase
     final String TAG = "MainActivity";
     FirebaseFirestore db;
@@ -46,7 +49,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//        if(Build.VERSION.SDK_INT >= 21) {
+//            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.purple_700));
+//        }
+        getSupportActionBar().setTitle("PAIN");
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         ingredientsCollection = db.collection("ingredientStorage");
