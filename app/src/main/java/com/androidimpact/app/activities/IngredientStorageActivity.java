@@ -1,5 +1,7 @@
 package com.androidimpact.app.activities;
 
+import static java.util.Objects.isNull;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -128,7 +130,11 @@ public class IngredientStorageActivity extends AppCompatActivity {
     final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         result -> {
+            if (isNull(result.getData())) {
+                return;
+            }
             Bundle bundle = result.getData().getExtras();
+
             Log.i(TAG + ":addIngredientResult", "Got bundle");
 
             if (result.getResultCode() == Activity.RESULT_OK) {

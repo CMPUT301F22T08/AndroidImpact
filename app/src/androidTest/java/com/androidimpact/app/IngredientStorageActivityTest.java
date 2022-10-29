@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 import android.content.res.Resources;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -58,6 +59,8 @@ public class IngredientStorageActivityTest {
         solo.clickOnView(goToStorage);
 
         solo.assertCurrentActivity("Should be in IngredientStorageActivity!", IngredientStorageActivity.class);
+        // Why must solo be so slow
+        solo.waitForActivity(IngredientStorageActivity.class,2000);
         IngredientStorageActivity a = (IngredientStorageActivity) solo.getCurrentActivity();
 
         FloatingActionButton fab = a.findViewById(R.id.addStoreIngredientFAB);
@@ -80,11 +83,15 @@ public class IngredientStorageActivityTest {
 
 
         solo.assertCurrentActivity("Should be in IngredientStorageActivity!", IngredientStorageActivity.class);
+        // Why must solo be so slow
+        solo.waitForActivity(IngredientStorageActivity.class,2000);
         IngredientStorageActivity a1 = (IngredientStorageActivity) solo.getCurrentActivity();
         FloatingActionButton fab = a1.findViewById(R.id.addStoreIngredientFAB);
         solo.clickOnView(fab);
 
         solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddStoreIngredientActivity.class);
+        // Why must solo be so slow
+        solo.waitForActivity(AddStoreIngredientActivity.class,2000);
         AddStoreIngredientActivity a2 = (AddStoreIngredientActivity) solo.getCurrentActivity();
 
         // fill in description
