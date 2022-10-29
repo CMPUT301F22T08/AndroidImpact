@@ -6,15 +6,12 @@
     <item android:title="recipe"
         android:id="@+id/recipe_icon"
         android:icon="@drawable/chefhat"/>
-
     <item android:title=""
-        android:id="@+id/place_holder"
-        />
+        android:id="@+id/place_holder" />
     <item android:title="shopping list"
         android:id="@+id/cart_icon"
         android:icon="@drawable/shopping_cart"/>
     <item android:title="meal plan"
         android:id="@+id/meal_icon"
         android:icon="@drawable/calendar"/>
-
 </menu>
