@@ -144,7 +144,6 @@
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredients_text"
         app:srcCompat="@android:drawable/ic_input_add"
         android:focusable="true"
-        android:onClick="addIngredient"
         android:contentDescription="@string/recipe_title" />
 
     <Button
