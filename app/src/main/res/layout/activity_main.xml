@@ -81,7 +81,6 @@
             android:contentDescription="Ingredient Storage Add FAB"
             android:elevation="8dp"
             android:focusable="true"
-            android:onClick="addStoreIngredient"
             app:borderWidth="0dp"
             app:tint="@android:color/white"
             app:layout_anchor="@+id/bottom_app_bar"
