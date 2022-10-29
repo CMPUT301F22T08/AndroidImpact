@@ -33,10 +33,6 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
     private EditText categoryEditText;
     private EditText bestBeforeEditText;
 
-    // buttons
-    private Button cancelBtn;
-    private Button confirmBtn;
-
     // Calendar for bestBeforeDatePicker
     final Calendar bestBeforeCalendar = Calendar.getInstance();
 
@@ -58,8 +54,6 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         locationEditText = findViewById(R.id.ingredientStoreAdd_location);
         unitEditText = findViewById(R.id.ingredientStoreAdd_unit);
         categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
-        cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
-        confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
 
         DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
@@ -69,6 +63,45 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             bestBeforeCalendar.set(Calendar.DAY_OF_MONTH,day);
             updateLabel();
         };
+
+        Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG + ":cancel", "Cancel ingredient add");
+                Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+                setResult(Activity.RESULT_CANCELED, intent);
+                finish();
+            }
+        });
+
+        Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // try to create an ingredient.
+                    StoreIngredient newStoreIngredient = createIngredient();
+                    Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+
+                    // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
+                    intent.putExtra("ingredient", newStoreIngredient);
+                    setResult(Activity.RESULT_OK, intent);
+
+                    Log.i(TAG + ":cancel", "Returning to MainActivity");
+                    finish();
+                } catch (Exception e){
+                    String snackBarStr = e.getMessage();
+
+                    // Error - add a snackBar
+                    View parentLayout = findViewById(android.R.id.content);
+                    Snackbar.make(parentLayout, snackBarStr, Snackbar.LENGTH_LONG)
+                            .setAction("Ok", view1 -> {})
+                            .show();
+                }
+            }
+        });
+
         bestBeforeEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,42 +118,6 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         String myFormat="dd MMMM yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         bestBeforeEditText.setText(dateFormat.format(bestBeforeCalendar.getTime()));
-    }
-
-    /**
-     * This is executed when the "cancel" button is clicked
-     */
-    public void cancel(View view) {
-        Log.i(TAG + ":cancel", "Cancel ingredient add");
-        Intent intent = new Intent(this, IngredientStorageActivity.class);
-        setResult(Activity.RESULT_CANCELED, intent);
-        finish();
-    }
-
-    /**
-     * This is executed when the "confirm" button is clicked
-     */
-    public void confirm(View view) {
-        try {
-            // try to create an ingredient.
-            StoreIngredient newStoreIngredient = createIngredient();
-            Intent intent = new Intent(this, IngredientStorageActivity.class);
-
-            // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
-            intent.putExtra("ingredient", newStoreIngredient);
-            setResult(Activity.RESULT_OK, intent);
-
-            Log.i(TAG + ":cancel", "Returning to MainActivity");
-            finish();
-        } catch (Exception e){
-            String snackBarStr = e.getMessage();
-
-            // Error - add a snackBar
-            View parentLayout = findViewById(android.R.id.content);
-            Snackbar.make(parentLayout, snackBarStr, Snackbar.LENGTH_LONG)
-                   .setAction("Ok", view1 -> {})
-                   .show();
-        }
     }
 
     /**
