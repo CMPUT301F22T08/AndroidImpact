@@ -93,6 +93,11 @@ public class RecipeListTest {
         assertEquals(recipeList.getSortChoice(), "Preparation Time");
     }
 
+    /**
+     * Test that the sort choices available to the user are correctly returned
+     * In this case, check all the values are the same as intended, and that there aren't any more
+     * than intended
+     */
     @Test
     public void getSortChoicesTest() {
         recipeList = MockRecipeList();
@@ -105,6 +110,12 @@ public class RecipeListTest {
         }));
     }
 
+    /**
+     * Test that sorting by a user's choice actually sorts the list as intended
+     * In this case, set attributes of recipe using a number i
+     * In the way implemented in the test, each sorting will result in a unique recipe at the 'top'
+     * Check that this unique value is at the 'top' by title
+     */
     @Test
     public void sortByChoiceTest() {
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
