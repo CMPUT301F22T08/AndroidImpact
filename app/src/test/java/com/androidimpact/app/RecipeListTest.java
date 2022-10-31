@@ -1,15 +1,27 @@
 package com.androidimpact.app;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
 
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+/**
+ * Test class to test RecipeList class
+ * Functions of RecipeList class to test:
+ *  - getItemCount()
+ *  - getSortChoice()
+ *  - setSortChoice(int index)
+ *  = getSortChoices()
+ *  - sortByChoice()
+ */
 public class RecipeListTest {
     private RecipeList recipeList;
 
@@ -42,11 +54,79 @@ public class RecipeListTest {
     }
 
     /**
+     * Test that the item count is correct
+     * First initialize a blank arraylist, and initialize the recipe list over that arraylist
+     * Check this size is 0
+     * Then add a recipe to the arraylist
+     * Check this size is incremented
+     */
+    @Test
+    public void getItemCountTest() {
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+        recipeList = new RecipeList(null, recipeArrayList);
+        assertEquals(recipeList.getItemCount(), 0);
+
+        recipeArrayList.add(MockRecipe());
+        assertEquals(recipeList.getItemCount(), 1);
+    }
+
+    /**
      * Test that the default sort choice is as below
+     * Initialize the recipe list and ensure value of default sort choice is "Date Added"
      */
     @Test
     public void getSortChoiceTest() {
         recipeList = MockRecipeList();
         assertEquals(recipeList.getSortChoice(), "Date Added");
+    }
+
+    /**
+     * Test that the set sort choice is correct
+     * Initialize the recipe list and ensure the value when we set the sort choice to one of our
+     * choosing, then it reflects the choice we want
+     */
+    @Test
+    public void setSortChoiceTest() {
+        recipeList = MockRecipeList();
+        recipeList.setSortChoice(2);
+        assertEquals(recipeList.getSortChoice(), "Preparation Time");
+    }
+
+    @Test
+    public void getSortChoicesTest() {
+        recipeList = MockRecipeList();
+        assertTrue(Arrays.equals(RecipeList.getSortChoices(), new String[]{
+                "Date Added",
+                "Title",
+                "Preparation Time",
+                "Number of Servings",
+                "Recipe Category"
+        }));
+    }
+
+    @Test
+    public void sortByChoiceTest() {
+        ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+        int n = 5;
+        for(int i = 0; i < n; i++) {
+            recipeArrayList.add(new Recipe(
+                    new ArrayList<>(),
+                    String.valueOf(i), // n-(n-i) = i
+                    n-(4-i),
+                    n-(3-i),
+                    String.valueOf(n-(2-i)),
+                    "",
+                    String.valueOf(n-(1-i))
+            ));
+        }
+
+        for(int i = 0; i < n; i++) {
+            recipeList.setSortChoice(i);
+            recipeList.sortByChoice();
+
+            assertEquals(recipeArrayList.get(i).getTitle(), String.valueOf(i));
+        }
+
+
     }
 }
