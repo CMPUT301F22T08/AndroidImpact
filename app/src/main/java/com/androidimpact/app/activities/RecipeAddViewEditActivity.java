@@ -87,18 +87,18 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             if (checkInputs()) {
                     HashMap<String, Object> data = new HashMap<>();
                     HashMap<String, Object> ingredientData = new HashMap<>();
-                    for (Ingredient ingredient : ingredients) {
-                        ingredientData.put(ingredient.getDescription(), ingredient);
+                    for (int i = 0; i < ingredients.size(); i++) {
+                        ingredientData.put("ingredient" + i, ingredients.get(i));
                     }
 
                     //https://www.javatpoint.com/java-get-current-date
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     Date date = new Date();
                     data.put("date", formatter.format(date));
-                    data.put("prep time", prep_time.getText().toString());
-                    data.put("servings", servings.getText().toString());
-                    data.put("category", category.getText().toString());
-                    data.put("comments", comments.getText().toString());
+                    data.put("prep time", getStr(prep_time));
+                    data.put("servings", getStr(servings));
+                    data.put("category", getStr(category));
+                    data.put("comments", getStr(comments));
                     data.put("photo", comments.getText().toString());
                     data.put("ingredients", ingredientData);
 
@@ -107,12 +107,22 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .set(data)
                             .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
                             .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
+                Toast toast = Toast.makeText(getApplicationContext(), "Added " + getStr(title), Toast.LENGTH_SHORT);
+                toast.show();
+                title.setText("");
+                prep_time.setText("");
+                servings.setText("");
+                category.setText("");
+                comments.setText("");
+                ingredients.clear();
+                ingredientAdapter.notifyDataSetChanged();
             }
         });
 
         // Cancel button on bottom left
         final Button cancelRecipe = findViewById(R.id.cancel_button);
-        cancelRecipe.setOnClickListener(v -> finish());
+        cancelRecipe.setOnClickListener(v ->
+                finish());
     }
 
     // Adding ingredients
