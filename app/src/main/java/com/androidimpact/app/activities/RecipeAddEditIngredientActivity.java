@@ -31,10 +31,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
     // Initialize attributes
     final String TAG = "addRecipeIngredient";
-    EditText description;
-    EditText amount;
-    EditText unit;
-    EditText category;
+    EditText description, amount, unit, category;
     TextView activity_title;
 
     // https://developer.android.com/reference/android/widget/AutoCompleteTextView

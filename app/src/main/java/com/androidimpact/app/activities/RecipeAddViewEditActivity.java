@@ -182,4 +182,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         addPhotoLauncher.launch(intent);
     }
 
+    /**
+     * This method returns the string stored in an edit text, for reduced code length
+     * @param e
+     *    The EditText to get the string of
+     * @return
+     *    The string in the EditText
+     */
+    public String getStr(EditText e) {
+        return e.getText().toString();
+    }
 }
