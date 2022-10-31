@@ -108,14 +108,14 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
         // Code adapted from groupmate Aneeljyot Alagh in his Assignment 1
         // Accessed on October 30, 2022
-        String[] blankCheckStrings = {"Description", "Amount", "Unit", "Category"};
+        String[] blankCheckStrings = {"Description", "Amount", "Unit", "Category"}; // mandatory fill out
         ArrayList<String> toastMessage = new ArrayList<>();
         boolean invalidInput = false;
         boolean[] blankChecks = {
-                description.getText().toString().isBlank(),
-                amount.getText().toString().isBlank(),
-                unit.getText().toString().isBlank(),
-                category.getText().toString().isBlank()
+                getStr(description).isBlank(),
+                getStr(amount).isBlank(),
+                getStr(unit).isBlank(),
+                getStr(category).isBlank()
         };
 
         // Make sure all inputs are filled

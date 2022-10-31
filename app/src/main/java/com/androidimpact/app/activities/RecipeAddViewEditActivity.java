@@ -83,35 +83,30 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         final Button addRecipe = findViewById(R.id.add_button);
         addRecipe.setOnClickListener(v -> {
 
-            // Don't allow blank title, prep time, servings, or category
-            if (title.getText().toString().isBlank() || prep_time.getText().toString().isBlank() || servings.getText().toString().isBlank() || category.getText().toString().isBlank()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Blank input!", Toast.LENGTH_LONG);
-                toast.show();
-            }
-            else {
-                HashMap<String, Object> data = new HashMap<>();
-                HashMap<String, Object> ingredientData = new HashMap<>();
-                for (Ingredient ingredient : ingredients) {
-                    ingredientData.put(ingredient.getDescription(), ingredient);
-                }
+            // Check if recipe can be added with given inputs
+            if (checkInputs()) {
+                    HashMap<String, Object> data = new HashMap<>();
+                    HashMap<String, Object> ingredientData = new HashMap<>();
+                    for (Ingredient ingredient : ingredients) {
+                        ingredientData.put(ingredient.getDescription(), ingredient);
+                    }
 
-                //https://www.javatpoint.com/java-get-current-date
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                Date date = new Date();
-                data.put("date", formatter.format(date));
-                data.put("prep time", prep_time.getText().toString());
-                data.put("servings", servings.getText().toString());
-                data.put("category", category.getText().toString());
-                data.put("comments", comments.getText().toString());
-                data.put("photo", comments.getText().toString());
-                data.put("ingredients", ingredientData);
+                    //https://www.javatpoint.com/java-get-current-date
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Date date = new Date();
+                    data.put("date", formatter.format(date));
+                    data.put("prep time", prep_time.getText().toString());
+                    data.put("servings", servings.getText().toString());
+                    data.put("category", category.getText().toString());
+                    data.put("comments", comments.getText().toString());
+                    data.put("photo", comments.getText().toString());
+                    data.put("ingredients", ingredientData);
 
-                collectionReference
-                        .document(title.getText().toString())
-                        .set(data)
-                        .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
-                        .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
-
+                    collectionReference
+                            .document(title.getText().toString())
+                            .set(data)
+                            .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
+                            .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
             }
         });
 
@@ -180,6 +175,42 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         intent.setType("image/");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         addPhotoLauncher.launch(intent);
+    }
+
+    /**
+     * This method checks if a recipe can be added with the values in the fields.
+     * @return
+     *   returns true if values are fine, false otherwise.
+     */
+    public boolean checkInputs() {
+
+        // Code adapted from groupmate Aneeljyot Alagh in his Assignment 1
+        // Accessed on October 30, 2022
+        String[] blankCheckStrings = {"Title", "Prep time", "Servings", "Category", }; // mandatory fill out
+        ArrayList<String> toastMessage = new ArrayList<>();
+        boolean invalidInput = false;
+        boolean[] blankChecks = {
+                getStr(title).isBlank(),
+                getStr(prep_time).isBlank(),
+                getStr(servings).isBlank(),
+                getStr(category).isBlank()
+        };
+
+        // Make sure all inputs are filled
+        for (int i = 0; i < blankChecks.length; i++) {
+            if (blankChecks[i]) {
+                invalidInput = true;
+                toastMessage.add(blankCheckStrings[i]);
+            }
+        }
+
+        if (invalidInput){
+            // If blanks, only print blank messages
+            Toast toast = Toast.makeText(getApplicationContext(), String.join(", ", toastMessage) + " must be filled!", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+        return true;
     }
 
     /**
