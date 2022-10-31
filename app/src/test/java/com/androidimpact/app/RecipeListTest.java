@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.checkerframework.checker.units.qual.A;
 import org.junit.Test;
@@ -120,6 +121,8 @@ public class RecipeListTest {
             ));
         }
 
+        recipeList = new RecipeList(null, recipeArrayList);
+
         for(int i = 0; i < n; i++) {
             recipeList.setSortChoice(i);
             recipeList.sortByChoice();
@@ -127,6 +130,6 @@ public class RecipeListTest {
             assertEquals(recipeArrayList.get(i).getTitle(), String.valueOf(i));
         }
 
-
+        assertTrue(true);
     }
 }
