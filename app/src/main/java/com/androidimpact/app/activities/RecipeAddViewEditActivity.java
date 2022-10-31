@@ -3,6 +3,7 @@ package com.androidimpact.app.activities;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -114,29 +115,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             }
         });
 
-        // Add a photo when the image is clicked
-        photo.setOnClickListener(v -> {
-            Log.i(TAG + ":addPhoto", "Adding photo!");
-            Intent intent = new Intent();
-            intent.setType("image/");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            addPhotoLauncher.launch(intent);
-        });
-
-        // launch RecipeAddEditIngredientActivity when the Add FAB is clicked
-        FloatingActionButton addButton = findViewById(R.id.add_ingredient);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG + ":addPhoto", "Adding ingredient!");
-                Intent intent = new Intent(RecipeAddViewEditActivity.this, RecipeAddEditIngredientActivity.class);
-                intent.putExtra("activity_name", "Add");
-                addIngredientLauncher.launch(intent);
-            }
-        });
-
-
-
         // Cancel button on bottom left
         final Button cancelRecipe = findViewById(R.id.cancel_button);
         cancelRecipe.setOnClickListener(v -> finish());
@@ -159,6 +137,13 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 }
             });
 
+    // Adding ingredients
+    public void addIngredient(View v) {
+        Log.i(TAG + ":addPhoto", "Adding ingredient!");
+        Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
+        intent.putExtra("activity_name", "Add");
+        addIngredientLauncher.launch(intent);
+    }
 
     // Adding photos
     final private ActivityResultLauncher<Intent> addPhotoLauncher = registerForActivityResult(
@@ -187,4 +172,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     }
                 }
             });
+
+    // Adding photos
+    public void addPhoto(View v) {
+        Log.i(TAG + ":addPhoto", "Adding photo!");
+        Intent intent = new Intent();
+        intent.setType("image/");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        addPhotoLauncher.launch(intent);
+    }
+
 }

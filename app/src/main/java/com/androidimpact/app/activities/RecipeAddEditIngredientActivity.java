@@ -1,5 +1,7 @@
 package com.androidimpact.app.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -7,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +19,8 @@ import android.widget.Toast;
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class is the activity for ingredient adding/viewing/editing to recipe
@@ -31,6 +37,18 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     EditText category;
     TextView activity_title;
 
+    // https://developer.android.com/reference/android/widget/AutoCompleteTextView
+    // Accessed October 30, 2022
+    // https://en.wikibooks.org/wiki/Cookbook:Units_of_measurement
+    private static final String[] unitAC = new String[] {
+            "mL", "L", "dL", "tsp", "tbsp", "oz", "cup", "pint", "quart", "gallon", "mg", "g", "kg",
+            "lb"};
+
+    /**
+     * This method runs when the activity is created
+     * @param savedInstanceState
+     *    Bundle object
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,34 +62,90 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         category = findViewById(R.id.ingredient_category);
         activity_title = findViewById(R.id.activity_title);
 
+        // Autocomplete for units
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, unitAC);
+        AutoCompleteTextView textView = (AutoCompleteTextView) unit;
+        textView.setAdapter(unitAdapter);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("activity_name");
             activity_title.setText(value);
         }
-
-        // OnClickListeners on the page
-        Button addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(v -> {
-            if (description.getText().toString().isBlank() || amount.getText().toString().isBlank() || unit.getText().toString().isBlank() || category.getText().toString().isBlank()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Blank input!", Toast.LENGTH_LONG);
-                toast.show();
-            } else {
-                Ingredient ingredient = new Ingredient(description.getText().toString(), Float.parseFloat(amount.getText().toString()), unit.getText().toString(), category.getText().toString());
-                Log.i(TAG + ":confirmed", "Added ingredient");
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("ingredient", ingredient);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-        });
-
-        Button cancelButton = findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(v -> {
-            Log.i(TAG + ":cancel", "Cancel ingredient add");
-            setResult(Activity.RESULT_CANCELED);
-            finish();
-        });
     }
 
+    /**
+     * This method handles clicks on the confirm button
+     * @param view
+     *    The view that this method is connected to (add button)
+     */
+    public void confirm(View view) {
+        if (checkInputs()) {
+            Ingredient ingredient = new Ingredient(getStr(description), Float.parseFloat(getStr(amount)), getStr(unit), getStr(category));
+            Log.i(TAG + ":confirmed", "Added ingredient");
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("ingredient", ingredient);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
+    }
+
+    /**
+     * This method handles clicks on the cancel button
+     * @param view
+     *    The view that this method is connected to (cancel button)
+     */
+    public void cancel(View view) {
+        Log.i(TAG + ":cancel", "Cancel ingredient add");
+        setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
+
+    /**
+     * This method checks if a recipe can be added with the values in the fields.
+     * @return
+     *   returns true if values are fine, false otherwise.
+     */
+    public boolean checkInputs() {
+
+        // Code adapted from groupmate Aneeljyot Alagh in his Assignment 1
+        // Accessed on October 30, 2022
+        String[] blankCheckStrings = {"Description", "Amount", "Unit", "Category"};
+        ArrayList<String> toastMessage = new ArrayList<>();
+        boolean invalidInput = false;
+        boolean[] blankChecks = {
+                description.getText().toString().isBlank(),
+                amount.getText().toString().isBlank(),
+                unit.getText().toString().isBlank(),
+                category.getText().toString().isBlank()
+        };
+
+        // Make sure all inputs are filled
+        for (int i = 0; i < blankChecks.length; i++) {
+            if (blankChecks[i]) {
+                invalidInput = true;
+                toastMessage.add(blankCheckStrings[i]);
+            }
+        }
+
+        if (invalidInput){
+            // If blanks, only print blank messages
+            Toast toast = Toast.makeText(getApplicationContext(), String.join(", ", toastMessage) + " must be filled!", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This method returns the string stored in an edit text, for reduced code length
+     * @param e
+     *    The EditText to get the string of
+     * @return
+     *    The string in the EditText
+     */
+    public String getStr(EditText e) {
+        return e.getText().toString();
+    }
 }
