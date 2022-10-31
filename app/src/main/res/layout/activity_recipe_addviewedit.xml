@@ -16,34 +16,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/recipe_image"
-        android:layout_width="124dp"
-        android:layout_height="124dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/recipe_image_card"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:contentDescription="@string/recipe_title"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="addPhoto"
+        android:elevation="10dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:contentDescription="@string/recipe_title"
+            android:focusable="true"
+            android:onClick="addPhoto"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+    </androidx.cardview.widget.CardView>
+
 
     <EditText
         android:id="@+id/recipe_title"
         android:layout_width="232dp"
         android:layout_height="48dp"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
+        android:layout_marginEnd="15dp"
         android:ems="10"
         android:hint="@string/recipe_title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/recipe_image"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -62,7 +72,7 @@
         app:layout_constraintEnd_toStartOf="@+id/recipe_comments"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_image" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_image_card" />
 
     <EditText
         android:id="@+id/recipe_servings"

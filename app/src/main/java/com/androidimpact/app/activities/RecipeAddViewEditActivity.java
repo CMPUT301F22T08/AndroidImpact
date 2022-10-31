@@ -125,10 +125,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredients.add(ingredient);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Added " + ingredient.getDescription() + "!", Toast.LENGTH_SHORT);
+                    toast.show();
                     ingredientAdapter.notifyDataSetChanged();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                    Toast toast = Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             });
 
@@ -136,7 +140,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     public void addIngredient(View v) {
         Log.i(TAG + ":addPhoto", "Adding ingredient!");
         Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
-        intent.putExtra("activity_name", "Add");
+        intent.putExtra("activity_name", "Add ingredient");
         addIngredientLauncher.launch(intent);
     }
 
