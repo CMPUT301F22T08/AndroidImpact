@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.androidimpact.app.Ingredient;
+import com.androidimpact.app.R;
+import com.androidimpact.app.Recipe;
+import com.androidimpact.app.RecipeList;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -173,8 +177,7 @@ public class RecipeListActivity extends AppCompatActivity {
                 Log.d(TAG, String.valueOf(doc.getData()));
                 String description = doc.getId();
                 recipeDataList.add(new Recipe(
-                        new ArrayList<>(Arrays.asList(
-                                new Ingredient[]{new Ingredient("")})),
+                        new ArrayList<>(),
                         description,
                         Integer.valueOf((String) doc.getData().get("prep time")),
                         Integer.valueOf((String) doc.getData().get("servings")),

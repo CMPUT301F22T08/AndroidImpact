@@ -53,7 +53,7 @@
         </activity>
 
         <activity
-            android:name="com.androidimpact.app.RecipeListActivity"
+            android:name="com.androidimpact.app.activities.RecipeListActivity"
             android:exported="true">
         </activity>
     </application>
