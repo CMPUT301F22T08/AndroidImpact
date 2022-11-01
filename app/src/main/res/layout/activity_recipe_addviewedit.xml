@@ -1,49 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recipe_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".activities.RecipeAddViewEditActivity">
 
     <TextView
         android:id="@+id/activity_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:text="@string/activity_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/recipe_image"
-        android:layout_width="124dp"
-        android:layout_height="124dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/recipe_image_card"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:contentDescription="@string/recipe_title"
-        android:clickable="true"
-        android:focusable="true"
+        android:elevation="10dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:contentDescription="@string/recipe_title"
+            android:focusable="true"
+            android:onClick="addPhoto"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+    </androidx.cardview.widget.CardView>
+
 
     <EditText
         android:id="@+id/recipe_title"
         android:layout_width="232dp"
         android:layout_height="48dp"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
+        android:layout_marginEnd="15dp"
         android:ems="10"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:hint="@string/recipe_title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/recipe_image"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -52,8 +67,10 @@
         android:layout_width="130dp"
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:ems="10"
         android:hint="@string/recipe_prep_time"
         android:importantForAutofill="no"
@@ -62,7 +79,7 @@
         app:layout_constraintEnd_toStartOf="@+id/recipe_comments"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_image" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_image_card" />
 
     <EditText
         android:id="@+id/recipe_servings"
@@ -71,10 +88,12 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:ems="10"
         android:hint="@string/recipe_servings"
         android:importantForAutofill="no"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/recipe_comments"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +107,8 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:gravity="start|top"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:hint="@string/recipe_comments"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
@@ -102,6 +123,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:ems="10"
         android:hint="@string/recipe_category"
         android:importantForAutofill="no"
@@ -127,6 +150,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/recipe_ingredients"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/recipe_ingredients_list"
         app:layout_constraintEnd_toEndOf="parent"
@@ -144,6 +168,7 @@
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredients_text"
         app:srcCompat="@android:drawable/ic_input_add"
         android:focusable="true"
+        android:onClick="addIngredient"
         android:contentDescription="@string/recipe_title" />
 
     <Button
@@ -152,6 +177,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/purple_200"
+        android:textColor="@color/white"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -162,6 +189,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="70dp"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/purple_200"
+        android:textColor="@color/white"
         android:text="@string/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

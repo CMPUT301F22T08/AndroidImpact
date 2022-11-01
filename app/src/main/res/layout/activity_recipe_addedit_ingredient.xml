@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ingredient_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".activities.RecipeAddEditIngredientActivity">
 
     <TextView
@@ -14,6 +15,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:text="@string/activity_title"
+        android:textColor = "@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,11 +26,12 @@
         android:layout_marginTop="80dp"
         android:ems="10"
         android:hint="@string/description"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_700"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:maxLength="30"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/ingredient_amount"
@@ -37,20 +40,24 @@
         android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/amount"
-        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_700"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ingredient_description" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/ingredient_unit"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/unit"
-        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_700"
+        android:inputType="textAutoComplete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +70,8 @@
         android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/category"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_700"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -75,7 +84,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginBottom="20dp"
+        android:onClick="cancel"
+        android:backgroundTint="@color/purple_200"
         android:text="@string/cancel"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -85,6 +97,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="70dp"
         android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/purple_200"
+        android:onClick="confirm"
         android:text="@string/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
