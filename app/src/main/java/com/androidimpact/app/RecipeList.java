@@ -83,6 +83,31 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     }
 
     /**
+     *
+     *
+     * References:
+     * <ul>
+     *     <li>
+     *         For ImageView elements, we used:
+     *         <ul>
+     *             <li>
+     *                 URL: https://www.geeksforgeeks.org/how-to-retrieve-image-from-firebase-in-realtime-in-android/
+     *             </li>
+     *             <li>
+     *                 Author: surajkeshr023
+     *             </li>
+     *             <li>
+     *                 Editor: marcus007
+     *             </li>
+     *             <li>
+     *                 Licence: CCBY-SA
+     *             </li>
+     *             <li>
+     *                 Use: Inspired use of Picasso library
+     *             </li>
+     *         </ul>
+     *     </li>
+     * </ul>
      * @param holder
      * @param position
      * Set the data to textview from our modal class
