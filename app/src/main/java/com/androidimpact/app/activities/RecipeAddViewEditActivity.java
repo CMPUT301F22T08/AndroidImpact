@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,6 +29,7 @@ import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.RecipeIngredientAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -107,8 +107,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .set(data)
                             .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
                             .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
-                Toast toast = Toast.makeText(getApplicationContext(), "Added " + getStr(title), Toast.LENGTH_SHORT);
-                toast.show();
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), "Added " + getStr(title), Snackbar.LENGTH_SHORT);
+                snackbar.show();
                 title.setText("");
                 prep_time.setText("");
                 servings.setText("");
@@ -134,14 +134,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredients.add(ingredient);
-                    Toast toast = Toast.makeText(getApplicationContext(), "Added " + ingredient.getDescription() + "!", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), "Added " + ingredient.getDescription() + "!", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                     ingredientAdapter.notifyDataSetChanged();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
-                    Toast toast = Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), "Cancelled!", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                 }
             });
 
@@ -200,7 +200,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         // Code adapted from groupmate Aneeljyot Alagh in his Assignment 1
         // Accessed on October 30, 2022
         String[] blankCheckStrings = {"Title", "Prep time", "Servings", "Category", }; // mandatory fill out
-        ArrayList<String> toastMessage = new ArrayList<>();
+        ArrayList<String> snackbarMessage = new ArrayList<>();
         boolean invalidInput = false;
         boolean[] blankChecks = {
                 getStr(title).isBlank(),
@@ -213,14 +213,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         for (int i = 0; i < blankChecks.length; i++) {
             if (blankChecks[i]) {
                 invalidInput = true;
-                toastMessage.add(blankCheckStrings[i]);
+                snackbarMessage.add(blankCheckStrings[i]);
             }
         }
 
         if (invalidInput){
             // If blanks, only print blank messages
-            Toast toast = Toast.makeText(getApplicationContext(), String.join(", ", toastMessage) + " must be filled!", Toast.LENGTH_LONG);
-            toast.show();
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), String.join(", ", snackbarMessage) + " must be filled!", Snackbar.LENGTH_LONG);
+            snackbar.show();
             return false;
         }
         return true;

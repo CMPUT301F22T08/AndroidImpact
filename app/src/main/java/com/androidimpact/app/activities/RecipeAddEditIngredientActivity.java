@@ -14,10 +14,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +109,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         // Code adapted from groupmate Aneeljyot Alagh in his Assignment 1
         // Accessed on October 30, 2022
         String[] blankCheckStrings = {"Description", "Amount", "Unit", "Category"}; // mandatory fill out
-        ArrayList<String> toastMessage = new ArrayList<>();
+        ArrayList<String> snackbarMessage = new ArrayList<>();
         boolean invalidInput = false;
         boolean[] blankChecks = {
                 getStr(description).isBlank(),
@@ -122,14 +122,14 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         for (int i = 0; i < blankChecks.length; i++) {
             if (blankChecks[i]) {
                 invalidInput = true;
-                toastMessage.add(blankCheckStrings[i]);
+                snackbarMessage.add(blankCheckStrings[i]);
             }
         }
 
         if (invalidInput){
             // If blanks, only print blank messages
-            Toast toast = Toast.makeText(getApplicationContext(), String.join(", ", toastMessage) + " must be filled!", Toast.LENGTH_LONG);
-            toast.show();
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.ingredient_layout), String.join(", ", snackbarMessage) + " must be filled!", Snackbar.LENGTH_LONG);
+            snackbar.show();
             return false;
         }
         return true;
