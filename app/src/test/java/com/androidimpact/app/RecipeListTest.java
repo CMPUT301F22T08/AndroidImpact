@@ -143,4 +143,9 @@ public class RecipeListTest {
 
         assertTrue(true);
     }
+
+    @Test
+    public void deleteEdition() {
+
+    }
 }
