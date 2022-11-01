@@ -9,9 +9,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -107,8 +109,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .set(data)
                             .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
                             .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), "Added " + getStr(title), Snackbar.LENGTH_SHORT);
-                snackbar.show();
+                generateSnackbar("Added " + getStr(title) + "!");
                 title.setText("");
                 prep_time.setText("");
                 servings.setText("");
@@ -134,14 +135,12 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredients.add(ingredient);
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), "Added " + ingredient.getDescription() + "!", Snackbar.LENGTH_SHORT);
-                    snackbar.show();
+                    generateSnackbar("Added " + ingredient.getDescription() + "!");
                     ingredientAdapter.notifyDataSetChanged();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), "Cancelled!", Snackbar.LENGTH_SHORT);
-                    snackbar.show();
+                    generateSnackbar("Ingredient cancelled!");
                 }
             });
 
@@ -153,7 +152,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         addIngredientLauncher.launch(intent);
     }
 
-    // Adding photos
+    // Adding photo
     final private ActivityResultLauncher<Intent> addPhotoLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -219,8 +218,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
         if (invalidInput){
             // If blanks, only print blank messages
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), String.join(", ", snackbarMessage) + " must be filled!", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            generateSnackbar(String.join(", ", snackbarMessage) + " must be filled!");
             return false;
         }
         return true;
@@ -235,5 +233,18 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      */
     public String getStr(EditText e) {
         return e.getText().toString();
+    }
+
+    /**
+     * This method generates a snackbar from a given message
+     * @param message
+     *    The string to send a snackbar of
+     */
+    public void generateSnackbar (String message) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), message, Snackbar.LENGTH_SHORT);
+        View snackbarView = snackbar.getView();
+        TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+        snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        snackbar.show();
     }
 }

@@ -128,8 +128,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
         if (invalidInput){
             // If blanks, only print blank messages
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.ingredient_layout), String.join(", ", snackbarMessage) + " must be filled!", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            generateSnackbar(String.join(", ", snackbarMessage) + " must be filled!");
             return false;
         }
         return true;
@@ -144,5 +143,18 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      */
     public String getStr(EditText e) {
         return e.getText().toString();
+    }
+
+    /**
+     * This method generates a snackbar from a given message
+     * @param message
+     *    The string to send a snackbar of
+     */
+    public void generateSnackbar (String message) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), message, Snackbar.LENGTH_SHORT);
+        View snackbarView = snackbar.getView();
+        TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+        snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        snackbar.show();
     }
 }
