@@ -110,25 +110,22 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     if (photo.getTag() == null) {
                         data.put("photo", null);
                     }
+                    //Add photo to firebase storage
                     else {
-                        data.put("photo", photo.getTag().toString());
-                    }
-                    data.put("ingredients", ingredientData);
-
-                    collectionReference
-                            .document(title.getText().toString())
-                            .set(data)
-                            .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
-                            .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
-
-                    // Add photo to Firebase storage if there is one
-                    if (photo.getTag() != null) {
                         String img_name = UUID.randomUUID().toString();
+                        data.put("photo", img_name);
                         StorageReference imgs = storageReference.child("images/" + img_name);
                         imgs.putFile((Uri) photo.getTag())
                                 .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
                                 .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
                     }
+                    data.put("ingredients", ingredientData);
+
+                    collectionReference
+                        .document(title.getText().toString())
+                        .set(data)
+                        .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
+                        .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
                 generateSnackbar("Added " + getStr(title) + "!");
                 title.setText("");
                 prep_time.setText("");
