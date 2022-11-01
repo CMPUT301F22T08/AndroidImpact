@@ -87,23 +87,48 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
      *
      * References:
      * <ul>
-     *     <li>
-     *         For ImageView elements, we used:
+     *     <li>For ImageView elements, we used:
      *         <ul>
      *             <li>
-     *                 URL: https://www.geeksforgeeks.org/how-to-retrieve-image-from-firebase-in-realtime-in-android/
+     *                 <ul>
+     *                     <li>
+     *                         URL: https://www.geeksforgeeks.org/how-to-retrieve-image-from-firebase-in-realtime-in-android/
+     *                     </li>
+     *                     <li>
+     *                         Author: surajkeshr023
+     *                     </li>
+     *                     <li>
+     *                         Editor: marcus007
+     *                     </li>
+     *                     <li>
+     *                         Licence: CCBY-SA
+     *                     </li>
+     *                     <li>
+     *                         Use: Inspired use of Picasso library
+     *                     </li>
+     *                     <li>
+     *                         Accessed: 2022-11-01, 2:45 PM
+     *                     </li>
+     *                 </ul>
      *             </li>
      *             <li>
-     *                 Author: surajkeshr023
-     *             </li>
-     *             <li>
-     *                 Editor: marcus007
-     *             </li>
-     *             <li>
-     *                 Licence: CCBY-SA
-     *             </li>
-     *             <li>
-     *                 Use: Inspired use of Picasso library
+     *                 <ul>
+     *                     <li>
+     *                         URL: https://firebase.google.com/docs/storage/android/download-files
+     *                     </li>
+     *                     <li>
+     *                         Author: Google Inc.
+     *                     </li>
+     *                     <li>
+     *                         Licence: http://www.apache.org/licenses/LICENSE-2.0
+     *                     </li>
+     *                     <li>
+     *                         Use: Motivated adding images to ImageView
+     *                     </li>
+     *                     <li>
+     *                         Accessed: 2022-11-01, 2:50 PM
+     *                     </li>
+     *                 </ul>
      *             </li>
      *         </ul>
      *     </li>
