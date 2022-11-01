@@ -107,7 +107,12 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     data.put("servings", getStr(servings));
                     data.put("category", getStr(category));
                     data.put("comments", getStr(comments));
-                    data.put("photo", photo.getTag().toString());
+                    if (photo.getTag() == null) {
+                        data.put("photo", null);
+                    }
+                    else {
+                        data.put("photo", photo.getTag().toString());
+                    }
                     data.put("ingredients", ingredientData);
 
                     collectionReference
@@ -116,13 +121,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
                             .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
 
-                    // Add photo to Firebase storage
-                    String img_name = UUID.randomUUID().toString();
-                    StorageReference imgs = storageReference.child("images/" + img_name);
-                    imgs.putFile((Uri) photo.getTag())
-                            .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
-                            .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
-
+                    // Add photo to Firebase storage if there is one
+                    if (photo.getTag() != null) {
+                        String img_name = UUID.randomUUID().toString();
+                        StorageReference imgs = storageReference.child("images/" + img_name);
+                        imgs.putFile((Uri) photo.getTag())
+                                .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
+                                .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
+                    }
                 generateSnackbar("Added " + getStr(title) + "!");
                 title.setText("");
                 prep_time.setText("");
