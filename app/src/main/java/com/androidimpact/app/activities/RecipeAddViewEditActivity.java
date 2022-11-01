@@ -121,8 +121,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
         // Cancel button on bottom left
         final Button cancelRecipe = findViewById(R.id.cancel_button);
-        cancelRecipe.setOnClickListener(v ->
-                finish());
+        cancelRecipe.setOnClickListener(v -> finish());
     }
 
     // Adding ingredients
