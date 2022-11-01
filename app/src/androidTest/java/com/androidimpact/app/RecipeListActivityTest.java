@@ -52,6 +52,8 @@ public class RecipeListActivityTest {
 
     @Test
     public void deleteChecks() {
+        // TODO: fix
+
         //ok this is wrong
         RecyclerView recipeListView = (RecyclerView) solo.getView(R.id.recipe_listview);
         int initialSize = recipeListView.getAdapter().getItemCount();
