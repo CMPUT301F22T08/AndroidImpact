@@ -2,9 +2,12 @@ package com.androidimpact.app;
 
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     // creating a variable for our array list and context.
     private ArrayList<StoreIngredient> ingredientArrayList;
     private Context mContext;
+    private int selected;
 
     // creating a constructor class.
     public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
@@ -42,6 +46,17 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         String myFormat="dd MMM yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         holder.storeIngredientDate.setText(dateFormat.format(recyclerData.getBestBeforeDate().getTime()));
+        holder.dropdownToggle.setOnClickListener(v -> {
+            Log.i("Foods item toggle", String.valueOf(position));
+            if (position == selected) {
+                // unselect
+//                holder.dropdownToggle.setImageResource(android.R.drawable.arrow_down_float);
+            } else {
+//                holder.dropdownToggle.setImageResource(android.R.drawable.arrow_up_float);
+            }
+            clickedItem(position);
+        });
+
     }
 
     @Override
@@ -59,8 +74,8 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         // creating a variable for category
         private TextView storeIngredientCategory;
-
         private TextView storeIngredientDate;
+        private ImageButton dropdownToggle;
 
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +84,18 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             storeIngredientDate = itemView.findViewById(R.id.store_ingredient_expiry);
             storeIngredientDescription = itemView.findViewById(R.id.store_ingredient_description);
             storeIngredientCategory = itemView.findViewById(R.id.store_ingredient_category);
+            dropdownToggle = itemView.findViewById(R.id.store_ingredient_dropdown_toggle);
         }
     }
+
+    private void clickedItem(int position) {
+        if (selected == position) {
+            // deselect
+            selected = -1;
+        } else {
+            selected = position;
+        }
+        notifyDataSetChanged();
+    }
+
 }
