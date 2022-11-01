@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -42,22 +42,25 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     public void onBindViewHolder(@NonNull StoreIngredientViewAdapter.StoreIngredientViewHolder holder, int position) {
         // Set the data to textview from our modal class.
         StoreIngredient recyclerData = ingredientArrayList.get(position);
-        holder.storeIngredientDescription.setText(recyclerData.getDescription());
-        holder.storeIngredientCategory.setText(recyclerData.getCategory());
+        holder.description.setText(recyclerData.getDescription());
+        holder.category.setText(recyclerData.getCategory());
         String myFormat="dd MMM yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        holder.storeIngredientDate.setText(dateFormat.format(recyclerData.getBestBeforeDate().getTime()));
+        holder.date.setText(dateFormat.format(recyclerData.getBestBeforeDate().getTime()));
         holder.dropdownToggle.setOnClickListener(v -> {
             Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
-            if (position == selected) {
-                // unselect
-                holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
-            } else {
-                holder.dropdownToggle.setImageResource(R.drawable.expand_less_white);
-            }
             clickedItem(position);
         });
 
+        // if `selected` is the position, make the expandable section visible
+        if (position == selected) {
+            holder.dropdownToggle.setImageResource(R.drawable.expand_less_white);
+            Log.i(TAG + ":clickedDropdownToggle", "Set item to visible: " + position);
+            holder.expandable.setVisibility(View.VISIBLE);
+        } else {
+            holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
+            holder.expandable.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -68,24 +71,35 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     }
 
     // View Holder Class to handle Recycler View.
+    // not sure why thi sis necessary
     public class StoreIngredientViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view.
-        private TextView storeIngredientDescription;
+        private TextView description;
 
         // creating a variable for category
-        private TextView storeIngredientCategory;
-        private TextView storeIngredientDate;
+        private TextView category;
+        private TextView date;
         private ImageButton dropdownToggle;
+
+        private ConstraintLayout expandable;
+        private TextView amount;
+        private TextView cost;
+        private TextView location;
 
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
             //Need to be changed for now
-            storeIngredientDate = itemView.findViewById(R.id.store_ingredient_expiry);
-            storeIngredientDescription = itemView.findViewById(R.id.store_ingredient_description);
-            storeIngredientCategory = itemView.findViewById(R.id.store_ingredient_category);
+            date = itemView.findViewById(R.id.store_ingredient_expiry);
+            description = itemView.findViewById(R.id.store_ingredient_description);
+            category = itemView.findViewById(R.id.store_ingredient_category);
             dropdownToggle = itemView.findViewById(R.id.store_ingredient_dropdown_toggle);
+
+            expandable = itemView.findViewById(R.id.store_ingredient_expandable_section);
+            amount = itemView.findViewById(R.id.store_ingredient_amount);
+            cost = itemView.findViewById(R.id.store_ingredient_cost);
+            location = itemView.findViewById(R.id.store_ingredient_location);
         }
     }
 
