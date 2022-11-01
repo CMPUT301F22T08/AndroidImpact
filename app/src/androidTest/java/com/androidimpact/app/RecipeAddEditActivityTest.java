@@ -8,7 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Test;
 
-public class RecipeAddViewEditTest {
+public class RecipeAddEditActivityTest {
     @Test
     public void useAppContext() {
         // Context of the app under test.
