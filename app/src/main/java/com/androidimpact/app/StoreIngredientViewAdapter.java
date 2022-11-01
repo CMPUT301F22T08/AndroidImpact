@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngredientViewAdapter.StoreIngredientViewHolder>{
+    private final String TAG = "StoreIngredientViewAdapter";
 
     // creating a variable for our array list and context.
     private ArrayList<StoreIngredient> ingredientArrayList;
@@ -47,12 +48,12 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         holder.storeIngredientDate.setText(dateFormat.format(recyclerData.getBestBeforeDate().getTime()));
         holder.dropdownToggle.setOnClickListener(v -> {
-            Log.i("Foods item toggle", String.valueOf(position));
+            Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
             if (position == selected) {
                 // unselect
-//                holder.dropdownToggle.setImageResource(android.R.drawable.arrow_down_float);
+                holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
             } else {
-//                holder.dropdownToggle.setImageResource(android.R.drawable.arrow_up_float);
+                holder.dropdownToggle.setImageResource(R.drawable.expand_less_white);
             }
             clickedItem(position);
         });
