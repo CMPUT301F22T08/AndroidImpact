@@ -48,15 +48,22 @@ public class MainActivity extends AppCompatActivity {
 
         Button ingredientStorageButton = findViewById(R.id.ButtonFromMain_ingredientStorage);
         ingredientStorageButton.setOnClickListener(v -> {
-            Log.i(TAG + ":StoreIngredient", "Opening Storage!");
+            Log.i(TAG + ":onCreate", "Opening Storage!");
             Intent intent = new Intent(MainActivity.this, IngredientStorageActivity.class);
             startActivity(intent);
         });
 
         Button recipeButton = findViewById(R.id.ButtonFromMain_recipe);
         recipeButton.setOnClickListener(v -> {
-            Log.i(TAG + ":StoreIngredient", "Opening Storage!");
+            Log.i(TAG + ":onCreate", "Opening Storage!");
             Intent intent = new Intent(MainActivity.this, RecipeAddViewEditActivity.class);
+            startActivity(intent);
+        });
+
+        Button gotoRecipesButton = findViewById(R.id.gotorecipes);
+        gotoRecipesButton.setOnClickListener(v -> {
+            Log.i(TAG + ":onCreate", "Opening RecipeListActivity!");
+            Intent intent = new Intent(MainActivity.this, RecipeListActivity.class);
             startActivity(intent);
         });
     }
