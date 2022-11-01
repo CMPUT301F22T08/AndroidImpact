@@ -176,7 +176,8 @@ public class RecipeListActivity extends AppCompatActivity {
                 Log.d(TAG, String.valueOf(doc.getId()));
                 Log.d(TAG, String.valueOf(doc.getData()));
                 String description = doc.getId();
-                recipeDataList.add(new Recipe(
+
+                Recipe recipeToAdd = new Recipe(
                         new ArrayList<>(),
                         description,
                         Integer.valueOf((String) doc.getData().get("prep time")),
@@ -184,7 +185,11 @@ public class RecipeListActivity extends AppCompatActivity {
                         (String) doc.getData().get("category"),
                         (String) doc.getData().get("comments"),
                         (String) doc.getData().get("date")
-                )); // Adding the cities and provinces from FireStore
+                );
+                recipeToAdd.setPhoto((String) doc.getData().get("photo"));
+
+                recipeDataList.add(recipeToAdd); // Adding the recipe attributes from FireStore
+
             }
 
             Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");
