@@ -11,11 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeList;
@@ -25,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -44,7 +41,6 @@ public class RecipeListActivity extends AppCompatActivity {
 
     // adding recipes to firebase
     final String TAG = "RecipeListActivity";
-    Button addRecipeBtn;
     EditText addRecipeDescriptionText;
     FirebaseFirestore db;
 
@@ -62,8 +58,6 @@ public class RecipeListActivity extends AppCompatActivity {
         final CollectionReference collectionReference = db.collection("recipes");
 
         // Initialize views
-        addRecipeBtn = findViewById(R.id.add_recipe_button);
-        addRecipeDescriptionText = findViewById(R.id.add_recipe_description);
         sortSpinner = findViewById(R.id.sort_recipe_spinner);
 
         // initialize adapters and customList, connect to DB
@@ -198,34 +192,5 @@ public class RecipeListActivity extends AppCompatActivity {
             }
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
-    }
-
-    /**
-     *
-     * @param view
-     */
-    public void addIngredient(View view)  {
-        final CollectionReference collectionReference = db.collection("recipe");
-
-        final String description = addRecipeDescriptionText.getText().toString();
-        HashMap<String, String> data = new HashMap<>();
-
-        if (description.length() > 0) {
-            data.put("Province Name", description);
-            data.put("prep time", "5");
-
-            collectionReference
-                    .document(description)
-                    .set(data)
-                    .addOnSuccessListener(aVoid -> {
-                        // task succeeded
-                        Log.d(TAG + "AddRecipe", "Data has been added successfully!");
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.d(TAG + "AddRecipe", "Data could not be added!" + e);
-                    });
-
-            addRecipeDescriptionText.setText("");
-        }
     }
 }
