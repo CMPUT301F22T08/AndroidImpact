@@ -89,7 +89,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
      * <ul>
      *     <li>For ImageView elements, we used:
      *         <ul>
-     *             <li>
+     *             <li>Geeks for Geeks: How to Retrieve Image from Firebase in Realtime in Android?
      *                 <ul>
      *                     <li>
      *                         URL: https://www.geeksforgeeks.org/how-to-retrieve-image-from-firebase-in-realtime-in-android/
@@ -111,7 +111,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
      *                     </li>
      *                 </ul>
      *             </li>
-     *             <li>
+     *             <li>Firebase Storage Docs: Download files with Cloud Storage on Android
      *                 <ul>
      *                     <li>
      *                         URL: https://firebase.google.com/docs/storage/android/download-files
