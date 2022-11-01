@@ -1,42 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.androidimpact.app.MainActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/ingredient_input"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/ButtonFromMain_ingredientStorage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:text="INGREDIENT STORAGE"
+        app:layout_constraintBottom_toTopOf="@+id/ButtonFromMain_recipe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/add_ingredient_description"
-            android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/ButtonFromMain_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RECIPES"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ButtonFromMain_ingredientStorage" />
+
+    <Button
+        android:id="@+id/gotorecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="tmpgotorecipelist"
+        android:text="Go to Recipes" />
+
+
+
+<!--    <fragment-->
+<!--        android:id="@+id/nav_fragment"-->
+<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:defaultNavHost="true"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/combined_bottom"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:navGraph="@navigation/nav_graph " />-->
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/combined_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="8" />
+            android:layout_gravity="bottom"
+            app:fabCradleMargin="10dp"
+            app:fabAlignmentMode="center"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleVerticalOffset="10dp">
 
-        <Button
-            android:id="@+id/add_ingredient_button"
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:background="@android:color/transparent"
+                app:elevation="0dp"
+                app:menu="@menu/bottom_nav" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addStoreIngredientFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="addIngredient"
             android:text="@string/add_ingredient" />
 
-        <Button
-            android:id="@+id/gotorecipes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="tmpgotorecipelist"
-            android:text="Go to Recipes" />
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ingredient_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

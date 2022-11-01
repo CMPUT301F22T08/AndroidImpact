@@ -1,8 +1,34 @@
 <resources>
     <string name="app_name">AndroidImpact</string>
+
     <string name="add_ingredient">Add</string>
     <string name="recipe_title_in_list">Recipe Title</string>
     <string name="recipe_category_in_list">Recipe Category</string>
     <string name="recipe_prep_time_in_list">Prep: %d m</string>
     <string name="recipe_servings_in_list">%d</string>
+
+    <string name="ingredientStoreAdd_title">Add Ingredient to Storage</string>
+
+    <string name="description">Description</string>
+    <string name="amount">Amount</string>
+    <string name="unit">Unit</string>
+    <string name="category">Category</string>
+    <string name="bestBefore">Best Before</string>
+    <string name="location">Location</string>
+    <string name="expiry">Expiry</string>
+
+
+    <string name="recipe_title">Title</string>
+    <string name="recipe_comments">Comments</string>
+    <string name="recipe_ingredients">Ingredients</string>
+    <string name="recipe_prep_time">Preparation Time</string>
+    <string name="recipe_servings"># Servings</string>
+    <string name="recipe_category">Category</string>
+
+    <string name="activity_title">Activity Title</string>
+
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="sampleDate">21-12-2023</string>
 </resources>
