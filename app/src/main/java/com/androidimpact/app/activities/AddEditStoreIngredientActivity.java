@@ -27,7 +27,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     final String TAG = "AddStoreIngredientActivity";
 
     // declare all view variables
-    private TextView titleTextView;
     private EditText descriptionEditText;
     private EditText amountEditText;
     private EditText locationEditText;
@@ -44,12 +43,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_storage_add);
 
-        // Init activity title
-        titleTextView = findViewById(R.id.ingredientStoreAdd_title);
-        //TODO: Make this edit if editing a StoreIngredient
-        String title = "Add ingredient to storage";
-        titleTextView.setText(title);
-
         // Init EditText variables
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
         amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
@@ -57,6 +50,20 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         unitEditText = findViewById(R.id.ingredientStoreAdd_unit);
         categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
+
+        // init btns
+        Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
+        Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
+
+        // Check Bundle - determine if we're editing or adding!
+        // Init activity title
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            StoreIngredient ingredient = extras.getSerializable("editIngredient", StoreIngredient.class);
+        }
+        getSupportActionBar().setTitle("Add Ingredient");
+
+        // EVENT LISTENERS
 
         DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
             //TODO: Update this calendar with initial values here when editing a StoreIngredient
@@ -66,7 +73,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             updateLabel();
         };
 
-        Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
         cancelBtn.setOnClickListener(v -> {
             Log.i(TAG + ":cancel", "Cancel ingredient add");
             Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
@@ -74,7 +80,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             finish();
         });
 
-        Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
         confirmBtn.setOnClickListener(v -> {
             try {
                 // try to create an ingredient.

@@ -15,6 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -26,6 +29,9 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     private ArrayList<StoreIngredient> ingredientArrayList;
     private Context mContext;
     private int selected = -1; // initialize no ingredients selected
+
+    // functions that subscribe for edit callbacks
+    private ArrayList<StoreIngredientEditListener> editListeners = new ArrayList<>();
 
     // creating a constructor class.
     public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
@@ -79,6 +85,13 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
             clickedItem(position);
         });
+
+        holder.editIngredientFAB.setOnClickListener(v -> {
+            // execute all listeners
+            for (StoreIngredientEditListener listener : editListeners) {
+                listener.storeIngredientEditClicked(currentIngredient, position);
+            }
+        });
     }
 
     @Override
@@ -102,6 +115,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         private Chip category;
         private Chip location;
         private ImageButton dropdownToggle;
+        private FloatingActionButton editIngredientFAB;
 
         private ConstraintLayout expandable;
         private TextView amount;
@@ -117,6 +131,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             category = itemView.findViewById(R.id.store_ingredient_category);
             location = itemView.findViewById(R.id.store_ingredient_location);
             dropdownToggle = itemView.findViewById(R.id.store_ingredient_dropdown_toggle);
+            editIngredientFAB = itemView.findViewById(R.id.edit_store_ingredient);
 
             expandable = itemView.findViewById(R.id.store_ingredient_expandable_section);
             date = itemView.findViewById(R.id.store_ingredient_expiry);
@@ -132,6 +147,17 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             selected = position;
         }
         notifyItemChanged(position);
+    }
+
+    // OBSERVER PATTERN: this interface lets people subscribe to changes in the cityAdapter
+    // this is because we need MainActivity to react to changes because it has the FragmentManager
+    // https://stackoverflow.com/a/36662886
+    public interface StoreIngredientEditListener {
+        void storeIngredientEditClicked(StoreIngredient food, int position);
+    }
+
+    public void setEditClickListener(StoreIngredientEditListener toAdd) {
+        editListeners.add(toAdd);
     }
 
 }

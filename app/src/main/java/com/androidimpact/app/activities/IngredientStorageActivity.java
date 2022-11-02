@@ -68,6 +68,11 @@ public class IngredientStorageActivity extends AppCompatActivity {
             addStoreIngredientLauncher.launch(intent);
         });
 
+        storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
+            // runs whenever a store ingredient edit btn is clicked
+            Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
+        });
+
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
