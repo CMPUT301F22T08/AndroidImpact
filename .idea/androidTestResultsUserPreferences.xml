@@ -163,6 +163,21 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="2132593106">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="LGE&#10; LM-Q630" value="120" />
+                  <entry key="LMQ630TSOZA6O7F6CI" value="120" />
+                  <entry key="Pixel_XL_API_30" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

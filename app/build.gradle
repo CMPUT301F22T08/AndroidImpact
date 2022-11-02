@@ -71,4 +71,7 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    // Picasso for ImageView elements
+    implementation 'com.squareup.picasso:picasso:2.8'
 }

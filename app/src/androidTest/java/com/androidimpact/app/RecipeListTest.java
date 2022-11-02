@@ -1,18 +1,19 @@
 package com.androidimpact.app;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import android.app.Activity;
 
-import android.content.Context;
-import android.util.Log;
+import com.androidimpact.app.activities.RecipeListActivity;
 
-import org.checkerframework.checker.units.qual.A;
+import org.junit.Rule;
 import org.junit.Test;
 
-import java.lang.annotation.Target;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import androidx.test.rule.ActivityTestRule;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class to test RecipeList class
@@ -20,21 +21,36 @@ import java.util.Arrays;
  *  - getItemCount()
  *  - getSortChoice()
  *  - setSortChoice(int index)
- *  = getSortChoices()
+ *  - getSortChoices()
  *  - sortByChoice()
+ *
+ *  Note: This needed to be moved from unit tests as we need a valid context to initialize Firebase
+ *  Storage, which we did through RecipeListActivity.java
  */
 public class RecipeListTest {
     private RecipeList recipeList;
+
+    @Rule
+    public ActivityTestRule<RecipeListActivity> rule = new ActivityTestRule<>(RecipeListActivity.class);
+
+    /**
+     * Create a recipe list based on a given arraylist
+     * @param arrlist arraylist to base mock recipe list on
+     * @return recipe list as RecipeList object
+     */
+    public RecipeList MakeRecipeList(ArrayList<Recipe> arrlist) {
+        recipeList = new RecipeList(
+                rule.getActivity().getBaseContext(), arrlist
+        );
+        return recipeList;
+    }
 
     /**
      * Create a mock recipe list
      * @return mock recipe list as RecipeList object
      */
     public RecipeList MockRecipeList() {
-        recipeList = new RecipeList(
-                null, new ArrayList<>()
-        );
-        return recipeList;
+        return MakeRecipeList(new ArrayList<>());
     }
 
     /**
@@ -64,7 +80,7 @@ public class RecipeListTest {
     @Test
     public void getItemCountTest() {
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-        recipeList = new RecipeList(null, recipeArrayList);
+        recipeList = MakeRecipeList(recipeArrayList);
         assertEquals(recipeList.getItemCount(), 0);
 
         recipeArrayList.add(MockRecipe());
@@ -132,7 +148,7 @@ public class RecipeListTest {
             ));
         }
 
-        recipeList = new RecipeList(null, recipeArrayList);
+        recipeList = MakeRecipeList(recipeArrayList);
 
         for(int i = 0; i < n; i++) {
             recipeList.setSortChoice(i);
@@ -142,10 +158,5 @@ public class RecipeListTest {
         }
 
         assertTrue(true);
-    }
-
-    @Test
-    public void deleteEdition() {
-
     }
 }
