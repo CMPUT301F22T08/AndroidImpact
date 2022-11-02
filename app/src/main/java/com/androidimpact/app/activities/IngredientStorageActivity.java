@@ -27,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
@@ -85,13 +87,14 @@ public class IngredientStorageActivity extends AppCompatActivity {
                 int position = viewHolder.getAdapterPosition();
 
                 // Get the swiped item at a particular position.
-                Ingredient deletedIngredient = ingredientDataList.get(position);
+                StoreIngredient deletedIngredient = ingredientDataList.get(position);
                 String description = deletedIngredient.getDescription();
+                String id = deletedIngredient.getId();
 
                 Log.d(TAG, "Swiped " + description + " at position " + position);
 
                 // delete item from firebase
-                ingredientsCollection.document(description)
+                ingredientsCollection.document(id)
                     .delete()
                     .addOnSuccessListener(aVoid -> {
                         Log.d(TAG, description + " has been deleted successfully!");
@@ -107,15 +110,38 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         // on snapshot listener for the collection
         ingredientsCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+
             // Clear the old list
             ingredientDataList.clear();
 
             if (queryDocumentSnapshots == null) { return; }
 
+            int errorCount = 0;
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                String description = (String) doc.get("description");
-                Calendar rightNow = Calendar.getInstance();
-                ingredientDataList.add(new StoreIngredient(description, 0, "", "", rightNow, "trial")); // Adding the cities and provinces from FireStore
+                String id = doc.getId();
+                try {
+                    String description = doc.get("description", String.class);
+                    float amount = doc.get("amount", float.class);
+                    Date bestBefore = doc.get("bestBeforeDate", Date.class);
+                    String category = doc.get("category", String.class);
+                    String location = doc.get("location", String.class);
+                    String unit = doc.get("unit", String.class);
+
+                    StoreIngredient store = new StoreIngredient(id, description, amount, unit, category, bestBefore, location);
+
+                    ingredientDataList.add(store); // Adding the cities and provinces from FireStore
+                } catch (Exception e) {
+                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
+                    errorCount += 1;
+                }
+            }
+
+            if (errorCount > 0) {
+                Snackbar.make(ingredientListView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
             storeingredientViewAdapter.notifyDataSetChanged();
@@ -138,9 +164,9 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
             if (result.getResultCode() == Activity.RESULT_OK) {
                 // Ok - we have an ingredient!
-                Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
+                StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                 Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
-                ingredientsCollection.add(ingredient);
+                ingredientsCollection.document(ingredient.getId()).set(ingredient);
             } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                 // cancelled request - do nothing.
                 Log.i(TAG + ":addIngredientResult", "Received cancelled");
