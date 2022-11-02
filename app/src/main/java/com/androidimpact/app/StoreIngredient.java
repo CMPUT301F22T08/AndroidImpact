@@ -1,7 +1,15 @@
 package com.androidimpact.app;
 
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.io.Externalizable;
+import java.io.ObjectInput;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * StoreIngredient object that is stored in IngredientStorage
@@ -9,43 +17,56 @@ import java.util.Calendar;
  * Extra attributes:
  *  - bestBeforeDate (Calendar) - The best before date for the stored ingredient
  *  - location (String) - Where the ingredient is stored e.g. Pantry or Freezer
+ *  - id (String) - id of the ingredient inside Firebase
  * @author Kailash Seshadri
  * @version 1.0
  * @see Ingredient
  */
 public class StoreIngredient extends Ingredient implements Serializable {
-    private Calendar bestBeforeDate;
+    @ServerTimestamp
+    private Date bestBeforeDate;
     private String location;
+    private String id;
 
     /**
      * Constructor for the StoreIngredient class
+     * @param id (String) - Document id in Firebase
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
      * @param unit (String) - The unit that amount is measuring e.g. g in 300g
      * @param category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
-     * @param bestBeforeDate (Calendar) - The best before date for the stored ingredient
+     * @param bestBeforeDate (Date) - The best before date for the stored ingredient
      * @param location (String) - Where the ingredient is being stored
      * @see Ingredient
      */
-    public StoreIngredient(String description, float amount, String unit, String category, Calendar bestBeforeDate, String location){
+    public StoreIngredient(String id, String description, float amount, String unit, String category, Date bestBeforeDate, String location){
         super(description, amount, unit, category);
+        this.id = id;
         this.bestBeforeDate = bestBeforeDate;
         this.location = location;
     }
 
     /**
-     * Get the bestBeforeDate of the stored ingredient
-     * @return (Calendar) The best before date for the stored ingredient
+     * Gets the id of the element
+     * @return (String) the id of the document
      */
-    public Calendar getBestBeforeDate() {
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Get the bestBeforeDate of the stored ingredient
+     * @return (Date) The best before date for the stored ingredient
+     */
+    public Date getBestBeforeDate() {
         return bestBeforeDate;
     }
 
     /**
      * Change the best-before date of the stored ingredient
-     * @param bestBeforeDate (Calendar) - The new best-before date of the stored ingredient
+     * @param bestBeforeDate (Date) - The new best-before date of the stored ingredient
      */
-    public void setBestBeforeDate(Calendar bestBeforeDate) {
+    public void setBestBeforeDate(Date bestBeforeDate) {
         this.bestBeforeDate = bestBeforeDate;
     }
 
@@ -55,13 +76,5 @@ public class StoreIngredient extends Ingredient implements Serializable {
      */
     public String getLocation() {
         return location;
-    }
-
-    /**
-     * Change the location where the ingredient is stored
-     * @param location (String) - The new location of the ingredient being stored
-     */
-    public void setLocation(String location) {
-        this.location = location;
     }
 }

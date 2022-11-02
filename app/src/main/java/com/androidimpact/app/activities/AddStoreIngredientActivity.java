@@ -18,7 +18,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
+import java.util.UUID;
 
 public class AddStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
@@ -96,16 +100,11 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             }
         });
 
-        bestBeforeEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new DatePickerDialog(AddStoreIngredientActivity.this,
-                        date,
-                        bestBeforeCalendar.get(Calendar.YEAR),
-                        bestBeforeCalendar.get(Calendar.MONTH),
-                        bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
+        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(AddStoreIngredientActivity.this,
+                date,
+                bestBeforeCalendar.get(Calendar.YEAR),
+                bestBeforeCalendar.get(Calendar.MONTH),
+                bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show());
     }
 
     private void updateLabel(){
@@ -170,7 +169,10 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         }
 
         try {
-            return new StoreIngredient(description, amount, unit, category, bestBeforeCalendar, location);
+            UUID uuid = UUID.randomUUID();
+            String id = uuid.toString();
+            Date date = bestBeforeCalendar.getTime();
+            return new StoreIngredient(id, description, amount, unit, category, date, location);
         } catch(Exception e) {
             throw new Exception("Error parsing ingredients");
         }
