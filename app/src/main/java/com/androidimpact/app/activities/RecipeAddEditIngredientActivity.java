@@ -127,6 +127,10 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             generateSnackbar(String.join(", ", snackbarMessage) + " must be filled!");
             return false;
         }
+        else if (getStr(amount).equals("0")){
+            generateSnackbar("Amount must be larger than 0!");
+            return false;
+        }
         return true;
     }
 
@@ -147,7 +151,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      *    The string to send a snackbar of
      */
     public void generateSnackbar (String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.ingredient_layout), message, Snackbar.LENGTH_SHORT);
         View snackbarView = snackbar.getView();
         TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
         snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
