@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,12 +42,12 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     @Override
     public void onBindViewHolder(@NonNull StoreIngredientViewAdapter.StoreIngredientViewHolder holder, int position) {
         // Set the data to textview from our modal class.
-        StoreIngredient recyclerData = ingredientArrayList.get(position);
-        holder.description.setText(recyclerData.getDescription());
-        holder.category.setText(recyclerData.getCategory());
+        StoreIngredient currentIngredient = ingredientArrayList.get(position);
+        holder.description.setText(currentIngredient.getDescription());
+        holder.category.setText(currentIngredient.getCategory());
         String myFormat="dd MMM yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        holder.date.setText(dateFormat.format(recyclerData.getBestBeforeDate().getTime()));
+        holder.date.setText(dateFormat.format(currentIngredient.getBestBeforeDate().getTime()));
         holder.dropdownToggle.setOnClickListener(v -> {
             Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
             clickedItem(position);
@@ -63,8 +64,12 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         }
 
         // edit content inside the expandable section
-        holder.amount.setText("Amount: " + recyclerData.getAmount() + recyclerData.getUnit());
-        holder.location.setText("Location: " + recyclerData.getLocation());
+        // using strings with placeholders because that's apparently better
+        // https://stackoverflow.com/a/40715374
+        String amount = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        String location = holder.res.getString(R.string.store_ingredient_location_display, currentIngredient.getLocation());
+        holder.amount.setText(amount);
+        holder.location.setText(location);
     }
 
     @Override
@@ -77,8 +82,9 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     // View Holder Class to handle Recycler View.
     // not sure why thi sis necessary
     // From what I understand, all this does is retrieve all the items. The ViewHolder means it "holds"
-    // all the view elements neessary fro the Adapter.
+    // all the view elements necessary fro the Adapter.
     public class StoreIngredientViewHolder extends RecyclerView.ViewHolder {
+        private Resources res;
 
         // creating a variable for our text view.
         private TextView description;
@@ -94,6 +100,8 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
+            res = itemView.getResources();
+
             // initializing our text views.
             //Need to be changed for now
             date = itemView.findViewById(R.id.store_ingredient_expiry);
