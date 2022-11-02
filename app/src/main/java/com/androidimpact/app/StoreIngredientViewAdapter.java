@@ -122,7 +122,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         } else {
             selected = position;
         }
-        notifyDataSetChanged();
+        notifyItemChanged(position);
     }
 
 }
