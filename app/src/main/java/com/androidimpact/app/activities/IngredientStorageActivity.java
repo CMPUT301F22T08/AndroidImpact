@@ -69,7 +69,6 @@ public class IngredientStorageActivity extends AppCompatActivity {
             addStoreIngredientLauncher.launch(intent);
         });
 
-
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
