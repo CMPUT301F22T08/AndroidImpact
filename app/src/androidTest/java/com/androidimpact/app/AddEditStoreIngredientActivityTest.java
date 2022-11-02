@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import android.content.res.Resources;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.androidimpact.app.activities.AddStoreIngredientActivity;
+import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -18,13 +17,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class AddStoreIngredientActivityTest {
+public class AddEditStoreIngredientActivityTest {
     private Solo solo;
     private Resources resources;
 
     @Rule
-    public ActivityTestRule<AddStoreIngredientActivity> rule =
-            new ActivityTestRule<>(AddStoreIngredientActivity.class, true, true);
+    public ActivityTestRule<AddEditStoreIngredientActivity> rule =
+            new ActivityTestRule<>(AddEditStoreIngredientActivity.class, true, true);
 
     @Before
     public void setUp() throws Exception {
@@ -37,7 +36,7 @@ public class AddStoreIngredientActivityTest {
      */
     @Test
     public void btnChecks() {
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
         // ensure this cancel text is the same as @string/cancel
         // we don't have access to the actual android context (https://stackoverflow.com/a/39577494)
         // so we have to hardcode this XD
@@ -54,10 +53,10 @@ public class AddStoreIngredientActivityTest {
      */
     @Test
     public void confirmBtnCheckEmpty() {
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
         // ensure this cancel text is the same as @string/confirm
         solo.clickOnButton("Confirm");
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
     }
 
     /**
@@ -65,8 +64,8 @@ public class AddStoreIngredientActivityTest {
      */
     @Test
     public void confirmBtnCheckInvalid1() {
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
-        AddStoreIngredientActivity a = (AddStoreIngredientActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
+        AddEditStoreIngredientActivity a = (AddEditStoreIngredientActivity) solo.getCurrentActivity();
 
         // fill in description
         EditText description = a.findViewById(R.id.ingredientStoreAdd_description);
@@ -88,7 +87,7 @@ public class AddStoreIngredientActivityTest {
         solo.clickOnText("OK");
 
         solo.clickOnButton("Confirm");
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
     }
 
     /**
@@ -96,8 +95,8 @@ public class AddStoreIngredientActivityTest {
      */
     @Test
     public void confirmBtnCheckInvalid2() {
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
-        AddStoreIngredientActivity a = (AddStoreIngredientActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
+        AddEditStoreIngredientActivity a = (AddEditStoreIngredientActivity) solo.getCurrentActivity();
 
         // fill in description
         EditText description = a.findViewById(R.id.ingredientStoreAdd_description);
@@ -119,7 +118,7 @@ public class AddStoreIngredientActivityTest {
         solo.clickOnText("OK");
 
         solo.clickOnButton("Confirm");
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
     }
 
     /**
@@ -127,8 +126,8 @@ public class AddStoreIngredientActivityTest {
      */
     @Test
     public void confirmBtnCheckFilled() {
-        solo.assertCurrentActivity("Wrong Activity!", AddStoreIngredientActivity.class);
-        AddStoreIngredientActivity a = (AddStoreIngredientActivity) solo.getCurrentActivity();
+        solo.assertCurrentActivity("Wrong Activity!", AddEditStoreIngredientActivity.class);
+        AddEditStoreIngredientActivity a = (AddEditStoreIngredientActivity) solo.getCurrentActivity();
 
         // fill in description
         EditText description = a.findViewById(R.id.ingredientStoreAdd_description);

@@ -13,11 +13,11 @@
         android:layout_marginStart="16dp"
         android:text="@string/recipe_title_in_list"
         android:textSize="34sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/recipe_image_view"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/recipe_image_view"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="centerInside"
@@ -42,7 +42,7 @@
         android:layout_marginStart="16dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imageView"
+        app:layout_constraintStart_toEndOf="@id/recipe_image_view"
         app:layout_constraintTop_toBottomOf="@id/recipe_name">
 
         <com.google.android.material.chip.ChipGroup

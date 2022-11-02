@@ -20,7 +20,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.AddStoreIngredientActivity"
+            android:name=".activities.AddEditStoreIngredientActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

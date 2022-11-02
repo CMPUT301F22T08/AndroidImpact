@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.androidimpact.app"
-        minSdk 24
+        minSdk 29
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -71,4 +71,7 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    // Picasso for ImageView elements
+    implementation 'com.squareup.picasso:picasso:2.8'
 }
