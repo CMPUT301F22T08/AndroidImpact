@@ -14,8 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -46,15 +45,11 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     public void onBindViewHolder(@NonNull StoreIngredientViewAdapter.StoreIngredientViewHolder holder, int position) {
         // Set the data to textview from our modal class.
         StoreIngredient currentIngredient = ingredientArrayList.get(position);
+
+        // set values
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
-        String myFormat="dd MMM yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        holder.date.setText(dateFormat.format(currentIngredient.getBestBeforeDate().getTime()));
-        holder.dropdownToggle.setOnClickListener(v -> {
-            Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
-            clickedItem(position);
-        });
+        holder.location.setText(currentIngredient.getLocation());
 
         // if `selected` is the position, make the expandable section visible
         if (position == selected) {
@@ -70,9 +65,20 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // using strings with placeholders because that's apparently better
         // https://stackoverflow.com/a/40715374
         String amount = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
-        String location = holder.res.getString(R.string.store_ingredient_location_display, currentIngredient.getLocation());
         holder.amount.setText(amount);
-        holder.location.setText(location);
+
+        // setting formatted date
+        String myFormat="MMM dd yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        String formattedDate = dateFormat.format(currentIngredient.getBestBeforeDate().getTime());
+        String date = holder.res.getString(R.string.store_ingredient_date_display, formattedDate);
+        holder.date.setText(date);
+
+        // OnClick Listener
+        holder.dropdownToggle.setOnClickListener(v -> {
+            Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
+            clickedItem(position);
+        });
     }
 
     @Override
@@ -93,13 +99,13 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         private TextView description;
 
         // creating a variable for category
-        private TextView category;
-        private TextView date;
+        private Chip category;
+        private Chip location;
         private ImageButton dropdownToggle;
 
         private ConstraintLayout expandable;
         private TextView amount;
-        private TextView location;
+        private TextView date;
 
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,14 +113,14 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
             // initializing our text views.
             //Need to be changed for now
-            date = itemView.findViewById(R.id.store_ingredient_expiry);
             description = itemView.findViewById(R.id.store_ingredient_description);
             category = itemView.findViewById(R.id.store_ingredient_category);
+            location = itemView.findViewById(R.id.store_ingredient_location);
             dropdownToggle = itemView.findViewById(R.id.store_ingredient_dropdown_toggle);
 
             expandable = itemView.findViewById(R.id.store_ingredient_expandable_section);
+            date = itemView.findViewById(R.id.store_ingredient_expiry);
             amount = itemView.findViewById(R.id.store_ingredient_amount);
-            location = itemView.findViewById(R.id.store_ingredient_location);
         }
     }
 

@@ -28,31 +28,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/store_ingredient_category"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/category_background_bubble"
-            android:padding="3dp"
-            android:text="@string/category"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/store_ingredient_expiry"
-            app:layout_constraintTop_toTopOf="@+id/store_ingredient_expiry" />
-
-        <TextView
-            android:id="@+id/store_ingredient_expiry"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:padding="3dp"
-            android:text="@string/expiry"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/store_ingredient_description" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_store_ingredient"
             android:layout_width="wrap_content"
@@ -79,6 +54,25 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/expand_more_white" />
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/store_ingredient_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="@color/purple_700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/store_ingredient_description" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/store_ingredient_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="?attr/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/store_ingredient_category"
+            app:layout_constraintTop_toTopOf="@+id/store_ingredient_category" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,12 +83,12 @@
 
 
         <TextView
-            android:id="@+id/store_ingredient_amount"
+            android:id="@+id/store_ingredient_expiry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:text="Amount"
+            android:text="expiry"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -103,16 +97,16 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/store_ingredient_location"
+            android:id="@+id/store_ingredient_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
-            android:text="Location"
+            android:layout_marginStart="36dp"
+            android:text="Amount"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/store_ingredient_amount"
-            app:layout_constraintStart_toEndOf="@+id/store_ingredient_amount"
-            app:layout_constraintTop_toTopOf="@+id/store_ingredient_amount"
+            app:layout_constraintBottom_toBottomOf="@+id/store_ingredient_expiry"
+            app:layout_constraintStart_toEndOf="@+id/store_ingredient_expiry"
+            app:layout_constraintTop_toTopOf="@+id/store_ingredient_expiry"
             app:layout_constraintVertical_bias="0.52" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
