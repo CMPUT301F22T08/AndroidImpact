@@ -13,6 +13,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -64,7 +65,8 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         servingsComparator = Comparator.comparingInt(Recipe::getServings);
         categoryComparator = Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER);
 
-        storageReference = FirebaseStorage.getInstance().getReference();
+        FirebaseStorage fs = FirebaseStorage.getInstance();
+        storageReference = fs.getReference();
     }
 
 
