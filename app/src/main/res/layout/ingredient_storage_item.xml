@@ -100,14 +100,12 @@
             android:id="@+id/store_ingredient_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
+            android:layout_marginTop="4dp"
             android:text="Amount"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/store_ingredient_expiry"
-            app:layout_constraintStart_toEndOf="@+id/store_ingredient_expiry"
-            app:layout_constraintTop_toTopOf="@+id/store_ingredient_expiry"
-            app:layout_constraintVertical_bias="0.52" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/store_ingredient_expiry" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
