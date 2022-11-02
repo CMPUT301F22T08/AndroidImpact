@@ -19,12 +19,10 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.UUID;
 
-public class AddStoreIngredientActivity extends AppCompatActivity {
+public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
     final String TAG = "AddStoreIngredientActivity";
 
@@ -71,7 +69,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
         cancelBtn.setOnClickListener(v -> {
             Log.i(TAG + ":cancel", "Cancel ingredient add");
-            Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+            Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
             setResult(Activity.RESULT_CANCELED, intent);
             finish();
         });
@@ -81,7 +79,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             try {
                 // try to create an ingredient.
                 StoreIngredient newStoreIngredient = createIngredient();
-                Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+                Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
 
                 // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
                 intent.putExtra("ingredient", newStoreIngredient);
@@ -100,7 +98,7 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             }
         });
 
-        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(AddStoreIngredientActivity.this,
+        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(AddEditStoreIngredientActivity.this,
                 date,
                 bestBeforeCalendar.get(Calendar.YEAR),
                 bestBeforeCalendar.get(Calendar.MONTH),

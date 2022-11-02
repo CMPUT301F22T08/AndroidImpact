@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
@@ -26,9 +25,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
@@ -67,7 +64,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
         // Launch AddStoreIngredientActivity when FAB is clicked
         addIngredientFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
-            Intent intent = new Intent(IngredientStorageActivity.this, AddStoreIngredientActivity.class);
+            Intent intent = new Intent(IngredientStorageActivity.this, AddEditStoreIngredientActivity.class);
             addStoreIngredientLauncher.launch(intent);
         });
 

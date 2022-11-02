@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AddStoreIngredientActivity"
+    tools:context=".activities.AddEditStoreIngredientActivity"
     android:id="@+id/content">
     <TextView
         android:id="@+id/ingredientStoreAdd_title"
