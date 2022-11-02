@@ -16,6 +16,7 @@ public class Recipe {
     private String category;
     private String comments;
     private String date;
+    private String photo;
 
     /**
      * Constructor for recipe
@@ -192,5 +193,23 @@ public class Recipe {
      */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    /**
+     * This gets the photo of the recipe
+     * @return
+     *     This is the photo of the recipe
+     */
+    public String getPhoto() {
+        return photo;
+    }
+
+    /**
+     * This sets the date of the recipe
+     * @param photo
+     *     This is the photo URI to set
+     */
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

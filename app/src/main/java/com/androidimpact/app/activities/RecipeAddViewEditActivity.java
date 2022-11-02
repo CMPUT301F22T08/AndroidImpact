@@ -3,17 +3,14 @@ package com.androidimpact.app.activities;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,12 +27,14 @@ import java.util.Date;
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.RecipeIngredientAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * This class is the activity for recipe adding/viewing/editing
@@ -56,6 +55,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     TextView activity_title;
     FirebaseFirestore db;
 
+    //https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
+    FirebaseStorage storage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,10 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         // Initialize database
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("recipes");
+
+        // Initialize storage for photos
+        storage = FirebaseStorage.getInstance();
+        final StorageReference storageReference = storage.getReference();
 
         // Link XML objects
         title = findViewById(R.id.recipe_title);
@@ -101,14 +107,25 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     data.put("servings", getStr(servings));
                     data.put("category", getStr(category));
                     data.put("comments", getStr(comments));
-                    data.put("photo", comments.getText().toString());
+                    if (photo.getTag() == null) {
+                        data.put("photo", null);
+                    }
+                    //Add photo to firebase storage
+                    else {
+                        String img_name = UUID.randomUUID().toString();
+                        data.put("photo", img_name);
+                        StorageReference imgs = storageReference.child("images/" + img_name);
+                        imgs.putFile((Uri) photo.getTag())
+                                .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
+                                .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
+                    }
                     data.put("ingredients", ingredientData);
 
                     collectionReference
-                            .document(title.getText().toString())
-                            .set(data)
-                            .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
-                            .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
+                        .document(title.getText().toString())
+                        .set(data)
+                        .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
+                        .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
                 generateSnackbar("Added " + getStr(title) + "!");
                 title.setText("");
                 prep_time.setText("");
@@ -116,6 +133,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 category.setText("");
                 comments.setText("");
                 ingredients.clear();
+                photo.setImageResource(R.drawable.ic_launcher_foreground);
                 ingredientAdapter.notifyDataSetChanged();
             }
         });
@@ -144,7 +162,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 }
             });
 
-    // Adding ingredients
+    /**
+     * Opens activity to add ingredients
+     * @param v
+     *    Button that activates the function
+     */
     public void addIngredient(View v) {
         Log.i(TAG + ":addPhoto", "Adding ingredient!");
         Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
@@ -174,13 +196,19 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         catch (IOException e) {
                             e.printStackTrace();
                         }
-                        photo.setImageBitmap(
-                                selectedImageBitmap);
+                        photo.setImageBitmap(selectedImageBitmap);
+
+                        //https://stackoverflow.com/questions/28505123/getting-an-image-path-from-a-imageview
+                        photo.setTag(selectedImageUri); //Get file path for adding to storage
                     }
                 }
             });
 
-    // Adding photos
+    /**
+     * Opens activity to add photo
+     * @param v
+     *    ImageView that activates this method
+     */
     public void addPhoto(View v) {
         Log.i(TAG + ":addPhoto", "Adding photo!");
         Intent intent = new Intent();
