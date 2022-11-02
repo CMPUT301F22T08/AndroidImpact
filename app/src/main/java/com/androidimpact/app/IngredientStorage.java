@@ -1,6 +1,8 @@
 package com.androidimpact.app;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 //Need to implement compare to in ingredient storage
@@ -14,6 +16,11 @@ import java.util.ArrayList;
 public class IngredientStorage {
     private ArrayList<StoreIngredient> ingredientStorageList;
 
+    private static String[] sortChoices;
+    private int sortIndex;
+
+    public static Comparator<StoreIngredient> descriptionComparator, bbdComparator, locationComparator, categoryComparator;
+
 
     /**
      * constructor for IngredientStorage
@@ -21,6 +28,20 @@ public class IngredientStorage {
     public IngredientStorage()
     {
         this.ingredientStorageList = new ArrayList<StoreIngredient>();
+
+        this.sortChoices = new String[]{
+                "Description",
+                "Best Before Date",
+                "Location",
+                "Ingredient Category"
+        };
+        this.sortIndex = 0;
+        // set compare variables
+        descriptionComparator = Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER);
+        bbdComparator = Comparator.comparing(StoreIngredient::getBestBeforeDateString, String.CASE_INSENSITIVE_ORDER);
+        locationComparator = Comparator.comparing(StoreIngredient::getLocation, String.CASE_INSENSITIVE_ORDER);
+        categoryComparator = Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER);
+
     }
 
     /**
@@ -91,6 +112,43 @@ public class IngredientStorage {
     {
         return this.ingredientStorageList.size();
     }
+
+
+    /**
+     * Return the current sorting choice for the recipe list
+     * @return the index of the sorting choices for the user
+     */
+    public String getSortChoice() {
+        return this.sortChoices[this.sortIndex];
+    }
+
+    /**
+     * Set the sorting choice for the recipe list
+     * @param index the index of the sorting choices for the user
+     */
+    public void setSortChoice(int index) {
+        this.sortIndex = index;
+    }
+
+
+
+    /**
+     * This function allows us to sort the recipe list by the user's choice
+     */
+    public void sortByChoice() {
+        switch(this.sortIndex) {
+            case 0:
+                Collections.sort(ingredientStorageList, descriptionComparator); break;
+            case 1:
+                Collections.sort(ingredientStorageList, bbdComparator); break;
+            case 2:
+                Collections.sort(ingredientStorageList, locationComparator); break;
+            case 3:
+                Collections.sort(ingredientStorageList, categoryComparator); break;
+        }
+    }
+
+    /**
 
     /**
      * this function clears the ingredientStorageList
