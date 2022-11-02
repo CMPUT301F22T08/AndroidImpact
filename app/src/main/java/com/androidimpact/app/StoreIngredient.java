@@ -55,11 +55,24 @@ public class StoreIngredient extends Ingredient implements Serializable {
     }
 
     /**
-     * Get the bestBeforeDate of the stored ingredient
+     * Get the best-before date of the stored ingredient
      * @return (Date) The best before date for the stored ingredient
      */
     public Date getBestBeforeDate() {
         return bestBeforeDate;
+    }
+
+
+    /**
+     * Get the best-before date of the stored ingredient as a Calendar object
+     * @return (Calendar) The best before date for the stored ingredient
+     */
+    public Calendar getBestBeforeCalendar(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, bestBeforeDate.getYear());
+        cal.set(Calendar.MONTH, bestBeforeDate.getMonth());
+        cal.set(Calendar.DAY_OF_MONTH, bestBeforeDate.getDate());
+        return cal;
     }
 
     /**

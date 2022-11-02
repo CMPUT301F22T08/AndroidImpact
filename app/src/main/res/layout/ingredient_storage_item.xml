@@ -9,7 +9,8 @@
     android:layout_height="wrap_content"
     android:backgroundTint="#00FFFFFF"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -46,7 +47,6 @@
             android:id="@+id/store_ingredient_dropdown_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
             android:backgroundTint="@color/background"
             android:minHeight="48dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -100,12 +100,12 @@
             android:id="@+id/store_ingredient_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="Amount"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/store_ingredient_expiry" />
+            app:layout_constraintBottom_toBottomOf="@+id/store_ingredient_expiry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/store_ingredient_expiry" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
