@@ -166,7 +166,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     // Ok - we have an updated ingredient!
                     // edit firebase directly
-                    StoreIngredient ingredient = bundle.getSerializable("ingredient", StoreIngredient.class);
+                    StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                     ingredientsCollection.document(ingredient.getId()).set(ingredient);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
@@ -190,7 +190,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
             if (result.getResultCode() == Activity.RESULT_OK) {
                 // Ok - we have an ingredient!
-                StoreIngredient ingredient = bundle.getSerializable("ingredient", StoreIngredient.class);
+                StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                 Log.i(TAG + ":addStoreIngredientLauncher", ingredient.getDescription());
                 ingredientsCollection.document(ingredient.getId()).set(ingredient);
             } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
