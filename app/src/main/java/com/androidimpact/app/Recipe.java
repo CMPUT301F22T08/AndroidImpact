@@ -25,7 +25,7 @@ public class Recipe {
      * @param title
      *     This is the name of the recipe
      * @param prep_time
-     *     This is the preparation time in seconds
+     *     This is the preparation time in minutes
      * @param servings
      *     This is the amount of servings
      * @param category
@@ -50,6 +50,17 @@ public class Recipe {
     }
 
     /**
+     * This checks if an ingredient is in a recipe
+     * @param ingredient
+     *     This is the ingredient to check
+     * @return
+     *     If the recipe has the ingredient
+     */
+    public boolean hasIngredient(Ingredient ingredient) {
+        return this.ingredients.contains(ingredient);
+    }
+
+    /**
      * This adds an ingredient to the recipe
      * @param ingredient
      *     This is the ingredient to add
@@ -64,7 +75,13 @@ public class Recipe {
      *     This is the ingredient to remove
      */
     public void removeIngredient(Ingredient ingredient) {
-        ingredients.remove(ingredient);
+
+        if (this.hasIngredient(ingredient)) {
+            ingredients.remove(ingredient);
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
