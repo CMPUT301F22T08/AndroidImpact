@@ -34,4 +34,6 @@
     <string name="store_ingredient_amount_display">Amount: %1$.2f%2$s</string>
     <string name="store_ingredient_location_display">Location: %1$s</string>
     <string name="store_ingredient_date_display">Expiry: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

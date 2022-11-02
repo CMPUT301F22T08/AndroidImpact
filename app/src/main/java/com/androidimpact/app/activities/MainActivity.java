@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,11 +25,15 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.fragments.IngredientStorage;
+import com.androidimpact.app.fragments.MealPlanner;
+import com.androidimpact.app.fragments.RecipeList;
+import com.androidimpact.app.fragments.ShoppingList;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // adding cities to firebase
     final String TAG = "MainActivity";
@@ -37,34 +43,64 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("PAIN");
+        getSupportActionBar().setTitle("AndroidImpact");
 
 
         bottomnav = findViewById(R.id.bottom_navigation_view);
         bottomnav.setBackground(null);
 
+        bottomnav.setOnNavigationItemSelectedListener(this);
+        bottomnav.setSelectedItemId(R.id.storage_icon);
+
         //navController = findNavController(R.id.nav_fragment)
        // bottomnav.setupWithNavController(navController)
+//
+//        Button ingredientStorageButton = findViewById(R.id.ButtonFromMain_ingredientStorage);
+//        ingredientStorageButton.setOnClickListener(v -> {
+//            Log.i(TAG + ":onCreate", "Opening Storage!");
+//            Intent intent = new Intent(MainActivity.this, IngredientStorageActivity.class);
+//            startActivity(intent);
+//        });
+//
+//        Button recipeButton = findViewById(R.id.ButtonFromMain_recipe);
+//        recipeButton.setOnClickListener(v -> {
+//            Log.i(TAG + ":onCreate", "Opening Storage!");
+//            Intent intent = new Intent(MainActivity.this, RecipeAddViewEditActivity.class);
+//            startActivity(intent);
+//        });
+//
+//        Button gotoRecipesButton = findViewById(R.id.gotorecipes);
+//        gotoRecipesButton.setOnClickListener(v -> {
+//            Log.i(TAG + ":onCreate", "Opening RecipeListActivity!");
+//            Intent intent = new Intent(MainActivity.this, RecipeListActivity.class);
+//            startActivity(intent);
+//        });
+    }
 
-        Button ingredientStorageButton = findViewById(R.id.ButtonFromMain_ingredientStorage);
-        ingredientStorageButton.setOnClickListener(v -> {
-            Log.i(TAG + ":onCreate", "Opening Storage!");
-            Intent intent = new Intent(MainActivity.this, IngredientStorageActivity.class);
-            startActivity(intent);
-        });
 
-        Button recipeButton = findViewById(R.id.ButtonFromMain_recipe);
-        recipeButton.setOnClickListener(v -> {
-            Log.i(TAG + ":onCreate", "Opening Storage!");
-            Intent intent = new Intent(MainActivity.this, RecipeAddViewEditActivity.class);
-            startActivity(intent);
-        });
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.storage_icon:
+                IngredientStorage storageFragment = new IngredientStorage();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, storageFragment, null).commit();
+                return true;
 
-        Button gotoRecipesButton = findViewById(R.id.gotorecipes);
-        gotoRecipesButton.setOnClickListener(v -> {
-            Log.i(TAG + ":onCreate", "Opening RecipeListActivity!");
-            Intent intent = new Intent(MainActivity.this, RecipeListActivity.class);
-            startActivity(intent);
-        });
+            case R.id.recipe_icon:
+                RecipeList recipeListFragment = new RecipeList();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, recipeListFragment, null).commit();
+                return true;
+
+            case R.id.cart_icon:
+                ShoppingList shoppingListFragment = new ShoppingList();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, shoppingListFragment, null).commit();
+                return true;
+
+            case R.id.meal_icon:
+                MealPlanner mealPlannerFragment = new MealPlanner();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, mealPlannerFragment, null).commit();
+                return true;
+        }
+        return false;
     }
 }

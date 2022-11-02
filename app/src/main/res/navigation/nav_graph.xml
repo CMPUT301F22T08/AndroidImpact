@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/storage_icon">
+    <fragment android:id="@+id/storage_icon" />
+    <fragment android:id="@+id/recipe_icon" />
+    <fragment
+        android:id="@+id/IngredientStorageFragment"
+        android:name="com.androidimpact.app.fragments.IngredientStorage"
+        android:label="ingredient_storage_fragment"
+        tools:layout="@layout/fragment_ingredient_storage" />
+</navigation>
