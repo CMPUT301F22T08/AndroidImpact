@@ -61,6 +61,10 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
             holder.expandable.setVisibility(View.GONE);
         }
+
+        // edit content inside the expandable section
+        holder.amount.setText("Amount: " + recyclerData.getAmount() + recyclerData.getUnit());
+        holder.location.setText("Location: " + recyclerData.getLocation());
     }
 
     @Override
@@ -72,6 +76,8 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
     // View Holder Class to handle Recycler View.
     // not sure why thi sis necessary
+    // From what I understand, all this does is retrieve all the items. The ViewHolder means it "holds"
+    // all the view elements neessary fro the Adapter.
     public class StoreIngredientViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view.
@@ -84,7 +90,6 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         private ConstraintLayout expandable;
         private TextView amount;
-        private TextView cost;
         private TextView location;
 
         public StoreIngredientViewHolder(@NonNull View itemView) {
@@ -98,7 +103,6 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
             expandable = itemView.findViewById(R.id.store_ingredient_expandable_section);
             amount = itemView.findViewById(R.id.store_ingredient_amount);
-            cost = itemView.findViewById(R.id.store_ingredient_cost);
             location = itemView.findViewById(R.id.store_ingredient_location);
         }
     }
