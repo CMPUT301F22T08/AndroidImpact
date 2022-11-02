@@ -19,14 +19,14 @@ public class IngredientStorageTest {
     }
     private StoreIngredient mockIngredient()
     {
-        return new StoreIngredient("test food", 0, "", "",Calendar.getInstance(), "trial");
+        return new StoreIngredient("01", "test food", 0, "", "",new Date(), "trial");
     }
 
     @Test
     public void testAdd(){
         IngredientStorage ingredientList = mockIngredientList();
         assertEquals(1, ingredientList.size());
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry",Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
     }
@@ -36,7 +36,7 @@ public class IngredientStorageTest {
     @Test
     public void testAddException() {
         IngredientStorage ingredientList = mockIngredientList();
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry",Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
         ingredientList.add(ingredient);
@@ -45,7 +45,7 @@ public class IngredientStorageTest {
     @Test
     public void testGetIngredient() {
         IngredientStorage ingredientList = mockIngredientList();
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry", Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.add(ingredient);
         //to add a compareTo method in store ingredient
         assertEquals(true, ingredient == ingredientList.get(1));
@@ -56,7 +56,7 @@ public class IngredientStorageTest {
     @Test
     public void testSetIngredient() {
         IngredientStorage ingredientList = mockIngredientList();
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry",Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.set(0, ingredient);
         //to add a compareTo method in store ingredient
         assertEquals(true, ingredient == ingredientList.get(0));
@@ -67,7 +67,7 @@ public class IngredientStorageTest {
     public void testRemove()
     {
         IngredientStorage ingredientList = mockIngredientList();
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry",Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
         ingredientList.remove(ingredient);
@@ -75,7 +75,7 @@ public class IngredientStorageTest {
 
         // test deleting invalid store ingredient
         assertThrows( IllegalArgumentException.class, () -> {
-            ingredientList.remove(new StoreIngredient("egg1", 10, "", "plt", Calendar.getInstance(), "counter")); });
+            ingredientList.remove(new StoreIngredient("0101", "egg1", 10, "", "plt", new Date(), "counter")); });
 
         assertEquals(1, ingredientList.size());
     }
@@ -85,7 +85,7 @@ public class IngredientStorageTest {
     public void testClear()
     {
         IngredientStorage ingredientList = mockIngredientList();
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry",Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
         ingredientList.clear();
@@ -97,7 +97,7 @@ public class IngredientStorageTest {
     {
         IngredientStorage ingredientList = mockIngredientList();
         assertEquals(1, ingredientList.size());
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry",Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
         ingredientList.clear();
@@ -109,7 +109,7 @@ public class IngredientStorageTest {
     public void testRemoveInt()
     {
         IngredientStorage ingredientList = mockIngredientList();
-        StoreIngredient ingredient = new StoreIngredient("egg", 10, "", "poultry",Calendar.getInstance(), "fridge");
+        StoreIngredient ingredient = mockIngredient();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
         ingredientList.remove(1);
