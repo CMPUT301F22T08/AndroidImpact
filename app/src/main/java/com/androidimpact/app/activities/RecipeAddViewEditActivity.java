@@ -121,6 +121,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 // below line is to get the position
                 // of the item at that position.
                 int position = viewHolder.getAdapterPosition();
+                generateSnackbar("Deleted " + ingredients.get(position).getDescription() + "!");
                 ingredients.remove(position);
                 ingredientAdapter.notifyDataSetChanged();
             }
