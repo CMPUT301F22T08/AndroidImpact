@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
@@ -26,9 +25,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
@@ -67,8 +64,16 @@ public class IngredientStorageActivity extends AppCompatActivity {
         // Launch AddStoreIngredientActivity when FAB is clicked
         addIngredientFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
-            Intent intent = new Intent(IngredientStorageActivity.this, AddStoreIngredientActivity.class);
+            Intent intent = new Intent(IngredientStorageActivity.this, AddEditStoreIngredientActivity.class);
             addStoreIngredientLauncher.launch(intent);
+        });
+
+        storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
+            // runs whenever a store ingredient edit btn is clicked
+            Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
+            Intent intent = new Intent(IngredientStorageActivity.this, AddEditStoreIngredientActivity.class);
+            intent.putExtra("storeIngredient", storeIngredient);
+            editStoreIngredientLauncher.launch(intent);
         });
 
         // drag to delete
@@ -148,6 +153,27 @@ public class IngredientStorageActivity extends AppCompatActivity {
         });
     }
 
+    final private ActivityResultLauncher<Intent> editStoreIngredientLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (isNull(result.getData())) {
+                    return;
+                }
+                Bundle bundle = result.getData().getExtras();
+
+                Log.i(TAG + ":editStoreIngredientLauncher", "Got bundle");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // Ok - we have an updated ingredient!
+                    // edit firebase directly
+                    StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
+                    ingredientsCollection.document(ingredient.getId()).set(ingredient);
+                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    // cancelled request - do nothing.
+                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                }
+            });
+
     /**
      * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
      * AddStoreIngredientActivity
@@ -160,16 +186,16 @@ public class IngredientStorageActivity extends AppCompatActivity {
             }
             Bundle bundle = result.getData().getExtras();
 
-            Log.i(TAG + ":addIngredientResult", "Got bundle");
+            Log.i(TAG + ":addStoreIngredientLauncher", "Got bundle");
 
             if (result.getResultCode() == Activity.RESULT_OK) {
                 // Ok - we have an ingredient!
                 StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
-                Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
+                Log.i(TAG + ":addStoreIngredientLauncher", ingredient.getDescription());
                 ingredientsCollection.document(ingredient.getId()).set(ingredient);
             } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                 // cancelled request - do nothing.
-                Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                Log.i(TAG + ":addStoreIngredientLauncher", "Received cancelled");
             }
         });
 }

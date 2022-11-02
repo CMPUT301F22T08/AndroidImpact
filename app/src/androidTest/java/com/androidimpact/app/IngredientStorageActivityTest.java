@@ -1,15 +1,13 @@
 package com.androidimpact.app;
 
 import android.content.res.Resources;
-import android.util.Log;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.androidimpact.app.activities.AddStoreIngredientActivity;
+import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.IngredientStorageActivity;
 import com.androidimpact.app.activities.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,7 +64,7 @@ public class IngredientStorageActivityTest {
         FloatingActionButton fab = a.findViewById(R.id.addStoreIngredientFAB);
         solo.clickOnView(fab);
 
-        solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddStoreIngredientActivity.class);
+        solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddEditStoreIngredientActivity.class);
         solo.clickOnButton("Cancel");
         solo.assertCurrentActivity("Wrong activity after clicking cancel: Should be in IngredientStorageActivity", IngredientStorageActivity.class);
     }
@@ -89,10 +87,10 @@ public class IngredientStorageActivityTest {
         FloatingActionButton fab = a1.findViewById(R.id.addStoreIngredientFAB);
         solo.clickOnView(fab);
 
-        solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddStoreIngredientActivity.class);
+        solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddEditStoreIngredientActivity.class);
         // Why must solo be so slow
-        solo.waitForActivity(AddStoreIngredientActivity.class,10000);
-        AddStoreIngredientActivity a2 = (AddStoreIngredientActivity) solo.getCurrentActivity();
+        solo.waitForActivity(AddEditStoreIngredientActivity.class,10000);
+        AddEditStoreIngredientActivity a2 = (AddEditStoreIngredientActivity) solo.getCurrentActivity();
 
         // fill in description
         EditText description = a2.findViewById(R.id.ingredientStoreAdd_description);
