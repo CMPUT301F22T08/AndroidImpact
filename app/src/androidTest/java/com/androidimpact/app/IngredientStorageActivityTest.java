@@ -89,7 +89,7 @@ public class IngredientStorageActivityTest {
 
         solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddEditStoreIngredientActivity.class);
         // Why must solo be so slow
-        solo.waitForActivity(AddStoreIngredientActivity.class,10000);
+        solo.waitForActivity(AddEditStoreIngredientActivity.class,10000);
         AddEditStoreIngredientActivity a2 = (AddEditStoreIngredientActivity) solo.getCurrentActivity();
 
         // fill in description
