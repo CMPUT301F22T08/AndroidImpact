@@ -1,5 +1,6 @@
 package com.androidimpact.app.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -62,14 +63,23 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         if (extras != null) {
             ingredient = extras.getSerializable("storeIngredient", StoreIngredient.class);
             getSupportActionBar().setTitle("Edit Ingredient");
+
+            // set initial values
+            descriptionEditText.setText(ingredient.getDescription());
+            amountEditText.setText(String.valueOf(ingredient.getAmount()));
+            locationEditText.setText(ingredient.getLocation());
+            unitEditText.setText(ingredient.getUnit());
+            categoryEditText.setText(ingredient.getCategory());
+            bestBeforeCalendar.setTime(ingredient.getBestBeforeDate());
+            updateLabel();
         } else {
+            ingredient = null;
             getSupportActionBar().setTitle("Add Ingredient");
         }
 
         // EVENT LISTENERS
 
         DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
-            //TODO: Update this calendar with initial values here when editing a StoreIngredient
             bestBeforeCalendar.set(Calendar.YEAR, year);
             bestBeforeCalendar.set(Calendar.MONTH,month);
             bestBeforeCalendar.set(Calendar.DAY_OF_MONTH,day);
@@ -86,7 +96,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(v -> {
             try {
                 // try to create an ingredient.
-                StoreIngredient newStoreIngredient = createIngredient();
+                StoreIngredient newStoreIngredient = createIngredient(ingredient);
                 Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
 
                 // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
@@ -106,7 +116,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
         });
 
-        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(AddEditStoreIngredientActivity.this,
+        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(
+                AddEditStoreIngredientActivity.this,
                 date,
                 bestBeforeCalendar.get(Calendar.YEAR),
                 bestBeforeCalendar.get(Calendar.MONTH),
@@ -122,12 +133,13 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     /**
      * Validates the data input by the user
      * Create a StoreIngredient object if the data is valid.
+     * @param editing (StoreIngredient) Possible storeIngredient we are editing
      * @return A StoreIngredient object created using the data from the editTexts
      * @throws Exception if the data is invalid or if the Ingredient could not be created
      * @see StoreIngredient
      */
     // Should we throw an exception or have a snack-bar that says fields can't be empty?
-    private StoreIngredient createIngredient() throws Exception {
+    private StoreIngredient createIngredient(@Nullable StoreIngredient editing) throws Exception {
         String description = descriptionEditText.getText().toString();
         String amountRaw = amountEditText.getText().toString();
         String location = locationEditText.getText().toString();
@@ -175,8 +187,13 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         }
 
         try {
-            UUID uuid = UUID.randomUUID();
-            String id = uuid.toString();
+            String id;
+            if (editing != null) {
+                id = editing.getId();
+            } else {
+                UUID uuid = UUID.randomUUID();
+                id = uuid.toString();
+            }
             Date date = bestBeforeCalendar.getTime();
             return new StoreIngredient(id, description, amount, unit, category, date, location);
         } catch(Exception e) {
