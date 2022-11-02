@@ -26,7 +26,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     // creating a variable for our array list and context.
     private ArrayList<StoreIngredient> ingredientArrayList;
     private Context mContext;
-    private int selected;
+    private int selected = -1; // initialize no ingredients selected
 
     // creating a constructor class.
     public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
