@@ -58,10 +58,13 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         // Check Bundle - determine if we're editing or adding!
         // Init activity title
         Bundle extras = getIntent().getExtras();
+        StoreIngredient ingredient;
         if (extras != null) {
-            StoreIngredient ingredient = extras.getSerializable("editIngredient", StoreIngredient.class);
+            ingredient = extras.getSerializable("storeIngredient", StoreIngredient.class);
+            getSupportActionBar().setTitle("Edit Ingredient");
+        } else {
+            getSupportActionBar().setTitle("Add Ingredient");
         }
-        getSupportActionBar().setTitle("Add Ingredient");
 
         // EVENT LISTENERS
 
