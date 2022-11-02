@@ -2,7 +2,11 @@ package com.androidimpact.app.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +30,7 @@ import java.util.Date;
 
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
+import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeIngredientAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -47,8 +52,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     final String TAG = "RecipeAddViewEdit";
     EditText title, prep_time, servings, category, comments;
 
-    ListView ingredientList;
-    ArrayAdapter<Ingredient> ingredientAdapter;
+    RecyclerView ingredientList;
+    RecipeIngredientAdapter ingredientAdapter;
     ArrayList<Ingredient> ingredients;
 
     ImageView photo;
@@ -85,7 +90,44 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         ingredientList = findViewById(R.id.recipe_ingredients_list);
 
         ingredientAdapter = new RecipeIngredientAdapter(this, ingredients);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        ingredientList.setLayoutManager(manager);
         ingredientList.setAdapter(ingredientAdapter);
+
+
+        // drag to delete
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            /**
+             *
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             */
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                // this method is called
+                // when the item is moved.
+                return false;
+            }
+
+            /**
+             *
+             * @param viewHolder
+             * @param direction
+             */
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // below line is to get the position
+                // of the item at that position.
+                int position = viewHolder.getAdapterPosition();
+                ingredients.remove(position);
+                ingredientAdapter.notifyDataSetChanged();
+            }
+            // at last we are adding this
+            // to our recycler view.
+        }).attachToRecyclerView(ingredientList);
+
 
         // Add button on bottom right
         final Button addRecipe = findViewById(R.id.add_button);
