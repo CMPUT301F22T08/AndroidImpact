@@ -79,6 +79,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
             addStoreIngredientLauncher.launch(intent);
         });
 
+        // listen for edits in `storeingredientViewAdapter`
         storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
             // runs whenever a store ingredient edit btn is clicked
             Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
@@ -86,11 +87,9 @@ public class IngredientStorageActivity extends AppCompatActivity {
             intent.putExtra("storeIngredient", storeIngredient);
             editStoreIngredientLauncher.launch(intent);
         });
-
+        
         sortSpinner2 = findViewById(R.id.sort_ingredient_spinner);
-
         sortText = findViewById(R.id.sort_ingredient_info);
-
 
         sortingChoices = ingredientDataList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
@@ -128,9 +127,6 @@ public class IngredientStorageActivity extends AppCompatActivity {
                 storeingredientViewAdapter.notifyDataSetChanged();
             }
         });
-
-        // Adding onCLick listener for spinner so that list can be sorted
-
 
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
