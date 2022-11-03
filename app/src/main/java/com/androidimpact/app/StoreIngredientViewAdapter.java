@@ -70,6 +70,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // edit content inside the expandable section
         // using strings with placeholders because that's apparently better
         // https://stackoverflow.com/a/40715374
+        
         String amount = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         holder.amount.setText(amount);
 
@@ -149,8 +150,8 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         notifyItemChanged(position);
     }
 
-    // OBSERVER PATTERN: this interface lets people subscribe to changes in the cityAdapter
-    // this is because we need MainActivity to react to changes because it has the FragmentManager
+    // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
+    // this is because we need the parent activity to react to changes because it has the Context and Activity info
     // https://stackoverflow.com/a/36662886
     public interface StoreIngredientEditListener {
         void storeIngredientEditClicked(StoreIngredient food, int position);
