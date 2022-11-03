@@ -3,9 +3,12 @@ package com.androidimpact.app;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -66,8 +69,9 @@ public class IngredientStorageTest {
     @Test
     public void testRemove()
     {
-        IngredientStorage ingredientList = mockIngredientList();
+
         StoreIngredient ingredient = mockIngredient();
+        IngredientStorage ingredientList = mockIngredientList();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
         ingredientList.remove(ingredient);
@@ -79,7 +83,84 @@ public class IngredientStorageTest {
 
         assertEquals(1, ingredientList.size());
     }
+    /**
+     * Test that the default sort choice is as below
+     * Initialize the ingredientlist and ensure value of default sort choice is "Description"
+     */
+    @Test
+    public void getSortChoiceTest() {
+        IngredientStorage ingredientList = mockIngredientList();
+        assertEquals(ingredientList.getSortChoice(), "Description");
+    }
 
+    /**
+     * Test that the set sort choice is correct
+     * Initialize the recipe list and ensure the value when we set the sort choice to one of our
+     * choosing, then it reflects the choice we want
+     */
+    @Test
+    public void setSortChoiceTest() {
+        IngredientStorage ingredientList = mockIngredientList();
+        ingredientList.setSortChoice(1);
+        assertEquals(ingredientList.getSortChoice(), "Best Before Date");
+    }
+
+    /**
+     * Test that the sort choices available to the user are correctly returned
+     * In this case, check all the values are the same as intended, and that there aren't any more
+     * than intended
+     */
+    @Test
+    public void getSortChoicesTest() {
+        IngredientStorage ingredientList = mockIngredientList();
+        assertTrue(Arrays.equals(ingredientList.getSortChoices(), new String[]{
+                "Description",
+                "Best Before Date",
+                "Location",
+                "Ingredient Category"
+        }));
+    }
+
+    /**
+     * Test that sorting by a user's choice actually sorts the list as intended
+     * In this case, set attributes of recipe using a number i
+     * In the way implemented in the test, each sorting will result in a unique recipe at the 'top'
+     * Check that this unique value is at the 'top' by title
+     */
+    @Test
+    public void sortByChoiceTest() {
+        ArrayList<StoreIngredient> IngredientTestList = new ArrayList<>();
+        int n = 5;
+        float dum = 0;
+        //String id, String description, float amount, String unit, String category, Date bestBeforeDate, String location
+        for(int i = 0; i < n; i++) {
+            IngredientTestList.add(new StoreIngredient(
+                    "",
+                    String.valueOf(i), // n-(n-i) = i
+                    dum,
+                    "",
+                    String.valueOf(n-(4-i)),
+                    new Date(i),
+                    String.valueOf(n-(3-i))
+            ));
+        }
+
+
+        IngredientStorage ingredientList = new IngredientStorage();
+        //To be changed
+        for (int i = 0; i < n; ++i){
+            ingredientList.add(IngredientTestList.get(i));
+        }
+
+        for(int i = 0; i < n; i++) {
+            ingredientList.setSortChoice(i);
+            ingredientList.sortByChoice();
+
+            assertEquals(ingredientList.get(i).getDescription(), String.valueOf(i));
+        }
+
+        assertTrue(true);
+    }
 
     @Test
     public void testClear()
@@ -105,6 +186,9 @@ public class IngredientStorageTest {
 
     }
 
+    /**
+     *
+     */
     @Test
     public void testRemoveInt()
     {

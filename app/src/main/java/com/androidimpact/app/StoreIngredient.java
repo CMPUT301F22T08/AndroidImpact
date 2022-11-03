@@ -5,10 +5,12 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.io.Externalizable;
 import java.io.ObjectInput;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -60,6 +62,14 @@ public class StoreIngredient extends Ingredient implements Serializable {
      */
     public Date getBestBeforeDate() {
         return bestBeforeDate;
+    }
+
+
+    public String getBestBeforeDateString() {
+
+        String myFormat="dd MMMM yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        return dateFormat.format(bestBeforeDate.getTime());
     }
 
 
