@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.RecipeList;
@@ -48,6 +49,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
     FloatingActionButton addIngredientFAB;
     Spinner sortSpinner2;
     String[] sortingChoices;
+    TextView sortText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,9 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         sortSpinner2 = findViewById(R.id.sort_ingredient_spinner);
 
+        sortText = findViewById(R.id.sort_ingredient_info);
+
+
         sortingChoices = ingredientDataList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 this,
@@ -104,6 +109,9 @@ public class IngredientStorageActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ingredientDataList.setSortChoice(i);
                 ingredientDataList.sortByChoice();
+              //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
+
+
                 storeingredientViewAdapter.notifyDataSetChanged();
             }
 
@@ -115,6 +123,8 @@ public class IngredientStorageActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 ingredientDataList.setSortChoice(0);
                 ingredientDataList.sortByChoice();
+              //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
+
                 storeingredientViewAdapter.notifyDataSetChanged();
             }
         });
