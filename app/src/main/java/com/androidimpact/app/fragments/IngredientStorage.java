@@ -20,11 +20,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
-import com.androidimpact.app.activities.AddStoreIngredientActivity;
+import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.IngredientStorageActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,6 +55,9 @@ public class IngredientStorage extends Fragment {
     FirebaseFirestore db;
     CollectionReference ingredientsCollection;
     FloatingActionButton addIngredientFAB;
+    Spinner sortSpinner2;
+    String[] sortingChoices;
+    TextView sortText;
 
     public IngredientStorage() {
         // Required empty public constructor
@@ -77,6 +84,7 @@ public class IngredientStorage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        // TODO: change this to fragment_ingredient_storage
         return inflater.inflate(R.layout.activity_ingredient_storage, container, false);
     }
 
@@ -111,8 +119,55 @@ public class IngredientStorage extends Fragment {
         // Launch AddStoreIngredientActivity when FAB is clicked
         addIngredientFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
-            Intent intent = new Intent(getContext(), AddStoreIngredientActivity.class);
+            Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
             addStoreIngredientLauncher.launch(intent);
+        });
+
+        // listen for edits in `storeingredientViewAdapter`
+        storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
+            // runs whenever a store ingredient edit btn is clicked
+            Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
+            Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
+            intent.putExtra("storeIngredient", storeIngredient);
+            editStoreIngredientLauncher.launch(intent);
+        });
+
+        sortSpinner2 = a.findViewById(R.id.sort_ingredient_spinner);
+        sortText = a.findViewById(R.id.sort_ingredient_info);
+
+        sortingChoices = ingredientDataList.getSortChoices();
+        ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
+                getContext(),
+                android.R.layout.simple_list_item_1,
+                sortingChoices
+        );
+        sortingOptionsAdapter.setDropDownViewResource(
+                android.R.layout.simple_list_item_1
+        );
+        sortSpinner2.setAdapter(sortingOptionsAdapter);
+
+        sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ingredientDataList.setSortChoice(i);
+                ingredientDataList.sortByChoice();
+                //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
+                storeingredientViewAdapter.notifyDataSetChanged();
+            }
+
+            /**
+             * This function ensures default sorting if no other sorting selected
+             * @param adapterView   The adapterView that does not contain any user selection
+             */
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                ingredientDataList.setSortChoice(0);
+                ingredientDataList.sortByChoice();
+                //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
+
+                storeingredientViewAdapter.notifyDataSetChanged();
+            }
         });
 
         // drag to delete
@@ -191,6 +246,27 @@ public class IngredientStorage extends Fragment {
             storeingredientViewAdapter.notifyDataSetChanged();
         });
     }
+
+    final private ActivityResultLauncher<Intent> editStoreIngredientLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (isNull(result.getData())) {
+                    return;
+                }
+                Bundle bundle = result.getData().getExtras();
+
+                Log.i(TAG + ":editStoreIngredientLauncher", "Got bundle");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // Ok - we have an updated ingredient!
+                    // edit firebase directly
+                    StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
+                    ingredientsCollection.document(ingredient.getId()).set(ingredient);
+                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    // cancelled request - do nothing.
+                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                }
+            });
 
     /**
      * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
