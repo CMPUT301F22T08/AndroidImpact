@@ -14,8 +14,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.androidimpact.app.IngredientStorage;
+import com.androidimpact.app.RecipeList;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.R;
@@ -25,6 +30,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class IngredientStorageActivity extends AppCompatActivity {
@@ -39,6 +46,8 @@ public class IngredientStorageActivity extends AppCompatActivity {
     FirebaseFirestore db;
     CollectionReference ingredientsCollection;
     FloatingActionButton addIngredientFAB;
+    Spinner sortSpinner2;
+    String[] sortingChoices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,43 @@ public class IngredientStorageActivity extends AppCompatActivity {
             intent.putExtra("storeIngredient", storeIngredient);
             editStoreIngredientLauncher.launch(intent);
         });
+
+        sortSpinner2 = findViewById(R.id.sort_ingredient_spinner);
+
+        sortingChoices = ingredientDataList.getSortChoices();
+        ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                sortingChoices
+        );
+        sortingOptionsAdapter.setDropDownViewResource(
+                android.R.layout.simple_list_item_1
+        );
+        sortSpinner2.setAdapter(sortingOptionsAdapter);
+
+        sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ingredientDataList.setSortChoice(i);
+                ingredientDataList.sortByChoice();
+                storeingredientViewAdapter.notifyDataSetChanged();
+            }
+
+            /**
+             * This function ensures default sorting if no other sorting selected
+             * @param adapterView   The adapterView that does not contain any user selection
+             */
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                ingredientDataList.setSortChoice(0);
+                ingredientDataList.sortByChoice();
+                storeingredientViewAdapter.notifyDataSetChanged();
+            }
+        });
+
+        // Adding onCLick listener for spinner so that list can be sorted
+
 
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
