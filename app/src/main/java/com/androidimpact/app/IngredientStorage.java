@@ -133,6 +133,13 @@ public class IngredientStorage {
 
 
     /**
+     * Return the sorting choices for the recipe list
+     * @return list of available sorting choices
+     */
+    public static String[] getSortChoices() {
+        return sortChoices.clone(); }
+
+    /**
      * This function allows us to sort the recipe list by the user's choice
      */
     public void sortByChoice() {
