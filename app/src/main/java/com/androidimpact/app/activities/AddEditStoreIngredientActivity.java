@@ -1,5 +1,6 @@
 package com.androidimpact.app.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -19,17 +20,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.UUID;
 
-public class AddStoreIngredientActivity extends AppCompatActivity {
+public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
     final String TAG = "AddStoreIngredientActivity";
 
     // declare all view variables
-    private TextView titleTextView;
     private EditText descriptionEditText;
     private EditText amountEditText;
     private EditText locationEditText;
@@ -46,12 +44,6 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_storage_add);
 
-        // Init activity title
-        titleTextView = findViewById(R.id.ingredientStoreAdd_title);
-        //TODO: Make this edit if editing a StoreIngredient
-        String title = "Add ingredient to storage";
-        titleTextView.setText(title);
-
         // Init EditText variables
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
         amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
@@ -60,28 +52,52 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
 
+        // init btns
+        Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
+        Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
+
+        // Check Bundle - determine if we're editing or adding!
+        // Init activity title
+        Bundle extras = getIntent().getExtras();
+        StoreIngredient ingredient;
+        if (extras != null) {
+            ingredient = extras.getSerializable("storeIngredient", StoreIngredient.class);
+            getSupportActionBar().setTitle("Edit Ingredient");
+
+            // set initial values
+            descriptionEditText.setText(ingredient.getDescription());
+            amountEditText.setText(String.valueOf(ingredient.getAmount()));
+            locationEditText.setText(ingredient.getLocation());
+            unitEditText.setText(ingredient.getUnit());
+            categoryEditText.setText(ingredient.getCategory());
+            bestBeforeCalendar.setTime(ingredient.getBestBeforeDate());
+            updateLabel();
+        } else {
+            ingredient = null;
+            getSupportActionBar().setTitle("Add Ingredient");
+        }
+
+        // EVENT LISTENERS
+
         DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
-            //TODO: Update this calendar with initial values here when editing a StoreIngredient
             bestBeforeCalendar.set(Calendar.YEAR, year);
             bestBeforeCalendar.set(Calendar.MONTH,month);
             bestBeforeCalendar.set(Calendar.DAY_OF_MONTH,day);
             updateLabel();
         };
 
-        Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
         cancelBtn.setOnClickListener(v -> {
             Log.i(TAG + ":cancel", "Cancel ingredient add");
-            Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+            Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
             setResult(Activity.RESULT_CANCELED, intent);
             finish();
         });
 
-        Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
         confirmBtn.setOnClickListener(v -> {
             try {
                 // try to create an ingredient.
-                StoreIngredient newStoreIngredient = createIngredient();
-                Intent intent = new Intent(AddStoreIngredientActivity.this, IngredientStorageActivity.class);
+                StoreIngredient newStoreIngredient = createIngredient(ingredient);
+                Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
 
                 // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
                 intent.putExtra("ingredient", newStoreIngredient);
@@ -100,7 +116,8 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
             }
         });
 
-        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(AddStoreIngredientActivity.this,
+        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(
+                AddEditStoreIngredientActivity.this,
                 date,
                 bestBeforeCalendar.get(Calendar.YEAR),
                 bestBeforeCalendar.get(Calendar.MONTH),
@@ -116,12 +133,13 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
     /**
      * Validates the data input by the user
      * Create a StoreIngredient object if the data is valid.
+     * @param editing (StoreIngredient) Possible storeIngredient we are editing
      * @return A StoreIngredient object created using the data from the editTexts
      * @throws Exception if the data is invalid or if the Ingredient could not be created
      * @see StoreIngredient
      */
     // Should we throw an exception or have a snack-bar that says fields can't be empty?
-    private StoreIngredient createIngredient() throws Exception {
+    private StoreIngredient createIngredient(@Nullable StoreIngredient editing) throws Exception {
         String description = descriptionEditText.getText().toString();
         String amountRaw = amountEditText.getText().toString();
         String location = locationEditText.getText().toString();
@@ -169,8 +187,13 @@ public class AddStoreIngredientActivity extends AppCompatActivity {
         }
 
         try {
-            UUID uuid = UUID.randomUUID();
-            String id = uuid.toString();
+            String id;
+            if (editing != null) {
+                id = editing.getId();
+            } else {
+                UUID uuid = UUID.randomUUID();
+                id = uuid.toString();
+            }
             Date date = bestBeforeCalendar.getTime();
             return new StoreIngredient(id, description, amount, unit, category, date, location);
         } catch(Exception e) {

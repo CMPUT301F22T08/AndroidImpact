@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:text="@string/description"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,8 +34,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginBottom="15dp"
         android:layout_weight="1"
         android:text="@string/unit"
         android:textColor="@color/white"
@@ -44,15 +44,26 @@
         app:layout_constraintStart_toEndOf="@+id/ingredient_amount"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.chip.Chip
         android:id="@+id/ingredient_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginStart="20dp"
-        android:layout_weight="1"
         android:text="@string/category"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/ingredient_description"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/ingredient_description"
+        app:layout_constraintStart_toEndOf="@+id/ingredient_description" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.461"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:contentDescription="@string/add" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,11 @@
 package com.androidimpact.app;
 
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Context;
 
@@ -10,10 +13,16 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * This class defines a recipe list
@@ -29,6 +38,8 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     private int sortIndex;
 
     public static Comparator<Recipe> defaultComparator, titleComparator, prepTimeComparator, servingsComparator, categoryComparator;
+
+    private StorageReference storageReference;
 
     /**
      * Constructor for RecipeList
@@ -53,6 +64,9 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
         servingsComparator = Comparator.comparingInt(Recipe::getServings);
         categoryComparator = Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER);
+
+        FirebaseStorage fs = FirebaseStorage.getInstance();
+        storageReference = fs.getReference();
     }
 
 
@@ -71,6 +85,56 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
     }
 
     /**
+     *
+     *
+     * References:
+     * <ul>
+     *     <li>For ImageView elements, we used:
+     *         <ul>
+     *             <li>Geeks for Geeks: How to Retrieve Image from Firebase in Realtime in Android?
+     *                 <ul>
+     *                     <li>
+     *                         URL: https://www.geeksforgeeks.org/how-to-retrieve-image-from-firebase-in-realtime-in-android/
+     *                     </li>
+     *                     <li>
+     *                         Author: surajkeshr023
+     *                     </li>
+     *                     <li>
+     *                         Editor: marcus007
+     *                     </li>
+     *                     <li>
+     *                         Licence: CCBY-SA
+     *                     </li>
+     *                     <li>
+     *                         Use: Inspired use of Picasso library
+     *                     </li>
+     *                     <li>
+     *                         Accessed: 2022-11-01, 2:45 PM
+     *                     </li>
+     *                 </ul>
+     *             </li>
+     *             <li>Firebase Storage Docs: Download files with Cloud Storage on Android
+     *                 <ul>
+     *                     <li>
+     *                         URL: https://firebase.google.com/docs/storage/android/download-files
+     *                     </li>
+     *                     <li>
+     *                         Author: Google Inc.
+     *                     </li>
+     *                     <li>
+     *                         Licence: http://www.apache.org/licenses/LICENSE-2.0
+     *                     </li>
+     *                     <li>
+     *                         Use: Motivated adding images to ImageView
+     *                     </li>
+     *                     <li>
+     *                         Accessed: 2022-11-01, 2:50 PM
+     *                     </li>
+     *                 </ul>
+     *             </li>
+     *         </ul>
+     *     </li>
+     * </ul>
      * @param holder
      * @param position
      * Set the data to textview from our modal class
@@ -87,6 +151,27 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
         holder.recipeServings.setText(String.format(
                 this.context.getResources().getString(R.string.recipe_servings_in_list
                 ), recyclerData.getPrep_time()));
+
+        // load image for recipe
+        String photoURI = recyclerData.getPhoto();
+        if(photoURI != null) {
+            try {
+                // get child in storage
+                StorageReference photoRef = storageReference.child("images/" + photoURI);
+                photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    // Got the download URL and put image in corresponding ImageView
+                    Picasso.get().load(uri).into(holder.recipeImage);
+                }).addOnFailureListener(exception -> {
+                    // Log any errors
+                    Log.e("Image Not Found", recyclerData.getTitle(), exception);
+                });
+
+            }
+            catch (Exception exception) {
+                // Log any errors
+                Log.e("Child Not Found", recyclerData.getTitle(), exception);
+            }
+        }
 
     }
 
@@ -107,6 +192,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
 
         // creating a variable for our text view.
         private TextView recipeTitle, recipeCategory, recipePrepTime, recipeServings;
+        private ImageView recipeImage;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -115,6 +201,7 @@ public class RecipeList extends RecyclerView.Adapter<RecipeList.RecipeViewHolder
             recipeCategory = itemView.findViewById(R.id.recipe_category);
             recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
             recipeServings = itemView.findViewById(R.id.recipe_servings);
+            recipeImage = itemView.findViewById(R.id.recipe_image_view);
         }
     }
 
