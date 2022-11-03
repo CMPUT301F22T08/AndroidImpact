@@ -79,17 +79,16 @@ public class IngredientStorageActivityTest {
         Button goToStorage = activity.findViewById(R.id.ButtonFromMain_ingredientStorage);
         solo.clickOnView(goToStorage);
 
-
+        solo.waitForActivity(IngredientStorageActivity.class,10000);
         solo.assertCurrentActivity("Should be in IngredientStorageActivity!", IngredientStorageActivity.class);
         // Why must solo be so slow
-        solo.waitForActivity(IngredientStorageActivity.class,10000);
         IngredientStorageActivity a1 = (IngredientStorageActivity) solo.getCurrentActivity();
         FloatingActionButton fab = a1.findViewById(R.id.addStoreIngredientFAB);
         solo.clickOnView(fab);
 
+        solo.waitForActivity(AddEditStoreIngredientActivity.class,10000);
         solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddEditStoreIngredientActivity.class);
         // Why must solo be so slow
-        solo.waitForActivity(AddEditStoreIngredientActivity.class,10000);
         AddEditStoreIngredientActivity a2 = (AddEditStoreIngredientActivity) solo.getCurrentActivity();
 
         // fill in description
@@ -112,6 +111,7 @@ public class IngredientStorageActivityTest {
         solo.clickOnText("OK");
 
         solo.clickOnButton("Confirm");
+        solo.waitForActivity(IngredientStorageActivity.class,10000);
         solo.assertCurrentActivity("Wrong activity after clicking cancel: Should be in IngredientStorageActivity", IngredientStorageActivity.class);
     }
 }
