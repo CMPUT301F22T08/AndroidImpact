@@ -1,9 +1,5 @@
 package com.androidimpact.app;
 
-import android.content.Context;
-
-import com.google.firebase.storage.FirebaseStorage;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,6 +39,67 @@ public class RecipeList {
         prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
         servingsComparator = Comparator.comparingInt(Recipe::getServings);
         categoryComparator = Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER);
+    }
+
+    /**
+     * this function returns the element at i index in the list
+     * @param i (int)
+     * @return (Recipe)
+     */
+    public Recipe get(int i) {
+        return this.recipeArrayList.get(i);
+    }
+
+    /**
+     * this function sets the recipes to index i in RecipeList
+     * @param i (int)
+     * @param recipe (Recipe)
+     */
+    public void set(int i, Recipe recipe){
+        this.recipeArrayList.set(i, recipe);
+    }
+
+    /**
+     * this function adds the recipe to RecipeList
+     * @param recipe (Recipe)
+     */
+    public void add(Recipe recipe)
+    {
+
+        this.recipeArrayList.add(recipe);
+    }
+
+    /**
+     * This function removes the element from recipeList at index i
+     * @param i (int)
+     */
+    public void remove(int i)
+    {
+        if (i < this.size() && i >= 0)
+            this.recipeArrayList.remove(i);
+        else
+            throw new ArrayIndexOutOfBoundsException("please choose a i between 0 and list size");
+    }
+
+    /**
+     * This function removes the recipe from the recipeList
+     * @param recipe (Recipe)
+     */
+    public void remove(Recipe recipe)
+    {
+        if (this.recipeArrayList.contains(recipe))
+            this.recipeArrayList.remove(recipe);
+        else
+            throw new IllegalArgumentException("Trying to remove recipe which isn't in list");
+    }
+
+    /**
+     * this function returns the size of the list
+     * @return (int)
+     */
+    public int size()
+    {
+        return this.recipeArrayList.size();
     }
 
     /**
