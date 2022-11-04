@@ -1,8 +1,14 @@
 package com.androidimpact.app.fragments;
 
+import static java.util.Objects.isNull;
+
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,6 +28,10 @@ import android.widget.Spinner;
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeListAdapter;
+import com.androidimpact.app.StoreIngredient;
+import com.androidimpact.app.StoreIngredientViewAdapter;
+import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -29,6 +39,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +63,8 @@ public class RecipeListFragment extends Fragment {
     EditText addRecipeDescriptionText;
     FloatingActionButton addRecipe;
     FirebaseFirestore db;
+    CollectionReference recipeCollection;
+    FloatingActionButton addRecipeFAB;
 
     public RecipeListFragment() {
         // Required empty public constructor
@@ -91,9 +107,19 @@ public class RecipeListFragment extends Fragment {
             return;
         }
 
+
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        final CollectionReference collectionReference = db.collection("recipes");
+        //final CollectionReference collectionReference = db.collection("recipes");
+        recipeCollection = db.collection("recipes");
+
+        addRecipeFAB = a.findViewById(R.id.addStoreIngredientFAB);
+        addRecipeFAB.setOnClickListener(v -> {
+            Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
+            Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
+            addStoreIngredientLauncher.launch(intent);
+        });
 
         // Initialize views
         sortSpinner = a.findViewById(R.id.sort_recipe_spinner);
@@ -179,7 +205,7 @@ public class RecipeListFragment extends Fragment {
                 Log.d(TAG, "Swiped " + description + " at position " + position);
 
                 // delete item from firebase
-                collectionReference.document(description)
+                recipeCollection.document(description)
                         .delete()
                         .addOnSuccessListener(aVoid -> {
                             // task succeeded
@@ -197,7 +223,7 @@ public class RecipeListFragment extends Fragment {
         }).attachToRecyclerView(recipeListView);
 
         // on snapshot listener for the collection
-        collectionReference.addSnapshotListener((queryDocumentSnapshots, error) -> {
+        recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
             recipeDataList.clear();
 
@@ -231,4 +257,38 @@ public class RecipeListFragment extends Fragment {
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
     }
+
+    /**
+     * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
+     * AddStoreIngredientActivity
+     */
+    final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (isNull(result.getData())) {
+                    return;
+                }
+                Bundle bundle = result.getData().getExtras();
+
+                Log.i(TAG + ":addIngredientResult", "Got bundle");
+
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Activity a = getActivity();
+                    final KonfettiView confetti = a.findViewById(R.id.confetti_view);
+                    confetti.build()
+                            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                            .setDirection(0.0, 359.0)
+                            .setSpeed(1f, 5f)
+                            .setFadeOutEnabled(true)
+                            .setTimeToLive(500L)
+                            .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                            .addSizes(new Size(8, 4f))
+                            .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                            .streamFor(300, 2000L);
+
+                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    // cancelled request - do nothing.
+                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                }
+            });
 }
