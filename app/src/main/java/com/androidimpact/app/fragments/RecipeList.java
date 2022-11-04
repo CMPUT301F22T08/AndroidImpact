@@ -44,7 +44,7 @@ public class RecipeList extends Fragment {
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
-    com.androidimpact.app.RecipeList recipeViewAdapter;
+    com.androidimpact.app.RecipeListAdapter recipeViewAdapter;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
     Spinner sortSpinner;
@@ -105,7 +105,7 @@ public class RecipeList extends Fragment {
         // initialize adapters and customList, connect to DB
         recipeListView = a.findViewById(R.id.recipe_listview);
         recipeDataList = new ArrayList<>();
-        recipeViewAdapter = new com.androidimpact.app.RecipeList(getContext(), recipeDataList);
+        recipeViewAdapter = new com.androidimpact.app.RecipeListAdapter(getContext(), recipeDataList);
         sortingOptions = com.androidimpact.app.RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
