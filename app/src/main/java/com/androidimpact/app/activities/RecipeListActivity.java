@@ -17,13 +17,13 @@ import android.widget.Spinner;
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeList;
+import com.androidimpact.app.RecipeListAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Activity class for Recipe List
@@ -34,7 +34,7 @@ public class RecipeListActivity extends AppCompatActivity {
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
-    RecipeList recipeViewAdapter;
+    RecipeListAdapter recipeViewAdapter;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
     Spinner sortSpinner;
@@ -57,13 +57,13 @@ public class RecipeListActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("recipes");
 
+
         // Initialize views
         sortSpinner = findViewById(R.id.sort_recipe_spinner);
 
-        // initialize adapters and customList, connect to DB
         recipeListView = findViewById(R.id.recipe_listview);
         recipeDataList = new ArrayList<>();
-        recipeViewAdapter = new RecipeList(this, recipeDataList);
+        recipeViewAdapter = new RecipeListAdapter(this, recipeDataList);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 this,

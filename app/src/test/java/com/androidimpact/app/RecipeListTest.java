@@ -1,7 +1,5 @@
 package com.androidimpact.app;
 
-import android.app.Activity;
-
 import com.androidimpact.app.activities.RecipeListActivity;
 
 import org.junit.Rule;
@@ -9,8 +7,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import androidx.test.rule.ActivityTestRule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,15 +19,9 @@ import static org.junit.Assert.assertTrue;
  *  - setSortChoice(int index)
  *  - getSortChoices()
  *  - sortByChoice()
- *
- *  Note: This needed to be moved from unit tests as we need a valid context to initialize Firebase
- *  Storage, which we did through RecipeListActivity.java
  */
 public class RecipeListTest {
     private RecipeList recipeList;
-
-    @Rule
-    public ActivityTestRule<RecipeListActivity> rule = new ActivityTestRule<>(RecipeListActivity.class);
 
     /**
      * Create a recipe list based on a given arraylist
@@ -40,7 +30,7 @@ public class RecipeListTest {
      */
     public RecipeList MakeRecipeList(ArrayList<Recipe> arrlist) {
         recipeList = new RecipeList(
-                rule.getActivity().getBaseContext(), arrlist
+                arrlist
         );
         return recipeList;
     }
@@ -81,10 +71,10 @@ public class RecipeListTest {
     public void getItemCountTest() {
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         recipeList = MakeRecipeList(recipeArrayList);
-        assertEquals(recipeList.getItemCount(), 0);
+        assertEquals(recipeList.size(), 0);
 
         recipeArrayList.add(MockRecipe());
-        assertEquals(recipeList.getItemCount(), 1);
+        assertEquals(recipeList.size(), 1);
     }
 
     /**
