@@ -94,13 +94,27 @@ public class IngredientStorageFragment extends Fragment {
         return fragment;
     }
 
+
+    /**
+     *
+     Fragment Called to do initial creation of a fragment. This is called after onAttach(Activity) and before onCreateView(LayoutInflater, ViewGroup, Bundle).
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
 
-
+    /**
+     *
+     Fragment Called to have the fragment instantiate its user interface view.
+     This is optional, and non-graphical fragments can return null. This will be called between onCreate(Bundle) and onViewCreated(View, Bundle).
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,6 +123,14 @@ public class IngredientStorageFragment extends Fragment {
         return inflater.inflate(R.layout.activity_ingredient_storage, container, false);
     }
 
+
+    /**
+     *
+     Fragment Called immediately after onCreateView(LayoutInflater, ViewGroup, Bundle) has returned, but before any saved state has been restored in to the view.
+     This gives subclasses a chance to initialize themselves once they know their view hierarchy has been completely created.
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.i(TAG+":onViewCreated", "onViewCreated called!");
@@ -124,26 +146,6 @@ public class IngredientStorageFragment extends Fragment {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
             return;
         }
-
-//        ValueEventListener valueEventListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                for(DataSnapshot ds : dataSnapshot.getChildren()){
-//                    entries.add(ds.getValue(LogEntry.class));
-//                }
-//
-//                // Declare adapter and set here
-//
-//                // OR... adapter.notifyDataSetChanged();
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException());
-//            }
-//        };
 
         // initialize adapters and customList
         ingredientListView = a.findViewById(R.id.ingredient_listview);
@@ -173,20 +175,28 @@ public class IngredientStorageFragment extends Fragment {
             editStoreIngredientLauncher.launch(intent);
         });
 
+        //finding sort spinner
         sortSpinner2 = a.findViewById(R.id.sort_ingredient_spinner);
         sortText = a.findViewById(R.id.sort_ingredient_info);
 
+        // gettinga available sorting choices
         sortingChoices = ingredientDataList.getSortChoices();
+
+        // Creating a sorting adapter
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
                 R.layout.spinner_item,
                 sortingChoices
         );
+
+        //chaning drop down layout
         sortingOptionsAdapter.setDropDownViewResource(
                 android.R.layout.simple_list_item_1
         );
         sortSpinner2.setAdapter(sortingOptionsAdapter);
 
+
+        //setting up the on item selected listener which lets user sort on the basis of selection
         sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -293,6 +303,10 @@ public class IngredientStorageFragment extends Fragment {
         });
     }
 
+
+    /**
+     * A launcher for a previously-prepared call to start the process of executing edit and updation of ingredient
+     */
     final private ActivityResultLauncher<Intent> editStoreIngredientLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -315,6 +329,9 @@ public class IngredientStorageFragment extends Fragment {
             });
 
 
+    /**
+     * this method initialises firebase
+     */
     public void bootUp()
     {
         // initialize Firestore
