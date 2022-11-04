@@ -22,6 +22,7 @@ import android.widget.Spinner;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
+import com.androidimpact.app.RecipeListAdapter;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
@@ -44,7 +45,7 @@ public class RecipeList extends Fragment {
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
-    com.androidimpact.app.RecipeListAdapter recipeViewAdapter;
+    RecipeListAdapter recipeViewAdapter;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
     Spinner sortSpinner;

@@ -60,7 +60,7 @@ public class IngredientStorage extends Fragment {
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
     StoreIngredientViewAdapter storeingredientViewAdapter;
-    com.androidimpact.app.IngredientStorage ingredientDataList;
+    IngredientStorage ingredientDataList;
 
     // adding cities to firebase
     FirebaseFirestore db;
