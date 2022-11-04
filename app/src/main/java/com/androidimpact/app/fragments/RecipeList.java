@@ -286,7 +286,6 @@ public class RecipeList extends Fragment {
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
                             .streamFor(300, 2000L);
 
-                    Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
