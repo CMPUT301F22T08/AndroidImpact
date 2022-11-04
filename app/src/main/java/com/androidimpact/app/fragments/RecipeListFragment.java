@@ -66,11 +66,26 @@ public class RecipeListFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     *
+     Fragment Called to do initial creation of a fragment. This is called after onAttach(Activity) and before onCreateView(LayoutInflater, ViewGroup, Bundle).
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+
+    /**
+     *
+     Fragment Called to have the fragment instantiate its user interface view.
+     This will be called between onCreate(Bundle) and onViewCreated(View, Bundle).
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,6 +94,12 @@ public class RecipeListFragment extends Fragment {
         return inflater.inflate(R.layout.activity_recipe_list_activity, container, false);
     }
 
+    /**
+     * :
+     * Fragment Called immediately after onCreateView(LayoutInflater, ViewGroup, Bundle) has returned, but before any saved state has been restored in to the view.
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
