@@ -70,8 +70,10 @@ public class IngredientStorage extends Fragment {
     String[] sortingChoices;
     TextView sortText;
 
+    /**
+     *  Required empty public constructor
+     */
     public IngredientStorage() {
-        // Required empty public constructor
     }
 
     /**
@@ -99,56 +101,47 @@ public class IngredientStorage extends Fragment {
         return fragment;
     }
 
+    /**
+     * Runs on the creation of the fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
 
-
+    /**
+     * Inflate the layout for this fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         // TODO: change this to fragment_ingredient_storage
         return inflater.inflate(R.layout.activity_ingredient_storage, container, false);
     }
 
+    /**
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.i(TAG+":onViewCreated", "onViewCreated called!");
         super.onViewCreated(view, savedInstanceState);
-
         super.onCreate(savedInstanceState);
-
         Activity a = getActivity();
 
       //  System.out.println(a);
-
         if (a == null) {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
             return;
         }
 
-//        ValueEventListener valueEventListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                for(DataSnapshot ds : dataSnapshot.getChildren()){
-//                    entries.add(ds.getValue(LogEntry.class));
-//                }
-//
-//                // Declare adapter and set here
-//
-//                // OR... adapter.notifyDataSetChanged();
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException());
-//            }
-//        };
 
         // initialize adapters and customList
         ingredientListView = a.findViewById(R.id.ingredient_listview);
@@ -289,7 +282,6 @@ public class IngredientStorage extends Fragment {
                     errorCount += 1;
                 }
             }
-
             if (errorCount > 0) {
                 Snackbar.make(ingredientListView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
             }
@@ -319,13 +311,13 @@ public class IngredientStorage extends Fragment {
                 }
             });
 
-
+    /**
+     * initialize Firestore
+     */
     public void bootUp()
     {
-        // initialize Firestore
         db = FirebaseFirestore.getInstance();
         ingredientsCollection = db.collection("ingredientStorage");
-
 
         ingredientDataList = new com.androidimpact.app.IngredientStorage();
         storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());

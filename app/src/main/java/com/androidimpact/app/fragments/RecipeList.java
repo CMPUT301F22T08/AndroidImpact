@@ -66,8 +66,10 @@ public class RecipeList extends Fragment {
     CollectionReference recipeCollection;
     FloatingActionButton addRecipeFAB;
 
+    /**
+     * Required empty public constructor
+     */
     public RecipeList() {
-        // Required empty public constructor
     }
 
     /**
@@ -82,11 +84,22 @@ public class RecipeList extends Fragment {
         return fragment;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * 
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,6 +108,11 @@ public class RecipeList extends Fragment {
         return inflater.inflate(R.layout.activity_recipe_list_activity, container, false);
     }
 
+    /**
+     *
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);

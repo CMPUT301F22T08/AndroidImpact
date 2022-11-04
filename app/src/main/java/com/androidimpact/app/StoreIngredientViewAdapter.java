@@ -33,7 +33,12 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     // functions that subscribe for edit callbacks
     private ArrayList<StoreIngredientEditListener> editListeners = new ArrayList<>();
 
-    // creating a constructor class.
+
+    /**
+     * creating a constructor class.
+     * @param mContext
+     * @param ingredientArrayList
+     */
     public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
@@ -102,10 +107,10 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         return ingredientArrayList.size();
     }
 
-    // View Holder Class to handle Recycler View.
-    // not sure why thi sis necessary
-    // From what I understand, all this does is retrieve all the items. The ViewHolder means it "holds"
-    // all the view elements necessary fro the Adapter.
+    /**
+     * View Holder Class to handle Recycler View
+     * All the view elements necessary fro the Adapter
+     */
     public class StoreIngredientViewHolder extends RecyclerView.ViewHolder {
         private Resources res;
 

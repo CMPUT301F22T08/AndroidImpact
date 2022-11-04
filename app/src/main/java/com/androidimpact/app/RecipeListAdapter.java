@@ -56,6 +56,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
 
     /**
+     * Create an Adapter
      * @param parent
      * @param viewType
      * @return
@@ -155,16 +156,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             }
         }
 
-        /**
-         *         holder.editRecipeFAB.setOnClickListener(v -> {
-         *             // execute all listeners
-         *             for (StoreRecipeEditListener listener : editListeners) {
-         *                 listener.storeRecipeEditClicked(currentRecipe, position);
-         *             }
-         *         });
-         */
-
-
     }
 
     @Override
@@ -180,7 +171,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // creating a variable for our text view.
         private TextView recipeTitle, recipeCategory, recipePrepTime, recipeServings;
         private ImageView recipeImage;
-        //private FloatingActionButton editRecipeFAB;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -190,13 +180,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
             recipeServings = itemView.findViewById(R.id.recipe_servings);
             recipeImage = itemView.findViewById(R.id.recipe_image_view);
-            //editRecipeFAB = itemView.findViewById(R.id.edit_button);
         }
     }
 
     /**
      * Set the sorting choice for the recipe list
-     *
      * @param index the index of the sorting choices for the user
      */
     public void setSortChoice(int index) {
@@ -209,20 +197,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void sortByChoice() {
         recipeList.sortByChoice();
     }
-
-    /**
-     *     // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
-     *     // this is because we need the parent activity to react to changes because it has the Context and Activity info
-     *     // https://stackoverflow.com/a/36662886
-     *     public interface StoreRecipeEditListener {
-     *         void storeRecipeEditClicked(Recipe food, int position);
-     *     }
-     *
-     *     public void setEditClickListener(StoreRecipeEditListener toAdd) {
-     *         editListeners.add(toAdd);
-     *     }
-     *
-     */
 
 }
 

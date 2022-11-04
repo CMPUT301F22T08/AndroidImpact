@@ -1,31 +1,37 @@
 package com.androidimpact.app;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 
 public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.RecipeIngredientHolder>  {
     private ArrayList<Ingredient> ingredients;
     private Context context;
 
-
+    /**
+     * Constructor for adapter to connect Ingredient view with Recipe
+     * @param context
+     * @param ingredients
+     */
     public RecipeIngredientAdapter(Context context, ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
         this.context = context;
     }
 
+    /**
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public RecipeIngredientAdapter.RecipeIngredientHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,8 +52,6 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
         holder.ingredientAmount.setText(String.valueOf(recyclerData.getAmount()));
         holder.ingredientUnit.setText(recyclerData.getUnit());
         holder.ingredientCategory.setText(recyclerData.getCategory());
-
-
 
     }
 

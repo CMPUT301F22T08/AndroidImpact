@@ -52,6 +52,10 @@ public class MealPlanner extends Fragment {
         return fragment;
     }
 
+    /**
+     * Runs when the fragment view is created
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,13 +65,25 @@ public class MealPlanner extends Fragment {
         }
     }
 
+    /**
+     * Inflate the layout for this fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_meal_planner, container, false);
     }
 
+    /**
+     * Runs when the fragment view is created
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
