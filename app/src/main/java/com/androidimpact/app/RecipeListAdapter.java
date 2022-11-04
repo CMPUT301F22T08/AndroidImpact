@@ -33,7 +33,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     // creating a variable for our array list and context.
     private ArrayList<Recipe> recipeArrayList;
 
-    private ArrayList<StoreRecipeEditListener> editListeners = new ArrayList<>();
+    //private ArrayList<StoreRecipeEditListener> editListeners = new ArrayList<>();
     RecipeList recipeList;
     private Context context;
 
@@ -41,8 +41,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     /**
      * Constructor for RecipeList
-     * @param context           the context for the parent view
-     * @param recipeArrayList   the recipes to consider in the RecipeListAdapter object
+     *
+     * @param context         the context for the parent view
+     * @param recipeArrayList the recipes to consider in the RecipeListAdapter object
      */
     public RecipeListAdapter(Context context, ArrayList<Recipe> recipeArrayList) {
         this.recipeArrayList = recipeArrayList;
@@ -55,7 +56,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
 
     /**
-     *
      * @param parent
      * @param viewType
      * @return
@@ -69,8 +69,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     /**
-     *
-     *
      * References:
      * <ul>
      *     <li>For ImageView elements, we used:
@@ -119,9 +117,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      *         </ul>
      *     </li>
      * </ul>
+     *
      * @param holder
-     * @param position
-     * Set the data to textview from our modal class
+     * @param position Set the data to textview from our modal class
      */
     @Override
     public void onBindViewHolder(@NonNull RecipeListAdapter.RecipeViewHolder holder, int position) {
@@ -139,7 +137,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
         // load image for recipe
         String photoURI = recyclerData.getPhoto();
-        if(photoURI != null) {
+        if (photoURI != null) {
             try {
                 // get child in storage
                 StorageReference photoRef = storageReference.child("images/" + photoURI);
@@ -151,19 +149,21 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                     Log.e("Image Not Found", recyclerData.getTitle(), exception);
                 });
 
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 // Log any errors
                 Log.e("Child Not Found", recyclerData.getTitle(), exception);
             }
         }
 
-        holder.editRecipeFAB.setOnClickListener(v -> {
-            // execute all listeners
-            for (StoreRecipeEditListener listener : editListeners) {
-                listener.storeRecipeEditClicked(currentRecipe, position);
-            }
-        });
+        /**
+         *         holder.editRecipeFAB.setOnClickListener(v -> {
+         *             // execute all listeners
+         *             for (StoreRecipeEditListener listener : editListeners) {
+         *                 listener.storeRecipeEditClicked(currentRecipe, position);
+         *             }
+         *         });
+         */
+
 
     }
 
@@ -180,7 +180,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // creating a variable for our text view.
         private TextView recipeTitle, recipeCategory, recipePrepTime, recipeServings;
         private ImageView recipeImage;
-        private FloatingActionButton editRecipeFAB;
+        //private FloatingActionButton editRecipeFAB;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -190,12 +190,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
             recipeServings = itemView.findViewById(R.id.recipe_servings);
             recipeImage = itemView.findViewById(R.id.recipe_image_view);
-            editRecipeFAB = itemView.findViewById(R.id.edit_button);
+            //editRecipeFAB = itemView.findViewById(R.id.edit_button);
         }
     }
 
     /**
      * Set the sorting choice for the recipe list
+     *
      * @param index the index of the sorting choices for the user
      */
     public void setSortChoice(int index) {
@@ -209,15 +210,19 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         recipeList.sortByChoice();
     }
 
-    // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
-    // this is because we need the parent activity to react to changes because it has the Context and Activity info
-    // https://stackoverflow.com/a/36662886
-    public interface StoreRecipeEditListener {
-        void storeRecipeEditClicked(Recipe food, int position);
-    }
+    /**
+     *     // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
+     *     // this is because we need the parent activity to react to changes because it has the Context and Activity info
+     *     // https://stackoverflow.com/a/36662886
+     *     public interface StoreRecipeEditListener {
+     *         void storeRecipeEditClicked(Recipe food, int position);
+     *     }
+     *
+     *     public void setEditClickListener(StoreRecipeEditListener toAdd) {
+     *         editListeners.add(toAdd);
+     *     }
+     *
+     */
 
-    public void setEditClickListener(StoreRecipeEditListener toAdd) {
-        editListeners.add(toAdd);
-    }
 }
 
