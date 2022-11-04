@@ -2,16 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recipe List"
-        android:textSize="32dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Recipe List"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="32dp"/>-->
 
 
     <LinearLayout
@@ -20,15 +22,18 @@
         android:orientation="horizontal">
 
         <TextView
+            android:paddingLeft="25dp"
             android:id="@+id/sort_recipe_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="Sort by:" />
 
         <Spinner
             android:id="@+id/sort_recipe_spinner"
             android:layout_width="wrap_content"
+            android:backgroundTint="@color/white"
             android:layout_height="wrap_content" />
     </LinearLayout>
 

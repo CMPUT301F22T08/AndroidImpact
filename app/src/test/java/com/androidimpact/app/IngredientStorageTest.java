@@ -14,17 +14,29 @@ import java.util.Date;
 
 public class IngredientStorageTest {
 
+    /**
+     * This function creates a ingredientList with a single ingredient and returns
+     * @return type(ingredientStorage)
+     */
     private IngredientStorage mockIngredientList()
     {
         IngredientStorage ingredientList = new IngredientStorage();
         ingredientList.add(mockIngredient());
         return ingredientList;
     }
+
+    /**
+     * This function creates a store ingredient object and returns it
+     * @return type(StoreIngredient)
+     */
     private StoreIngredient mockIngredient()
     {
         return new StoreIngredient("01", "test food", 0, "", "",new Date(), "trial");
     }
 
+    /**
+     * This function tests addition of ingredients to ingredient list
+     */
     @Test
     public void testAdd(){
         IngredientStorage ingredientList = mockIngredientList();
@@ -56,6 +68,9 @@ public class IngredientStorageTest {
         assertEquals(false, ingredient == ingredientList.get(0));
     }
 
+    /**
+     *  this function allows us to test setIngredient() method
+     */
     @Test
     public void testSetIngredient() {
         IngredientStorage ingredientList = mockIngredientList();
@@ -66,6 +81,9 @@ public class IngredientStorageTest {
 
     }
 
+    /**
+     * This function tests if we can remove the ingredient from ingredient storage
+     */
     @Test
     public void testRemove()
     {
@@ -162,6 +180,10 @@ public class IngredientStorageTest {
         assertTrue(true);
     }
 
+
+    /**
+     * This function tests if clear method for ingredient List works properly
+     */
     @Test
     public void testClear()
     {
@@ -173,6 +195,10 @@ public class IngredientStorageTest {
         assertEquals(0, ingredientList.size());
 
     }
+
+    /**
+     * This function tests if size method for ingredient List works properly
+     */
     @Test
     public void testSize()
     {
@@ -187,7 +213,7 @@ public class IngredientStorageTest {
     }
 
     /**
-     *
+     * This function checks if we can call remove(int) and remove that index
      */
     @Test
     public void testRemoveInt()

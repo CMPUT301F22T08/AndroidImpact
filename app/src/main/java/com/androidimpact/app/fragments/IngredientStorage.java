@@ -1,47 +1,61 @@
-package com.androidimpact.app.activities;
+package com.androidimpact.app.fragments;
 
 import static java.util.Objects.isNull;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.androidimpact.app.IngredientStorage;
-import com.androidimpact.app.RecipeList;
+import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
-import com.androidimpact.app.R;
+import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.activities.IngredientStorageActivity;
+import com.androidimpact.app.activities.MainActivity;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.ValueEventListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
-public class IngredientStorageActivity extends AppCompatActivity {
-    final String TAG = "IngredientStorageActivity";
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link IngredientStorage#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class IngredientStorage extends Fragment {
+    final String TAG = "IngredientStorageFragment";
+
+    private static IngredientStorage instance;
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
     StoreIngredientViewAdapter storeingredientViewAdapter;
-    IngredientStorage ingredientDataList;
+    com.androidimpact.app.IngredientStorage ingredientDataList;
 
     // adding cities to firebase
     FirebaseFirestore db;
@@ -51,31 +65,102 @@ public class IngredientStorageActivity extends AppCompatActivity {
     String[] sortingChoices;
     TextView sortText;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredient_storage);
+    public IngredientStorage() {
+        // Required empty public constructor
+    }
 
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("ingredientStorage");
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment IngredientStorage.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static IngredientStorage newInstance() {
+
+
+
+        if (instance == null)
+        {
+            //To be Changed
+            IngredientStorage fragment = new IngredientStorage();
+            fragment.bootUp();
+            //instance = new IngredientStorage();
+
+            return fragment;
+        }
+
+        IngredientStorage fragment = new IngredientStorage();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        // TODO: change this to fragment_ingredient_storage
+        return inflater.inflate(R.layout.activity_ingredient_storage, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG+":onViewCreated", "onViewCreated called!");
+        super.onViewCreated(view, savedInstanceState);
+
+        super.onCreate(savedInstanceState);
+
+        Activity a = getActivity();
+
+      //  System.out.println(a);
+
+        if (a == null) {
+            Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
+            return;
+        }
+
+//        ValueEventListener valueEventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                for(DataSnapshot ds : dataSnapshot.getChildren()){
+//                    entries.add(ds.getValue(LogEntry.class));
+//                }
+//
+//                // Declare adapter and set here
+//
+//                // OR... adapter.notifyDataSetChanged();
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException());
+//            }
+//        };
 
         // initialize adapters and customList
-        ingredientListView = findViewById(R.id.ingredient_listview);
-        addIngredientFAB = findViewById(R.id.addStoreIngredientFAB);
-
-        ingredientDataList = new IngredientStorage();
-        storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());
+        ingredientListView = a.findViewById(R.id.ingredient_listview);
 
         // below line is to set layout manager for our recycler view.
-        LinearLayoutManager manager = new LinearLayoutManager(this);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
         ingredientListView.setLayoutManager(manager);
         ingredientListView.setAdapter(storeingredientViewAdapter);
+
+
+       // MainActivity main = (MainActivity) getActivity();
+        addIngredientFAB = a.findViewById(R.id.addStoreIngredientFAB);
 
         // Launch AddStoreIngredientActivity when FAB is clicked
         addIngredientFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
-            Intent intent = new Intent(IngredientStorageActivity.this, AddEditStoreIngredientActivity.class);
+            Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
             addStoreIngredientLauncher.launch(intent);
         });
 
@@ -83,18 +168,18 @@ public class IngredientStorageActivity extends AppCompatActivity {
         storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
             // runs whenever a store ingredient edit btn is clicked
             Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
-            Intent intent = new Intent(IngredientStorageActivity.this, AddEditStoreIngredientActivity.class);
+            Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
             intent.putExtra("storeIngredient", storeIngredient);
             editStoreIngredientLauncher.launch(intent);
         });
-        
-        sortSpinner2 = findViewById(R.id.sort_ingredient_spinner);
-        sortText = findViewById(R.id.sort_ingredient_info);
+
+        sortSpinner2 = a.findViewById(R.id.sort_ingredient_spinner);
+        sortText = a.findViewById(R.id.sort_ingredient_info);
 
         sortingChoices = ingredientDataList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
+                getContext(),
+                R.layout.spinner_item,
                 sortingChoices
         );
         sortingOptionsAdapter.setDropDownViewResource(
@@ -108,9 +193,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ingredientDataList.setSortChoice(i);
                 ingredientDataList.sortByChoice();
-              //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
-
-
+                //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
                 storeingredientViewAdapter.notifyDataSetChanged();
             }
 
@@ -122,7 +205,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 ingredientDataList.setSortChoice(0);
                 ingredientDataList.sortByChoice();
-              //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
+                //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
 
                 storeingredientViewAdapter.notifyDataSetChanged();
             }
@@ -152,15 +235,15 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
                 // delete item from firebase
                 ingredientsCollection.document(id)
-                    .delete()
-                    .addOnSuccessListener(aVoid -> {
-                        Log.d(TAG, description + " has been deleted successfully!");
-                        Snackbar.make(ingredientListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        Snackbar.make(ingredientListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                        Log.d(TAG, description + " could not be deleted!" + e);
-                    });
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d(TAG, description + " has been deleted successfully!");
+                            Snackbar.make(ingredientListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Snackbar.make(ingredientListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                            Log.d(TAG, description + " could not be deleted!" + e);
+                        });
             }
             // finally, we add this to our recycler view.
         }).attachToRecyclerView(ingredientListView);
@@ -191,6 +274,11 @@ public class IngredientStorageActivity extends AppCompatActivity {
                     StoreIngredient store = new StoreIngredient(id, description, amount, unit, category, bestBefore, location);
 
                     ingredientDataList.add(store); // Adding the cities and provinces from FireStore
+
+                    //sorting the list again
+                    ingredientDataList.setSortChoice(0);
+                    ingredientDataList.sortByChoice();
+
                 } catch (Exception e) {
                     Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
                     errorCount += 1;
@@ -226,28 +314,41 @@ public class IngredientStorageActivity extends AppCompatActivity {
                 }
             });
 
+
+    public void bootUp()
+    {
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        ingredientsCollection = db.collection("ingredientStorage");
+
+
+        ingredientDataList = new com.androidimpact.app.IngredientStorage();
+        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
+    }
+
     /**
      * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
      * AddStoreIngredientActivity
      */
     final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-            if (isNull(result.getData())) {
-                return;
-            }
-            Bundle bundle = result.getData().getExtras();
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (isNull(result.getData())) {
+                    return;
+                }
+                Bundle bundle = result.getData().getExtras();
 
-            Log.i(TAG + ":addStoreIngredientLauncher", "Got bundle");
+                Log.i(TAG + ":addIngredientResult", "Got bundle");
 
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                // Ok - we have an ingredient!
-                StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
-                Log.i(TAG + ":addStoreIngredientLauncher", ingredient.getDescription());
-                ingredientsCollection.document(ingredient.getId()).set(ingredient);
-            } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-                // cancelled request - do nothing.
-                Log.i(TAG + ":addStoreIngredientLauncher", "Received cancelled");
-            }
-        });
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // Ok - we have an ingredient!
+                    StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
+                    Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
+                    ingredientsCollection.document(ingredient.getId()).set(ingredient);
+                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    // cancelled request - do nothing.
+                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                }
+            });
+
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/storage_icon">
+    <fragment android:id="@+id/storage_icon" />
+    <fragment android:id="@+id/recipe_icon" />
+    <fragment
+        android:id="@+id/IngredientStorageFragment"
+        android:name="com.androidimpact.app.fragments.IngredientStorage"
+        android:label="ingredient_storage_fragment"
+        tools:layout="@layout/fragment_ingredient_storage" />
+    <fragment
+        android:id="@+id/recipeList"
+        android:name="com.androidimpact.app.fragments.RecipeList"
+        android:label="fragment_recipe_list"
+        tools:layout="@layout/fragment_recipe_list" />
+    <fragment
+        android:id="@+id/shoppingList"
+        android:name="com.androidimpact.app.fragments.ShoppingList"
+        android:label="fragment_shopping_list"
+        tools:layout="@layout/fragment_shopping_list" />
+    <fragment
+        android:id="@+id/mealPlanner"
+        android:name="com.androidimpact.app.fragments.MealPlanner"
+        android:label="fragment_meal_planner"
+        tools:layout="@layout/fragment_meal_planner" />
+</navigation>
