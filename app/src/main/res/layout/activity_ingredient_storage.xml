@@ -62,7 +62,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredient_listview"
             android:layout_width="match_parent"
-            android:layout_height="674dp"
+            android:layout_height="wrap_content"
             android:background="@color/background" />
 
     </LinearLayout>

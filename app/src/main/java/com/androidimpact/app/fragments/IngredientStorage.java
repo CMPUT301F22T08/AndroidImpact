@@ -82,13 +82,16 @@ public class IngredientStorage extends Fragment {
 
         if (instance == null)
         {
+            //To be Changed
             IngredientStorage fragment = new IngredientStorage();
             fragment.bootUp();
+            //instance = new IngredientStorage();
 
             return fragment;
         }
 
-        return instance;
+        IngredientStorage fragment = new IngredientStorage();
+        return fragment;
     }
 
     @Override
