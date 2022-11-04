@@ -25,6 +25,7 @@ import com.androidimpact.app.Recipe;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,6 +51,7 @@ public class RecipeList extends Fragment {
 
     // adding recipes to firebase
     EditText addRecipeDescriptionText;
+    FloatingActionButton addRecipe;
     FirebaseFirestore db;
 
     public RecipeList() {

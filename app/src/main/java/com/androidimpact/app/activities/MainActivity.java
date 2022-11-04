@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     final String TAG = "MainActivity";
 
     BottomNavigationView bottomnav;
+    IngredientStorage storageFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,29 +53,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
+
         //navController = findNavController(R.id.nav_fragment)
-       // bottomnav.setupWithNavController(navController)
-//
-//        Button ingredientStorageButton = findViewById(R.id.ButtonFromMain_ingredientStorage);
-//        ingredientStorageButton.setOnClickListener(v -> {
-//            Log.i(TAG + ":onCreate", "Opening Storage!");
-//            Intent intent = new Intent(MainActivity.this, IngredientStorageActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        Button recipeButton = findViewById(R.id.ButtonFromMain_recipe);
-//        recipeButton.setOnClickListener(v -> {
-//            Log.i(TAG + ":onCreate", "Opening Storage!");
-//            Intent intent = new Intent(MainActivity.this, RecipeAddViewEditActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        Button gotoRecipesButton = findViewById(R.id.gotorecipes);
-//        gotoRecipesButton.setOnClickListener(v -> {
-//            Log.i(TAG + ":onCreate", "Opening RecipeListActivity!");
-//            Intent intent = new Intent(MainActivity.this, RecipeListActivity.class);
-//            startActivity(intent);
-//        });
     }
 
 
@@ -82,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.storage_icon:
-                IngredientStorage storageFragment = new IngredientStorage();
+                storageFragment = new IngredientStorage();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, storageFragment, null).commit();
                 return true;
 

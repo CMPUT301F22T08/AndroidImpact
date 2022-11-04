@@ -30,6 +30,7 @@ import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.IngredientStorageActivity;
+import com.androidimpact.app.activities.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -95,6 +96,8 @@ public class IngredientStorage extends Fragment {
 
         super.onCreate(savedInstanceState);
         Activity a = getActivity();
+        System.out.println(a);
+
         if (a == null) {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
             return;
@@ -106,7 +109,7 @@ public class IngredientStorage extends Fragment {
 
         // initialize adapters and customList
         ingredientListView = a.findViewById(R.id.ingredient_listview);
-        addIngredientFAB = a.findViewById(R.id.addStoreIngredientFAB);
+
 
         ingredientDataList = new com.androidimpact.app.IngredientStorage();
         storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
@@ -115,6 +118,10 @@ public class IngredientStorage extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         ingredientListView.setLayoutManager(manager);
         ingredientListView.setAdapter(storeingredientViewAdapter);
+
+
+       // MainActivity main = (MainActivity) getActivity();
+        addIngredientFAB = a.findViewById(R.id.addStoreIngredientFAB);
 
         // Launch AddStoreIngredientActivity when FAB is clicked
         addIngredientFAB.setOnClickListener(v -> {
@@ -233,6 +240,11 @@ public class IngredientStorage extends Fragment {
                     StoreIngredient store = new StoreIngredient(id, description, amount, unit, category, bestBefore, location);
 
                     ingredientDataList.add(store); // Adding the cities and provinces from FireStore
+
+                    //sorting the list again
+                    ingredientDataList.setSortChoice(0);
+                    ingredientDataList.sortByChoice();
+
                 } catch (Exception e) {
                     Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
                     errorCount += 1;
