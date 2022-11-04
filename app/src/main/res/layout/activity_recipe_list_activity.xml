@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recipe List"
-        android:textColor="@color/white"
-        android:textSize="32dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Recipe List"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="32dp"/>-->
 
 
     <LinearLayout
@@ -22,6 +22,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:paddingLeft="18dp"
             android:id="@+id/sort_recipe_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,6 +33,7 @@
         <Spinner
             android:id="@+id/sort_recipe_spinner"
             android:layout_width="wrap_content"
+            android:backgroundTint="@color/white"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
