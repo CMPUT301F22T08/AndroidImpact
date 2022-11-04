@@ -11,11 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.RecipeIngredientHolder>  {
     private ArrayList<Ingredient> ingredients;
     private Context context;
+
 
     public RecipeIngredientAdapter(Context context, ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
@@ -42,6 +46,9 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
         holder.ingredientAmount.setText(String.valueOf(recyclerData.getAmount()));
         holder.ingredientUnit.setText(recyclerData.getUnit());
         holder.ingredientCategory.setText(recyclerData.getCategory());
+
+
+
     }
 
     /**
@@ -61,7 +68,6 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
 
         // creating a variable for our text view.
         private TextView ingredientDescription, ingredientAmount, ingredientUnit, ingredientCategory;
-
         public RecipeIngredientHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
@@ -71,4 +77,5 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
             ingredientCategory = itemView.findViewById(R.id.ingredient_category);
         }
     }
+
 }

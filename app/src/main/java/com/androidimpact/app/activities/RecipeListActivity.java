@@ -57,10 +57,10 @@ public class RecipeListActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("recipes");
 
+
         // Initialize views
         sortSpinner = findViewById(R.id.sort_recipe_spinner);
 
-        // initialize adapters and customList, connect to DB
         recipeListView = findViewById(R.id.recipe_listview);
         recipeDataList = new ArrayList<>();
         recipeViewAdapter = new RecipeListAdapter(this, recipeDataList);

@@ -71,10 +71,10 @@ public class RecipeListTest {
     public void getItemCountTest() {
         ArrayList<Recipe> recipeArrayList = new ArrayList<>();
         recipeList = MakeRecipeList(recipeArrayList);
-        assertEquals(recipeList.getItemCount(), 0);
+        assertEquals(recipeList.size(), 0);
 
         recipeArrayList.add(MockRecipe());
-        assertEquals(recipeList.getItemCount(), 1);
+        assertEquals(recipeList.size(), 1);
     }
 
     /**

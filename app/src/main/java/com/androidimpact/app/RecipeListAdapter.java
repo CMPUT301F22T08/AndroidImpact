@@ -12,6 +12,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -30,6 +32,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     // creating a variable for our array list and context.
     private ArrayList<Recipe> recipeArrayList;
+
+    private ArrayList<StoreRecipeEditListener> editListeners = new ArrayList<>();
     RecipeList recipeList;
     private Context context;
 
@@ -43,6 +47,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public RecipeListAdapter(Context context, ArrayList<Recipe> recipeArrayList) {
         this.recipeArrayList = recipeArrayList;
         this.context = context;
+        this.recipeList = new RecipeList(recipeArrayList);
 
         FirebaseStorage fs = FirebaseStorage.getInstance();
         storageReference = fs.getReference();
@@ -123,6 +128,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         Recipe recyclerData = recipeArrayList.get(position);
         holder.recipeTitle.setText(recyclerData.getTitle());
         holder.recipeCategory.setText(recyclerData.getCategory());
+        Recipe currentRecipe = recipeArrayList.get(position);
         holder.recipePrepTime.setText(String.format(
                 this.context.getResources().getString(R.string.recipe_prep_time_in_list
                 ), recyclerData.getPrep_time())
@@ -152,6 +158,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             }
         }
 
+        holder.editRecipeFAB.setOnClickListener(v -> {
+            // execute all listeners
+            for (StoreRecipeEditListener listener : editListeners) {
+                listener.storeRecipeEditClicked(currentRecipe, position);
+            }
+        });
+
     }
 
     @Override
@@ -167,6 +180,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // creating a variable for our text view.
         private TextView recipeTitle, recipeCategory, recipePrepTime, recipeServings;
         private ImageView recipeImage;
+        private FloatingActionButton editRecipeFAB;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -176,6 +190,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
             recipeServings = itemView.findViewById(R.id.recipe_servings);
             recipeImage = itemView.findViewById(R.id.recipe_image_view);
+            editRecipeFAB = itemView.findViewById(R.id.edit_button);
         }
     }
 
@@ -192,6 +207,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      */
     public void sortByChoice() {
         recipeList.sortByChoice();
+    }
+
+    // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
+    // this is because we need the parent activity to react to changes because it has the Context and Activity info
+    // https://stackoverflow.com/a/36662886
+    public interface StoreRecipeEditListener {
+        void storeRecipeEditClicked(Recipe food, int position);
+    }
+
+    public void setEditClickListener(StoreRecipeEditListener toAdd) {
+        editListeners.add(toAdd);
     }
 }
 

@@ -103,15 +103,6 @@ public class RecipeList {
     }
 
     /**
-     * This method returns the size of the recipe list
-     * @return
-     * integer length of recipe list
-     */
-    public int getItemCount() {
-        return recipeArrayList.size();
-    }
-
-    /**
      * Return the current sorting choice for the recipe list
      * @return the sorting choice at the index chosen by the user
      */
