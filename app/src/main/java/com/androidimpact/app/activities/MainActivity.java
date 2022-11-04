@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     // adding cities to firebase
     final String TAG = "MainActivity";
 
+
     BottomNavigationView bottomnav;
-    IngredientStorage storageFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +58,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+    ShoppingList shoppingListFragment = new ShoppingList();
+    MealPlanner mealPlannerFragment = new MealPlanner();
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.storage_icon:
-                storageFragment = new IngredientStorage();
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, storageFragment, null).commit();
+                //IngredientStorage storageFragment = new IngredientStorage();
+                IngredientStorage storageFragment = IngredientStorage.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, storageFragment, "STORAGE").commit();
                 return true;
 
             case R.id.recipe_icon:
@@ -72,12 +77,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
 
             case R.id.cart_icon:
-                ShoppingList shoppingListFragment = new ShoppingList();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, shoppingListFragment, null).commit();
                 return true;
 
             case R.id.meal_icon:
-                MealPlanner mealPlannerFragment = new MealPlanner();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, mealPlannerFragment, null).commit();
                 return true;
         }

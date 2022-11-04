@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.IngredientStorageActivity;
 import com.androidimpact.app.activities.MainActivity;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.ValueEventListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -46,6 +49,8 @@ import java.util.Date;
  */
 public class IngredientStorage extends Fragment {
     final String TAG = "IngredientStorageFragment";
+
+    private static IngredientStorage instance;
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
@@ -72,14 +77,26 @@ public class IngredientStorage extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static IngredientStorage newInstance() {
-        IngredientStorage fragment = new IngredientStorage();
-        return fragment;
+
+
+
+        if (instance == null)
+        {
+            IngredientStorage fragment = new IngredientStorage();
+            fragment.bootUp();
+
+            return fragment;
+        }
+
+        return instance;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,24 +112,38 @@ public class IngredientStorage extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         super.onCreate(savedInstanceState);
+
         Activity a = getActivity();
-        System.out.println(a);
+
+      //  System.out.println(a);
 
         if (a == null) {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
             return;
         }
 
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("ingredientStorage");
+//        ValueEventListener valueEventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                for(DataSnapshot ds : dataSnapshot.getChildren()){
+//                    entries.add(ds.getValue(LogEntry.class));
+//                }
+//
+//                // Declare adapter and set here
+//
+//                // OR... adapter.notifyDataSetChanged();
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.w("LogFragment", "loadLog:onCancelled", databaseError.toException());
+//            }
+//        };
 
         // initialize adapters and customList
         ingredientListView = a.findViewById(R.id.ingredient_listview);
-
-
-        ingredientDataList = new com.androidimpact.app.IngredientStorage();
-        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -279,6 +310,18 @@ public class IngredientStorage extends Fragment {
                     Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
                 }
             });
+
+
+    public void bootUp()
+    {
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        ingredientsCollection = db.collection("ingredientStorage");
+
+
+        ingredientDataList = new com.androidimpact.app.IngredientStorage();
+        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
+    }
 
     /**
      * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
