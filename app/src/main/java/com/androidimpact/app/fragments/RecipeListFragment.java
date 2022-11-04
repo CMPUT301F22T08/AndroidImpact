@@ -27,6 +27,7 @@ import android.widget.Spinner;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
+import com.androidimpact.app.RecipeListAdapter;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
@@ -38,7 +39,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -46,15 +46,15 @@ import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RecipeList#newInstance} factory method to
+ * Use the {@link RecipeListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecipeList extends Fragment {
+public class RecipeListFragment extends Fragment {
     final String TAG = "RecipeListFragment";
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
-    com.androidimpact.app.RecipeListAdapter recipeViewAdapter;
+    RecipeListAdapter recipeViewAdapter;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
     Spinner sortSpinner;
@@ -66,7 +66,7 @@ public class RecipeList extends Fragment {
     CollectionReference recipeCollection;
     FloatingActionButton addRecipeFAB;
 
-    public RecipeList() {
+    public RecipeListFragment() {
         // Required empty public constructor
     }
 
@@ -77,8 +77,8 @@ public class RecipeList extends Fragment {
      * @return A new instance of fragment RecipeList.
      */
     // TODO: Rename and change types and number of parameters
-    public static RecipeList newInstance() {
-        RecipeList fragment = new RecipeList();
+    public static RecipeListFragment newInstance() {
+        RecipeListFragment fragment = new RecipeListFragment();
         return fragment;
     }
 

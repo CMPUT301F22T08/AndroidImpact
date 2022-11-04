@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class IngredientStorageTest {
+public class IngredientStorageFragmentTest {
 
     /**
      * This function creates a ingredientList with a single ingredient and returns

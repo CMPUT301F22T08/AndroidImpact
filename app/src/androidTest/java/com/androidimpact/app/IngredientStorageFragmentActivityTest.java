@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class IngredientStorageActivityTest {
+public class IngredientStorageFragmentActivityTest {
     private Solo solo;
     private Resources resources;
 
