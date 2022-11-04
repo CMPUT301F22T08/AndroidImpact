@@ -67,20 +67,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.storage_icon:
                 //IngredientStorage storageFragment = new IngredientStorage();
+                getSupportActionBar().setTitle("Ingredient Storage");
                 IngredientStorage storageFragment = IngredientStorage.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, storageFragment, "STORAGE").commit();
                 return true;
 
             case R.id.recipe_icon:
+                getSupportActionBar().setTitle("Recipe List");
                 RecipeList recipeListFragment = new RecipeList();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, recipeListFragment, null).commit();
                 return true;
 
             case R.id.cart_icon:
+                getSupportActionBar().setTitle("Shopping List");
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, shoppingListFragment, null).commit();
                 return true;
 
             case R.id.meal_icon:
+                getSupportActionBar().setTitle("Meal Plan");
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, mealPlannerFragment, null).commit();
                 return true;
         }
