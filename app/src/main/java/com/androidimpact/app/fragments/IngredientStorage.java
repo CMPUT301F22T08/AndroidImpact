@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -41,6 +42,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Date;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -238,10 +243,10 @@ public class IngredientStorage extends Fragment {
                         .delete()
                         .addOnSuccessListener(aVoid -> {
                             Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(ingredientListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(a.findViewById(R.id.frameLayout), "Deleted " + description, Snackbar.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
-                            Snackbar.make(ingredientListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(a.findViewById(R.id.frameLayout), "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, description + " could not be deleted!" + e);
                         });
             }
@@ -343,6 +348,20 @@ public class IngredientStorage extends Fragment {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     // Ok - we have an ingredient!
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
+
+                    Activity a = getActivity();
+                    final KonfettiView confetti = a.findViewById(R.id.confetti_view);
+                    confetti.build()
+                            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                            .setDirection(0.0, 359.0)
+                            .setSpeed(1f, 5f)
+                            .setFadeOutEnabled(true)
+                            .setTimeToLive(500L)
+                            .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                            .addSizes(new Size(8, 4f))
+                            .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                            .streamFor(300, 2000L);
+
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredientsCollection.document(ingredient.getId()).set(ingredient);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {

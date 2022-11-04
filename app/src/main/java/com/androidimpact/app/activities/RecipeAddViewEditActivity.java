@@ -47,7 +47,7 @@ import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 /**
- * This class is the activity for recipe adding/viewing/editing
+ * This class is the activity for recipe adding/editing
  * @author Curtis Kan
  * @version 1.0
  */
@@ -65,7 +65,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     TextView activity_title;
     FirebaseFirestore db;
 
-    //https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
     FirebaseStorage storage;
 
     /**
@@ -104,7 +103,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         ingredientList.setAdapter(ingredientAdapter);
 
 
-        // drag to delete
+        // drag to delete - code duplicated from recycler view in ingredient storage
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             /**
              *
@@ -150,7 +149,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         ingredientData.put("ingredient" + i, ingredients.get(i));
                     }
 
-                    //https://www.javatpoint.com/java-get-current-date
+                    // Code for getting the date
+                    // https://www.javatpoint.com/java-get-current-date
+                    // Copyright 2011-2021 www.javatpoint.com. All rights reserved. Developed by JavaTpoint.
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     Date date = new Date();
                     data.put("date", formatter.format(date));
@@ -159,9 +160,12 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     data.put("category", getStr(category));
                     data.put("comments", getStr(comments));
                     if (photo.getTag() == null) {
-                        data.put("photo", null);
+                        data.put("photo", null);  // shows up as null in database
                     }
-                    //Add photo to firebase storage
+
+                    // Add photo to firebase storage
+                    // https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
+                    // Rishabh007 - December 7, 2021
                     else {
                         String img_name = UUID.randomUUID().toString();
                         data.put("photo", img_name);
@@ -179,7 +183,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
                 generateSnackbar("Added " + getStr(title) + "!");
 
-                // Reset fields to add another ingredient
+                // Reset fields so another recipe can be added
                 title.setText("");
                 prep_time.setText("");
                 servings.setText("");
@@ -197,7 +201,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         cancelRecipe.setOnClickListener(v -> finish());
     }
 
-    // Adding ingredients
+    // Adding ingredients, follows format of ingredient storage activity launchers
     final private ActivityResultLauncher<Intent> addIngredientLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -210,6 +214,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     generateSnackbar("Added " + ingredient.getDescription() + "!");
                     ingredientAdapter.notifyDataSetChanged();
 
+                    // Confetti for successful adds!
                     final KonfettiView confetti = findViewById(R.id.confetti_view);
                     confetti.build()
                             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
@@ -222,6 +227,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
                             .streamFor(300, 2000L);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
                     generateSnackbar("Ingredient cancelled!");
@@ -245,7 +251,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
 
+                // Code to add photo from gallery
                 // https://www.geeksforgeeks.org/how-to-select-an-image-from-gallery-in-android/
+                // adityamshidalyali - May 17, 2022
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
                     // do your operation from here....
