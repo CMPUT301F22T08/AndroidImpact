@@ -21,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidimpact.app.IngredientStorage;
-import com.androidimpact.app.RecipeList;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.R;
@@ -31,8 +30,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class IngredientStorageActivity extends AppCompatActivity {
