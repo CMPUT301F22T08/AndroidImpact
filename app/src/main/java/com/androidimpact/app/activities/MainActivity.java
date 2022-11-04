@@ -1,37 +1,17 @@
 package com.androidimpact.app.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Button;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.fragments.IngredientStorage;
-import com.androidimpact.app.fragments.MealPlanner;
-import com.androidimpact.app.fragments.RecipeList;
-import com.androidimpact.app.fragments.ShoppingList;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.androidimpact.app.fragments.IngredientStorageFragment;
+import com.androidimpact.app.fragments.MealPlannerFragment;
+import com.androidimpact.app.fragments.RecipeListFragment;
+import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -58,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
-    ShoppingList shoppingListFragment = new ShoppingList();
-    MealPlanner mealPlannerFragment = new MealPlanner();
+    ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
+    MealPlannerFragment mealPlannerFragment = new MealPlannerFragment();
 
 
     @Override
@@ -68,13 +48,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.storage_icon:
                 //IngredientStorage storageFragment = new IngredientStorage();
                 getSupportActionBar().setTitle("Ingredient Storage");
-                IngredientStorage storageFragment = IngredientStorage.newInstance();
+                IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, storageFragment, "STORAGE").commit();
                 return true;
 
             case R.id.recipe_icon:
                 getSupportActionBar().setTitle("Recipe List");
-                RecipeList recipeListFragment = new RecipeList();
+                RecipeListFragment recipeListFragment = new RecipeListFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, recipeListFragment, null).commit();
                 return true;
 

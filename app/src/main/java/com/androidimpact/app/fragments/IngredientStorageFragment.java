@@ -3,7 +3,6 @@ package com.androidimpact.app.fragments;
 import static java.util.Objects.isNull;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,14 +25,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
-import com.androidimpact.app.activities.IngredientStorageActivity;
-import com.androidimpact.app.activities.MainActivity;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.ValueEventListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -49,18 +44,18 @@ import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link IngredientStorage#newInstance} factory method to
+ * Use the {@link IngredientStorageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IngredientStorage extends Fragment {
+public class IngredientStorageFragment extends Fragment {
     final String TAG = "IngredientStorageFragment";
 
-    private static IngredientStorage instance;
+    private static IngredientStorageFragment instance;
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
     StoreIngredientViewAdapter storeingredientViewAdapter;
-    com.androidimpact.app.IngredientStorage ingredientDataList;
+    IngredientStorage ingredientDataList;
 
     // adding cities to firebase
     FirebaseFirestore db;
@@ -70,7 +65,7 @@ public class IngredientStorage extends Fragment {
     String[] sortingChoices;
     TextView sortText;
 
-    public IngredientStorage() {
+    public IngredientStorageFragment() {
         // Required empty public constructor
     }
 
@@ -81,21 +76,21 @@ public class IngredientStorage extends Fragment {
      * @return A new instance of fragment IngredientStorage.
      */
     // TODO: Rename and change types and number of parameters
-    public static IngredientStorage newInstance() {
+    public static IngredientStorageFragment newInstance() {
 
 
 
         if (instance == null)
         {
             //To be Changed
-            IngredientStorage fragment = new IngredientStorage();
+            IngredientStorageFragment fragment = new IngredientStorageFragment();
             fragment.bootUp();
             //instance = new IngredientStorage();
 
             return fragment;
         }
 
-        IngredientStorage fragment = new IngredientStorage();
+        IngredientStorageFragment fragment = new IngredientStorageFragment();
         return fragment;
     }
 

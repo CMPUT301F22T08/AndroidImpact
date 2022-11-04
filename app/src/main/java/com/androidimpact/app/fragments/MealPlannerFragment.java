@@ -15,13 +15,14 @@ import com.androidimpact.app.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ShoppingList#newInstance} factory method to
+ * Use the {@link MealPlannerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShoppingList extends Fragment {
-    final String TAG = "ShoppingListFragment";
+public class MealPlannerFragment extends Fragment {
+    final String TAG = "MealPlannerFragment";
 
-    public ShoppingList() {
+
+    public MealPlannerFragment() {
         // Required empty public constructor
     }
 
@@ -29,11 +30,11 @@ public class ShoppingList extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment ShoppingList.
+     * @return A new instance of fragment MealPlanner.
      */
     // TODO: Rename and change types and number of parameters
-    public static ShoppingList newInstance() {
-        ShoppingList fragment = new ShoppingList();
+    public static MealPlannerFragment newInstance() {
+        MealPlannerFragment fragment = new MealPlannerFragment();
         return fragment;
     }
 
@@ -46,7 +47,7 @@ public class ShoppingList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopping_list, container, false);
+        return inflater.inflate(R.layout.fragment_meal_planner, container, false);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.androidimpact.app.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,9 +22,6 @@ import android.widget.Spinner;
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeListAdapter;
-import com.androidimpact.app.StoreIngredient;
-import com.androidimpact.app.StoreIngredientViewAdapter;
-import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,14 +29,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RecipeList#newInstance} factory method to
+ * Use the {@link RecipeListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecipeList extends Fragment {
+public class RecipeListFragment extends Fragment {
     final String TAG = "RecipeListFragment";
 
     // Declare the variables so that you will be able to reference it later.
@@ -55,7 +50,7 @@ public class RecipeList extends Fragment {
     FloatingActionButton addRecipe;
     FirebaseFirestore db;
 
-    public RecipeList() {
+    public RecipeListFragment() {
         // Required empty public constructor
     }
 
@@ -66,8 +61,8 @@ public class RecipeList extends Fragment {
      * @return A new instance of fragment RecipeList.
      */
     // TODO: Rename and change types and number of parameters
-    public static RecipeList newInstance() {
-        RecipeList fragment = new RecipeList();
+    public static RecipeListFragment newInstance() {
+        RecipeListFragment fragment = new RecipeListFragment();
         return fragment;
     }
 
