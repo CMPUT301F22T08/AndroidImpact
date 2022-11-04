@@ -94,6 +94,7 @@ public class IngredientStorageFragment extends Fragment {
         return fragment;
     }
 
+
     /**
      *
      Fragment Called to do initial creation of a fragment. This is called after onAttach(Activity) and before onCreateView(LayoutInflater, ViewGroup, Bundle).
@@ -121,6 +122,7 @@ public class IngredientStorageFragment extends Fragment {
         // TODO: change this to fragment_ingredient_storage
         return inflater.inflate(R.layout.activity_ingredient_storage, container, false);
     }
+
 
     /**
      *
@@ -186,11 +188,13 @@ public class IngredientStorageFragment extends Fragment {
                 R.layout.spinner_item,
                 sortingChoices
         );
+
         //chaning drop down layout
         sortingOptionsAdapter.setDropDownViewResource(
                 android.R.layout.simple_list_item_1
         );
         sortSpinner2.setAdapter(sortingOptionsAdapter);
+
 
         //setting up the on item selected listener which lets user sort on the basis of selection
         sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -299,6 +303,7 @@ public class IngredientStorageFragment extends Fragment {
         });
     }
 
+
     /**
      * A launcher for a previously-prepared call to start the process of executing edit and updation of ingredient
      */
@@ -322,6 +327,7 @@ public class IngredientStorageFragment extends Fragment {
                     Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
                 }
             });
+
 
     /**
      * this method initialises firebase
