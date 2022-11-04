@@ -7,7 +7,10 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".activities.RecipeAddViewEditActivity">
-
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/confetti_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/activity_title"
         android:layout_width="wrap_content"

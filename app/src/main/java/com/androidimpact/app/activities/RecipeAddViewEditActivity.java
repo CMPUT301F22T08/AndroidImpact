@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +41,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.UUID;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * This class is the activity for recipe adding/viewing/editing
@@ -198,6 +203,18 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     ingredients.add(ingredient);
                     generateSnackbar("Added " + ingredient.getDescription() + "!");
                     ingredientAdapter.notifyDataSetChanged();
+
+                    final KonfettiView confetti = findViewById(R.id.confetti_view);
+                    confetti.build()
+                            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                            .setDirection(0.0, 359.0)
+                            .setSpeed(1f, 5f)
+                            .setFadeOutEnabled(true)
+                            .setTimeToLive(1000L)
+                            .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                            .addSizes(new Size(8, 4f))
+                            .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                            .streamFor(300, 5000L);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");

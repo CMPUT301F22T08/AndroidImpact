@@ -74,4 +74,7 @@ dependencies {
 
     // Picasso for ImageView elements
     implementation 'com.squareup.picasso:picasso:2.8'
+
+    implementation 'nl.dionsegijn:konfetti:1.2.2'
+
 }
