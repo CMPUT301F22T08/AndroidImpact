@@ -38,7 +38,7 @@ public class IngredientStorage {
         this.sortIndex = 0;
         // set compare variables
         descriptionComparator = Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER);
-        bbdComparator = Comparator.comparing(StoreIngredient::getBestBeforeDateString, String.CASE_INSENSITIVE_ORDER);
+        bbdComparator = Comparator.comparing(StoreIngredient::getBestBeforeCalendar);
         locationComparator = Comparator.comparing(StoreIngredient::getLocation, String.CASE_INSENSITIVE_ORDER);
         categoryComparator = Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER);
 

@@ -65,14 +65,6 @@ public class StoreIngredient extends Ingredient implements Serializable {
     }
 
 
-    public String getBestBeforeDateString() {
-
-        String myFormat="dd MMMM yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        return dateFormat.format(bestBeforeDate.getTime());
-    }
-
-
     /**
      * Get the best-before date of the stored ingredient as a Calendar object
      * @return (Calendar) The best before date for the stored ingredient
