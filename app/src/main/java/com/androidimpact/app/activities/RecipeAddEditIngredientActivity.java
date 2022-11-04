@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
+import com.androidimpact.app.StoreIngredient;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             String value = extras.getString("activity_name");
             activity_title.setText(value);
         }
+
     }
 
     /**
