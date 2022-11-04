@@ -22,6 +22,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -43,6 +45,7 @@ public class RecipeListActivity extends AppCompatActivity {
     final String TAG = "RecipeListActivity";
     EditText addRecipeDescriptionText;
     FirebaseFirestore db;
+    private StorageReference storageReference;
 
     /**
      *
@@ -56,6 +59,8 @@ public class RecipeListActivity extends AppCompatActivity {
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("recipes");
+        FirebaseStorage fs = FirebaseStorage.getInstance();
+        storageReference = fs.getReference();
 
 
         // Initialize views
@@ -137,6 +142,7 @@ public class RecipeListActivity extends AppCompatActivity {
                 // on below line we are getting the item at a particular position.
                 Recipe deletedRecipe = recipeDataList.get(position);
                 String description = deletedRecipe.getTitle();
+                String photo = deletedRecipe.getPhoto();
 
                 Log.d(TAG, "Swiped " + description + " at position " + position);
 
@@ -145,13 +151,23 @@ public class RecipeListActivity extends AppCompatActivity {
                         .delete()
                         .addOnSuccessListener(aVoid -> {
                             // task succeeded
-                            // cityAdapter will automatically update. No need to remove it from out list
+                            // RecipeList will automatically update. No need to remove it from out list
                             Log.d(TAG, description + " has been deleted successfully!");
                             Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
                             Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, description + " could not be deleted!" + e);
+                        });
+
+                // delete photo from Firebase Storage
+                storageReference.child("images/" + photo).delete()
+                        .addOnSuccessListener(aVoid -> {
+                            // task succeeded
+                            Log.d(TAG, description + ": " + photo + " has been deleted successfully!");
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.d(TAG, description + ": " + photo + " could not be deleted!" + e);
                         });
             }
             // at last we are adding this
