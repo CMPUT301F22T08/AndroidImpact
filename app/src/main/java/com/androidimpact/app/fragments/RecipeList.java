@@ -109,7 +109,7 @@ public class RecipeList extends Fragment {
         sortingOptions = com.androidimpact.app.RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
-                android.R.layout.simple_list_item_1,
+                R.layout.spinner_item,
                 sortingOptions
         );
         sortingOptionsAdapter.setDropDownViewResource(

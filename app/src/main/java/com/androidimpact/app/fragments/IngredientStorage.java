@@ -176,7 +176,7 @@ public class IngredientStorage extends Fragment {
         sortingChoices = ingredientDataList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
-                android.R.layout.simple_list_item_1,
+                R.layout.spinner_item,
                 sortingChoices
         );
         sortingOptionsAdapter.setDropDownViewResource(
