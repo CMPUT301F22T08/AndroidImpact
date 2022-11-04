@@ -7,7 +7,6 @@ public abstract class SortableItemList {
     protected ArrayList<Object> objectArrayList;
     protected static String[] sortChoices;
     protected int sortIndex;
-    protected ArrayList<Comparable<Object>> comparators;
 
     public SortableItemList(ArrayList<Object> objectArrayList, String[] sortChoices) {
         this.objectArrayList = objectArrayList;
