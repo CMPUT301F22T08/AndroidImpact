@@ -13,7 +13,6 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/background"
         app:layout_constraintBottom_toTopOf="@+id/ingredient_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,7 +25,6 @@
             android:paddingTop="9dp"
             android:paddingRight="5dp"
             android:text="Sort by:"
-            android:textColor="@color/white"
             android:textSize="15sp"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="363dp"
@@ -37,7 +35,6 @@
             android:id="@+id/sort_ingredient_spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="48dp"
             tools:layout_editor_absoluteX="363dp"
@@ -54,31 +51,30 @@
         android:background="@color/background"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-
+        tools:layout_conversion_absoluteHeight="383dp"
         tools:layout_conversion_absoluteWidth="411dp"
         tools:layout_editor_absoluteX="0dp">
-        <!--        tools:layout_conversion_absoluteHeight="383dp"-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredient_listview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="674dp"
             android:background="@color/background" />
 
     </LinearLayout>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/addStoreIngredientFAB"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:backgroundTint="@color/purple_700"-->
-<!--        android:clickable="true"-->
-<!--        android:contentDescription="Ingredient Storage Add FAB"-->
-<!--        android:focusable="true"-->
-<!--        app:borderWidth="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:srcCompat="@android:drawable/ic_input_add"-->
-<!--        tools:layout_conversion_absoluteHeight="56dp"-->
-<!--        tools:layout_conversion_absoluteWidth="56dp" />-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addStoreIngredientFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_700"
+        android:clickable="true"
+        android:contentDescription="Ingredient Storage Add FAB"
+        android:focusable="true"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:layout_conversion_absoluteHeight="56dp"
+        tools:layout_conversion_absoluteWidth="56dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,8 +68,12 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     //https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
     FirebaseStorage storage;
 
-
-    @Override
+    /**
+     * This method runs when the activity is created
+     * @param savedInstanceState
+     *    Bundle object
+     */
+     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_addviewedit);
@@ -134,7 +138,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             // to our recycler view.
         }).attachToRecyclerView(ingredientList);
 
-
         // Add button on bottom right
         final Button addRecipe = findViewById(R.id.add_button);
         addRecipe.setOnClickListener(v -> {
@@ -175,6 +178,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
                         .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
                 generateSnackbar("Added " + getStr(title) + "!");
+
+                // Reset fields to add another ingredient
                 title.setText("");
                 prep_time.setText("");
                 servings.setText("");
@@ -182,6 +187,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 comments.setText("");
                 ingredients.clear();
                 photo.setImageResource(R.drawable.ic_launcher_foreground);
+                photo.setTag(null);
                 ingredientAdapter.notifyDataSetChanged();
             }
         });
@@ -210,11 +216,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .setDirection(0.0, 359.0)
                             .setSpeed(1f, 5f)
                             .setFadeOutEnabled(true)
-                            .setTimeToLive(1000L)
+                            .setTimeToLive(500L)
                             .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
                             .addSizes(new Size(8, 4f))
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
-                            .streamFor(300, 5000L);
+                            .streamFor(300, 2000L);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");

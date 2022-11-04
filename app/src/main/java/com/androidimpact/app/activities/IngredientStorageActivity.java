@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidimpact.app.IngredientStorage;
+import com.androidimpact.app.RecipeList;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.R;
@@ -30,6 +31,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class IngredientStorageActivity extends AppCompatActivity {
@@ -76,17 +79,10 @@ public class IngredientStorageActivity extends AppCompatActivity {
             addStoreIngredientLauncher.launch(intent);
         });
 
-        // listen for edits in `storeingredientViewAdapter`
-        storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
-            // runs whenever a store ingredient edit btn is clicked
-            Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
-            Intent intent = new Intent(IngredientStorageActivity.this, AddEditStoreIngredientActivity.class);
-            intent.putExtra("storeIngredient", storeIngredient);
-            editStoreIngredientLauncher.launch(intent);
-        });
-        
         sortSpinner2 = findViewById(R.id.sort_ingredient_spinner);
+
         sortText = findViewById(R.id.sort_ingredient_info);
+
 
         sortingChoices = ingredientDataList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
@@ -123,6 +119,17 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
                 storeingredientViewAdapter.notifyDataSetChanged();
             }
+        });
+
+        // Adding onCLick listener for spinner so that list can be sorted
+
+
+        storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
+            // runs whenever a store ingredient edit btn is clicked
+            Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
+            Intent intent = new Intent(IngredientStorageActivity.this, AddEditStoreIngredientActivity.class);
+            intent.putExtra("storeIngredient", storeIngredient);
+            editStoreIngredientLauncher.launch(intent);
         });
 
         // drag to delete
@@ -201,6 +208,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
             storeingredientViewAdapter.notifyDataSetChanged();
         });
     }
+
 
     final private ActivityResultLauncher<Intent> editStoreIngredientLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
