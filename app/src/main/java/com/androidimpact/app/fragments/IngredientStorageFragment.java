@@ -85,13 +85,13 @@ public class IngredientStorageFragment extends Fragment {
             //To be Changed
             IngredientStorageFragment fragment = new IngredientStorageFragment();
             fragment.bootUp();
-            //instance = new IngredientStorage();
+            instance = fragment;
 
             return fragment;
         }
 
-        IngredientStorageFragment fragment = new IngredientStorageFragment();
-        return fragment;
+        //IngredientStorageFragment fragment = new IngredientStorageFragment();
+        return instance;
     }
 
 
@@ -149,6 +149,10 @@ public class IngredientStorageFragment extends Fragment {
 
         // initialize adapters and customList
         ingredientListView = a.findViewById(R.id.ingredient_listview);
+
+        ingredientDataList = new com.androidimpact.app.IngredientStorage();
+        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
+
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -338,9 +342,9 @@ public class IngredientStorageFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         ingredientsCollection = db.collection("ingredientStorage");
 
-
-        ingredientDataList = new com.androidimpact.app.IngredientStorage();
-        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
+//
+//        ingredientDataList = new com.androidimpact.app.IngredientStorage();
+//        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
     }
 
     /**
