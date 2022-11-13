@@ -184,6 +184,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 generateSnackbar("Added " + getStr(title) + "!");
 
                 // Reset fields so another recipe can be added
+                /*
                 title.setText("");
                 prep_time.setText("");
                 servings.setText("");
@@ -193,6 +194,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 photo.setImageResource(R.drawable.ic_launcher_foreground);
                 photo.setTag(null);
                 ingredientAdapter.notifyDataSetChanged();
+                 */
+                finish();
             }
         });
 

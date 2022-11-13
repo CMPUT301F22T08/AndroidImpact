@@ -68,6 +68,7 @@ public class RecipeListFragment extends Fragment {
     FirebaseFirestore db;
     CollectionReference recipeCollection;
     FloatingActionButton addRecipeFAB;
+    boolean isViewCreated = false;
 
     public RecipeListFragment() {
         // Required empty public constructor
@@ -278,6 +279,8 @@ public class RecipeListFragment extends Fragment {
             }
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
+
+        isViewCreated = true;
     }
 
 
@@ -314,4 +317,15 @@ public class RecipeListFragment extends Fragment {
                     Log.i(TAG + ":addRecipeResult", "Received cancelled");
                 }
             });
+
+    public void setListener() {
+        if(isViewCreated) {
+            addRecipeFAB = getActivity().findViewById(R.id.addStoreIngredientFAB);
+            addRecipeFAB.setOnClickListener(v -> {
+                Log.i(TAG + ":addRecipe", "Adding recipe!");
+                Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
+                addRecipeLauncher.launch(intent);
+            });
+        }
+    }
 }
