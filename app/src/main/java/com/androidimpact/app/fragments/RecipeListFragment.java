@@ -138,9 +138,9 @@ public class RecipeListFragment extends Fragment {
 
         addRecipeFAB = a.findViewById(R.id.addStoreIngredientFAB);
         addRecipeFAB.setOnClickListener(v -> {
-            Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
+            Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
-            addStoreIngredientLauncher.launch(intent);
+            addRecipeLauncher.launch(intent);
         });
 
         // Initialize views
@@ -285,7 +285,7 @@ public class RecipeListFragment extends Fragment {
      * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
      * AddStoreIngredientActivity
      */
-    final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
+    final private ActivityResultLauncher<Intent> addRecipeLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (isNull(result.getData())) {
@@ -293,7 +293,7 @@ public class RecipeListFragment extends Fragment {
                 }
                 Bundle bundle = result.getData().getExtras();
 
-                Log.i(TAG + ":addIngredientResult", "Got bundle");
+                Log.i(TAG + ":addRecipeResult", "Got bundle");
 
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Activity a = getActivity();
@@ -311,7 +311,7 @@ public class RecipeListFragment extends Fragment {
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
-                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                    Log.i(TAG + ":addRecipeResult", "Received cancelled");
                 }
             });
 }
