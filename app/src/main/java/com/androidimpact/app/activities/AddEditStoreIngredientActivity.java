@@ -23,6 +23,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+/**
+ * Activity class for  Adding/Edit/Store Ingredient Activity
+ * @version 1.0
+ */
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
     final String TAG = "AddStoreIngredientActivity";
@@ -38,7 +42,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // Calendar for bestBeforeDatePicker
     final Calendar bestBeforeCalendar = Calendar.getInstance();
 
-    // Misc
+    /**
+     * Initalizes button data
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +131,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show());
     }
 
+    /**
+     * This will set the date label
+     */
     private void updateLabel(){
         String myFormat="dd MMMM yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);

@@ -22,14 +22,15 @@ public class MealPlannerFragment extends Fragment {
     final String TAG = "MealPlannerFragment";
 
 
+    /**
+     * Required empty public constructor
+     */
     public MealPlannerFragment() {
-        // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @return A new instance of fragment MealPlanner.
      */
     // TODO: Rename and change types and number of parameters
@@ -38,18 +39,32 @@ public class MealPlannerFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Runs on the creation of the fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflate the layout for this fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meal_planner, container, false);
     }
 
+    /**
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);

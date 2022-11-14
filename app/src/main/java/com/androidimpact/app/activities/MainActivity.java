@@ -14,6 +14,10 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * This class is the activity Main Activity
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // adding cities to firebase
@@ -27,6 +31,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     BottomNavigationView bottomnav;
+
+    /**
+     * Initalize the fragments
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         //navController = findNavController(R.id.nav_fragment)
     }
 
+    /**
+     * Sets switching in nav bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

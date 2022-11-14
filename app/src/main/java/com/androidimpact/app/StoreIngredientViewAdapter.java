@@ -22,6 +22,10 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * This class creates a view adapter for StoreIngredient
+ * @version 1.0
+ */
 public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngredientViewAdapter.StoreIngredientViewHolder>{
     private final String TAG = "StoreIngredientViewAdapter";
 
@@ -33,12 +37,23 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     // functions that subscribe for edit callbacks
     private ArrayList<StoreIngredientEditListener> editListeners = new ArrayList<>();
 
-    // creating a constructor class.
+
+    /**
+     * Create constructor class
+     * @param mContext
+     * @param ingredientArrayList
+     */
     public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
     }
 
+    /**
+     * Creates viewHolder
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public StoreIngredientViewAdapter.StoreIngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,6 +62,11 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         return new StoreIngredientViewAdapter.StoreIngredientViewHolder(view);
     }
 
+    /**
+     * Creates list item and turns data from textview and user actions into a ViewHolder
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull StoreIngredientViewAdapter.StoreIngredientViewHolder holder, int position) {
         // Set the data to textview from our modal class.
@@ -95,17 +115,20 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         });
     }
 
+    /**
+     * This method returns the size of recyclerview
+     * @return
+     */
     @Override
     public int getItemCount() {
-        // this method returns
-        // the size of recyclerview
+
         return ingredientArrayList.size();
     }
 
-    // View Holder Class to handle Recycler View.
-    // not sure why thi sis necessary
-    // From what I understand, all this does is retrieve all the items. The ViewHolder means it "holds"
-    // all the view elements necessary fro the Adapter.
+    /**
+     * View Holder Class to handle Recycler View.
+     * Holds all the view elements necessary for the Adapter
+     */
     public class StoreIngredientViewHolder extends RecyclerView.ViewHolder {
         private Resources res;
 
@@ -122,11 +145,14 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         private TextView amount;
         private TextView date;
 
+        /**
+         * initializing our text views
+         * @param itemView
+         */
         public StoreIngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             res = itemView.getResources();
 
-            // initializing our text views.
             //Need to be changed for now
             description = itemView.findViewById(R.id.store_ingredient_description);
             category = itemView.findViewById(R.id.store_ingredient_category);
@@ -140,6 +166,10 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         }
     }
 
+    /**
+     * This sets the position of the list item selected
+     * @param position
+     */
     private void clickedItem(int position) {
         if (selected == position) {
             // deselect
@@ -150,13 +180,20 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         notifyItemChanged(position);
     }
 
-    // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
-    // this is because we need the parent activity to react to changes because it has the Context and Activity info
-    // https://stackoverflow.com/a/36662886
+
+    /**
+     * this interface lets people subscribe to changes in the StoreIngredientViewAdapter
+     * this is because we need the parent activity to react to changes because it has the Context and Activity info
+     * https://stackoverflow.com/a/36662886
+     */
     public interface StoreIngredientEditListener {
         void storeIngredientEditClicked(StoreIngredient food, int position);
     }
 
+    /**
+     * Edit button listener
+     * @param toAdd
+     */
     public void setEditClickListener(StoreIngredientEditListener toAdd) {
         editListeners.add(toAdd);
     }
