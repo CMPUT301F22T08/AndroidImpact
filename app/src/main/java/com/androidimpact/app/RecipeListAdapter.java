@@ -41,7 +41,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     /**
      * Constructor for RecipeList
-     *
      * @param context         the context for the parent view
      * @param recipeArrayList the recipes to consider in the RecipeListAdapter object
      */
@@ -56,6 +55,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
 
     /**
+     * Create an Adapter
      * @param parent
      * @param viewType
      * @return
@@ -196,7 +196,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     /**
      * Set the sorting choice for the recipe list
-     *
      * @param index the index of the sorting choices for the user
      */
     public void setSortChoice(int index) {
@@ -210,19 +209,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         recipeList.sortByChoice();
     }
 
-    /**
-     *     // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
-     *     // this is because we need the parent activity to react to changes because it has the Context and Activity info
-     *     // https://stackoverflow.com/a/36662886
-     *     public interface StoreRecipeEditListener {
-     *         void storeRecipeEditClicked(Recipe food, int position);
-     *     }
-     *
-     *     public void setEditClickListener(StoreRecipeEditListener toAdd) {
-     *         editListeners.add(toAdd);
-     *     }
-     *
-     */
 
 }
 

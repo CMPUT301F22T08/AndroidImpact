@@ -35,6 +35,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Activity class for Ingredient Storage Activity
+ * @version 1.0
+ */
 public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
 
@@ -51,6 +55,10 @@ public class IngredientStorageActivity extends AppCompatActivity {
     String[] sortingChoices;
     TextView sortText;
 
+    /**
+     * Runs fragment on creation
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +105,13 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
+            /**
+             * Allow sorting to update
+             * @param adapterView
+             * @param view
+             * @param i
+             * @param l
+             */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ingredientDataList.setSortChoice(i);
@@ -135,14 +150,25 @@ public class IngredientStorageActivity extends AppCompatActivity {
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
+            /**
+             * this method is called when the item is moved.
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             */
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                // this method is called when the item is moved.
+
                 return false;
             }
 
+            /**
+             * this method is called when we swipe our item to right direction
+             * @param viewHolder
+             * @param direction
+             */
             @Override
-            // this method is called when we swipe our item to right direction.
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 // get the position of the selected item
                 int position = viewHolder.getAdapterPosition();
@@ -208,7 +234,6 @@ public class IngredientStorageActivity extends AppCompatActivity {
             storeingredientViewAdapter.notifyDataSetChanged();
         });
     }
-
 
     final private ActivityResultLauncher<Intent> editStoreIngredientLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

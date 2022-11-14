@@ -76,7 +76,6 @@ public class IngredientStorage {
      */
     public void add(StoreIngredient ingredient)
     {
-
         this.ingredientStorageList.add(ingredient);
     }
 
@@ -129,7 +128,6 @@ public class IngredientStorage {
     public void setSortChoice(int index) {
         this.sortIndex = index;
     }
-
 
 
     /**

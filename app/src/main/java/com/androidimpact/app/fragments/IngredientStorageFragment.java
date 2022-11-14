@@ -65,8 +65,10 @@ public class IngredientStorageFragment extends Fragment {
     String[] sortingChoices;
     TextView sortText;
 
+    /**
+     * Required empty public constructor
+     */
     public IngredientStorageFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -77,8 +79,6 @@ public class IngredientStorageFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static IngredientStorageFragment newInstance() {
-
-
 
         if (instance == null)
         {
@@ -97,7 +97,8 @@ public class IngredientStorageFragment extends Fragment {
 
     /**
      *
-     Fragment Called to do initial creation of a fragment. This is called after onAttach(Activity) and before onCreateView(LayoutInflater, ViewGroup, Bundle).
+     * Fragment called to do initial creation of a fragment
+     * This is called after onAttach(Activity) and before onCreateView(LayoutInflater, ViewGroup, Bundle).
      * @param savedInstanceState
      */
     @Override
@@ -193,7 +194,7 @@ public class IngredientStorageFragment extends Fragment {
                 sortingChoices
         );
 
-        //chaning drop down layout
+        //changing drop down layout
         sortingOptionsAdapter.setDropDownViewResource(
                 android.R.layout.simple_list_item_1
         );
@@ -203,6 +204,13 @@ public class IngredientStorageFragment extends Fragment {
         //setting up the on item selected listener which lets user sort on the basis of selection
         sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
+            /**
+             * Create method to get item for sort
+             * @param adapterView
+             * @param view
+             * @param i
+             * @param l
+             */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ingredientDataList.setSortChoice(i);
@@ -228,14 +236,24 @@ public class IngredientStorageFragment extends Fragment {
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
+            /**
+             * this method is called when the item is moved
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             */
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                // this method is called when the item is moved.
                 return false;
             }
 
+            /**
+             * this method is called when we swipe our item to right direction
+             * @param viewHolder
+             * @param direction
+             */
             @Override
-            // this method is called when we swipe our item to right direction.
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 // get the position of the selected item
                 int position = viewHolder.getAdapterPosition();
@@ -342,9 +360,6 @@ public class IngredientStorageFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         ingredientsCollection = db.collection("ingredientStorage");
 
-//
-//        ingredientDataList = new com.androidimpact.app.IngredientStorage();
-//        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
     }
 
     /**

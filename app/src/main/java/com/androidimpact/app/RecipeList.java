@@ -15,7 +15,6 @@ public class RecipeList {
     private ArrayList<Recipe> recipeArrayList;
     private static String[] sortChoices;
     private int sortIndex;
-
     public static Comparator<Recipe> defaultComparator, titleComparator, prepTimeComparator, servingsComparator, categoryComparator;
 
     /**
@@ -65,7 +64,6 @@ public class RecipeList {
      */
     public void add(Recipe recipe)
     {
-
         this.recipeArrayList.add(recipe);
     }
 
