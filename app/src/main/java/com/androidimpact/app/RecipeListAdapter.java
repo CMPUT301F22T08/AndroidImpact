@@ -181,13 +181,14 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
         holder.editRecipeFAB.setOnClickListener(v -> {
             Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
-            intent.putExtra("activity_name", "Edit ingredient");
+            intent.putExtra("activity_name", "Edit recipe");
             intent.putExtra("title", currentRecipe.getTitle());
             intent.putExtra("prep time", Integer.toString(currentRecipe.getPrep_time()));
             intent.putExtra("servings", Integer.toString(currentRecipe.getServings()));
             intent.putExtra("category", currentRecipe.getComments());
             intent.putExtra("comments", currentRecipe.getComments());
             intent.putExtra("photo", currentRecipe.getPhoto());
+            intent.putExtra("isEditing", true);
             context.startActivity(intent);
         });
 

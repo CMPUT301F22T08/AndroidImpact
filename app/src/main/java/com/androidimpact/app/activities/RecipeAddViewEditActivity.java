@@ -38,6 +38,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -65,6 +66,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     TextView activity_title;
     FirebaseFirestore db;
 
+    private Boolean isEditing;
     FirebaseStorage storage;
 
     /**
@@ -102,19 +104,42 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         ingredientList.setLayoutManager(manager);
         ingredientList.setAdapter(ingredientAdapter);
 
-         // check if editing
+         // extract extras
          Bundle extras = getIntent().getExtras();
          if (extras != null) {
              String value = extras.getString("activity_name");
              activity_title.setText(value);
+             isEditing = extras.getBoolean("isEditing", false);
 
-             title.setText(extras.getString("title", ""));
+             String docName = extras.getString("title", "");
+             title.setText(docName);
              prep_time.setText(extras.getString("prep time", ""));
              servings.setText(extras.getString("servings", ""));
              category.setText(extras.getString("category", ""));
              comments.setText(extras.getString("comments", ""));
-             photo.setImageResource(R.drawable.ic_launcher_foreground);
-             photo.setTag(null);
+             // load image for recipe
+             String photoURI = extras.getString("photo", null);
+             if (photoURI != null) {
+                 try {
+                     // get child in storage
+                     StorageReference photoRef = storageReference.child("images/" + photoURI);
+                     photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                         // Got the download URL and put image in corresponding ImageView
+                         Picasso.get().load(uri).into(photo);
+                     }).addOnFailureListener(exception -> {
+                         // Log any errors
+                         Log.e("Image Not Found", docName, exception);
+                         photo.setImageResource(R.drawable.ic_baseline_dining_24);
+                     });
+
+                 } catch (Exception exception) {
+                     // Log any errors
+                     Log.e("Child Not Found", docName, exception);
+                 }
+             } else {
+                 photo.setImageResource(R.drawable.ic_baseline_dining_24);
+             }
+             photo.setTag(extras.getString("photo", null));
          }
 
 
@@ -164,52 +189,53 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         ingredientData.put("ingredient" + i, ingredients.get(i));
                     }
 
-                    // Code for getting the date
-                    // https://www.javatpoint.com/java-get-current-date
-                    // Copyright 2011-2021 www.javatpoint.com. All rights reserved. Developed by JavaTpoint.
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                    Date date = new Date();
-                    data.put("date", formatter.format(date));
-                    data.put("prep time", getStr(prep_time));
-                    data.put("servings", getStr(servings));
-                    data.put("category", getStr(category));
-                    data.put("comments", getStr(comments));
-                    if (photo.getTag() == null) {
-                        data.put("photo", null);  // shows up as null in database
-                    }
+                // Code for getting the date
+                // https://www.javatpoint.com/java-get-current-date
+                // Copyright 2011-2021 www.javatpoint.com. All rights reserved. Developed by JavaTpoint.
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date date = new Date();
+                data.put("date", formatter.format(date));
+                data.put("prep time", getStr(prep_time));
+                data.put("servings", getStr(servings));
+                data.put("category", getStr(category));
+                data.put("comments", getStr(comments));
 
-                    // Add photo to firebase storage
-                    // https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
-                    // Rishabh007 - December 7, 2021
-                    else {
-                        String img_name = UUID.randomUUID().toString();
-                        data.put("photo", img_name);
-                        StorageReference imgs = storageReference.child("images/" + img_name);
-                        imgs.putFile((Uri) photo.getTag())
-                                .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
-                                .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
-                    }
-                    data.put("ingredients", ingredientData);
+                if (photo.getTag() == null) {
+                    data.put("photo", null);  // shows up as null in database
+                }
+                // Add photo to firebase storage
+                // https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
+                // Rishabh007 - December 7, 2021
+                else {
+                    String img_name = UUID.randomUUID().toString();
+                    data.put("photo", img_name);
+                    StorageReference imgs = storageReference.child("images/" + img_name);
+                    imgs.putFile((Uri) photo.getTag())
+                            .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
+                            .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
+                }
+                data.put("ingredients", ingredientData);
 
+
+                if (isEditing) {
                     collectionReference
-                        .document(title.getText().toString())
-                        .set(data)
-                        .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
-                        .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
-                generateSnackbar("Added " + getStr(title) + "!");
+                            .document(title.getText().toString())
+                            .delete()
+                            .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
+                            .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
+                    generateSnackbar("Added " + getStr(title) + "!");
 
-                // Reset fields so another recipe can be added
-                /*
-                title.setText("");
-                prep_time.setText("");
-                servings.setText("");
-                category.setText("");
-                comments.setText("");
-                ingredients.clear();
-                photo.setImageResource(R.drawable.ic_launcher_foreground);
-                photo.setTag(null);
-                ingredientAdapter.notifyDataSetChanged();
-                 */
+                }
+
+                        collectionReference
+                                .document(title.getText().toString())
+                                .set(data)
+                                .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
+                                .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
+                        generateSnackbar("Added " + getStr(title) + "!");
+
+
+
                 finish();
             }
         });

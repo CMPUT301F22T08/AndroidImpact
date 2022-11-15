@@ -139,6 +139,7 @@ public class RecipeListFragment extends Fragment {
         addRecipeFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
+            intent.putExtra("activity_name", "Add recipe");
             addRecipeLauncher.launch(intent);
         });
 
@@ -334,6 +335,7 @@ public class RecipeListFragment extends Fragment {
             addRecipeFAB.setOnClickListener(v -> {
                 Log.i(TAG + ":addRecipe", "Adding recipe!");
                 Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
+                intent.putExtra("activity_name", "Add recipe");
                 addRecipeLauncher.launch(intent);
             });
         }
