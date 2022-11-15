@@ -1,5 +1,7 @@
 package com.androidimpact.app;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -174,15 +179,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
         }
 
-        /**
-         *         holder.editRecipeFAB.setOnClickListener(v -> {
-         *             // execute all listeners
-         *             for (StoreRecipeEditListener listener : editListeners) {
-         *                 listener.storeRecipeEditClicked(currentRecipe, position);
-         *             }
-         *         });
-         */
-
+        holder.editRecipeFAB.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
+            intent.putExtra("activity_name", "Edit ingredient");
+            intent.putExtra("title", currentRecipe.getTitle());
+            intent.putExtra("prep time", Integer.toString(currentRecipe.getPrep_time()));
+            intent.putExtra("servings", Integer.toString(currentRecipe.getServings()));
+            intent.putExtra("category", currentRecipe.getComments());
+            intent.putExtra("comments", currentRecipe.getComments());
+            intent.putExtra("photo", currentRecipe.getPhoto());
+            context.startActivity(intent);
+        });
 
     }
 
@@ -199,6 +206,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // creating a variable for our text view.
         private TextView recipeTitle, recipeCategory, recipePrepTime, recipeServings;
         private ImageView recipeImage;
+        private FloatingActionButton editRecipeFAB;
         //private FloatingActionButton editRecipeFAB;
 
         public RecipeViewHolder(@NonNull View itemView) {
@@ -209,7 +217,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
             recipeServings = itemView.findViewById(R.id.recipe_servings);
             recipeImage = itemView.findViewById(R.id.recipe_image_view);
-            //editRecipeFAB = itemView.findViewById(R.id.edit_button);
+            editRecipeFAB = itemView.findViewById(R.id.floatingActionButton);
         }
     }
 

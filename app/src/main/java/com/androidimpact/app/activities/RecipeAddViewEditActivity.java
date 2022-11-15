@@ -102,6 +102,21 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         ingredientList.setLayoutManager(manager);
         ingredientList.setAdapter(ingredientAdapter);
 
+         // check if editing
+         Bundle extras = getIntent().getExtras();
+         if (extras != null) {
+             String value = extras.getString("activity_name");
+             activity_title.setText(value);
+
+             title.setText(extras.getString("title", ""));
+             prep_time.setText(extras.getString("prep time", ""));
+             servings.setText(extras.getString("servings", ""));
+             category.setText(extras.getString("category", ""));
+             comments.setText(extras.getString("comments", ""));
+             photo.setImageResource(R.drawable.ic_launcher_foreground);
+             photo.setTag(null);
+         }
+
 
         // drag to delete - code duplicated from recycler view in ingredient storage
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
