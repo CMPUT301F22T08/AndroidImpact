@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 getSupportActionBar().setTitle("Recipe List");
                 getSupportFragmentManager().beginTransaction().hide(active).show(recipeListFragment).commit();
                 active = recipeListFragment;
+                recipeListFragment.setListener();
 
              //   getSupportFragmentManager().beginTransaction().replace(R.id.nav_fragment, recipeListFragment, null).commit();
                 return true;

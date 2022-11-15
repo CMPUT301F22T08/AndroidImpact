@@ -171,7 +171,7 @@ public class IngredientStorageFragment extends Fragment {
             addStoreIngredientLauncher.launch(intent);
         });
 
-        // listen for edits in `storeingredientViewAdapter`
+        // listen for edits in storeingredientViewAdapter`
         storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
             // runs whenever a store ingredient edit btn is clicked
             Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
@@ -184,7 +184,7 @@ public class IngredientStorageFragment extends Fragment {
         sortSpinner2 = a.findViewById(R.id.sort_ingredient_spinner);
         sortText = a.findViewById(R.id.sort_ingredient_info);
 
-        // gettinga available sorting choices
+        // getting available sorting choices
         sortingChoices = ingredientDataList.getSortChoices();
 
         // Creating a sorting adapter

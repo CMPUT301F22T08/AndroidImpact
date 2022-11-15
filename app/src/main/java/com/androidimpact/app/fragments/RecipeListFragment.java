@@ -63,11 +63,10 @@ public class RecipeListFragment extends Fragment {
     Spinner sortSpinner;
 
     // adding recipes to firebase
-    EditText addRecipeDescriptionText;
-    FloatingActionButton addRecipe;
     FirebaseFirestore db;
     CollectionReference recipeCollection;
     FloatingActionButton addRecipeFAB;
+    boolean isViewCreated = false;
 
     /**
      * Required empty public constructor
@@ -140,9 +139,10 @@ public class RecipeListFragment extends Fragment {
 
         addRecipeFAB = a.findViewById(R.id.addStoreIngredientFAB);
         addRecipeFAB.setOnClickListener(v -> {
-            Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
+            Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
-            addStoreIngredientLauncher.launch(intent);
+            intent.putExtra("activity_name", "Add recipe");
+            addRecipeLauncher.launch(intent);
         });
 
         // Initialize views
@@ -218,7 +218,17 @@ public class RecipeListFragment extends Fragment {
                 // below line is to get the position
                 // of the item at that position.
                 int position = viewHolder.getAdapterPosition();
+                Recipe deletedRecipe = recipeDataList.get(position);
+                String description = deletedRecipe.getTitle();
+                boolean snackBarChoice = recipeViewAdapter.removeItem(position);
 
+                if(snackBarChoice) {
+                    Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                }
+
+                /*
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
                 Recipe deletedRecipe = recipeDataList.get(position);
@@ -239,6 +249,8 @@ public class RecipeListFragment extends Fragment {
                             Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, description + " could not be deleted!" + e);
                         });
+
+                 */
             }
             // at last we are adding this
             // to our recycler view.
@@ -278,6 +290,8 @@ public class RecipeListFragment extends Fragment {
             }
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
+
+        isViewCreated = true;
     }
 
 
@@ -285,7 +299,7 @@ public class RecipeListFragment extends Fragment {
      * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
      * AddStoreIngredientActivity
      */
-    final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
+    final private ActivityResultLauncher<Intent> addRecipeLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (isNull(result.getData())) {
@@ -293,7 +307,7 @@ public class RecipeListFragment extends Fragment {
                 }
                 Bundle bundle = result.getData().getExtras();
 
-                Log.i(TAG + ":addIngredientResult", "Got bundle");
+                Log.i(TAG + ":addRecipeResult", "Got bundle");
 
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Activity a = getActivity();
@@ -311,7 +325,19 @@ public class RecipeListFragment extends Fragment {
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
-                    Log.i(TAG + ":addIngredientResult", "Received cancelled");
+                    Log.i(TAG + ":addRecipeResult", "Received cancelled");
                 }
             });
+
+    public void setListener() {
+        if(isViewCreated) {
+            addRecipeFAB = getActivity().findViewById(R.id.addStoreIngredientFAB);
+            addRecipeFAB.setOnClickListener(v -> {
+                Log.i(TAG + ":addRecipe", "Adding recipe!");
+                Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
+                intent.putExtra("activity_name", "Add recipe");
+                addRecipeLauncher.launch(intent);
+            });
+        }
+    }
 }
