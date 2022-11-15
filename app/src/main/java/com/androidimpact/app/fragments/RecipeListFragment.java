@@ -63,8 +63,6 @@ public class RecipeListFragment extends Fragment {
     Spinner sortSpinner;
 
     // adding recipes to firebase
-    EditText addRecipeDescriptionText;
-    FloatingActionButton addRecipe;
     FirebaseFirestore db;
     CollectionReference recipeCollection;
     FloatingActionButton addRecipeFAB;
@@ -219,7 +217,9 @@ public class RecipeListFragment extends Fragment {
                 // below line is to get the position
                 // of the item at that position.
                 int position = viewHolder.getAdapterPosition();
+                recipeViewAdapter.removeItem(position);
 
+                /*
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
                 Recipe deletedRecipe = recipeDataList.get(position);
@@ -240,6 +240,8 @@ public class RecipeListFragment extends Fragment {
                             Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, description + " could not be deleted!" + e);
                         });
+
+                 */
             }
             // at last we are adding this
             // to our recycler view.

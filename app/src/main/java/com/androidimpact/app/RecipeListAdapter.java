@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -37,7 +40,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     RecipeList recipeList;
     private Context context;
 
+    // adding recipes to firebase
+    FirebaseFirestore db;
+    CollectionReference recipeCollection;
     private StorageReference storageReference;
+    final String TAG = "RecipeList";
 
     /**
      * Constructor for RecipeList
@@ -50,8 +57,21 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         this.context = context;
         this.recipeList = new RecipeList(recipeArrayList);
 
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        //final CollectionReference collectionReference = db.collection("recipes");
+        recipeCollection = db.collection("recipes");
         FirebaseStorage fs = FirebaseStorage.getInstance();
         storageReference = fs.getReference();
+
+
+        this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                sortByChoice();
+            }
+        });
     }
 
 
@@ -147,12 +167,15 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 }).addOnFailureListener(exception -> {
                     // Log any errors
                     Log.e("Image Not Found", recyclerData.getTitle(), exception);
+                    holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
                 });
 
             } catch (Exception exception) {
                 // Log any errors
                 Log.e("Child Not Found", recyclerData.getTitle(), exception);
             }
+        } else {
+            holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
         }
 
         /**
@@ -208,6 +231,37 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      */
     public void sortByChoice() {
         recipeList.sortByChoice();
+    }
+
+    public void removeItem(int position) {
+
+        // this method is called when we swipe our item to right direction.
+        // on below line we are getting the item at a particular position.
+        Recipe deletedRecipe = recipeArrayList.get(position);
+        String description = deletedRecipe.getTitle();
+        String photo = deletedRecipe.getPhoto();
+
+        // delete item from firebase
+        recipeCollection.document(description)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    // task succeeded
+                    // cityAdapter will automatically update. No need to remove it from out list
+                    Log.d(TAG, description + " has been deleted successfully!");
+                })
+                .addOnFailureListener(e -> {
+                    Log.d(TAG, description + " could not be deleted!" + e);
+                });
+
+        // delete photo from Firebase Storage
+        storageReference.child("images/" + photo).delete()
+                .addOnSuccessListener(aVoid -> {
+                    // task succeeded
+                    Log.d(TAG, description + ": " + photo + " has been deleted successfully!");
+                })
+                .addOnFailureListener(e -> {
+                    Log.d(TAG, description + ": " + photo + " could not be deleted!" + e);
+                });
     }
 
     /**
