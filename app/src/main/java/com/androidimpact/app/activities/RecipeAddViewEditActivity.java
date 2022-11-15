@@ -65,8 +65,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     ImageView photo;
     TextView activity_title;
     FirebaseFirestore db;
-
+    private String docName;
     private Boolean isEditing;
+    private String date;
     FirebaseStorage storage;
 
     /**
@@ -107,16 +108,19 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
          // extract extras
          Bundle extras = getIntent().getExtras();
          if (extras != null) {
+
              String value = extras.getString("activity_name");
              activity_title.setText(value);
              isEditing = extras.getBoolean("isEditing", false);
 
-             String docName = extras.getString("title", "");
+             docName = extras.getString("title", "");
              title.setText(docName);
              prep_time.setText(extras.getString("prep time", ""));
              servings.setText(extras.getString("servings", ""));
              category.setText(extras.getString("category", ""));
              comments.setText(extras.getString("comments", ""));
+             date = extras.getString("date","");
+
              // load image for recipe
              String photoURI = extras.getString("photo", null);
              if (photoURI != null) {
@@ -140,6 +144,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                  photo.setImageResource(R.drawable.ic_baseline_dining_24);
              }
              photo.setTag(extras.getString("photo", null));
+
          }
 
 
@@ -193,8 +198,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 // https://www.javatpoint.com/java-get-current-date
                 // Copyright 2011-2021 www.javatpoint.com. All rights reserved. Developed by JavaTpoint.
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                Date date = new Date();
-                data.put("date", formatter.format(date));
+                Date newDate = new Date();
+                data.put("date", isEditing?date:formatter.format(newDate));
                 data.put("prep time", getStr(prep_time));
                 data.put("servings", getStr(servings));
                 data.put("category", getStr(category));
@@ -207,23 +212,34 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 // https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
                 // Rishabh007 - December 7, 2021
                 else {
-                    String img_name = UUID.randomUUID().toString();
-                    data.put("photo", img_name);
-                    StorageReference imgs = storageReference.child("images/" + img_name);
-                    imgs.putFile((Uri) photo.getTag())
-                            .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
-                            .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
+
+                    if (isEditing){
+                        data.put("photo",photo.getTag());
+
+
+                    } else{
+                        String img_name = UUID.randomUUID().toString();
+                        data.put("photo", img_name);
+                        StorageReference imgs = storageReference.child("images/" + img_name);
+                        imgs.putFile((Uri) photo.getTag())
+                                .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
+                                .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
+                    }
+
                 }
                 data.put("ingredients", ingredientData);
+                Log.i("works", "well");
+                Log.i("docName",docName);
 
 
                 if (isEditing) {
                     collectionReference
-                            .document(title.getText().toString())
-                            .delete()
-                            .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
-                            .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
+                            .document(docName)
+                            .delete();
+                            //.addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
+                            //.addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
                     generateSnackbar("Added " + getStr(title) + "!");
+
 
                 }
 

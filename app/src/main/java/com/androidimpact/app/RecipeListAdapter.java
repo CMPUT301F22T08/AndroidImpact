@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -185,10 +186,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             intent.putExtra("title", currentRecipe.getTitle());
             intent.putExtra("prep time", Integer.toString(currentRecipe.getPrep_time()));
             intent.putExtra("servings", Integer.toString(currentRecipe.getServings()));
-            intent.putExtra("category", currentRecipe.getComments());
+            intent.putExtra("category", currentRecipe.getCategory());
             intent.putExtra("comments", currentRecipe.getComments());
             intent.putExtra("photo", currentRecipe.getPhoto());
             intent.putExtra("isEditing", true);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            intent.putExtra("date", currentRecipe.getDate());
+
             context.startActivity(intent);
         });
 
