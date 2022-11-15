@@ -12,17 +12,13 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.squareup.picasso.Picasso;
 
@@ -233,13 +229,14 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         recipeList.sortByChoice();
     }
 
-    public void removeItem(int position) {
+    public boolean removeItem(int position) {
 
         // this method is called when we swipe our item to right direction.
         // on below line we are getting the item at a particular position.
         Recipe deletedRecipe = recipeArrayList.get(position);
         String description = deletedRecipe.getTitle();
         String photo = deletedRecipe.getPhoto();
+        AtomicBoolean returnVal = new AtomicBoolean(false);
 
         // delete item from firebase
         recipeCollection.document(description)
@@ -248,9 +245,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                     // task succeeded
                     // cityAdapter will automatically update. No need to remove it from out list
                     Log.d(TAG, description + " has been deleted successfully!");
+                    returnVal.set(true);
+
                 })
                 .addOnFailureListener(e -> {
                     Log.d(TAG, description + " could not be deleted!" + e);
+                    returnVal.set(false);
                 });
 
         // delete photo from Firebase Storage
@@ -262,6 +262,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 .addOnFailureListener(e -> {
                     Log.d(TAG, description + ": " + photo + " could not be deleted!" + e);
                 });
+
+        return returnVal.get();
     }
 
     /**

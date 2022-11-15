@@ -217,7 +217,15 @@ public class RecipeListFragment extends Fragment {
                 // below line is to get the position
                 // of the item at that position.
                 int position = viewHolder.getAdapterPosition();
-                recipeViewAdapter.removeItem(position);
+                Recipe deletedRecipe = recipeDataList.get(position);
+                String description = deletedRecipe.getTitle();
+                boolean snackBarChoice = recipeViewAdapter.removeItem(position);
+
+                if(snackBarChoice) {
+                    Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                }
 
                 /*
                 // this method is called when we swipe our item to right direction.
