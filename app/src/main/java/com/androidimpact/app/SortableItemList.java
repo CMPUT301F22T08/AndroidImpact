@@ -3,11 +3,20 @@ package com.androidimpact.app;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * This class creates the functionality to sort Ingredient and Recipe Lists
+ * @version 1.0
+ */
 public abstract class SortableItemList {
     protected ArrayList<Object> objectArrayList;
     protected static String[] sortChoices;
     protected int sortIndex;
 
+    /**
+     * Constructor for SortableItemList class
+     * @param objectArrayList
+     * @param sortChoices
+     */
     public SortableItemList(ArrayList<Object> objectArrayList, String[] sortChoices) {
         this.objectArrayList = objectArrayList;
         this.sortIndex = 0;

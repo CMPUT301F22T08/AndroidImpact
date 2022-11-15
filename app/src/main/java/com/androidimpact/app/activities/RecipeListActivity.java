@@ -114,7 +114,7 @@ public class RecipeListActivity extends AppCompatActivity {
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             /**
-             *
+             * This method is called when item is moved
              * @param recyclerView
              * @param viewHolder
              * @param target
@@ -122,13 +122,12 @@ public class RecipeListActivity extends AppCompatActivity {
              */
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                // this method is called
-                // when the item is moved.
+
                 return false;
             }
 
             /**
-             *
+             * This creates swipe to delete functionality
              * @param viewHolder
              * @param direction
              */

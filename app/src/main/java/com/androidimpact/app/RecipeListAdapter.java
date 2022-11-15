@@ -50,7 +50,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     /**
      * Constructor for RecipeList
-     *
      * @param context         the context for the parent view
      * @param recipeArrayList the recipes to consider in the RecipeListAdapter object
      */
@@ -78,6 +77,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
 
     /**
+     * Create an Adapter
      * @param parent
      * @param viewType
      * @return
@@ -228,7 +228,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     /**
      * Set the sorting choice for the recipe list
-     *
      * @param index the index of the sorting choices for the user
      */
     public void setSortChoice(int index) {

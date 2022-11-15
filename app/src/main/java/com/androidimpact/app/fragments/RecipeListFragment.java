@@ -68,8 +68,10 @@ public class RecipeListFragment extends Fragment {
     FloatingActionButton addRecipeFAB;
     boolean isViewCreated = false;
 
+    /**
+     * Required empty public constructor
+     */
     public RecipeListFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -96,8 +98,8 @@ public class RecipeListFragment extends Fragment {
 
     /**
      *
-     Fragment Called to have the fragment instantiate its user interface view.
-     This will be called between onCreate(Bundle) and onViewCreated(View, Bundle).
+     * Fragment Called to have the fragment instantiate its user interface view.
+     * This will be called between onCreate(Bundle) and onViewCreated(View, Bundle).
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -113,7 +115,7 @@ public class RecipeListFragment extends Fragment {
 
 
     /**
-     * :
+     *
      * Fragment Called immediately after onCreateView(LayoutInflater, ViewGroup, Bundle) has returned, but before any saved state has been restored in to the view.
      * @param view
      * @param savedInstanceState
@@ -195,7 +197,7 @@ public class RecipeListFragment extends Fragment {
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             /**
-             *
+             * This method is called when the item is moved
              * @param recyclerView
              * @param viewHolder
              * @param target
@@ -203,13 +205,11 @@ public class RecipeListFragment extends Fragment {
              */
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                // this method is called
-                // when the item is moved.
                 return false;
             }
 
             /**
-             *
+             * Creates swipe to delete functionality
              * @param viewHolder
              * @param direction
              */
