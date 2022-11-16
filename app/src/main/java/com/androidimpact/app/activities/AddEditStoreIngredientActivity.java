@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  */
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
-    final String TAG = "AddStoreIngredientActivity";
+    final String TAG = "AddEditStoreIngredientActivity";
     final String LOCATION_COLLECTION = "locations";
 
     // declare all view variables
@@ -109,8 +109,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         // Initialize location spinner
         ArrayList<Location> locations = new ArrayList<>();
-        LocationSpinnerAdapter adapter = new LocationSpinnerAdapter(this, locations);
-        locationSpinner.setAdapter(adapter);
+        ArrayAdapter<Location> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locations);
+        locationSpinner.setAdapter(locationAdapter);
 
         // EVENT LISTENERS
 
@@ -166,12 +166,13 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedLocation = (Location) parentView.getItemAtPosition(position);
-                Log.i(TAG, "selected location is "+selectedLocation.getLocation());
+
+                Log.i(TAG, "selected location is " + selectedLocation.getLocation());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                return;
+                Log.i(TAG, "Nothing selected");
             }
         });
 
@@ -188,6 +189,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 locations.add(doc.toObject(Location.class));
             }
+            locationAdapter.notifyDataSetChanged();
         });
     }
 
@@ -263,6 +265,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             DocumentReference locationRef = locationCollection.document(selectedLocation.getId());
             return new StoreIngredient(id, description, amount, unit, category, date, locationRef);
         } catch(Exception e) {
+            Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");
         }
     }

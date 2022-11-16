@@ -1,5 +1,7 @@
 package com.androidimpact.app;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
@@ -38,6 +40,11 @@ public class Location implements Serializable {
         id = id;
         value = value;
         dateAdded = date;
+    }
+
+    @NonNull
+    public String toString() {
+        return getLocation();
     }
 
     public String getId() {
