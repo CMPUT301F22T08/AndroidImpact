@@ -192,6 +192,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             intent.putExtra("isEditing", true);
             intent.putExtra("date", currentRecipe.getDate());
             context.startActivity(intent);
+            notifyItemChanged(position);
         });
 
     }
