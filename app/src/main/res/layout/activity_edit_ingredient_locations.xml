@@ -5,7 +5,7 @@
     android:id="@+id/editIngredientLocations_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EditIngredientLocationsActivity">
+    tools:context=".location.EditLocationsActivity">
 
     <Button
         android:id="@+id/addLocationBtn"

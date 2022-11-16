@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.location;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.androidimpact.app.R;
 
 import java.util.ArrayList;
 
