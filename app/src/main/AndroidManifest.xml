@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AndroidImpact"
         tools:targetApi="31">
         <activity
-            android:name=".EditIngredientLocations"
+            android:name=".activities.EditIngredientLocationsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -62,7 +62,7 @@
         </activity>
         <activity
             android:name=".RecipeListActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

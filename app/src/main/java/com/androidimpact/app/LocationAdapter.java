@@ -21,16 +21,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     private ArrayList<Location> locationArrayList;
     private Context mContext;
 
-    // functions that subscribe for edit callbacks
-    private ArrayList<LocationEditListener> editListeners = new ArrayList<>();
-
     /**
      * Create constructor class
      * @param mContext
-     * @param ingredientArrayList
+     * @param locationArrayList
      */
-    public LocationAdapter(Context mContext, ArrayList<Location> ingredientArrayList) {
-        this.locationArrayList = ingredientArrayList;
+    public LocationAdapter(Context mContext, ArrayList<Location> locationArrayList) {
+        this.locationArrayList = locationArrayList;
         this.mContext = mContext;
     }
 
@@ -90,22 +87,5 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @Override
     public int getItemCount() {
         return locationArrayList.size();
-    }
-
-    /**
-     * this interface lets people subscribe to changes in the LocationAdapter
-     * this is because we need the parent activity to react to changes because it has the Context and Activity info
-     * https://stackoverflow.com/a/36662886
-     */
-    public interface LocationEditListener {
-        void locationEdited(Location food, int position);
-    }
-
-    /**
-     * Edit button listener
-     * @param toAdd
-     */
-    public void addEditListener(LocationEditListener toAdd) {
-        editListeners.add(toAdd);
     }
 }

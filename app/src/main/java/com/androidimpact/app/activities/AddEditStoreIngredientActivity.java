@@ -1,11 +1,14 @@
 package com.androidimpact.app.activities;
 
+import static java.util.Objects.isNull;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,11 +17,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import com.androidimpact.app.Location;
-import com.androidimpact.app.LocationSpinnerAdapter;
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,15 +29,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import org.w3c.dom.Document;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
@@ -55,6 +54,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     private EditText categoryEditText;
     private EditText bestBeforeEditText;
 
+    // buttons
+    private ImageButton editLocationsBtn;
+
     // Calendar for bestBeforeDatePicker
     final Calendar bestBeforeCalendar = Calendar.getInstance();
 
@@ -69,7 +71,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredient_storage_add);
+        setContentView(R.layout.activity_add_edit_ingredient_storage);
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
@@ -82,6 +84,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         unitEditText = findViewById(R.id.ingredientStoreAdd_unit);
         categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
+        editLocationsBtn = findViewById(R.id.ingredientStoreAdd_editLocationsBtn);
 
         // init btns
         Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
@@ -124,7 +127,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         cancelBtn.setOnClickListener(v -> {
             Log.i(TAG + ":cancel", "Cancel ingredient add");
-            Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
+            Intent intent = new Intent(this, IngredientStorageActivity.class);
             setResult(Activity.RESULT_CANCELED, intent);
             finish();
         });
@@ -201,6 +204,28 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         bestBeforeEditText.setText(dateFormat.format(bestBeforeCalendar.getTime()));
     }
+
+    /**
+     * This is run when R.id.ingredientStoreAdd_editLocationsBtn is clicked
+     *
+     * this function jumps to the EditLocations activity.
+     */
+    public void editLocations(View view) {
+        Log.i(TAG + ":editLocations", "Going to Edit Locations");
+        Intent intent = new Intent(this, EditIngredientLocationsActivity.class);
+        editLocationLauncher.launch(intent);
+    }
+
+    /**
+     * A launcher for a previously-prepared call to start the process of executing edit and updation of ingredient
+     *
+     * we don't care about the callback! the new location (or deleted locations) will be updated automatically
+     * by firebase, via the addSnapshotListener
+     */
+    final private ActivityResultLauncher<Intent> editLocationLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {}
+    );
 
     /**
      * Validates the data input by the user
