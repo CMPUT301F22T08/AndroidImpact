@@ -64,12 +64,50 @@ public class EditLocationsActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         locationRecyclerView.setLayoutManager(manager);
         locationRecyclerView.setAdapter(locationViewAdapter);
+        setUpItemTouchHelper();
 
-        // implements drag to delete
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
 
+            // Clear the old list
+            locationArrayList.clear();
+
+            if (queryDocumentSnapshots == null) { return; }
+
+            int errorCount = 0;
+            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                String id = doc.getId();
+                try {
+                    locationArrayList.add(doc.toObject(Location.class));
+                } catch (Exception e) {
+                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
+                    errorCount += 1;
+                }
+            }
+
+            if (errorCount > 0) {
+                Snackbar.make(locationRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
+            }
+            Log.i(TAG, "Snapshot listener: Added " + locationArrayList.size() + " elements");
+            locationArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
+            locationViewAdapter.notifyDataSetChanged();
+        });
+    }
+
+    /**
+     * Helper function to set up ItemTouchHelper, which manages callbacks when a user swipes on a RecyclerView
+     * It then attaches the itemTouchHelper to the recyclerView (locationRecyclerView)
+     *
+     * This makes our code cleaner
+     */
+    private void setUpItemTouchHelper() {
+        ItemTouchHelper.SimpleCallback itemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             /**
              * this method is called when the item is moved.
+             *
              * @param recyclerView
              * @param viewHolder
              * @param target
@@ -82,6 +120,7 @@ public class EditLocationsActivity extends AppCompatActivity {
 
             /**
              * this method is called when we swipe our item to right direction
+             *
              * @param viewHolder
              * @param direction
              */
@@ -125,41 +164,11 @@ public class EditLocationsActivity extends AppCompatActivity {
                             Log.d(TAG, "Failed to count locations!", e);
                             makeSnackbar("Failed to count locations! Check the logs... ");
                         });
-
-
             }
-            // finally, we add this to our recycler view.
-        }).attachToRecyclerView(locationRecyclerView);
+        };
 
-        locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                return;
-            }
-
-            // Clear the old list
-            locationArrayList.clear();
-
-            if (queryDocumentSnapshots == null) { return; }
-
-            int errorCount = 0;
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                String id = doc.getId();
-                try {
-                    locationArrayList.add(doc.toObject(Location.class));
-                } catch (Exception e) {
-                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
-                    errorCount += 1;
-                }
-            }
-
-            if (errorCount > 0) {
-                Snackbar.make(locationRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
-            }
-            Log.i(TAG, "Snapshot listener: Added " + locationArrayList.size() + " elements");
-            locationArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-            locationViewAdapter.notifyDataSetChanged();
-        });
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(locationRecyclerView);
     }
 
     /**
