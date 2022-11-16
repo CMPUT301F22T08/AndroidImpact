@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.location.Location;
+import com.androidimpact.app.location.LocationAdapter;
 import com.androidimpact.app.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.AggregateSource;
