@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     final String TAG = "addRecipeIngredient";
     EditText description, amount, unit, category;
     TextView activity_title;
+    private Boolean isEditing;
+    private int position;
 
     // https://developer.android.com/reference/android/widget/AutoCompleteTextView
     // Accessed October 30, 2022
@@ -65,7 +68,18 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("activity_name");
+            isEditing = extras.getBoolean("isEditing", false);
             activity_title.setText(value);
+            if (isEditing) {
+                Button addButton = findViewById(R.id.add_button);
+                addButton.setText("Edit");
+                Ingredient ingredient = (Ingredient) extras.getSerializable("ingredient");
+                description.setText(ingredient.getDescription());
+                amount.setText(Float.toString(ingredient.getAmount()));
+                unit.setText(ingredient.getUnit());
+                category.setText(ingredient.getCategory());
+                position = extras.getInt("position");
+            }
         }
 
     }
@@ -81,6 +95,9 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             Log.i(TAG + ":confirmed", "Added ingredient");
             Intent returnIntent = new Intent();
             returnIntent.putExtra("ingredient", ingredient);
+            if (isEditing) {
+                returnIntent.putExtra("position", position);
+            }
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
