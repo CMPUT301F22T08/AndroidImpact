@@ -37,4 +37,5 @@
     <string name="store_ingredient_date_display">%1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navbar_fab">Multipurpose FAB in Navbar</string>
 </resources>

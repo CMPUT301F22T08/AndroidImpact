@@ -21,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidimpact.app.IngredientStorage;
-import com.androidimpact.app.RecipeList;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.R;
@@ -30,10 +29,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Activity class for Ingredient Storage Activity
@@ -70,7 +65,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         // initialize adapters and customList
         ingredientListView = findViewById(R.id.ingredient_listview);
-        addIngredientFAB = findViewById(R.id.addStoreIngredientFAB);
+        addIngredientFAB = findViewById(R.id.navbarFAB);
 
         ingredientDataList = new IngredientStorage();
         storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());
@@ -211,16 +206,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 String id = doc.getId();
                 try {
-                    String description = doc.get("description", String.class);
-                    float amount = doc.get("amount", float.class);
-                    Date bestBefore = doc.get("bestBeforeDate", Date.class);
-                    String category = doc.get("category", String.class);
-                    String location = doc.get("location", String.class);
-                    String unit = doc.get("unit", String.class);
-
-                    StoreIngredient store = new StoreIngredient(id, description, amount, unit, category, bestBefore, location);
-
-                    ingredientDataList.add(store); // Adding the cities and provinces from FireStore
+                    ingredientDataList.add(doc.toObject(StoreIngredient.class));
                 } catch (Exception e) {
                     Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
                     errorCount += 1;

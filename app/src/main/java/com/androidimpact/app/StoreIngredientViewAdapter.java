@@ -14,8 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -75,7 +78,20 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // set values
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
-        holder.location.setText(currentIngredient.getLocation());
+        currentIngredient.getLocation().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Location l = document.toObject(Location.class);
+                    holder.location.setText(l.getLocation());
+                } else {
+                    holder.location.setText("NoDoc!");
+                }
+            } else {
+                Log.d(TAG, "Cached get failed: ", task.getException());
+                holder.location.setText("Failed!");
+            }
+        });
 
         // if `selected` is the position, make the expandable section visible
         if (position == selected) {

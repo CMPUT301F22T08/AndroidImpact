@@ -5,23 +5,37 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
+import com.androidimpact.app.Location;
+import com.androidimpact.app.LocationSpinnerAdapter;
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.w3c.dom.Document;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
@@ -30,17 +44,23 @@ import java.util.UUID;
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
     final String TAG = "AddStoreIngredientActivity";
+    final String LOCATION_COLLECTION = "locations";
 
     // declare all view variables
     private EditText descriptionEditText;
     private EditText amountEditText;
-    private EditText locationEditText;
+    private Spinner locationSpinner;
+    private Location selectedLocation;
     private EditText unitEditText;
     private EditText categoryEditText;
     private EditText bestBeforeEditText;
 
     // Calendar for bestBeforeDatePicker
     final Calendar bestBeforeCalendar = Calendar.getInstance();
+
+    // firebase
+    FirebaseFirestore db;
+    CollectionReference locationCollection;
 
     /**
      * Initalizes button data
@@ -51,10 +71,14 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_storage_add);
 
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        locationCollection = db.collection(LOCATION_COLLECTION);
+
         // Init EditText variables
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
         amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
-        locationEditText = findViewById(R.id.ingredientStoreAdd_location);
+        locationSpinner = findViewById(R.id.ingredientStoreAdd_location);
         unitEditText = findViewById(R.id.ingredientStoreAdd_unit);
         categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
@@ -68,21 +92,25 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         StoreIngredient ingredient;
         if (extras != null) {
-            ingredient = extras.getSerializable("storeIngredient", StoreIngredient.class);
+            ingredient = (StoreIngredient) extras.getSerializable("storeIngredient");
             getSupportActionBar().setTitle("Edit Ingredient");
 
             // set initial values
             descriptionEditText.setText(ingredient.getDescription());
             amountEditText.setText(String.valueOf(ingredient.getAmount()));
-            locationEditText.setText(ingredient.getLocation());
             unitEditText.setText(ingredient.getUnit());
             categoryEditText.setText(ingredient.getCategory());
             bestBeforeCalendar.setTime(ingredient.getBestBeforeDate());
-            updateLabel();
+
         } else {
             ingredient = null;
             getSupportActionBar().setTitle("Add Ingredient");
         }
+
+        // Initialize location spinner
+        ArrayList<Location> locations = new ArrayList<>();
+        LocationSpinnerAdapter adapter = new LocationSpinnerAdapter(this, locations);
+        locationSpinner.setAdapter(adapter);
 
         // EVENT LISTENERS
 
@@ -93,12 +121,14 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             updateLabel();
         };
 
+
         cancelBtn.setOnClickListener(v -> {
             Log.i(TAG + ":cancel", "Cancel ingredient add");
             Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
             setResult(Activity.RESULT_CANCELED, intent);
             finish();
         });
+
 
         confirmBtn.setOnClickListener(v -> {
             try {
@@ -123,12 +153,41 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
         });
 
+
         bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(
                 AddEditStoreIngredientActivity.this,
                 date,
                 bestBeforeCalendar.get(Calendar.YEAR),
                 bestBeforeCalendar.get(Calendar.MONTH),
                 bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show());
+
+
+        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedLocation = (Location) parentView.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                return;
+            }
+        });
+
+
+        locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+            if (queryDocumentSnapshots == null) {
+                Log.w(TAG + ":snapshotListener", "Location collection is null!");
+                return;
+            }
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                locations.add(doc.toObject(Location.class));
+            }
+        });
     }
 
     /**
@@ -152,7 +211,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     private StoreIngredient createIngredient(@Nullable StoreIngredient editing) throws Exception {
         String description = descriptionEditText.getText().toString();
         String amountRaw = amountEditText.getText().toString();
-        String location = locationEditText.getText().toString();
         String unit = unitEditText.getText().toString();
         String category = categoryEditText.getText().toString();
         String bestBefore = bestBeforeEditText.getText().toString();
@@ -174,10 +232,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         if (amount < 0) {
             throw new Exception("Amount must be positive!");
-        }
-
-        if (location.equals("")) {
-            throw new Exception("Location cannot be empty.");
         }
 
         if (unit.equals("")) {
@@ -205,7 +259,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 id = uuid.toString();
             }
             Date date = bestBeforeCalendar.getTime();
-            return new StoreIngredient(id, description, amount, unit, category, date, location);
+            DocumentReference locationRef = locationCollection.document(selectedLocation.getId());
+            return new StoreIngredient(id, description, amount, unit, category, date, locationRef);
         } catch(Exception e) {
             throw new Exception("Error parsing ingredients");
         }

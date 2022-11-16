@@ -2,7 +2,6 @@ package com.androidimpact.app.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +28,7 @@ public class EditIngredientLocations extends AppCompatActivity {
 
     // Firestore
     FirebaseFirestore db;
-    CollectionReference ingredientsCollection;
+    CollectionReference locationCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class EditIngredientLocations extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("locations");
+        locationCollection = db.collection("locations");
 
         // initialize adapters and custom
         locationRecyclerView = findViewById(R.id.location_listview);
@@ -83,7 +82,7 @@ public class EditIngredientLocations extends AppCompatActivity {
                 Log.d(TAG, "Swiped " + location + " at position " + position);
 
                 // delete item from firebase
-                ingredientsCollection.document(id)
+                locationCollection.document(id)
                         .delete()
                         .addOnSuccessListener(aVoid -> {
                             Log.d(TAG, location + " has been deleted successfully!");
@@ -97,7 +96,7 @@ public class EditIngredientLocations extends AppCompatActivity {
             // finally, we add this to our recycler view.
         }).attachToRecyclerView(locationRecyclerView);
 
-        ingredientsCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+        locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             if (error != null) {
                 Log.w(TAG + ":snapshotListener", "Listen failed.", error);
                 return;

@@ -20,6 +20,11 @@ public class Ingredient implements Serializable  {
     protected String category;
 
     /**
+     * Empty constructor - used by StoreIngredient for Firebase's auto deserialization
+     */
+    public Ingredient() {}
+
+    /**
      * Constructor for the Ingredient class
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
