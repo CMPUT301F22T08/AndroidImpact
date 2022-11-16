@@ -182,23 +182,8 @@ public class RecipeListActivity extends AppCompatActivity {
                 return;
             }
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Log.d(TAG, String.valueOf(doc.getId()));
-                Log.d(TAG, String.valueOf(doc.getData()));
-                String description = doc.getId();
-
-                Recipe recipeToAdd = new Recipe(
-                        new ArrayList<>(),
-                        description,
-                        Integer.valueOf((String) doc.getData().get("prep time")),
-                        Integer.valueOf((String) doc.getData().get("servings")),
-                        (String) doc.getData().get("category"),
-                        (String) doc.getData().get("comments"),
-                        (String) doc.getData().get("date")
-                );
-                recipeToAdd.setPhoto((String) doc.getData().get("photo"));
-
+                Recipe recipeToAdd = doc.toObject(Recipe.class);
                 recipeDataList.add(recipeToAdd); // Adding the recipe attributes from FireStore
-
             }
 
             Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");

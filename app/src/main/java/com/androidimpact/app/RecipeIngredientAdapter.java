@@ -40,7 +40,7 @@ import nl.dionsegijn.konfetti.models.Size;
 public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.RecipeIngredientHolder>  {
     final String TAG = "RecipeIngredientAdapter";
 
-    private ArrayList<Ingredient> ingredients;
+    private ArrayList<RecipeIngredient> ingredients;
     private Context context;
     private ArrayList<RecipeIngredientAdapter.StoreRecipeIngredientEdit> editListeners = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
      * @param context
      * @param ingredients
      */
-    public RecipeIngredientAdapter(Context context, ArrayList<Ingredient> ingredients) {
+    public RecipeIngredientAdapter(Context context, ArrayList<RecipeIngredient> ingredients) {
         this.ingredients = ingredients;
         this.context = context;
     }
