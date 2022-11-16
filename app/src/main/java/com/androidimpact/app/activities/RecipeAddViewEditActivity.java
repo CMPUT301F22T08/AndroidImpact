@@ -250,7 +250,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
              intent.putExtra("activity_name", "Edit ingredient");
              intent.putExtra("isEditing",  true);
-             intent.putExtra("position", position);
              intent.putExtra("ingredient", recipeIngredients.get(position));
              editIngredientLauncher.launch(intent);
          });
@@ -486,6 +485,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         View snackbarView = snackbar.getView();
         TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
         snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        snackbar.show();
+        snackbar.setAction("Ok", view1 -> {}).show();
     }
 }

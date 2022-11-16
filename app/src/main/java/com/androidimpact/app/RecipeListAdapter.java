@@ -22,10 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -277,6 +281,15 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 .addOnFailureListener(e -> {
                     Log.d(TAG, description + ": " + photo + " could not be deleted!" + e);
                 });
+
+        // delete all items from the ingredients collection
+        CollectionReference ingredients = db.collection(deletedRecipe.getCollectionPath());
+        Log.i(TAG, "Deleting Ingredients in " + ingredients);
+        ingredients.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                ingredients.document(doc.getId()).delete();
+            }
+        });
 
         return returnVal.get();
     }

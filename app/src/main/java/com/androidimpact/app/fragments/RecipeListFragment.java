@@ -216,6 +216,8 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 String description = deletedRecipe.getTitle();
                 boolean snackBarChoice = recipeViewAdapter.removeItem(position);
 
+                // now, delete all the i
+
                 if(snackBarChoice) {
                     Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
                 } else {

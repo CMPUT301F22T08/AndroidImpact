@@ -17,7 +17,9 @@ import android.widget.TextView;
 import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
+import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeIngredient;
+import com.androidimpact.app.RecipeIngredientAdapter;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -42,6 +44,9 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     TextView activity_title;
     private Boolean isEditing;
     private int position;
+
+    // other globals
+    String id;
 
     // Spinners
     // as before, the selectedUnit is the source of truth.
@@ -69,6 +74,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         unitCollection = db.collection("units");
 
         setContentView(R.layout.activity_recipe_addedit_ingredient);
+
 
         description = findViewById(R.id.ingredient_description);
         amount = findViewById(R.id.ingredient_amount);
@@ -104,7 +110,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             if (isEditing) {
                 Button addButton = findViewById(R.id.add_button);
                 addButton.setText("Edit");
-                Ingredient ingredient = (Ingredient) extras.getSerializable("ingredient");
+                RecipeIngredient ingredient = (RecipeIngredient) extras.getSerializable("ingredient");
+                id = ingredient.getId();
                 description.setText(ingredient.getDescription());
                 amount.setText(Float.toString(ingredient.getAmount()));
                 category.setText(ingredient.getCategory());
@@ -132,7 +139,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 ingredient.getUnitAsync(getUnitListener);
             } else {
                 // we're adding a new element!
-                // idk what to put here...
+                // autogenerate an ID
+                id = UUID.randomUUID().toString();
             }
 
             unitCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
@@ -172,7 +180,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         if (checkInputs()) {
             DocumentReference unitRef = unitCollection.document(selectedUnit.getUnit());
             RecipeIngredient ingredient = new RecipeIngredient(
-                    UUID.randomUUID().toString(),
+                    id,
                     getStr(description),
                     Float.parseFloat(getStr(amount)),
                     unitRef.getPath(),
@@ -255,11 +263,11 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      * @param message
      *    The string to send a snackbar of
      */
-    public void generateSnackbar (String message) {
+    public void generateSnackbar(String message) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.ingredient_layout), message, Snackbar.LENGTH_SHORT);
         View snackbarView = snackbar.getView();
         TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
         snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        snackbar.show();
+        snackbar.setAction("Ok", view1 -> {}).show();
     }
 }
