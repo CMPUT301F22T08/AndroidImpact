@@ -1,6 +1,12 @@
 package com.androidimpact.app;
 
+import android.util.Log;
+
+import com.androidimpact.app.unit.Unit;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 
@@ -16,7 +22,9 @@ import java.io.Serializable;
 public class Ingredient implements Serializable  {
     protected String description;
     protected float amount;
-    protected String unit;
+    // instead of a document, this is a path to the a firebase document
+    // https://stackoverflow.com/a/57225579
+    private String unitDocumentPath;
     protected String category;
 
     /**
@@ -28,13 +36,13 @@ public class Ingredient implements Serializable  {
      * Constructor for the Ingredient class
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
-     * @param unit (String) - The unit that amount is measuring e.g. g in 300g
+     * @param unitDocumentPath (String) - The unit that amount is measuring e.g. g in 300g
      * @param category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
      * */
-    public Ingredient(String description, float amount, String unit, String category) {
+    public Ingredient(String description, float amount, String unitDocumentPath, String category) {
         this.description = description;
         this.amount = amount;
-        this.unit = unit;
+        this.unitDocumentPath = unitDocumentPath;
         this.category = category;
     }
 
@@ -81,22 +89,6 @@ public class Ingredient implements Serializable  {
     }
 
     /**
-     * Get the units that amount is measuring
-     * @return (String) The units that amount is measuring
-     */
-    public String getUnit() {
-        return unit;
-    }
-
-    /**
-     * Change the unit of measurement
-     * @param unit (String) - The new unit of measurement
-     */
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    /**
      * Get the ingredient category
      * @return (String) The category of the ingredient
      */
@@ -111,4 +103,34 @@ public class Ingredient implements Serializable  {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    /**
+     * gets the unit document path
+     * not used by the user, but used by Firebase to know they need to serialize the unitDocumentPath
+     * @return
+     */
+    public String getUnitDocumentPath() { return unitDocumentPath; };
+
+    /**
+     * A fully-featured function to retrieve the unit from firestore
+     *
+     * this architecture lets us reduce the callback hell somewhat using listeners, i think...
+     */
+    @Exclude
+    public void getUnitAsync(DocumentRetrievalListener<Unit> listener) {
+        FirebaseFirestore.getInstance().document(unitDocumentPath).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Unit u = document.toObject(Unit.class);
+                    listener.onSuccess(u);
+                } else {
+                    listener.onNullDocument();
+                }
+            } else {
+                listener.onError(task.getException());
+            }
+        });
+    }
+
 }

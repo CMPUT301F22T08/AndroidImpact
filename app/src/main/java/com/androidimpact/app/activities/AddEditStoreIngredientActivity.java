@@ -18,13 +18,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
+import com.androidimpact.app.DocumentRetrievalListener;
+import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.location.EditLocationsActivity;
 import com.androidimpact.app.location.Location;
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
+import com.androidimpact.app.unit.EditUnitsActivity;
+import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -42,19 +47,23 @@ import java.util.UUID;
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
     final String TAG = "AddEditStoreIngredientActivity";
-    final String COLLECTION_NAME = "locations";
 
     // declare all view variables
     private EditText descriptionEditText;
     private EditText amountEditText;
-    private Spinner locationSpinner;
-    private Location selectedLocation;
-    private EditText unitEditText;
     private EditText categoryEditText;
     private EditText bestBeforeEditText;
 
+    // spinners
+    // NOTE: for these, the source of truth is the selectedLocation and selectedUnit
+    private Spinner locationSpinner;
+    private Location selectedLocation;
+    private Spinner unitSpinner;
+    private Unit selectedUnit;
+
     // buttons
     private ImageButton editLocationsBtn;
+    private ImageButton editUnitsBtn;
 
     // Calendar for bestBeforeDatePicker
     final Calendar bestBeforeCalendar = Calendar.getInstance();
@@ -62,6 +71,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // firebase
     FirebaseFirestore db;
     CollectionReference locationCollection;
+    CollectionReference unitCollection;
 
     /**
      * Initalizes button data
@@ -74,20 +84,30 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        locationCollection = db.collection(COLLECTION_NAME);
+        locationCollection = db.collection("locations");
+        unitCollection = db.collection("units");
 
         // Init EditText variables
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
         amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
         locationSpinner = findViewById(R.id.ingredientStoreAdd_location);
-        unitEditText = findViewById(R.id.ingredientStoreAdd_unit);
+        unitSpinner = findViewById(R.id.ingredientStoreAdd_unit);
         categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
-        editLocationsBtn = findViewById(R.id.ingredientStoreAdd_editLocationsBtn);
+        editLocationsBtn = findViewById(R.id.ingredientStoreAdd_editUnitsBtn);
 
         // init btns
         Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
         Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
+
+        // init spinners
+        ArrayList<Location> locations = new ArrayList<>();
+        ArrayAdapter<Location> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locations);
+        locationSpinner.setAdapter(locationAdapter);
+
+        ArrayList<Unit> units = new ArrayList<>();
+        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, units);
+        unitSpinner.setAdapter(unitAdapter);
 
         // Check Bundle - determine if we're editing or adding!
         // Init activity title
@@ -100,19 +120,54 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // set initial values
             descriptionEditText.setText(ingredient.getDescription());
             amountEditText.setText(String.valueOf(ingredient.getAmount()));
-            unitEditText.setText(ingredient.getUnit());
             categoryEditText.setText(ingredient.getCategory());
             bestBeforeCalendar.setTime(ingredient.getBestBeforeDate());
+            updateLabel();
+
+            // setting initial spinner values are a bit weird
+            // we have to wait for firebase to get the data from the server
+            // thus, we set a location listener on the first data retrieval
+            DocumentRetrievalListener<Location> getLocationListener = new DocumentRetrievalListener<>() {
+                @Override
+                public void onSuccess(Location data) {
+                    selectedLocation = data;
+                }
+                @Override
+                public void onNullDocument() {
+                    // happens if the user deletes a document by themselves. We should not allow it!
+                    Log.i(TAG, "Bruh moment: ingredient " + ingredient.getDescription()
+                            + " cannot retrieve location - Document does not exist");
+                }
+                @Override
+                public void onError(Exception e) {
+                    Log.d(TAG, "Bruh moment: ingredient cannot retrieve location: failed ", e);
+                }
+            };
+            ingredient.getLocationAsync(getLocationListener);
+
+            // set unit
+            DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
+                @Override
+                public void onSuccess(Unit data) {
+                    selectedUnit = data;
+                }
+                @Override
+                public void onNullDocument() {
+                    // happens if the user deletes a document by themselves. We should not allow it!
+                    Log.i(TAG, "Bruh moment: ingredient " + ingredient.getDescription()
+                            + " cannot retrieve unit - Document does not exist");
+                }
+                @Override
+                public void onError(Exception e) {
+                    Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
+                }
+            };
+            ingredient.getUnitAsync(getUnitListener);
 
         } else {
             ingredient = null;
             getSupportActionBar().setTitle("Add Ingredient");
         }
-
-        // Initialize location spinner
-        ArrayList<Location> locations = new ArrayList<>();
-        ArrayAdapter<Location> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locations);
-        locationSpinner.setAdapter(locationAdapter);
 
         // EVENT LISTENERS
 
@@ -148,7 +203,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 // Error - add a snackBar
                 Log.i(TAG, "Error making storeIngredient", e);
                 View parentLayout = findViewById(android.R.id.content);
-                Snackbar.make(parentLayout, "Error making storeIngredient!", Snackbar.LENGTH_LONG)
+                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG)
                         .setAction("Ok", view1 -> {})
                         .show();
             }
@@ -177,6 +232,19 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
         });
 
+        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedUnit = (Unit) parentView.getItemAtPosition(position);
+
+                Log.i(TAG, "selected unit is " + selectedUnit.getUnit());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                Log.i(TAG, "Nothing selected");
+            }
+        });
 
         locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             if (error != null) {
@@ -194,6 +262,35 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // sort by date added
             locations.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
             locationAdapter.notifyDataSetChanged();
+            // a bit of a hack to make sure the locationSpinner respects the source of truth (selectedLocation)
+            if (selectedLocation != null) {
+                locationSpinner.setPrompt(selectedLocation.getLocation());
+            }
+        });
+
+        unitCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+            if (queryDocumentSnapshots == null) {
+                Log.w(TAG + ":snapshotListener", "Location collection is null!");
+                return;
+            }
+            units.clear();
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                Unit u = doc.toObject(Unit.class);
+                units.add(u);
+                Log.i(TAG, "Add unit with date " + u.getUnit() + " " + u.getDateAdded());
+            }
+            Log.i(TAG, "Added " + units.size() + " elements");
+            // sort by date added
+            units.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
+            unitAdapter.notifyDataSetChanged();
+            // a bit of a hack...
+            if (selectedUnit != null) {
+                unitSpinner.setPrompt(selectedUnit.getUnit());
+            }
         });
     }
 
@@ -214,6 +311,17 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     public void editLocations(View view) {
         Log.i(TAG + ":editLocations", "Going to Edit Locations");
         Intent intent = new Intent(this, EditLocationsActivity.class);
+        editLocationLauncher.launch(intent);
+    }
+
+    /**
+     * This is run when R.id.ingredientStoreAdd_editUnitsBtn is clicked
+     *
+     * this function jumps to the EditLocations activity.
+     */
+    public void editUnits(View view) {
+        Log.i(TAG + ":editUnits", "Going to Edit units");
+        Intent intent = new Intent(this, EditUnitsActivity.class);
         editLocationLauncher.launch(intent);
     }
 
@@ -240,7 +348,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     private StoreIngredient createIngredient(@Nullable StoreIngredient editing) throws Exception {
         String description = descriptionEditText.getText().toString();
         String amountRaw = amountEditText.getText().toString();
-        String unit = unitEditText.getText().toString();
         String category = categoryEditText.getText().toString();
         String bestBefore = bestBeforeEditText.getText().toString();
 
@@ -261,10 +368,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         if (amount < 0) {
             throw new Exception("Amount must be positive!");
-        }
-
-        if (unit.equals("")) {
-            throw new Exception("Unit cannot be empty.");
         }
 
         if (category.equals("")) {
@@ -288,8 +391,11 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 id = uuid.toString();
             }
             Date date = bestBeforeCalendar.getTime();
+
+            // get document refs
             DocumentReference locationRef = locationCollection.document(selectedLocation.getId());
-            return new StoreIngredient(id, description, amount, unit, category, date, locationRef.getPath());
+            DocumentReference unitRef = unitCollection.document(selectedUnit.getUnit());
+            return new StoreIngredient(id, description, amount, category, date, locationRef.getPath(), unitRef.getPath());
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");

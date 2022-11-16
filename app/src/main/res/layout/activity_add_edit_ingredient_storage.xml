@@ -41,22 +41,6 @@
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_description" />
 
     <EditText
-        android:id="@+id/ingredientStoreAdd_unit"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="@string/unit"
-        android:inputType="text"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
-
-    <EditText
         android:id="@+id/ingredientStoreAdd_category"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -74,12 +58,12 @@
 
     <Spinner
         android:id="@+id/ingredientStoreAdd_location"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="30dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editLocationsBtn"
-        app:layout_constraintStart_toEndOf="@+id/ingredientStoreAdd_spinnerLabel"
+        app:layout_constraintStart_toEndOf="@+id/ingredientStoreAdd_locationLabel"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_category" />
 
     <EditText
@@ -108,6 +92,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageButton
+        android:id="@+id/ingredientStoreAdd_editLocationsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="editLocations"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_location"
+        app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_location"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
     <Button
         android:id="@+id/ingredientStoreAdd_confirmBtn"
         android:layout_width="wrap_content"
@@ -119,7 +114,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/ingredientStoreAdd_spinnerLabel"
+        android:id="@+id/ingredientStoreAdd_locationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/location"
@@ -128,14 +123,33 @@
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_location" />
 
     <ImageButton
-        android:id="@+id/ingredientStoreAdd_editLocationsBtn"
+        android:id="@+id/ingredientStoreAdd_editUnitsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="editLocations"
-        app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_location"
-        app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_category"
-        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_location"
+        android:onClick="editUnits"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_unit"
+        app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_amount"
+        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_unit"
         app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <TextView
+        android:id="@+id/ingredientStorageAdd_unitLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/unit"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_unit"
+        app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
+        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_unit" />
+
+    <Spinner
+        android:id="@+id/ingredientStoreAdd_unit"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editUnitsBtn"
+        app:layout_constraintStart_toEndOf="@+id/ingredientStorageAdd_unitLabel"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
