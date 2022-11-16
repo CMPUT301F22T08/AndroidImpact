@@ -11,4 +11,9 @@
         android:layout_height="match_parent"
         android:text="Ingredient Storage" />
 
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/confetti_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </FrameLayout>
