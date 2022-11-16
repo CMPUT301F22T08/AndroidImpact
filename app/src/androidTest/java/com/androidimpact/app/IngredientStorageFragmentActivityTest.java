@@ -61,7 +61,7 @@ public class IngredientStorageFragmentActivityTest {
         solo.waitForActivity(IngredientStorageActivity.class,10000);
         IngredientStorageActivity a = (IngredientStorageActivity) solo.getCurrentActivity();
 
-        FloatingActionButton fab = a.findViewById(R.id.addStoreIngredientFAB);
+        FloatingActionButton fab = a.findViewById(R.id.navbarFAB);
         solo.clickOnView(fab);
 
         solo.assertCurrentActivity("Wrong activity after clicking FAB: Should be in AddStoreIngredientActivity", AddEditStoreIngredientActivity.class);
@@ -83,7 +83,7 @@ public class IngredientStorageFragmentActivityTest {
         solo.assertCurrentActivity("Should be in IngredientStorageActivity!", IngredientStorageActivity.class);
         // Why must solo be so slow
         IngredientStorageActivity a1 = (IngredientStorageActivity) solo.getCurrentActivity();
-        FloatingActionButton fab = a1.findViewById(R.id.addStoreIngredientFAB);
+        FloatingActionButton fab = a1.findViewById(R.id.navbarFAB);
         solo.clickOnView(fab);
 
         solo.waitForActivity(AddEditStoreIngredientActivity.class,10000);

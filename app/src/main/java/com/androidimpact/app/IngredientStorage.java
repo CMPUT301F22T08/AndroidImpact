@@ -19,7 +19,7 @@ public class IngredientStorage {
     private static String[] sortChoices;
     private int sortIndex;
 
-    public static Comparator<StoreIngredient> descriptionComparator, bbdComparator, locationComparator, categoryComparator;
+    public static Comparator<StoreIngredient> descriptionComparator, bbdComparator, categoryComparator;
 
 
     /**
@@ -32,14 +32,12 @@ public class IngredientStorage {
         this.sortChoices = new String[]{
                 "Description",
                 "Best Before Date",
-                "Location",
                 "Ingredient Category"
         };
         this.sortIndex = 0;
         // set compare variables
         descriptionComparator = Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER);
         bbdComparator = Comparator.comparing(StoreIngredient::getBestBeforeCalendar);
-        locationComparator = Comparator.comparing(StoreIngredient::getLocation, String.CASE_INSENSITIVE_ORDER);
         categoryComparator = Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER);
 
     }
@@ -147,8 +145,6 @@ public class IngredientStorage {
             case 1:
                 Collections.sort(ingredientStorageList, bbdComparator); break;
             case 2:
-                Collections.sort(ingredientStorageList, locationComparator); break;
-            case 3:
                 Collections.sort(ingredientStorageList, categoryComparator); break;
         }
     }

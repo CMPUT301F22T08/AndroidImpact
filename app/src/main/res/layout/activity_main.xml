@@ -84,13 +84,13 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addStoreIngredientFAB"
+            android:id="@+id/navbarFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="200dp"
             android:backgroundTint="@color/purple_700"
             android:clickable="true"
-            android:contentDescription="Ingredient Storage Add FAB"
+            android:contentDescription="@string/navbar_fab"
             android:elevation="8dp"
             android:focusable="true"
             app:borderWidth="0dp"

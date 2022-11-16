@@ -30,13 +30,12 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.Date;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -47,8 +46,9 @@ import nl.dionsegijn.konfetti.models.Size;
  * Use the {@link IngredientStorageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IngredientStorageFragment extends Fragment {
+public class IngredientStorageFragment extends Fragment implements NavbarFragment {
     final String TAG = "IngredientStorageFragment";
+    final String COLLECTION_NAME = "ingredientStorage";
 
     private static IngredientStorageFragment instance;
 
@@ -60,8 +60,7 @@ public class IngredientStorageFragment extends Fragment {
     // adding cities to firebase
     FirebaseFirestore db;
     CollectionReference ingredientsCollection;
-    FloatingActionButton addIngredientFAB;
-    Spinner sortSpinner2;
+    Spinner sortIngredientSpinner;
     String[] sortingChoices;
     TextView sortText;
 
@@ -82,15 +81,12 @@ public class IngredientStorageFragment extends Fragment {
 
         if (instance == null)
         {
-            //To be Changed
             IngredientStorageFragment fragment = new IngredientStorageFragment();
-            fragment.bootUp();
             instance = fragment;
 
             return fragment;
         }
 
-        //IngredientStorageFragment fragment = new IngredientStorageFragment();
         return instance;
     }
 
@@ -104,6 +100,10 @@ public class IngredientStorageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        ingredientsCollection = db.collection(COLLECTION_NAME);
     }
 
 
@@ -160,17 +160,6 @@ public class IngredientStorageFragment extends Fragment {
         ingredientListView.setLayoutManager(manager);
         ingredientListView.setAdapter(storeingredientViewAdapter);
 
-
-       // MainActivity main = (MainActivity) getActivity();
-        addIngredientFAB = a.findViewById(R.id.addStoreIngredientFAB);
-
-        // Launch AddStoreIngredientActivity when FAB is clicked
-        addIngredientFAB.setOnClickListener(v -> {
-            Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
-            Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
-            addStoreIngredientLauncher.launch(intent);
-        });
-
         // listen for edits in storeingredientViewAdapter`
         storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
             // runs whenever a store ingredient edit btn is clicked
@@ -181,7 +170,7 @@ public class IngredientStorageFragment extends Fragment {
         });
 
         //finding sort spinner
-        sortSpinner2 = a.findViewById(R.id.sort_ingredient_spinner);
+        sortIngredientSpinner = a.findViewById(R.id.sort_ingredient_spinner);
         sortText = a.findViewById(R.id.sort_ingredient_info);
 
         // getting available sorting choices
@@ -198,12 +187,11 @@ public class IngredientStorageFragment extends Fragment {
         sortingOptionsAdapter.setDropDownViewResource(
                 android.R.layout.simple_list_item_1
         );
-        sortSpinner2.setAdapter(sortingOptionsAdapter);
+        sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
 
 
         //setting up the on item selected listener which lets user sort on the basis of selection
-        sortSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        sortIngredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             /**
              * Create method to get item for sort
              * @param adapterView
@@ -296,21 +284,8 @@ public class IngredientStorageFragment extends Fragment {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 String id = doc.getId();
                 try {
-                    String description = doc.get("description", String.class);
-                    float amount = doc.get("amount", float.class);
-                    Date bestBefore = doc.get("bestBeforeDate", Date.class);
-                    String category = doc.get("category", String.class);
-                    String location = doc.get("location", String.class);
-                    String unit = doc.get("unit", String.class);
-
-                    StoreIngredient store = new StoreIngredient(id, description, amount, unit, category, bestBefore, location);
-
-                    ingredientDataList.add(store); // Adding the cities and provinces from FireStore
-
-                    //sorting the list again
-                    ingredientDataList.setSortChoice(0);
-                    ingredientDataList.sortByChoice();
-
+                    // adding data from firestore
+                    ingredientDataList.add(doc.toObject(StoreIngredient.class));
                 } catch (Exception e) {
                     Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
                     errorCount += 1;
@@ -321,6 +296,7 @@ public class IngredientStorageFragment extends Fragment {
                 Snackbar.make(ingredientListView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
+            ingredientDataList.sortByChoice();
             storeingredientViewAdapter.notifyDataSetChanged();
         });
     }
@@ -350,17 +326,6 @@ public class IngredientStorageFragment extends Fragment {
                 }
             });
 
-
-    /**
-     * this method initialises firebase
-     */
-    public void bootUp()
-    {
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("ingredientStorage");
-
-    }
 
     /**
      * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
@@ -401,4 +366,17 @@ public class IngredientStorageFragment extends Fragment {
                 }
             });
 
+    /**
+     * Sets the FAB in the navigation bar to act as a "add StoreIngredient" button
+     *
+     * Derived from NavbarFragment
+     * @param navigationFAB
+     */
+    public void setFabListener(FloatingActionButton navigationFAB) {
+        navigationFAB.setOnClickListener(v -> {
+            Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
+            Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
+            addStoreIngredientLauncher.launch(intent);
+        });
+    }
 }

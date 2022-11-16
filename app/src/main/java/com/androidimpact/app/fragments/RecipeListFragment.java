@@ -52,7 +52,7 @@ import nl.dionsegijn.konfetti.models.Size;
  * Use the {@link RecipeListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment implements NavbarFragment{
     final String TAG = "RecipeListFragment";
 
     // Declare the variables so that you will be able to reference it later.
@@ -65,8 +65,6 @@ public class RecipeListFragment extends Fragment {
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference recipeCollection;
-    FloatingActionButton addRecipeFAB;
-    boolean isViewCreated = false;
 
     /**
      * Required empty public constructor
@@ -94,6 +92,10 @@ public class RecipeListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        recipeCollection = db.collection("recipes");
     }
 
     /**
@@ -132,19 +134,6 @@ public class RecipeListFragment extends Fragment {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
             return;
         }
-
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        //final CollectionReference collectionReference = db.collection("recipes");
-        recipeCollection = db.collection("recipes");
-
-        addRecipeFAB = a.findViewById(R.id.addStoreIngredientFAB);
-        addRecipeFAB.setOnClickListener(v -> {
-            Log.i(TAG + ":addRecipe", "Adding recipe!");
-            Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
-            intent.putExtra("activity_name", "Add recipe");
-            addRecipeLauncher.launch(intent);
-        });
 
         // Initialize views
         sortSpinner = a.findViewById(R.id.sort_recipe_spinner);
@@ -291,8 +280,6 @@ public class RecipeListFragment extends Fragment {
             }
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
-
-        isViewCreated = true;
     }
 
 
@@ -323,19 +310,21 @@ public class RecipeListFragment extends Fragment {
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addRecipeResult", "Received cancelled");
-                    Snackbar.make(recipeListView, "Cancelled!", Snackbar.LENGTH_LONG).show();
                 }
             });
 
-    public void setListener() {
-        if(isViewCreated) {
-            addRecipeFAB = getActivity().findViewById(R.id.addStoreIngredientFAB);
-            addRecipeFAB.setOnClickListener(v -> {
-                Log.i(TAG + ":addRecipe", "Adding recipe!");
-                Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
-                intent.putExtra("activity_name", "Add recipe");
-                addRecipeLauncher.launch(intent);
-            });
-        }
+    /**
+     * Sets the FAB in the navigation bar to act as a "add Recipelist" button
+     *
+     * Derived from NavbarFragment
+     * @param navigationFAB
+     */
+    public void setFabListener(FloatingActionButton navigationFAB) {
+        navigationFAB.setOnClickListener(v -> {
+            Log.i(TAG + ":addRecipe", "Adding recipe!");
+            Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
+            intent.putExtra("activity_name", "Add recipe");
+            addRecipeLauncher.launch(intent);
+        });
     }
 }
