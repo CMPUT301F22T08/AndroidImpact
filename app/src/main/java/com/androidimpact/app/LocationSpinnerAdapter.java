@@ -17,7 +17,8 @@ import java.util.ArrayList;
 /**
  * LocationSpinnerAdapter
  *
- * provides an adapter for managing locations in the spinner when chosing a location
+ * provides an adapter for managing the spinner dropdown
+ * this is when the user is choosing a location when editing a StoreItem
  * https://www.geeksforgeeks.org/how-to-add-custom-spinner-in-android/
  */
 public class LocationSpinnerAdapter extends ArrayAdapter<Location> {
@@ -40,14 +41,13 @@ public class LocationSpinnerAdapter extends ArrayAdapter<Location> {
     private View initView(int position, View convertView, ViewGroup parent) {
         // It is used to set our custom view.
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
         }
         // text1 is the id for the builtin `simple_list_item_1`
         TextView textViewName = convertView.findViewById(android.R.id.text1);
         Location currentItem = getItem(position);
 
-        // It is used the name to the TextView when the
-        // current item is not null.
+        // This sets the text for all the dropdown
         if (currentItem != null) {
             textViewName.setText(currentItem.getLocation());
         }

@@ -166,6 +166,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedLocation = (Location) parentView.getItemAtPosition(position);
+                Log.i(TAG, "selected location is "+selectedLocation.getLocation());
             }
 
             @Override
