@@ -32,6 +32,7 @@ import java.util.ArrayList;
 public class EditIngredientLocationsActivity extends AppCompatActivity {
 
     final String TAG = "EditIngredientLocations";
+    final String COLLECTION_NAME = "locations";
 
     RecyclerView locationRecyclerView;
     ArrayList<Location> locationArrayList;
@@ -54,7 +55,7 @@ public class EditIngredientLocationsActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        locationCollection = db.collection("locations");
+        locationCollection = db.collection(COLLECTION_NAME);
 
         // initialize views
         newLocationInput = findViewById(R.id.location_editText);

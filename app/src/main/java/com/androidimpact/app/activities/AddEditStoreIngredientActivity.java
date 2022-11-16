@@ -44,7 +44,7 @@ import java.util.UUID;
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
     final String TAG = "AddEditStoreIngredientActivity";
-    final String LOCATION_COLLECTION = "locations";
+    final String COLLECTION_NAME = "locations";
 
     // declare all view variables
     private EditText descriptionEditText;
@@ -76,7 +76,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        locationCollection = db.collection(LOCATION_COLLECTION);
+        locationCollection = db.collection(COLLECTION_NAME);
 
         // Init EditText variables
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);

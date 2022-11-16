@@ -48,6 +48,7 @@ import nl.dionsegijn.konfetti.models.Size;
  */
 public class IngredientStorageFragment extends Fragment implements NavbarFragment {
     final String TAG = "IngredientStorageFragment";
+    final String COLLECTION_NAME = "ingredientStorage";
 
     private static IngredientStorageFragment instance;
 
@@ -102,7 +103,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("ingredientStorage-testing-josh");
+        ingredientsCollection = db.collection(COLLECTION_NAME);
     }
 
 

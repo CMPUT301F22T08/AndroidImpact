@@ -36,6 +36,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
  */
 public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
+    final String COLLECTION_NAME = "ingredientStorage-old";
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
@@ -61,7 +62,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection("ingredientStorage");
+        ingredientsCollection = db.collection(COLLECTION_NAME);
 
         // initialize adapters and customList
         ingredientListView = findViewById(R.id.ingredient_listview);
