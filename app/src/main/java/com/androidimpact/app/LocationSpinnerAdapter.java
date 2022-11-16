@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * LocationSpinnerAdapter
  *
- * provides an adapter for managing locations ONLY IN A SPINNER
+ * provides an adapter for managing locations in the spinner when chosing a location
  * https://www.geeksforgeeks.org/how-to-add-custom-spinner-in-android/
  */
 public class LocationSpinnerAdapter extends ArrayAdapter<Location> {
@@ -40,10 +40,10 @@ public class LocationSpinnerAdapter extends ArrayAdapter<Location> {
     private View initView(int position, View convertView, ViewGroup parent) {
         // It is used to set our custom view.
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
         }
-
-        TextView textViewName = convertView.findViewById(R.id.spinner_item_text);
+        // text1 is the id for the builtin `simple_list_item_1`
+        TextView textViewName = convertView.findViewById(android.R.id.text1);
         Location currentItem = getItem(position);
 
         // It is used the name to the TextView when the
