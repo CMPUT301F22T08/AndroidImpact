@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.location;
 
 import androidx.annotation.NonNull;
 

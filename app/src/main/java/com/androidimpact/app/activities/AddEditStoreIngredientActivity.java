@@ -1,7 +1,5 @@
 package com.androidimpact.app.activities;
 
-import static java.util.Objects.isNull;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
@@ -20,7 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
-import com.androidimpact.app.Location;
+import com.androidimpact.app.location.EditLocationsActivity;
+import com.androidimpact.app.location.Location;
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.google.android.material.snackbar.Snackbar;
@@ -32,7 +31,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -215,7 +213,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
      */
     public void editLocations(View view) {
         Log.i(TAG + ":editLocations", "Going to Edit Locations");
-        Intent intent = new Intent(this, EditIngredientLocationsActivity.class);
+        Intent intent = new Intent(this, EditLocationsActivity.class);
         editLocationLauncher.launch(intent);
     }
 

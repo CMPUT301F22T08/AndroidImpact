@@ -1,8 +1,7 @@
-package com.androidimpact.app.activities;
+package com.androidimpact.app.location;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,13 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.androidimpact.app.Location;
-import com.androidimpact.app.LocationAdapter;
+import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.location.Location;
+import com.androidimpact.app.location.LocationAdapter;
 import com.androidimpact.app.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.AggregateQuerySnapshot;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,7 +26,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
-public class EditIngredientLocationsActivity extends AppCompatActivity {
+public class EditLocationsActivity extends AppCompatActivity {
 
     final String TAG = "EditIngredientLocations";
     final String COLLECTION_NAME = "locations";
