@@ -1,6 +1,5 @@
-package com.androidimpact.app.location;
+package com.androidimpact.app.unit;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.location.Location;
 
 import java.util.ArrayList;
 
@@ -19,18 +19,15 @@ import java.util.ArrayList;
  *
  * Provides the adapter for managing the recycler view when editing locations
  */
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
-    private ArrayList<Location> locationArrayList;
-    private Context mContext;
+public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder> {
+    private ArrayList<Unit> unitArrayList;
 
     /**
      * Create constructor class
-     * @param mContext
-     * @param locationArrayList
+     * @param unitArrayList
      */
-    public LocationAdapter(Context mContext, ArrayList<Location> locationArrayList) {
-        this.locationArrayList = locationArrayList;
-        this.mContext = mContext;
+    public UnitAdapter(ArrayList<Unit> unitArrayList) {
+        this.unitArrayList = unitArrayList;
     }
 
 
@@ -42,10 +39,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
      */
     @NonNull
     @Override
-    public LocationAdapter.LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UnitAdapter.UnitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate Layout
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
-        return new LocationAdapter.LocationViewHolder(view);
+        return new UnitAdapter.UnitViewHolder(view);
     }
 
     /**
@@ -54,18 +51,18 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
      * @param position
      */
     @Override
-    public void onBindViewHolder(@NonNull LocationAdapter.LocationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UnitAdapter.UnitViewHolder holder, int position) {
         // Set the data to textview from our modal class.
-        Location currentLocation = locationArrayList.get(position);
+        Unit currentUnit = unitArrayList.get(position);
 
-        holder.title.setText(currentLocation.getLocation());
+        holder.title.setText(currentUnit.getUnit());
     }
 
     /**
      * View Holder Class to handle Recycler View.
      * Holds all the view elements necessary for the Adapter
      */
-    public class LocationViewHolder extends RecyclerView.ViewHolder {
+    public class UnitViewHolder extends RecyclerView.ViewHolder {
         private Resources res;
 
         private TextView title;
@@ -73,7 +70,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
          * initializing our text views
          * @param itemView
          */
-        public LocationViewHolder(@NonNull View itemView) {
+        public UnitViewHolder(@NonNull View itemView) {
             super(itemView);
             res = itemView.getResources();
 
@@ -88,6 +85,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
      */
     @Override
     public int getItemCount() {
-        return locationArrayList.size();
+        return unitArrayList.size();
     }
 }

@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
-import com.androidimpact.app.location.Location;
-import com.androidimpact.app.location.LocationAdapter;
 import com.androidimpact.app.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.AggregateSource;
@@ -46,7 +44,7 @@ public class EditLocationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_ingredient_locations);
+        setContentView(R.layout.activity_edit_locations);
 
         getSupportActionBar().setTitle("Edit Locations");
 

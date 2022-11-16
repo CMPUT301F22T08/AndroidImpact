@@ -31,7 +31,7 @@ public class IngredientStorageFragmentTest {
      */
     private StoreIngredient mockIngredient()
     {
-        return new StoreIngredient("01", "test food", 0, "", "",new Date(), "trial");
+        return new StoreIngredient("01", "test food", 0, "", new Date(), "", "trial");
     }
 
     /**

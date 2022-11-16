@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.androidimpact.app.unit.Unit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +38,8 @@ import nl.dionsegijn.konfetti.models.Size;
  */
 
 public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.RecipeIngredientHolder>  {
+    final String TAG = "RecipeIngredientAdapter";
+
     private ArrayList<Ingredient> ingredients;
     private Context context;
     private ArrayList<RecipeIngredientAdapter.StoreRecipeIngredientEdit> editListeners = new ArrayList<>();
@@ -75,7 +78,6 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
         Ingredient recyclerData = ingredients.get(position);
         holder.ingredientDescription.setText(recyclerData.getDescription());
         holder.ingredientAmount.setText(String.valueOf(recyclerData.getAmount()));
-        holder.ingredientUnit.setText(recyclerData.getUnit());
         holder.ingredientCategory.setText(recyclerData.getCategory());
         holder.ingredientEditButton.setOnClickListener(v -> {
             // execute all listeners
@@ -84,7 +86,28 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
             }
         });
 
+        // now, retrieve "unit" from firebase
+        // since this takes a while, we first set a loading state
+        holder.ingredientUnit.setText("loading...");
+        DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
+            @Override
+            public void onSuccess(Unit data) {
+                String unitStr = context.getString(R.string.store_ingredient_amount_display, recyclerData.getAmount(), data.getUnit());
+                holder.ingredientUnit.setText(unitStr);
+            }
 
+            @Override
+            public void onNullDocument() {
+                holder.ingredientUnit.setText("NoDoc!");
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.d(TAG, "Cached get failed: ", e);
+                holder.ingredientUnit.setText("Failed!");
+            }
+        };
+        recyclerData.getUnitAsync(getUnitListener);
 
     }
 

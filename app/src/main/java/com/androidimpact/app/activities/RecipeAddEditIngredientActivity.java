@@ -13,10 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
+import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
@@ -76,9 +79,31 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 Ingredient ingredient = (Ingredient) extras.getSerializable("ingredient");
                 description.setText(ingredient.getDescription());
                 amount.setText(Float.toString(ingredient.getAmount()));
-                unit.setText(ingredient.getUnit());
                 category.setText(ingredient.getCategory());
                 position = extras.getInt("position");
+
+                // set unit
+                // since we have to fetch from firebase, we'll use a "loading" state
+                unit.setText("loading");
+                DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
+                    @Override
+                    public void onSuccess(Unit data) {
+                        String unitStr = getString(R.string.store_ingredient_amount_display, ingredient.getAmount(), data.getUnit());
+                        unit.setText(unitStr);
+                    }
+
+                    @Override
+                    public void onNullDocument() {
+                        unit.setText("NoDoc!");
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.d(TAG, "Cached get failed: ", e);
+                        unit.setText("Failed!");
+                    }
+                };
+                ingredient.getUnitAsync(getUnitListener);
             }
         }
 
