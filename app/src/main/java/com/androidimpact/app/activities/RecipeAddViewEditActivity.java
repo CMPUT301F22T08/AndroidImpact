@@ -290,8 +290,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
                     generateSnackbar("Added " + getStr(title) + "!");
 
-
-
+                setResult(Activity.RESULT_OK);
                 finish();
             }
         });

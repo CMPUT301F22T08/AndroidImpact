@@ -36,6 +36,10 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/ButtonFromMain_recipe" />-->
 
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/confetti_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
     <androidx.fragment.app.FragmentContainerView
