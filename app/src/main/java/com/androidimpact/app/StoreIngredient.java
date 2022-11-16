@@ -1,21 +1,13 @@
 package com.androidimpact.app;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
-import java.io.Externalizable;
-import java.io.ObjectInput;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * StoreIngredient object that is stored in IngredientStorage
@@ -31,8 +23,14 @@ import java.util.Map;
 public class StoreIngredient extends Ingredient implements Serializable {
     @ServerTimestamp
     private Date bestBeforeDate;
-    private DocumentReference location;
+    // instead of a document, this is a path to the location document
+    // https://stackoverflow.com/a/57225579
+    private String locationDocumentPath;
     private String id;
+
+    public String getLocationDocumentPath() {
+        return locationDocumentPath;
+    }
 
     /**
      * Empty constructor or Firebase to use when deserializing
@@ -47,14 +45,14 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * @param unit (String) - The unit that amount is measuring e.g. g in 300g
      * @param category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
      * @param bestBeforeDate (Date) - The best before date for the stored ingredient
-     * @param location (DocumentReference) - Where the ingredient is being stored
+     * @param locationDocumentPath (DocumentReference) - Where the ingredient is being stored
      * @see Ingredient
      */
-    public StoreIngredient(String id, String description, float amount, String unit, String category, Date bestBeforeDate, DocumentReference location){
+    public StoreIngredient(String id, String description, float amount, String unit, String category, Date bestBeforeDate, String locationDocumentPath){
         super(description, amount, unit, category);
         this.id = id;
         this.bestBeforeDate = bestBeforeDate;
-        this.location = location;
+        this.locationDocumentPath = locationDocumentPath;
     }
 
     /**
@@ -73,11 +71,11 @@ public class StoreIngredient extends Ingredient implements Serializable {
         return bestBeforeDate;
     }
 
-
     /**
      * Get the best-before date of the stored ingredient as a Calendar object
      * @return (Calendar) The best before date for the stored ingredient
      */
+    @Exclude
     public Calendar getBestBeforeCalendar(){
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, bestBeforeDate.getYear());
@@ -96,9 +94,11 @@ public class StoreIngredient extends Ingredient implements Serializable {
 
     /**
      * Get the location where the ingredient is currently stored
+     *
      * @return (String) Where the ingredient is being stored
      */
-    public DocumentReference getLocation() {
-        return location;
+    @Exclude
+    public DocumentReference getLocationDocument() {
+        return FirebaseFirestore.getInstance().document(locationDocumentPath);
     }
 }

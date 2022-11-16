@@ -146,11 +146,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 Log.i(TAG + ":cancel", "Returning to MainActivity");
                 finish();
             } catch (Exception e){
-                String snackBarStr = e.getMessage();
-
                 // Error - add a snackBar
+                Log.i(TAG, "Error making storeIngredient", e);
                 View parentLayout = findViewById(android.R.id.content);
-                Snackbar.make(parentLayout, snackBarStr, Snackbar.LENGTH_LONG)
+                Snackbar.make(parentLayout, "Error making storeIngredient!", Snackbar.LENGTH_LONG)
                         .setAction("Ok", view1 -> {})
                         .show();
             }
@@ -288,7 +287,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
             Date date = bestBeforeCalendar.getTime();
             DocumentReference locationRef = locationCollection.document(selectedLocation.getId());
-            return new StoreIngredient(id, description, amount, unit, category, date, locationRef);
+            assert locationRef.getPath() != null;
+            return new StoreIngredient(id, description, amount, unit, category, date, locationRef.getPath());
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");
