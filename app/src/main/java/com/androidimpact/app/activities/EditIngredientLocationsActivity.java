@@ -161,6 +161,7 @@ public class EditIngredientLocationsActivity extends AppCompatActivity {
                 Snackbar.make(locationRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
             }
             Log.i(TAG, "Snapshot listener: Added " + locationArrayList.size() + " elements");
+            locationArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
             locationViewAdapter.notifyDataSetChanged();
         });
     }

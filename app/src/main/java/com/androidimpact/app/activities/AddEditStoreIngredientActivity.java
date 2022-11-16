@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -188,9 +189,12 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 Log.w(TAG + ":snapshotListener", "Location collection is null!");
                 return;
             }
+            locations.clear();
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 locations.add(doc.toObject(Location.class));
             }
+            // sort by date added
+            locations.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
             locationAdapter.notifyDataSetChanged();
         });
     }
@@ -287,7 +291,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
             Date date = bestBeforeCalendar.getTime();
             DocumentReference locationRef = locationCollection.document(selectedLocation.getId());
-            assert locationRef.getPath() != null;
             return new StoreIngredient(id, description, amount, unit, category, date, locationRef.getPath());
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
