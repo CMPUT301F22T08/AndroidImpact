@@ -368,7 +368,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
-                    generateSnackbar("Ingredient cancelled!");
                 }
             });
 
