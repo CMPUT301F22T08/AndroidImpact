@@ -310,7 +310,6 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addRecipeResult", "Received cancelled");
-                    Snackbar.make(recipeListView, "Cancelled!", Snackbar.LENGTH_LONG).show();
                 }
             });
 
