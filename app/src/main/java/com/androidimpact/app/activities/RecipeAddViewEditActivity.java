@@ -1,5 +1,7 @@
 package com.androidimpact.app.activities;
 
+import static java.util.Objects.isNull;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -33,9 +35,14 @@ import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeIngredientAdapter;
+import com.androidimpact.app.StoreIngredient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -120,6 +127,31 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              category.setText(extras.getString("category", ""));
              comments.setText(extras.getString("comments", ""));
              date = extras.getString("date","");
+             if (isEditing) {
+                 collectionReference.document(docName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+                     @Override
+                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            if (task.isSuccessful()) {
+                                HashMap<String, Object> map = (HashMap<String, Object>) document.getData().get("ingredients");
+                                for (String key : map.keySet()) {
+                                    HashMap<String, Object> ingredientMap = (HashMap<String, Object>) map.get(key);
+                                    ingredients.add(new Ingredient(
+                                            (String) ingredientMap.get("description"),
+                                            ((Double) ingredientMap.get("amount")).floatValue(),
+                                            (String) ingredientMap.get("unit"),
+                                            (String) ingredientMap.get("category")
+                                    ));
+
+                                }
+                                ingredientAdapter.notifyDataSetChanged();
+                            }
+
+                     }
+                 });
+
+                 ingredientAdapter.notifyDataSetChanged();
+             }
 
              // load image for recipe
              String photoURI = extras.getString("photo", null);
@@ -181,8 +213,23 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             // to our recycler view.
         }).attachToRecyclerView(ingredientList);
 
+        // Edit
+        ingredientAdapter.setEditClickListener((storeIngredient, position) -> {
+             // runs whenever a store ingredient edit btn is clicked
+             Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
+             Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
+             intent.putExtra("activity_name", "Edit ingredient");
+             intent.putExtra("isEditing",  true);
+             intent.putExtra("position", position);
+             intent.putExtra("ingredient", ingredients.get(position));
+             editIngredientLauncher.launch(intent);
+         });
+
         // Add button on bottom right
         final Button addRecipe = findViewById(R.id.add_button);
+        if (isEditing) {
+            addRecipe.setText(getResources().getString(R.string.edit));
+        }
         addRecipe.setOnClickListener(v -> {
 
             // Check if recipe can be added with given inputs
@@ -215,7 +262,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     if (isEditing){
                         data.put("photo",photo.getTag());
 
-
                     } else{
                         String img_name = UUID.randomUUID().toString();
                         data.put("photo", img_name);
@@ -230,27 +276,21 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 Log.i("works", "well");
                 Log.i("docName",docName);
 
-
+                // Delete old entry since based off description name
                 if (isEditing) {
                     collectionReference
                             .document(docName)
                             .delete();
-                            //.addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
-                            //.addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
-                    generateSnackbar("Added " + getStr(title) + "!");
-
-
                 }
 
-                        collectionReference
-                                .document(title.getText().toString())
-                                .set(data)
-                                .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
-                                .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
-                        generateSnackbar("Added " + getStr(title) + "!");
+                    collectionReference
+                            .document(title.getText().toString())
+                            .set(data)
+                            .addOnSuccessListener(unused -> Log.d(TAG, "Data addition successful"))
+                            .addOnFailureListener(e -> Log.d(TAG, "Data addition failed"));
+                    generateSnackbar("Added " + getStr(title) + "!");
 
-
-
+                setResult(Activity.RESULT_OK);
                 finish();
             }
         });
@@ -259,6 +299,21 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         final Button cancelRecipe = findViewById(R.id.cancel_button);
         cancelRecipe.setOnClickListener(v -> finish());
     }
+
+    // Editing ingredients
+    final private ActivityResultLauncher<Intent> editIngredientLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    assert result.getData() != null;
+                    Bundle bundle = result.getData().getExtras();
+                    Ingredient ingredient = (Ingredient) bundle.getSerializable("ingredient");
+                    Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
+                    ingredients.set(bundle.getInt("position"), ingredient);
+                    generateSnackbar("Edited " + ingredient.getDescription() + "!");
+                    ingredientAdapter.notifyDataSetChanged();
+                }
+            });
 
     // Adding ingredients, follows format of ingredient storage activity launchers
     final private ActivityResultLauncher<Intent> addIngredientLauncher = registerForActivityResult(

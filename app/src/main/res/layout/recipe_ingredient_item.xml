@@ -60,6 +60,7 @@
         android:layout_marginEnd="40dp"
         android:clickable="true"
         android:focusable="true"
+        android:backgroundTint="#2E6578"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

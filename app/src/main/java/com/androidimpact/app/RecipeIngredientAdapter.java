@@ -1,17 +1,33 @@
 package com.androidimpact.app;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * RecipeIngredientAdapter class
@@ -23,6 +39,7 @@ import java.util.ArrayList;
 public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.RecipeIngredientHolder>  {
     private ArrayList<Ingredient> ingredients;
     private Context context;
+    private ArrayList<RecipeIngredientAdapter.StoreRecipeIngredientEdit> editListeners = new ArrayList<>();
 
 
     /**
@@ -60,6 +77,12 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
         holder.ingredientAmount.setText(String.valueOf(recyclerData.getAmount()));
         holder.ingredientUnit.setText(recyclerData.getUnit());
         holder.ingredientCategory.setText(recyclerData.getCategory());
+        holder.ingredientEditButton.setOnClickListener(v -> {
+            // execute all listeners
+            for (RecipeIngredientAdapter.StoreRecipeIngredientEdit listener : editListeners) {
+                listener.storeRecipeIngredientEdit(recyclerData, position);
+            }
+        });
 
 
 
@@ -80,8 +103,9 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
      */
     public class RecipeIngredientHolder extends RecyclerView.ViewHolder {
 
-        // creating a variable for our text view.
+        // creating a variable for our text view and button
         private TextView ingredientDescription, ingredientAmount, ingredientUnit, ingredientCategory;
+        private FloatingActionButton ingredientEditButton;
 
         /**
          * Initializing our text views
@@ -93,7 +117,20 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
             ingredientAmount = itemView.findViewById(R.id.ingredient_amount);
             ingredientUnit = itemView.findViewById(R.id.ingredient_unit);
             ingredientCategory = itemView.findViewById(R.id.ingredient_category);
+            ingredientEditButton = itemView.findViewById(R.id.edit_button);
         }
+    }
+
+    public interface StoreRecipeIngredientEdit {
+        void storeRecipeIngredientEdit(Ingredient ingredient, int position);
+    }
+
+    /**
+     * Edit button listener
+     * @param toAdd
+     */
+    public void setEditClickListener(StoreRecipeIngredientEdit toAdd) {
+        editListeners.add(toAdd);
     }
 
 }

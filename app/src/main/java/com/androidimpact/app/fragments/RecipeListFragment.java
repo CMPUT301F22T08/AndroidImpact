@@ -110,7 +110,8 @@ public class RecipeListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // TODO: change this to fragment_recipe_list
-        return inflater.inflate(R.layout.activity_recipe_list_activity, container, false);
+        //return inflater.inflate(R.layout.activity_recipe_list_activity, container, false);
+        return inflater.inflate(R.layout.fragment_recipe_list, container, false);
     }
 
 
@@ -302,16 +303,12 @@ public class RecipeListFragment extends Fragment {
     final private ActivityResultLauncher<Intent> addRecipeLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (isNull(result.getData())) {
-                    return;
-                }
-                Bundle bundle = result.getData().getExtras();
-
                 Log.i(TAG + ":addRecipeResult", "Got bundle");
 
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Activity a = getActivity();
                     final KonfettiView confetti = a.findViewById(R.id.confetti_view);
+                    Snackbar.make(recipeListView, "Added recipe!", Snackbar.LENGTH_LONG).show();
                     confetti.build()
                             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                             .setDirection(0.0, 359.0)
@@ -326,6 +323,7 @@ public class RecipeListFragment extends Fragment {
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addRecipeResult", "Received cancelled");
+                    Snackbar.make(recipeListView, "Cancelled!", Snackbar.LENGTH_LONG).show();
                 }
             });
 

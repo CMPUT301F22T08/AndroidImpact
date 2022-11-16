@@ -190,9 +190,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             intent.putExtra("comments", currentRecipe.getComments());
             intent.putExtra("photo", currentRecipe.getPhoto());
             intent.putExtra("isEditing", true);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             intent.putExtra("date", currentRecipe.getDate());
-
             context.startActivity(intent);
         });
 
