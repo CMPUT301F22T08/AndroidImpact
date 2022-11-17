@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -248,29 +251,29 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         recipeList.sortByChoice();
     }
 
-    public boolean removeItem(int position) {
+    public void removeItem(int position, OnSuccessListener sl, OnFailureListener fl) {
 
         // this method is called when we swipe our item to right direction.
         // on below line we are getting the item at a particular position.
         Recipe deletedRecipe = recipeArrayList.get(position);
         String description = deletedRecipe.getTitle();
         String photo = deletedRecipe.getPhoto();
-        AtomicBoolean returnVal = new AtomicBoolean(false);
+        //AtomicBoolean returnVal = new AtomicBoolean(false);
 
         // delete item from firebase
         recipeCollection.document(description)
                 .delete()
-                .addOnSuccessListener(aVoid -> {
+                .addOnSuccessListener(sl/*aVoid -> {
                     // task succeeded
-                    // cityAdapter will automatically update. No need to remove it from out list
-                    Log.d(TAG, description + " has been deleted successfully!");
-                    returnVal.set(true);
+                    // adapter will automatically update. No need to remove it from out list
+                    //Log.d(TAG, description + " has been deleted successfully!");
+                    //returnVal.set(true);
 
-                })
-                .addOnFailureListener(e -> {
+                }*/)
+                .addOnFailureListener(fl/*e -> {
                     Log.d(TAG, description + " could not be deleted!" + e);
                     returnVal.set(false);
-                });
+                }*/);
 
         // delete photo from Firebase Storage
         storageReference.child("images/" + photo).delete()
@@ -291,7 +294,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             }
         });
 
-        return returnVal.get();
+        //return returnVal;
     }
 
 
