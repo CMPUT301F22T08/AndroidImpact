@@ -347,7 +347,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // Ok - we have an ingredient!
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
 
-                    final KonfettiView confetti = a.findViewById(R.id.confetti_view);
+                    final KonfettiView confetti = a.findViewById(R.id.confetti_view_ingredient_storage);
                     confetti.build()
                             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                             .setDirection(0.0, 359.0)
