@@ -35,6 +35,8 @@ import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -214,15 +216,22 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 int position = viewHolder.getAdapterPosition();
                 Recipe deletedRecipe = recipeDataList.get(position);
                 String description = deletedRecipe.getTitle();
-                boolean snackBarChoice = recipeViewAdapter.removeItem(position);
 
-                // now, delete all the i
-
-                if(snackBarChoice) {
-                    Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                } else {
-                    Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                }
+                OnSuccessListener sl = new OnSuccessListener() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        Log.d(TAG, description + " has been deleted successfully!");
+                        Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                    }
+                };
+                OnFailureListener fl = new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, description + " could not be deleted!" + e);
+                        Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                    }
+                };
+                recipeViewAdapter.removeItem(position, sl, fl);
 
             }
             // at last we are adding this
