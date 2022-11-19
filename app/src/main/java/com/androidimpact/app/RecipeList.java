@@ -13,11 +13,9 @@ import java.util.List;
  */
 public class RecipeList extends SortableItemList<Recipe> {
 
-    // creating a variable for our array list and context.
+    // creating a variable for our array list
     //private ArrayList<Recipe> recipeArrayList;
     private static String[] sortChoices;
-    //private int sortIndex;
-    //public static Comparator<Recipe> defaultComparator, titleComparator, prepTimeComparator, servingsComparator, categoryComparator;
 
     /**
      * Constructor for RecipeList
@@ -40,15 +38,13 @@ public class RecipeList extends SortableItemList<Recipe> {
                         Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER)
                 ).toArray());
         //this.recipeArrayList = recipeArrayList;
-        this.sortChoices = new String[]{
+        sortChoices = new String[]{
                 "Date Added",
                 "Title",
                 "Preparation Time",
                 "Number of Servings",
                 "Recipe Category"
         };
-        //this.sortIndex = 0;
-
     }
 
     /**
