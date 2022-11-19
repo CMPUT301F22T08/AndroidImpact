@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -13,13 +14,13 @@ import java.util.Comparator;
  * @author vedantvyas
  */
 
-public class IngredientStorage /*extends SortableItemList<StoreIngredient>*/ {
-    private ArrayList<StoreIngredient> ingredientStorageList;
+public class IngredientStorage extends SortableItemList<StoreIngredient> {
+    //private ArrayList<StoreIngredient> ingredientStorageList;
 
     private static String[] sortChoices;
-    private int sortIndex;
+    //private int sortIndex;
 
-    public static Comparator<StoreIngredient> descriptionComparator, bbdComparator, categoryComparator;
+    //public static Comparator<StoreIngredient> descriptionComparator, bbdComparator, categoryComparator;
 
 
     /**
@@ -27,18 +28,30 @@ public class IngredientStorage /*extends SortableItemList<StoreIngredient>*/ {
      */
     public IngredientStorage()
     {
-        this.ingredientStorageList = new ArrayList<>();
+        super(new ArrayList<>(),
+                new String[]{
+                        "Description",
+                        "Best Before Date",
+                        "Ingredient Category"
+                },
+                (Comparator<StoreIngredient>[]) Arrays.asList(
+                        Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER),
+                        Comparator.comparing(StoreIngredient::getBestBeforeCalendar),
+                        Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER)
+                ).toArray()
+        );
+        //this.ingredientStorageList = new ArrayList<>();
 
         this.sortChoices = new String[]{
                 "Description",
                 "Best Before Date",
                 "Ingredient Category"
         };
-        this.sortIndex = 0;
+        //this.sortIndex = 0;
         // set compare variables
-        descriptionComparator = Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER);
-        bbdComparator = Comparator.comparing(StoreIngredient::getBestBeforeCalendar);
-        categoryComparator = Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER);
+        //descriptionComparator = Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER);
+        //bbdComparator = Comparator.comparing(StoreIngredient::getBestBeforeCalendar);
+        //categoryComparator = Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER);
 
     }
 
@@ -47,7 +60,7 @@ public class IngredientStorage /*extends SortableItemList<StoreIngredient>*/ {
      * @return ingredientStorageList (ArrayList<StoreIngredient>)
      */
     public ArrayList<StoreIngredient> getIngredientStorageList() {
-        return ingredientStorageList;
+        return super.getData();
     }
 
     /**
@@ -55,77 +68,77 @@ public class IngredientStorage /*extends SortableItemList<StoreIngredient>*/ {
      * @param i (int)
      * @return (StoreIngredient)
      */
-    public StoreIngredient get(int i) {
-        return ingredientStorageList.get(i);
-    }
+//    public StoreIngredient get(int i) {
+//        return ingredientStorageList.get(i);
+//    }
 
     /**
      * this function sets the ingredients to index i in ingredientStorageList
      * @param i (int)
      * @param ingredient (StoreIngredient)
      */
-    public void set(int i, StoreIngredient ingredient){
-        this.ingredientStorageList.set(i, ingredient);
-    }
+//    public void set(int i, StoreIngredient ingredient){
+//        this.ingredientStorageList.set(i, ingredient);
+//    }
 
     /**
      * this function adds the ingredient to ingredientStorageList
      * @param ingredient (StoreIngredient)
      */
-    public void add(StoreIngredient ingredient)
-    {
-        this.ingredientStorageList.add(ingredient);
-    }
+//    public void add(StoreIngredient ingredient)
+//    {
+//        this.ingredientStorageList.add(ingredient);
+//    }
 
     /**
      * This function removes the element from ingredientStorageList at index i
      * @param i (int)
      */
-    public void remove(int i)
-    {
-        if (i < this.size() && i >= 0)
-            this.ingredientStorageList.remove(i);
-        else
-            throw new ArrayIndexOutOfBoundsException("please choose a i between 0 and list size");
-    }
+//    public void remove(int i)
+//    {
+//        if (i < this.size() && i >= 0)
+//            this.ingredientStorageList.remove(i);
+//        else
+//            throw new ArrayIndexOutOfBoundsException("please choose a i between 0 and list size");
+//    }
 
     /**
      * This function removes the ingredient from ingredientStorageList
      * @param ingredient (StoreIngredient)
      */
-    public void remove(StoreIngredient ingredient)
-    {
-        if (this.ingredientStorageList.contains(ingredient))
-            this.ingredientStorageList.remove(ingredient);
-        else
-            throw new IllegalArgumentException("Trying to remove ingredient which isn't in list");
-    }
+//    public void remove(StoreIngredient ingredient)
+//    {
+//        if (this.ingredientStorageList.contains(ingredient))
+//            this.ingredientStorageList.remove(ingredient);
+//        else
+//            throw new IllegalArgumentException("Trying to remove ingredient which isn't in list");
+//    }
 
     /**
      * this function returns the size of the list
      * @return (int)
      */
-    public int size()
-    {
-        return this.ingredientStorageList.size();
-    }
+//    public int size()
+//    {
+//        return this.ingredientStorageList.size();
+//    }
 
 
     /**
      * Return the current sorting choice for the recipe list
      * @return the index of the sorting choices for the user
      */
-    public String getSortChoice() {
-        return this.sortChoices[this.sortIndex];
-    }
+//    public String getSortChoice() {
+//        return this.sortChoices[this.sortIndex];
+//    }
 
     /**
      * Set the sorting choice for the recipe list
      * @param index the index of the sorting choices for the user
      */
-    public void setSortChoice(int index) {
-        this.sortIndex = index;
-    }
+//    public void setSortChoice(int index) {
+//        this.sortIndex = index;
+//    }
 
 
     /**
@@ -138,22 +151,22 @@ public class IngredientStorage /*extends SortableItemList<StoreIngredient>*/ {
     /**
      * This function allows us to sort the recipe list by the user's choice
      */
-    public void sortByChoice() {
-        switch(this.sortIndex) {
-            case 0:
-                Collections.sort(ingredientStorageList, descriptionComparator); break;
-            case 1:
-                Collections.sort(ingredientStorageList, bbdComparator); break;
-            case 2:
-                Collections.sort(ingredientStorageList, categoryComparator); break;
-        }
-    }
+//    public void sortByChoice() {
+//        switch(this.sortIndex) {
+//            case 0:
+//                Collections.sort(ingredientStorageList, descriptionComparator); break;
+//            case 1:
+//                Collections.sort(ingredientStorageList, bbdComparator); break;
+//            case 2:
+//                Collections.sort(ingredientStorageList, categoryComparator); break;
+//        }
+//    }
 
     /**
      * this function clears the ingredientStorageList
      */
     public void clear()
     {
-        this.ingredientStorageList.clear();
+        this.getData().clear();
     }
 }

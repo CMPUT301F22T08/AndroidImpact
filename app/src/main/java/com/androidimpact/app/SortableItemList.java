@@ -14,9 +14,9 @@ import java.util.List;
 public abstract class SortableItemList<T> {
     protected ArrayList<T> objectArrayList;
     //protected static String[] sortChoices;
-    protected Comparator<T>[] comparators;
-    protected OrderedHashMap<String, Comparator<T>> sortingHashMap;
-    protected int sortIndex;
+    private Comparator<T>[] comparators;
+    private OrderedHashMap<String, Comparator<T>> sortingHashMap;
+    private int sortIndex;
 
     /**
      * Constructor for SortableItemList class
@@ -30,10 +30,6 @@ public abstract class SortableItemList<T> {
         this.comparators = comparators;
         this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
     }
-
-//    public void setSortingHashMap(String[] sortChoices, Comparator<T>[] comparators) {
-//        this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
-//    }
 
     /**
      * This function returns the data in the list
