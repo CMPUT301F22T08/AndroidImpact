@@ -13,7 +13,7 @@ import java.util.Comparator;
  * @author vedantvyas
  */
 
-public class IngredientStorage {
+public class IngredientStorage /*extends SortableItemList<StoreIngredient>*/ {
     private ArrayList<StoreIngredient> ingredientStorageList;
 
     private static String[] sortChoices;
@@ -27,7 +27,7 @@ public class IngredientStorage {
      */
     public IngredientStorage()
     {
-        this.ingredientStorageList = new ArrayList<StoreIngredient>();
+        this.ingredientStorageList = new ArrayList<>();
 
         this.sortChoices = new String[]{
                 "Description",
@@ -148,8 +148,6 @@ public class IngredientStorage {
                 Collections.sort(ingredientStorageList, categoryComparator); break;
         }
     }
-
-    /**
 
     /**
      * this function clears the ingredientStorageList
