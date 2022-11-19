@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * This class defines a recipe list
@@ -13,7 +14,7 @@ import java.util.Comparator;
 public class RecipeList extends SortableItemList<Recipe> {
 
     // creating a variable for our array list and context.
-    private ArrayList<Recipe> recipeArrayList;
+    //private ArrayList<Recipe> recipeArrayList;
     private static String[] sortChoices;
     private int sortIndex;
     public static Comparator<Recipe> defaultComparator, titleComparator, prepTimeComparator, servingsComparator, categoryComparator;
@@ -23,14 +24,22 @@ public class RecipeList extends SortableItemList<Recipe> {
      * @param recipeArrayList   the recipes to consider in the RecipeList object
      */
     public RecipeList(ArrayList<Recipe> recipeArrayList) {
-        super(recipeArrayList, new String[]{
-                "Date Added",
-                "Title",
-                "Preparation Time",
-                "Number of Servings",
-                "Recipe Category"
-        });
-        /*this.recipeArrayList = recipeArrayList;
+        super(recipeArrayList,
+                new String[]{
+                        "Date Added",
+                        "Title",
+                        "Preparation Time",
+                        "Number of Servings",
+                        "Recipe Category"
+                },
+                (Comparator<Recipe>[]) Arrays.asList(
+                        Comparator.comparingInt(a -> (int) ((Recipe) a).getDate().getTime()),
+                        Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER),
+                        Comparator.comparingInt(Recipe::getPrep_time),
+                        Comparator.comparingInt(Recipe::getServings),
+                        Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER)
+                ).toArray());
+        //this.recipeArrayList = recipeArrayList;
         this.sortChoices = new String[]{
                 "Date Added",
                 "Title",
@@ -38,16 +47,8 @@ public class RecipeList extends SortableItemList<Recipe> {
                 "Number of Servings",
                 "Recipe Category"
         };
-        this.sortIndex = 0;
+        //this.sortIndex = 0;
 
-         */
-
-        // set compare variables
-        defaultComparator = Comparator.comparingInt(a -> (int) a.getDate().getTime());
-        titleComparator = Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER);
-        prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
-        servingsComparator = Comparator.comparingInt(Recipe::getServings);
-        categoryComparator = Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER);
     }
 
     /**
@@ -130,24 +131,24 @@ public class RecipeList extends SortableItemList<Recipe> {
      * Return the sorting choices for the recipe list
      * @return list of available sorting choices
      */
-    //public static String[] getSortChoices() {
-    //    return sortChoices.clone(); }
+    public static String[] getSortChoices() {
+        return sortChoices.clone(); }
 
     /**
      * This function allows us to sort the recipe list by the user's choice
      */
-    public void sortByChoice() {
-        switch(this.sortIndex) {
-            case 0:
-                Collections.sort(/*recipeArrayList*/this.getData(), defaultComparator); break;
-            case 1:
-                Collections.sort(/*recipeArrayList*/this.getData(), titleComparator); break;
-            case 2:
-                Collections.sort(/*recipeArrayList*/this.getData(), prepTimeComparator); break;
-            case 3:
-                Collections.sort(/*recipeArrayList*/this.getData(), servingsComparator); break;
-            case 4:
-                Collections.sort(/*recipeArrayList*/this.getData(), categoryComparator); break;
-        }
-    }
+//    public void sortByChoice() {
+//        switch(this.sortIndex) {
+//            case 0:
+//                Collections.sort(/*recipeArrayList*/this.getData(), defaultComparator); break;
+//            case 1:
+//                Collections.sort(/*recipeArrayList*/this.getData(), titleComparator); break;
+//            case 2:
+//                Collections.sort(/*recipeArrayList*/this.getData(), prepTimeComparator); break;
+//            case 3:
+//                Collections.sort(/*recipeArrayList*/this.getData(), servingsComparator); break;
+//            case 4:
+//                Collections.sort(/*recipeArrayList*/this.getData(), categoryComparator); break;
+//        }
+//    }
 }

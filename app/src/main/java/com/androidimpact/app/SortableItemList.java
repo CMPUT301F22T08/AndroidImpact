@@ -8,12 +8,14 @@ import java.util.List;
 
 /**
  * This class creates the functionality to have lists with sorting ability
+ * @author Aneeljyot Alagh
  * @version 1.0
  */
 public abstract class SortableItemList<T> {
     protected ArrayList<T> objectArrayList;
-    protected static String[] sortChoices;
-    //protected Comparator<T>[] comparators;
+    //protected static String[] sortChoices;
+    protected Comparator<T>[] comparators;
+    protected OrderedHashMap<String, Comparator<T>> sortingHashMap;
     protected int sortIndex;
 
     /**
@@ -21,13 +23,22 @@ public abstract class SortableItemList<T> {
      * @param objectArrayList
      * @param sortChoices
      */
-    public SortableItemList(ArrayList<T> objectArrayList, String[] sortChoices) {
+    public SortableItemList(ArrayList<T> objectArrayList, String[] sortChoices, Comparator<T>[] comparators) {
         this.objectArrayList = objectArrayList;
         this.sortIndex = 0;
-        this.sortChoices = sortChoices;
-        //this.comparators = comparators;
+        //this.sortChoices = sortChoices;
+        this.comparators = comparators;
+        this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
     }
 
+//    public void setSortingHashMap(String[] sortChoices, Comparator<T>[] comparators) {
+//        this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
+//    }
+
+    /**
+     * This function returns the data in the list
+     * @return list (ArrayList&lt;T&gt;)
+     */
     public ArrayList<T> getData() { return this.objectArrayList; }
 
     /**
@@ -94,9 +105,10 @@ public abstract class SortableItemList<T> {
      * Return the current sorting choice for the item list
      * @return the sorting choice at the index chosen by the user
      */
-    public String getSortChoice() {
-        return this.sortChoices[this.sortIndex];
-    }
+//    public String getSortChoice() {
+//        //return this.sortChoices[this.sortIndex];
+//        return this.sortingHashMap.getKey(this.sortIndex);
+//    }
 
     /**
      * Set the sorting choice for the item list
@@ -110,25 +122,72 @@ public abstract class SortableItemList<T> {
      * Return the sorting choices for the item list
      * @return list of available sorting choices
      */
-    public static String[] getSortChoices() {
-        return sortChoices.clone();
-    }
+//    public static String[] getSortChoices() {
+//        return sortChoices.clone();
+//    }
 
     /**
      * This function allows us to sort the item list by the user's choice
      */
-    public abstract void sortByChoice();
+    public void sortByChoice() {
+        Collections.sort(this.objectArrayList, this.sortingHashMap.getValue(this.sortIndex));
+    }
 
-    public class OrderedHashMap extends HashMap<String, Comparator<T>> {
-        private String[] keys;
+    /**
+     * This class creates a version of a hashmap that maintains an order.
+     * @param <K> The key type
+     * @param <V> The value type
+     */
+    private class OrderedHashMap<K, V> extends HashMap<K, V> {
+        private K[] keys;
 
-        public OrderedHashMap(String[] keys) {
+        /**
+         * Initialize a hashmap that contains a natural ordering.
+         * <br>
+         * <strong>NB:</strong> This structure requires that the length of keys given and values
+         * given are equal, and the i'th key corresponds to the i'th value in the list.
+         * <strong>NB:</strong> If two keys are given that are equal, the hashmap will only consider
+         * the latter of these in the keys array, i.e. the key with the maximal i-value.
+         * @param keys an array of keys to be added
+         * @param values an array of values to be added
+         * @throws IllegalArgumentException if the arrays of keys and values have different sizes
+         */
+        public OrderedHashMap(K[] keys, V[] values) throws IllegalArgumentException {
             super();
-            this.keys = keys;
+            if(keys.length == values.length) {
+                this.keys = keys;
+                for(int i = 0; i < keys.length; i++) {
+                    super.put(keys[i], values[i]);
+                }
+            } else {
+                throw new IllegalArgumentException("Incorrect arguments, too many " + (keys.length > values.length ? "keys": "values") + "given.");
+            }
         }
 
-        public Comparator<T> get(int i) {
+        /**
+         * Returns the i'th key in the hashmap.
+         * @param i the index of the key in the hashmap
+         * @return the i'th key in the hashmap (K)
+         */
+        public K getKey(int i) {
+            return keys[i];
+        }
+
+        /**
+         * Returns the i'th value in the hashmap.
+         * @param i the index of the value in the hashmap
+         * @return the value of the i'th key in the hashmap (V)
+         */
+        public V getValue(int i) {
             return super.get(keys[i]);
+        }
+
+        /**
+         * Returns a copy of the keys in the OrderedHashMap
+         * @return an array of the keys (K[])
+         */
+        public K[] getKeys() {
+            return keys.clone();
         }
     }
 }
