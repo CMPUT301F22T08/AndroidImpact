@@ -101,10 +101,10 @@ public abstract class SortableItemList<T> {
      * Return the current sorting choice for the item list
      * @return the sorting choice at the index chosen by the user
      */
-//    public String getSortChoice() {
-//        //return this.sortChoices[this.sortIndex];
-//        return this.sortingHashMap.getKey(this.sortIndex);
-//    }
+    public String getSortChoice() {
+        //return this.sortChoices[this.sortIndex];
+        return this.sortingHashMap.getKey(this.sortIndex);
+    }
 
     /**
      * Set the sorting choice for the item list
