@@ -25,6 +25,7 @@ import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -38,6 +39,8 @@ import com.google.firebase.storage.StorageReference;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.squareup.picasso.Picasso;
@@ -205,6 +208,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             intent.putExtra("recipe", currentRecipe);
             intent.putExtra("isEditing", true);
             context.startActivity(intent);
+            notifyItemChanged(position);
         });
     }
 
@@ -251,50 +255,35 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         recipeList.sortByChoice();
     }
 
-    public void removeItem(int position, OnSuccessListener sl, OnFailureListener fl) {
+    public Task<Void> removeItem(int position) {
 
         // this method is called when we swipe our item to right direction.
         // on below line we are getting the item at a particular position.
         Recipe deletedRecipe = recipeArrayList.get(position);
-        String description = deletedRecipe.getTitle();
+        String id = deletedRecipe.getId();
         String photo = deletedRecipe.getPhoto();
-        //AtomicBoolean returnVal = new AtomicBoolean(false);
 
-        // delete item from firebase
-        recipeCollection.document(description)
-                .delete()
-                .addOnSuccessListener(sl/*aVoid -> {
-                    // task succeeded
-                    // adapter will automatically update. No need to remove it from out list
-                    //Log.d(TAG, description + " has been deleted successfully!");
-                    //returnVal.set(true);
+        List<Task<?>> futures = new ArrayList<>();
 
-                }*/)
-                .addOnFailureListener(fl/*e -> {
-                    Log.d(TAG, description + " could not be deleted!" + e);
-                    returnVal.set(false);
-                }*/);
-
-        // delete photo from Firebase Storage
-        storageReference.child("images/" + photo).delete()
-                .addOnSuccessListener(aVoid -> {
-                    // task succeeded
-                    Log.d(TAG, description + ": " + photo + " has been deleted successfully!");
-                })
-                .addOnFailureListener(e -> {
-                    Log.d(TAG, description + ": " + photo + " could not be deleted!" + e);
-                });
-
-        // delete all items from the ingredients collection
         CollectionReference ingredients = db.collection(deletedRecipe.getCollectionPath());
-        Log.i(TAG, "Deleting Ingredients in " + ingredients);
         ingredients.get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                ingredients.document(doc.getId()).delete();
+                futures.add(ingredients.document(doc.getId()).delete());
             }
         });
 
-        //return returnVal;
+        // delete photo from Firebase Storage
+        if (photo != null) {
+            futures.add(storageReference.child("images/" + photo).delete()
+                    .addOnSuccessListener(aVoid -> Log.i(TAG, "Successfully deleted image from recipe: " + deletedRecipe.getTitle())));
+        }
+
+        futures.add(recipeCollection.document(id)
+                        .delete()
+                        .addOnSuccessListener(unused -> Log.i(TAG, "Successfully deleted recipeDocument: " + deletedRecipe.getTitle())));
+
+        // return the tasks
+        return Tasks.whenAll(futures);
     }
 
 

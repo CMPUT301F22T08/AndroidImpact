@@ -6,7 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,6 +57,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import nl.dionsegijn.konfetti.KonfettiView;
@@ -80,13 +85,19 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     private String docName;
     private Boolean isEditing;
     private String date;
+    // if we're editing, this is the photoID of the editing photo
+    private String photoID;
 
     // firebase
+    FirebaseFirestore db;
     FirebaseStorage storage;
     StorageReference storageReference;
-    FirebaseFirestore db;
+    CollectionReference recipes;
     CollectionReference ingredients;
-    CollectionReference recipes; // the parent collection
+    File photoFile;
+    Uri fileProvider;
+    Bundle extras;
+    boolean changedImage = false;
 
     /**
      * This method runs when the activity is created
@@ -125,7 +136,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         ingredientList.setAdapter(ingredientAdapter);
 
          // extract extras
-         Bundle extras = getIntent().getExtras();
+         extras = getIntent().getExtras();
          if (extras != null) {
 
              String value = extras.getString("activity_name");
@@ -134,6 +145,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
              if (isEditing) {
                  Recipe recipe = (Recipe) extras.getSerializable("recipe");
+
+                 photoID = recipe.getPhoto();
                  id = recipe.getId();
                  title.setText(recipe.getTitle());
                  prep_time.setText(String.valueOf(recipe.getPrep_time()));
@@ -257,19 +270,12 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         // Add button on bottom right
         addRecipe.setOnClickListener(v -> {
             try {
-                Recipe r = parseRecipe();
-
-                recipes
-                    .document(r.getId())
-                    .set(r)
-                    .addOnSuccessListener(unused -> {
-                        setResult(Activity.RESULT_OK);
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.i(TAG, "Failed to add recipe " + r.getId(), e);
-                        generateSnackbar("Failed to add " + getStr(title) + "!");
-                    });
+                parseRecipe()
+                        .onSuccessTask(r -> recipes.document(r.getId()).set(r)).addOnSuccessListener(unused -> {
+                            Log.i(TAG, "Successfully added recipe!");
+                            setResult(Activity.RESULT_OK);
+                            finish();
+                        });
             } catch (Exception e) {
                 Log.i(TAG, "Failed to add recipe!", e);
                 generateSnackbar("Failed to add " + getStr(title) + "!");
@@ -281,7 +287,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         cancelRecipe.setOnClickListener(v -> finish());
     }
 
-    private Recipe parseRecipe() throws Exception {
+    private Task<Recipe> parseRecipe() throws Exception {
         if (getStr(title).isBlank()) {
             throw new Exception("Title must be nonempty!");
         }
@@ -295,31 +301,29 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             throw new Exception("Category must be nonempty!");
         }
 
-        String photoID;
-        if (photo.getTag() == null) {
-            photoID = null;  // shows up as null in database
-        } else {
-            if (isEditing) {
-                photoID = photo.getTag().toString();
-            } else {
-                // Add photo to firebase storage
-                // https://www.geeksforgeeks.org/android-how-to-upload-an-image-on-firebase-storage/#:~:text=Create%20a%20new%20project%20on,firebase%20to%20that%20android%20application.&text=Two%20buttons%3A,firebase%20storage%20on%20the%20cloud
-                // Rishabh007 - December 7, 2021
-                photoID = UUID.randomUUID().toString();
-                StorageReference imgs = storageReference.child("images/" + photoID);
-                imgs.putFile((Uri) photo.getTag())
-                        .addOnSuccessListener(unused -> Log.d(TAG, "Photo addition successful"))
-                        .addOnFailureListener(e -> Log.d(TAG, "Photo addition failed"));
+        // list of futures
+        List<Task<?>> futures = new ArrayList<>();
+
+        String newPhotoID = photoID;
+        if (isEditing && changedImage) {
+            // delete old image
+            if (photoID != null) {
+                futures.add(storageReference.child("images/" + photoID)
+                        .delete()
+                        .addOnSuccessListener(unused -> Log.i(TAG, "Deleted old image " + photoID)));
             }
+
+            // add new image
+            String img_name = UUID.randomUUID().toString();
+            newPhotoID = img_name;
+            StorageReference imgs = storageReference.child("images/" + img_name);
+            futures.add(imgs.putFile((Uri) photo.getTag()).addOnSuccessListener(unused -> Log.i(TAG, "Successfully put file " + img_name)));
         }
 
-        Log.i(TAG, "ingredients path:" + ingredients.getPath());
-
-        return new Recipe(
-                id, getStr(title), Integer.parseInt(getStr(prep_time)), Integer.parseInt(getStr(servings)),
-                getStr(category), getStr(comments), new Date(), photoID, ingredients.getPath()
-        );
-
+        // somehow we need this because of the lambda expression below
+        String finalNewPhotoID = newPhotoID;
+        return Tasks.whenAll(futures).continueWith(unused -> new Recipe(id, getStr(title), Integer.parseInt(getStr(prep_time)), Integer.parseInt(getStr(servings)),
+                getStr(category), getStr(comments), new Date(), finalNewPhotoID, ingredients.getPath()));
     }
 
     // Editing ingredients
@@ -392,26 +396,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 // https://www.geeksforgeeks.org/how-to-select-an-image-from-gallery-in-android/
                 // adityamshidalyali - May 17, 2022
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    // do your operation from here....
-                    if (data != null
-                            && data.getData() != null) {
-                        Uri selectedImageUri = data.getData();
-                        Bitmap selectedImageBitmap = null;
-                        try {
-                            selectedImageBitmap
-                                    = MediaStore.Images.Media.getBitmap(
-                                    this.getContentResolver(),
-                                    selectedImageUri);
-                        }
-                        catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        photo.setImageBitmap(selectedImageBitmap);
+                    Bitmap selectedImageBitmap;
+                    selectedImageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
-                        //https://stackoverflow.com/questions/28505123/getting-an-image-path-from-a-imageview
-                        photo.setTag(selectedImageUri); //Get file path for adding to storage
-                    }
+                    photo.setImageBitmap(selectedImageBitmap);
+
+                    // https://stackoverflow.com/questions/28505123/getting-an-image-path-from-a-imageview
+                    photo.setTag(fileProvider); //Get file path for adding to storage
+                    changedImage = true;
                 }
             });
 
@@ -422,45 +414,29 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      */
     public void addPhoto(View v) {
         Log.i(TAG + ":addPhoto", "Adding photo!");
-        Intent intent = new Intent();
-        intent.setType("image/");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        photoFile = getPhotoFileUri("photo.png");
+        fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
         addPhotoLauncher.launch(intent);
     }
 
-    /**
-     * This method checks if a recipe can be added with the values in the fields.
-     * @return
-     *   returns true if values are fine, false otherwise.
-     */
-    public boolean checkInputs() {
+    // Returns the File for a photo stored on disk given the fileName
+    public File getPhotoFileUri(String fileName) {
+        // Get safe storage directory for photos
+        // Use `getExternalFilesDir` on Context to access package-specific directories.
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "photo");
 
-        // Code adapted from groupmate Aneeljyot Alagh in his Assignment 1
-        // Accessed on October 30, 2022
-        String[] blankCheckStrings = {"Title", "Prep time", "Servings", "Category", }; // mandatory fill out
-        ArrayList<String> snackbarMessage = new ArrayList<>();
-        boolean invalidInput = false;
-        boolean[] blankChecks = {
-                getStr(title).isBlank(),
-                getStr(prep_time).isBlank(),
-                getStr(servings).isBlank(),
-                getStr(category).isBlank()
-        };
-
-        // Make sure all inputs are filled
-        for (int i = 0; i < blankChecks.length; i++) {
-            if (blankChecks[i]) {
-                invalidInput = true;
-                snackbarMessage.add(blankCheckStrings[i]);
-            }
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d("photo", "failed to create directory");
         }
 
-        if (invalidInput){
-            // If blanks, only print blank messages
-            generateSnackbar(String.join(", ", snackbarMessage) + " must be filled!");
-            return false;
-        }
-        return true;
+        // Return the file target for the photo based on filename
+        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+
+        return file;
     }
 
     /**

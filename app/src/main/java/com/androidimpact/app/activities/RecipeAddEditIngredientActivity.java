@@ -1,5 +1,7 @@
 package com.androidimpact.app.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -20,6 +22,7 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeIngredient;
 import com.androidimpact.app.RecipeIngredientAdapter;
+import com.androidimpact.app.unit.EditUnitsActivity;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -270,4 +273,26 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         snackbar.setAction("Ok", view1 -> {}).show();
     }
+
+    /**
+     * This is run when R.id.ingredientStoreAdd_editUnitsBtn is clicked
+     *
+     * this function jumps to the EditLocations activity.
+     */
+    public void editUnits(View view) {
+        Log.i(TAG + ":editUnits", "Going to Edit units");
+        Intent intent = new Intent(this, EditUnitsActivity.class);
+        editLocationLauncher.launch(intent);
+    }
+
+    /**
+     * A launcher for a previously-prepared call to start the process of executing edit and updation of ingredient
+     *
+     * we don't care about the callback! the new location (or deleted locations) will be updated automatically
+     * by firebase, via the addSnapshotListener
+     */
+    final private ActivityResultLauncher<Intent> editLocationLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {}
+    );
 }

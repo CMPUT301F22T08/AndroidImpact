@@ -176,7 +176,7 @@ public class Recipe implements Serializable  {
     }
 
     /**
-     * This sets the date of the recipe
+     * This sets the photo of the recipe
      * @param photo
      *     This is the photo URI to set
      */
