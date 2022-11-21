@@ -1,7 +1,5 @@
 package com.androidimpact.app.activities;
 
-import static java.util.Objects.isNull;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -22,41 +20,29 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeIngredient;
 import com.androidimpact.app.RecipeIngredientAdapter;
-import com.androidimpact.app.StoreIngredient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,6 +61,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     final String TAG = "RecipeAddViewEdit";
     String id;
     EditText title, prep_time, servings, category, comments;
+    Button confirmBtn;
 
     RecyclerView ingredientList;
     RecipeIngredientAdapter ingredientAdapter;
@@ -87,6 +74,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     private String date;
     // if we're editing, this is the photoID of the editing photo
     private String photoID;
+    // true if we are currently uploading an image to firebase;
+    private boolean uploading = false;
 
     // firebase
     FirebaseFirestore db;
@@ -111,7 +100,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
         // Initialize database
         db = FirebaseFirestore.getInstance();
-        recipes = db.collection("recipes-new");
+        recipes = db.collection("recipes");
 
         // Initialize storage for photos
         storage = FirebaseStorage.getInstance();
@@ -125,7 +114,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         comments = findViewById(R.id.recipe_comments);
         photo = findViewById(R.id.recipe_image);
         activity_title = findViewById(R.id.activity_title);
-        final Button addRecipe = findViewById(R.id.add_button);
+        confirmBtn = findViewById(R.id.confirm_button);
+        uploading = false;
 
         recipeIngredients = new ArrayList<>();
         ingredientList = findViewById(R.id.recipe_ingredients_list);
@@ -153,9 +143,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                  servings.setText(String.valueOf(recipe.getServings()));
                  category.setText(recipe.getCategory());
                  comments.setText(recipe.getComments());
-
-                 // set button
-                 addRecipe.setText(getResources().getString(R.string.edit));
 
                  // load image for recipe
                  // very similar code as in RecipeListAdapter...
@@ -267,24 +254,31 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              editIngredientLauncher.launch(intent);
          });
 
-        // Add button on bottom right
-        addRecipe.setOnClickListener(v -> {
-            try {
+        // Cancel button on bottom left
+        final Button cancelRecipe = findViewById(R.id.cancel_button);
+        cancelRecipe.setOnClickListener(v -> finish());
+    }
+
+    public void confirm(View view) {
+        try {
+            if (!uploading) {
+                uploading = true;
+                confirmBtn.setEnabled(false);
+                confirmBtn.setText(R.string.loading);
                 parseRecipe()
-                        .onSuccessTask(r -> recipes.document(r.getId()).set(r)).addOnSuccessListener(unused -> {
+                        .onSuccessTask(r -> recipes.document(r.getId()).set(r))
+                        .addOnSuccessListener(unused -> {
                             Log.i(TAG, "Successfully added recipe!");
                             setResult(Activity.RESULT_OK);
                             finish();
                         });
-            } catch (Exception e) {
-                Log.i(TAG, "Failed to add recipe!", e);
-                generateSnackbar("Failed to add " + getStr(title) + "!");
             }
-        });
-
-        // Cancel button on bottom left
-        final Button cancelRecipe = findViewById(R.id.cancel_button);
-        cancelRecipe.setOnClickListener(v -> finish());
+        } catch (Exception e) {
+            confirmBtn.setEnabled(true);
+            uploading = false;
+            Log.i(TAG, "Failed to add recipe!", e);
+            generateSnackbar("Failed to add " + getStr(title) + "!");
+        }
     }
 
     private Task<Recipe> parseRecipe() throws Exception {
@@ -301,11 +295,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             throw new Exception("Category must be nonempty!");
         }
 
-        // list of futures
+        // list of futures; we wait for all of them to complete via whenAll at the end of this method
         List<Task<?>> futures = new ArrayList<>();
 
         String newPhotoID = photoID;
-        if (isEditing && changedImage) {
+        if (changedImage) {
             // delete old image
             if (photoID != null) {
                 futures.add(storageReference.child("images/" + photoID)
@@ -455,7 +449,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      * @param message
      *    The string to send a snackbar of
      */
-    public void generateSnackbar (String message) {
+    public void generateSnackbar(String message) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), message, Snackbar.LENGTH_SHORT);
         View snackbarView = snackbar.getView();
         TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);

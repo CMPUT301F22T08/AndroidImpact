@@ -101,7 +101,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes-new");
+        recipeCollection = db.collection("recipes");
     }
 
     /**
