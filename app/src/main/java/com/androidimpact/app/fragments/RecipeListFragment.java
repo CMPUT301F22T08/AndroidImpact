@@ -66,6 +66,10 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     FirebaseFirestore db;
     CollectionReference recipeCollection;
 
+    // using ActivityResultLaunchers
+    // not that editRecipeLauncher is defined in RecipeListAdapter
+    private ActivityResultLauncher<Intent> addRecipeLauncher;
+
     /**
      * Required empty public constructor
      */
@@ -95,7 +99,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes");
+        recipeCollection = db.collection("recipes-new");
     }
 
     /**
@@ -212,35 +216,14 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 String description = deletedRecipe.getTitle();
                 boolean snackBarChoice = recipeViewAdapter.removeItem(position);
 
+                // now, delete all the i
+
                 if(snackBarChoice) {
                     Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
                 } else {
                     Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
                 }
 
-                /*
-                // this method is called when we swipe our item to right direction.
-                // on below line we are getting the item at a particular position.
-                Recipe deletedRecipe = recipeDataList.get(position);
-                String description = deletedRecipe.getTitle();
-
-                Log.d(TAG, "Swiped " + description + " at position " + position);
-
-                // delete item from firebase
-                recipeCollection.document(description)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> {
-                            // task succeeded
-                            // cityAdapter will automatically update. No need to remove it from out list
-                            Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                            Log.d(TAG, description + " could not be deleted!" + e);
-                        });
-
-                 */
             }
             // at last we are adding this
             // to our recycler view.
@@ -255,23 +238,8 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 return;
             }
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Log.d(TAG, String.valueOf(doc.getId()));
-                Log.d(TAG, String.valueOf(doc.getData()));
-                String description = doc.getId();
-
-                Recipe recipeToAdd = new Recipe(
-                        new ArrayList<>(),
-                        description,
-                        Integer.parseInt((String) doc.getData().get("prep time")),
-                        Integer.parseInt((String) doc.getData().get("servings")),
-                        (String) doc.getData().get("category"),
-                        (String) doc.getData().get("comments"),
-                        (String) doc.getData().get("date")
-                );
-                recipeToAdd.setPhoto((String) doc.getData().get("photo"));
-
+                Recipe recipeToAdd = doc.toObject(Recipe.class);
                 recipeDataList.add(recipeToAdd); // Adding the recipe attributes from FireStore
-
             }
 
             Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");
@@ -280,38 +248,40 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
             }
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
+
+
+        /**
+         * DEFINE ACTIVITY LAUNCHERS
+         *
+         * It is strongly recommended to register our activity result launchers in onCreate
+         * https://stackoverflow.com/a/70215498
+         */
+        addRecipeLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Log.i(TAG + ":addRecipeResult", "Got bundle");
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        final KonfettiView confetti = a.findViewById(R.id.confetti_view);
+                        Snackbar.make(recipeListView, "Added recipe!", Snackbar.LENGTH_LONG).show();
+                        confetti.build()
+                                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                                .setDirection(0.0, 359.0)
+                                .setSpeed(1f, 5f)
+                                .setFadeOutEnabled(true)
+                                .setTimeToLive(500L)
+                                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                                .addSizes(new Size(8, 4f))
+                                .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                                .streamFor(300, 2000L);
+
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":addRecipeResult", "Received cancelled");
+                    }
+                });
     }
 
-
-    /**
-     * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
-     * AddStoreIngredientActivity
-     */
-    final private ActivityResultLauncher<Intent> addRecipeLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Log.i(TAG + ":addRecipeResult", "Got bundle");
-
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Activity a = getActivity();
-                    final KonfettiView confetti = a.findViewById(R.id.confetti_view);
-                    Snackbar.make(recipeListView, "Added recipe!", Snackbar.LENGTH_LONG).show();
-                    confetti.build()
-                            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-                            .setDirection(0.0, 359.0)
-                            .setSpeed(1f, 5f)
-                            .setFadeOutEnabled(true)
-                            .setTimeToLive(500L)
-                            .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
-                            .addSizes(new Size(8, 4f))
-                            .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
-                            .streamFor(300, 2000L);
-
-                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-                    // cancelled request - do nothing.
-                    Log.i(TAG + ":addRecipeResult", "Received cancelled");
-                }
-            });
 
     /**
      * Sets the FAB in the navigation bar to act as a "add Recipelist" button

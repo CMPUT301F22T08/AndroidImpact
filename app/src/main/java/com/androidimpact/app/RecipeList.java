@@ -33,7 +33,7 @@ public class RecipeList {
         this.sortIndex = 0;
 
         // set compare variables
-        defaultComparator = Comparator.comparing(Recipe::getDate, String.CASE_INSENSITIVE_ORDER);
+        defaultComparator = Comparator.comparingInt(a -> (int) a.getDate().getTime());
         titleComparator = Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER);
         prepTimeComparator = Comparator.comparingInt(Recipe::getPrep_time);
         servingsComparator = Comparator.comparingInt(Recipe::getServings);

@@ -33,7 +33,14 @@
         </provider>
 
         <activity
-            android:name=".activities.EditIngredientLocationsActivity"
+            android:name=".unit.EditUnitsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".location.EditLocationsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

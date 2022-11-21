@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.location;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.androidimpact.app.R;
 
 import java.util.ArrayList;
 
@@ -42,7 +44,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @Override
     public LocationAdapter.LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate Layout
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.location_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
         return new LocationAdapter.LocationViewHolder(view);
     }
 
@@ -75,7 +77,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             super(itemView);
             res = itemView.getResources();
 
-            title = itemView.findViewById(R.id.location_item_title);
+            title = itemView.findViewById(R.id.recycler_view_item_title);
         }
     }
 

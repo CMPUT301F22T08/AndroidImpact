@@ -5,19 +5,19 @@
     android:id="@+id/editIngredientLocations_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EditIngredientLocationsActivity">
+    tools:context=".unit.EditUnitsActivity">
 
     <Button
-        android:id="@+id/addLocationBtn"
+        android:id="@+id/addUnitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="locationBtnPressed"
-        android:text="@string/add_location"
-        app:layout_constraintStart_toEndOf="@+id/location_editText"
-        app:layout_constraintTop_toTopOf="@+id/location_editText" />
+        android:onClick="unitBtnPressed"
+        android:text="@string/add_units"
+        app:layout_constraintStart_toEndOf="@+id/edit_units_editText"
+        app:layout_constraintTop_toTopOf="@+id/edit_units_editText" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/location_listview"
+        android:id="@+id/edit_units_listview"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="64dp"
@@ -26,10 +26,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_units_editText" />
 
     <EditText
-        android:id="@+id/location_editText"
+        android:id="@+id/edit_units_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -50,6 +50,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location_listview"
+        app:layout_constraintTop_toBottomOf="@+id/edit_units_listview"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

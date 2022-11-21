@@ -1,8 +1,7 @@
-package com.androidimpact.app.activities;
+package com.androidimpact.app.location;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,13 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.androidimpact.app.Location;
-import com.androidimpact.app.LocationAdapter;
+import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.AggregateQuerySnapshot;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,7 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
-public class EditIngredientLocationsActivity extends AppCompatActivity {
+public class EditLocationsActivity extends AppCompatActivity {
 
     final String TAG = "EditIngredientLocations";
     final String COLLECTION_NAME = "locations";
@@ -49,7 +44,7 @@ public class EditIngredientLocationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_ingredient_locations);
+        setContentView(R.layout.activity_edit_locations);
 
         getSupportActionBar().setTitle("Edit Locations");
 
@@ -69,12 +64,50 @@ public class EditIngredientLocationsActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         locationRecyclerView.setLayoutManager(manager);
         locationRecyclerView.setAdapter(locationViewAdapter);
+        setUpItemTouchHelper();
 
-        // implements drag to delete
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
 
+            // Clear the old list
+            locationArrayList.clear();
+
+            if (queryDocumentSnapshots == null) { return; }
+
+            int errorCount = 0;
+            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                String id = doc.getId();
+                try {
+                    locationArrayList.add(doc.toObject(Location.class));
+                } catch (Exception e) {
+                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
+                    errorCount += 1;
+                }
+            }
+
+            if (errorCount > 0) {
+                Snackbar.make(locationRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
+            }
+            Log.i(TAG, "Snapshot listener: Added " + locationArrayList.size() + " elements");
+            locationArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
+            locationViewAdapter.notifyDataSetChanged();
+        });
+    }
+
+    /**
+     * Helper function to set up ItemTouchHelper, which manages callbacks when a user swipes on a RecyclerView
+     * It then attaches the itemTouchHelper to the recyclerView (locationRecyclerView)
+     *
+     * This makes our code cleaner
+     */
+    private void setUpItemTouchHelper() {
+        ItemTouchHelper.SimpleCallback itemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             /**
              * this method is called when the item is moved.
+             *
              * @param recyclerView
              * @param viewHolder
              * @param target
@@ -87,6 +120,7 @@ public class EditIngredientLocationsActivity extends AppCompatActivity {
 
             /**
              * this method is called when we swipe our item to right direction
+             *
              * @param viewHolder
              * @param direction
              */
@@ -130,41 +164,11 @@ public class EditIngredientLocationsActivity extends AppCompatActivity {
                             Log.d(TAG, "Failed to count locations!", e);
                             makeSnackbar("Failed to count locations! Check the logs... ");
                         });
-
-
             }
-            // finally, we add this to our recycler view.
-        }).attachToRecyclerView(locationRecyclerView);
+        };
 
-        locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                return;
-            }
-
-            // Clear the old list
-            locationArrayList.clear();
-
-            if (queryDocumentSnapshots == null) { return; }
-
-            int errorCount = 0;
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                String id = doc.getId();
-                try {
-                    locationArrayList.add(doc.toObject(Location.class));
-                } catch (Exception e) {
-                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
-                    errorCount += 1;
-                }
-            }
-
-            if (errorCount > 0) {
-                Snackbar.make(locationRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
-            }
-            Log.i(TAG, "Snapshot listener: Added " + locationArrayList.size() + " elements");
-            locationArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-            locationViewAdapter.notifyDataSetChanged();
-        });
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(locationRecyclerView);
     }
 
     /**

@@ -18,31 +18,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ingredient_amount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:text="@string/amount"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ingredient_unit"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/ingredient_unit"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:text="@string/unit"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ingredient_amount"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/ingredient_description"
+        app:layout_constraintTop_toBottomOf="@+id/ingredient_description" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/ingredient_category"
