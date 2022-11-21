@@ -111,7 +111,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
         // Initialize database
         db = FirebaseFirestore.getInstance();
-        recipes = db.collection("recipes-new");
+        recipes = db.collection("recipes");
 
         // Initialize storage for photos
         storage = FirebaseStorage.getInstance();
@@ -305,7 +305,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         List<Task<?>> futures = new ArrayList<>();
 
         String newPhotoID = photoID;
-        if (isEditing && changedImage) {
+        if (changedImage) {
             // delete old image
             if (photoID != null) {
                 futures.add(storageReference.child("images/" + photoID)
@@ -455,7 +455,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      * @param message
      *    The string to send a snackbar of
      */
-    public void generateSnackbar (String message) {
+    public void generateSnackbar(String message) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.recipe_layout), message, Snackbar.LENGTH_SHORT);
         View snackbarView = snackbar.getView();
         TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);

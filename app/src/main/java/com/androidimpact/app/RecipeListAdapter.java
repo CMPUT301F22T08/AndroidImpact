@@ -86,10 +86,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         //final CollectionReference collectionReference = db.collection("recipes");
-        recipeCollection = db.collection("recipes-new");
+        recipeCollection = db.collection("recipes");
         FirebaseStorage fs = FirebaseStorage.getInstance();
         storageReference = fs.getReference();
-
 
         this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -285,7 +284,5 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // return the tasks
         return Tasks.whenAll(futures);
     }
-
-
 }
 
