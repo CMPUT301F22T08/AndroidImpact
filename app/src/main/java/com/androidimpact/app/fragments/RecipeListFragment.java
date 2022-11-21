@@ -217,22 +217,15 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 Recipe deletedRecipe = recipeDataList.get(position);
                 String description = deletedRecipe.getTitle();
 
-                OnSuccessListener sl = new OnSuccessListener() {
-                    @Override
-                    public void onSuccess(Object o) {
-                        Log.d(TAG, description + " has been deleted successfully!");
-                        Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                    }
-                };
-                OnFailureListener fl = new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, description + " could not be deleted!" + e);
-                        Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                    }
-                };
-                recipeViewAdapter.removeItem(position, sl, fl);
-
+                recipeViewAdapter.removeItem(position)
+                        .addOnSuccessListener(o -> {
+                            Log.d(TAG, description + " has been deleted successfully!");
+                            Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.d(TAG, description + " could not be deleted!" + e);
+                            Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                        });
             }
             // at last we are adding this
             // to our recycler view.
