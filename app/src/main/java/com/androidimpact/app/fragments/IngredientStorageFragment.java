@@ -264,10 +264,10 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                         .delete()
                         .addOnSuccessListener(aVoid -> {
                             Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(a.findViewById(R.id.frameLayout), "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(a.findViewById(R.id.frameLayout), "Deleted " + description, Snackbar.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
-                            Snackbar.make(a.findViewById(R.id.frameLayout), "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(a.findViewById(R.id.frameLayout), "Could not delete " + description + "!", Snackbar.LENGTH_SHORT).show();
                             Log.d(TAG, description + " could not be deleted!" + e);
                         });
             }
@@ -299,7 +299,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             }
 
             if (errorCount > 0) {
-                Snackbar.make(ingredientListView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(ingredientListView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_SHORT).show();
             }
             Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
             ingredientDataList.sortByChoice();
@@ -327,6 +327,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // edit firebase directly
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                     ingredientsCollection.document(ingredient.getId()).set(ingredient);
+                    Snackbar.make(ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
@@ -346,7 +347,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     // Ok - we have an ingredient!
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
-
+                    Snackbar.make(ingredientListView, "Added " + ingredient.getDescription() + "!", Snackbar.LENGTH_SHORT).show();
                     final KonfettiView confetti = a.findViewById(R.id.confetti_view_ingredient_storage);
                     confetti.build()
                             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
