@@ -77,4 +77,6 @@ dependencies {
 
     implementation 'nl.dionsegijn:konfetti:1.2.2'
 
+    implementation "androidx.cardview:cardview:1.0.0"
+
 }

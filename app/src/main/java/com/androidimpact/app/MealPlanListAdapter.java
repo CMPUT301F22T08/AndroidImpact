@@ -1,7 +1,6 @@
 package com.androidimpact.app;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,24 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidimpact.app.unit.Unit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 /**
- * MealPlanAdapter class
+ * MealPlanListAdapter class
  * This class defines an adapter for MealPlan
  * @version 1.0
  * @author Aneeljyot Alagh
  */
 
-public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealPlanHolder>  {
-    final String TAG = "MealPlanAdapter";
+public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapter.MealPlanHolder>  {
+    final String TAG = "MealPlanListAdapter";
 
     private ArrayList<MealPlan> mealPlans;
     private Context context;
@@ -41,7 +37,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealPl
      * @param context
      * @param mealPlans
      */
-    public MealPlanAdapter(Context context, ArrayList<MealPlan> mealPlans) {
+    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans) {
         this.mealPlans = mealPlans;
         this.context = context;
 
@@ -58,9 +54,9 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealPl
      */
     @NonNull
     @Override
-    public MealPlanAdapter.MealPlanHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MealPlanListAdapter.MealPlanHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_plan_day, parent, false);
-        return new MealPlanAdapter.MealPlanHolder(view);
+        return new MealPlanListAdapter.MealPlanHolder(view);
     }
 
     /**
@@ -69,7 +65,7 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealPl
      * @param position
      */
     @Override
-    public void onBindViewHolder(@NonNull MealPlanAdapter.MealPlanHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MealPlanListAdapter.MealPlanHolder holder, int position) {
         MealPlan recyclerData = mealPlans.get(position);
         holder.date.setText(recyclerData.getDate());
     }

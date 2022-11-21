@@ -2,12 +2,14 @@ package com.androidimpact.app.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,18 +17,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.androidimpact.app.MealPlan;
-import com.androidimpact.app.MealPlanAdapter;
+import com.androidimpact.app.MealPlanListAdapter;
 import com.androidimpact.app.R;
-import com.androidimpact.app.Recipe;
-import com.androidimpact.app.RecipeListAdapter;
+import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -34,8 +30,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,12 +47,15 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView mealPlanListView;
-    MealPlanAdapter mealPlanAdapter;
+    MealPlanListAdapter mealPlanAdapter;
     ArrayList<MealPlan> mealPlans;
 
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference mealPlanCollection;
+
+    // using ActivityResultLaunchers
+    private ActivityResultLauncher<Intent> addMealPlanLauncher;
 
 
     /**
@@ -117,7 +120,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         // initialize adapters and customList, connect to DB
         mealPlanListView = a.findViewById(R.id.meal_plan_list);
         mealPlans = new ArrayList<>();
-        mealPlanAdapter = new com.androidimpact.app.MealPlanAdapter(getContext(), mealPlans);
+        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlans);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -187,6 +190,42 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             }
             mealPlanAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
+
+        /**
+         * DEFINE ACTIVITY LAUNCHERS
+         *
+         * It is strongly recommended to register our activity result launchers in onCreate
+         * https://stackoverflow.com/a/70215498
+         */
+        addMealPlanLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Log.i(TAG + ":addMealPlanResult", "Got bundle");
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        final KonfettiView confetti = a.findViewById(R.id.meal_planner_confetti_view);
+
+                        int[] test = {0,1};
+                        confetti.getLocationInWindow(test);
+                        Log.i(TAG, "location:" + Arrays.toString(test));
+
+                        Snackbar.make(mealPlanListView, "Added day meal plan!", Snackbar.LENGTH_LONG).show();
+                        confetti.build()
+                                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                                .setDirection(0.0, 359.0)
+                                .setSpeed(1f, 5f)
+                                .setFadeOutEnabled(true)
+                                .setTimeToLive(500L)
+                                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                                .addSizes(new Size(8, 4f))
+                                .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                                .streamFor(300, 2000L);
+
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":addMealPlanResult", "Received cancelled");
+                    }
+                });
     }
 
     /**
@@ -196,6 +235,11 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
      * @param navigationFAB
      */
     public void setFabListener(FloatingActionButton navigationFAB) {
-        return;
+        navigationFAB.setOnClickListener(v -> {
+            Log.i(TAG + ":addMealPlan", "Adding meal plan!");
+            Intent intent = new Intent(getContext(), MealPlanAddEditViewActivity.class);
+            intent.putExtra("activity_name", "Add meal plan");
+            addMealPlanLauncher.launch(intent);
+        });
     }
 }
