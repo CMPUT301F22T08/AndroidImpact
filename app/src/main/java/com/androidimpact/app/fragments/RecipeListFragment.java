@@ -44,6 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -217,19 +218,13 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 Recipe deletedRecipe = recipeDataList.get(position);
                 String description = deletedRecipe.getTitle();
 
-                OnSuccessListener sl = new OnSuccessListener() {
-                    @Override
-                    public void onSuccess(Object o) {
-                        Log.d(TAG, description + " has been deleted successfully!");
-                        Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                    }
+                OnSuccessListener sl = o -> {
+                    Log.d(TAG, description + " has been deleted successfully!");
+                    Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
                 };
-                OnFailureListener fl = new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, description + " could not be deleted!" + e);
-                        Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                    }
+                OnFailureListener fl = e -> {
+                    Log.d(TAG, description + " could not be deleted!" + e);
+                    Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
                 };
                 recipeViewAdapter.removeItem(position, sl, fl);
 
@@ -271,7 +266,12 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                     Log.i(TAG + ":addRecipeResult", "Got bundle");
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        final KonfettiView confetti = a.findViewById(R.id.confetti_view);
+                        final KonfettiView confetti = a.findViewById(R.id.recipe_confetti_view);
+
+                        int[] test = {0,1};
+                        confetti.getLocationInWindow(test);
+                        Log.i(TAG, "location:" + Arrays.toString(test));
+
                         Snackbar.make(recipeListView, "Added recipe!", Snackbar.LENGTH_LONG).show();
                         confetti.build()
                                 .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)

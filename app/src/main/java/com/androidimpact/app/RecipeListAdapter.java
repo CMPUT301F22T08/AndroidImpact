@@ -256,7 +256,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // this method is called when we swipe our item to right direction.
         // on below line we are getting the item at a particular position.
         Recipe deletedRecipe = recipeArrayList.get(position);
-        String description = deletedRecipe.getTitle();
+        String description = deletedRecipe.getId();
         String photo = deletedRecipe.getPhoto();
         //AtomicBoolean returnVal = new AtomicBoolean(false);
 
