@@ -12,12 +12,8 @@ import java.util.ArrayList;
  */
 public class MealPlan implements Serializable {
     private String date;
-    private ArrayList<Recipe> breakfastRecipes, lunchRecipes, dinnerRecipes;
-    private ArrayList<StoreIngredient> breakfastIngredients, lunchIngredients, dinnerIngredients;
-    private ArrayList<ArrayList<Recipe>> snackRecipes;
-    private ArrayList<ArrayList<StoreIngredient>> snackIngredients;
-
-    public MealPlan(){}
+    private ArrayList<Recipe> breakfastRecipes, lunchRecipes, dinnerRecipes, snackRecipes;
+    private ArrayList<StoreIngredient> breakfastIngredients, lunchIngredients, dinnerIngredients, snackIngredients;
 
     public MealPlan(String date) {
         this.date = date;
@@ -29,6 +25,21 @@ public class MealPlan implements Serializable {
         this.dinnerIngredients = new ArrayList<>();
         this.snackRecipes = new ArrayList<>();
         this.snackIngredients = new ArrayList<>();
+    }
+
+    public MealPlan(String date,
+                    ArrayList<Recipe> breakfastRecipes, ArrayList<Recipe> lunchRecipes, ArrayList<Recipe> dinnerRecipes, ArrayList<Recipe> snackRecipes,
+                    ArrayList<StoreIngredient> breakfastIngredients, ArrayList<StoreIngredient> lunchIngredients, ArrayList<StoreIngredient> dinnerIngredients, ArrayList<StoreIngredient> snackIngredients
+    ) {
+        this.date = date;
+        this.breakfastRecipes = breakfastRecipes;
+        this.lunchRecipes = lunchRecipes;
+        this.dinnerRecipes = dinnerRecipes;
+        this.breakfastIngredients = breakfastIngredients;
+        this.lunchIngredients = lunchIngredients;
+        this.dinnerIngredients = dinnerIngredients;
+        this.snackRecipes = snackRecipes;
+        this.snackIngredients = snackIngredients;
     }
 
     public String getDate() {
@@ -87,19 +98,19 @@ public class MealPlan implements Serializable {
         this.dinnerIngredients = dinnerIngredients;
     }
 
-    public ArrayList<ArrayList<Recipe>> getSnackRecipes() {
+    public ArrayList<Recipe> getSnackRecipes() {
         return snackRecipes;
     }
 
-    public void setSnackRecipes(ArrayList<ArrayList<Recipe>> snackRecipes) {
+    public void setSnackRecipes(ArrayList<Recipe> snackRecipes) {
         this.snackRecipes = snackRecipes;
     }
 
-    public ArrayList<ArrayList<StoreIngredient>> getSnackIngredients() {
+    public ArrayList<StoreIngredient> getSnackIngredients() {
         return snackIngredients;
     }
 
-    public void setSnackIngredients(ArrayList<ArrayList<StoreIngredient>> snackIngredients) {
+    public void setSnackIngredients(ArrayList<StoreIngredient> snackIngredients) {
         this.snackIngredients = snackIngredients;
     }
 }
