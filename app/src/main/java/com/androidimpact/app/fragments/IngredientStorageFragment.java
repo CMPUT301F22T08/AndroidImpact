@@ -48,7 +48,7 @@ import nl.dionsegijn.konfetti.models.Size;
  */
 public class IngredientStorageFragment extends Fragment implements NavbarFragment {
     final String TAG = "IngredientStorageFragment";
-    final String COLLECTION_NAME = "ingredientStorage";
+    final String COLLECTION_NAME = "ingredientStorage-new";
 
     private static IngredientStorageFragment instance;
 
@@ -64,6 +64,12 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
     String[] sortingChoices;
     TextView sortText;
 
+
+    /**
+     * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from the activities
+     */
+    private ActivityResultLauncher<Intent> editStoreIngredientLauncher;
+    private ActivityResultLauncher<Intent> addStoreIngredientLauncher;
     /**
      * Required empty public constructor
      */
@@ -299,13 +305,14 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             ingredientDataList.sortByChoice();
             storeingredientViewAdapter.notifyDataSetChanged();
         });
-    }
 
-
-    /**
-     * A launcher for a previously-prepared call to start the process of executing edit and updation of ingredient
-     */
-    final private ActivityResultLauncher<Intent> editStoreIngredientLauncher = registerForActivityResult(
+        /**
+         * DEFINE ACTIVITY LAUNCHERS
+         *
+         * It is strongly recommended to register our activity result launchers in onCreate
+         * https://stackoverflow.com/a/70215498
+         */
+        editStoreIngredientLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (isNull(result.getData())) {
@@ -326,12 +333,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                 }
             });
 
-
-    /**
-     * AddIngredientLauncher uses the ActivityResultAPIs to handle data returned from
-     * AddStoreIngredientActivity
-     */
-    final private ActivityResultLauncher<Intent> addStoreIngredientLauncher = registerForActivityResult(
+        addStoreIngredientLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (isNull(result.getData())) {
@@ -345,7 +347,6 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // Ok - we have an ingredient!
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
 
-                    Activity a = getActivity();
                     final KonfettiView confetti = a.findViewById(R.id.confetti_view);
                     confetti.build()
                             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
@@ -365,6 +366,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
                 }
             });
+    }
 
     /**
      * Sets the FAB in the navigation bar to act as a "add StoreIngredient" button

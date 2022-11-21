@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.location.Location;
+import com.androidimpact.app.unit.Unit;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -75,6 +76,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // set values
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
+        holder.location.setText("loading...");
         currentIngredient.getLocationDocument().get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -100,12 +102,28 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             holder.expandable.setVisibility(View.GONE);
         }
 
-        // edit content inside the expandable section
-        // using strings with placeholders because that's apparently better
-        // https://stackoverflow.com/a/40715374
-        
-        String amount = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
-        holder.amount.setText(amount);
+        // set unit
+        // since we have to fetch from firebase, we'll use a "loading" state
+        holder.amount.setText("Loading...");
+        DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
+            @Override
+            public void onSuccess(Unit data) {
+                String unitStr = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), data.getUnit());
+                holder.amount.setText(unitStr);
+            }
+
+            @Override
+            public void onNullDocument() {
+                holder.amount.setText("NoDoc!");
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.d(TAG, "Cached get failed: ", e);
+                holder.amount.setText("Failed!");
+            }
+        };
+        currentIngredient.getUnitAsync(getUnitListener);
 
         // setting formatted date
         String myFormat="MMM dd yyyy";

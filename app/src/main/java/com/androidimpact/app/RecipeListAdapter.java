@@ -1,6 +1,10 @@
 package com.androidimpact.app;
 
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,14 +15,21 @@ import android.widget.TextView;
 import android.content.Context;
 
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -27,6 +38,10 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.squareup.picasso.Picasso;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * This class defines a recipe list adapter
@@ -48,6 +63,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private StorageReference storageReference;
     final String TAG = "RecipeList";
 
+    // using ActivityResultLaunchers
+    // not that addRecipeLauncher is defined in RecipeListFragment
+    private ActivityResultLauncher<Intent> editRecipeLauncher;
+
     /**
      * Constructor for RecipeList
      * @param context         the context for the parent view
@@ -61,7 +80,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         //final CollectionReference collectionReference = db.collection("recipes");
-        recipeCollection = db.collection("recipes");
+        recipeCollection = db.collection("recipes-new");
         FirebaseStorage fs = FirebaseStorage.getInstance();
         storageReference = fs.getReference();
 
@@ -149,13 +168,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         holder.recipeTitle.setText(recyclerData.getTitle());
         holder.recipeCategory.setText(recyclerData.getCategory());
         Recipe currentRecipe = recipeArrayList.get(position);
-        holder.recipePrepTime.setText(String.format(
-                this.context.getResources().getString(R.string.recipe_prep_time_in_list
-                ), recyclerData.getPrep_time())
-        );
-        holder.recipeServings.setText(String.format(
-                this.context.getResources().getString(R.string.recipe_servings_in_list
+        holder.recipePrepTime.setText(String.format(this.context.getResources().getString(R.string.recipe_prep_time_in_list
                 ), recyclerData.getPrep_time()));
+        holder.recipeServings.setText(String.format(this.context.getResources().getString(R.string.recipe_servings_in_list
+                ), recyclerData.getServings()));
 
         // load image for recipe
         String photoURI = recyclerData.getPhoto();
@@ -183,18 +199,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         holder.editRecipeFAB.setOnClickListener(v -> {
             Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
             intent.putExtra("activity_name", "Edit recipe");
-            intent.putExtra("title", currentRecipe.getTitle());
-            intent.putExtra("prep time", Integer.toString(currentRecipe.getPrep_time()));
-            intent.putExtra("servings", Integer.toString(currentRecipe.getServings()));
-            intent.putExtra("category", currentRecipe.getCategory());
-            intent.putExtra("comments", currentRecipe.getComments());
-            intent.putExtra("photo", currentRecipe.getPhoto());
+            intent.putExtra("recipe", currentRecipe);
             intent.putExtra("isEditing", true);
-            intent.putExtra("date", currentRecipe.getDate());
             context.startActivity(intent);
             notifyItemChanged(position);
         });
-
     }
 
     @Override
@@ -274,22 +283,18 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                     Log.d(TAG, description + ": " + photo + " could not be deleted!" + e);
                 });
 
+        // delete all items from the ingredients collection
+        CollectionReference ingredients = db.collection(deletedRecipe.getCollectionPath());
+        Log.i(TAG, "Deleting Ingredients in " + ingredients);
+        ingredients.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                ingredients.document(doc.getId()).delete();
+            }
+        });
+
         return returnVal.get();
     }
 
-    /**
-     *     // OBSERVER PATTERN: this interface lets people subscribe to changes in the StoreIngredientViewAdapter
-     *     // this is because we need the parent activity to react to changes because it has the Context and Activity info
-     *     // https://stackoverflow.com/a/36662886
-     *     public interface StoreRecipeEditListener {
-     *         void storeRecipeEditClicked(Recipe food, int position);
-     *     }
-     *
-     *     public void setEditClickListener(StoreRecipeEditListener toAdd) {
-     *         editListeners.add(toAdd);
-     *     }
-     *
-     */
 
 }
 

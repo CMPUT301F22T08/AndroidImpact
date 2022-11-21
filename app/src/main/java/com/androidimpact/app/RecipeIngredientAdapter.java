@@ -1,33 +1,19 @@
 package com.androidimpact.app;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.androidimpact.app.unit.Unit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * RecipeIngredientAdapter class
@@ -37,7 +23,9 @@ import nl.dionsegijn.konfetti.models.Size;
  */
 
 public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.RecipeIngredientHolder>  {
-    private ArrayList<Ingredient> ingredients;
+    final String TAG = "RecipeIngredientAdapter";
+
+    private ArrayList<RecipeIngredient> ingredients;
     private Context context;
     private ArrayList<RecipeIngredientAdapter.StoreRecipeIngredientEdit> editListeners = new ArrayList<>();
 
@@ -47,7 +35,7 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
      * @param context
      * @param ingredients
      */
-    public RecipeIngredientAdapter(Context context, ArrayList<Ingredient> ingredients) {
+    public RecipeIngredientAdapter(Context context, ArrayList<RecipeIngredient> ingredients) {
         this.ingredients = ingredients;
         this.context = context;
     }
@@ -74,8 +62,6 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
     public void onBindViewHolder(@NonNull RecipeIngredientAdapter.RecipeIngredientHolder holder, int position) {
         Ingredient recyclerData = ingredients.get(position);
         holder.ingredientDescription.setText(recyclerData.getDescription());
-        holder.ingredientAmount.setText(String.valueOf(recyclerData.getAmount()));
-        holder.ingredientUnit.setText(recyclerData.getUnit());
         holder.ingredientCategory.setText(recyclerData.getCategory());
         holder.ingredientEditButton.setOnClickListener(v -> {
             // execute all listeners
@@ -84,7 +70,28 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
             }
         });
 
+        // now, retrieve "unit" from firebase
+        // since this takes a while, we first set a loading state
+        holder.ingredientAmount.setText("loading...");
+        DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
+            @Override
+            public void onSuccess(Unit data) {
+                String unitStr = context.getString(R.string.store_ingredient_amount_display, recyclerData.getAmount(), data.getUnit());
+                holder.ingredientAmount.setText(unitStr);
+            }
 
+            @Override
+            public void onNullDocument() {
+                holder.ingredientAmount.setText("NoDoc!");
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.d(TAG, "Cached get failed: ", e);
+                holder.ingredientAmount.setText("Failed!");
+            }
+        };
+        recyclerData.getUnitAsync(getUnitListener);
 
     }
 
@@ -104,7 +111,7 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
     public class RecipeIngredientHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view and button
-        private TextView ingredientDescription, ingredientAmount, ingredientUnit, ingredientCategory;
+        private TextView ingredientDescription, ingredientAmount, ingredientCategory;
         private FloatingActionButton ingredientEditButton;
 
         /**
@@ -114,8 +121,7 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
         public RecipeIngredientHolder(@NonNull View itemView) {
             super(itemView);
             ingredientDescription = itemView.findViewById(R.id.ingredient_description);
-            ingredientAmount = itemView.findViewById(R.id.ingredient_amount);
-            ingredientUnit = itemView.findViewById(R.id.ingredient_unit);
+            ingredientAmount = itemView.findViewById(R.id.ingredient_unit);
             ingredientCategory = itemView.findViewById(R.id.ingredient_category);
             ingredientEditButton = itemView.findViewById(R.id.edit_button);
         }

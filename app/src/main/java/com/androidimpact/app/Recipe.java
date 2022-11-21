@@ -1,27 +1,43 @@
 package com.androidimpact.app;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.annotation.Nullable;
 
 /**
  * This class defines a recipe
  * @author Curtis Kan
  * @version 1.0
  */
-public class Recipe {
+public class Recipe implements Serializable  {
 
-    private ArrayList<Ingredient> ingredients;
+    @DocumentId
+    private String id;
     private String title;
     private int prep_time;
     private int servings;
     private String category;
     private String comments;
-    private String date;
+    @ServerTimestamp
+    private Date date;
     private String photo;
+    // the list of ingredients is stored in a separate collection
+    private String collectionPath;
+
+
+    /**
+     * Necessary empty constructor for firebase automatic serialization
+     */
+    public Recipe() {};
 
     /**
      * Constructor for recipe
-     * @param ingredients
-     *     This is the list of ingredients at initialization
      * @param title
      *     This is the name of the recipe
      * @param prep_time
@@ -34,74 +50,26 @@ public class Recipe {
      *     This is the comments regarding the food
      * @param date
      *     This is the date the recipe was created
+     * @param photo
+     *     UUID of the photo stored in Firebase Storage
+     * @param collectionPath
+     *     the list of ingredients is stored in a separate collection
      */
-    public Recipe(ArrayList<Ingredient> ingredients, String title, int prep_time, int servings,
-                  String category, String comments, String date) {
-        this.ingredients = new ArrayList<>();
-        for (Ingredient i : ingredients) {
-            this.addIngredient(i);
-        }
+    public Recipe(String id, String title, int prep_time, int servings,
+                  String category, String comments, Date date, @Nullable String photo, String collectionPath) {
+        this.id = id;
         this.title = title;
         this.prep_time = prep_time;
         this.servings = servings;
         this.category = category;
         this.comments = comments;
         this.date = date;
+        this.photo = photo;
+        this.collectionPath = collectionPath;
     }
 
-    /**
-     * This checks if an ingredient is in a recipe
-     * @param ingredient
-     *     This is the ingredient to check
-     * @return
-     *     If the recipe has the ingredient
-     */
-    public boolean hasIngredient(Ingredient ingredient) {
-        return this.ingredients.contains(ingredient);
-    }
-
-    /**
-     * This adds an ingredient to the recipe
-     * @param ingredient
-     *     This is the ingredient to add
-     */
-    public void addIngredient(Ingredient ingredient) {
-        ingredients.add(ingredient);
-    }
-
-    /**
-     * This removes an ingredient from the recipe
-     * @param ingredient
-     *     This is the ingredient to remove
-     */
-    public void removeIngredient(Ingredient ingredient) {
-
-        if (this.hasIngredient(ingredient)) {
-            ingredients.remove(ingredient);
-        }
-        else {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    /**
-     * This edits an ingredient of the recipe
-     * @param index
-     *     This is the index of the ingredient to edit
-     * @param ingredient
-     *     This is the ingredient to replace it with
-     */
-    public void editIngredient(int index, Ingredient ingredient) {
-        ingredients.set(index, ingredient);
-    }
-
-    /**
-     * This gets the list of ingredients
-     * @return
-     *     Return the list of ingredients
-     */
-    public ArrayList<Ingredient> getIngredients() {
-        return ingredients;
+    public String getId() {
+        return id;
     }
 
     /**
@@ -194,22 +162,8 @@ public class Recipe {
         this.comments = comments;
     }
 
-    /**
-     * This gets the date of the recipe
-     * @return
-     *     This is the date of the recipe
-     */
-    public String getDate() {
+    public Date getDate() {
         return date;
-    }
-
-    /**
-     * This sets the date of the recipe
-     * @param date
-     *     This is the date to set
-     */
-    public void setDate(String date) {
-        this.date = date;
     }
 
     /**
@@ -228,5 +182,9 @@ public class Recipe {
      */
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getCollectionPath() {
+        return collectionPath;
     }
 }
