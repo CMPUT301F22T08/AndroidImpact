@@ -307,9 +307,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         String newPhotoID = photoID;
         if (isEditing && changedImage) {
             // delete old image
-            futures.add(storageReference.child("images/" + photoID)
-                    .delete()
-                    .addOnSuccessListener(unused -> Log.i(TAG, "Deleted old image " + photoID)));
+            if (photoID != null) {
+                futures.add(storageReference.child("images/" + photoID)
+                        .delete()
+                        .addOnSuccessListener(unused -> Log.i(TAG, "Deleted old image " + photoID)));
+            }
 
             // add new image
             String img_name = UUID.randomUUID().toString();
