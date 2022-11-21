@@ -17,11 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidimpact.app.DocumentRetrievalListener;
-import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.R;
-import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeIngredient;
-import com.androidimpact.app.RecipeIngredientAdapter;
 import com.androidimpact.app.unit.EditUnitsActivity;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
@@ -111,7 +108,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             isEditing = extras.getBoolean("isEditing", false);
             activity_title.setText(value);
             if (isEditing) {
-                Button addButton = findViewById(R.id.add_button);
+                Button addButton = findViewById(R.id.confirm_button);
                 addButton.setText("Edit");
                 RecipeIngredient ingredient = (RecipeIngredient) extras.getSerializable("ingredient");
                 id = ingredient.getId();

@@ -74,16 +74,13 @@
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
         android:ems="10"
         android:hint="@string/recipe_prep_time"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/recipe_comments_layout"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_image_card" />
 
@@ -93,15 +90,13 @@
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
         android:ems="10"
         android:hint="@string/recipe_servings"
         android:importantForAutofill="no"
         android:inputType="numberDecimal"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/recipe_comments_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_prep" />
     <com.google.android.material.textfield.TextInputLayout
@@ -136,15 +131,13 @@
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
         android:ems="10"
         android:hint="@string/recipe_category"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/recipe_comments_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_servings" />
 
@@ -203,13 +196,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/add_button"
+        android:id="@+id/confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/purple_200"
-        android:text="@string/add"
+        android:onClick="confirm"
+        android:text="@string/confirm"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cancel_button" />
