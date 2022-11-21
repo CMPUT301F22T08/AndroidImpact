@@ -309,19 +309,13 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             // delete old image
             futures.add(storageReference.child("images/" + photoID)
                     .delete()
-                    .continueWith(unused -> {
-                        Log.i(TAG, "Deleted old image " + photoID);
-                        return null;
-                    }));
+                    .addOnSuccessListener(unused -> Log.i(TAG, "Deleted old image " + photoID)));
 
             // add new image
             String img_name = UUID.randomUUID().toString();
             newPhotoID = img_name;
             StorageReference imgs = storageReference.child("images/" + img_name);
-            futures.add(imgs.putFile((Uri) photo.getTag()).continueWith(unused -> {
-                Log.i(TAG, "Successfully put file " + img_name);
-                return null;
-            }));
+            futures.add(imgs.putFile((Uri) photo.getTag()).addOnSuccessListener(unused -> Log.i(TAG, "Successfully put file " + img_name)));
         }
 
         // somehow we need this because of the lambda expression below
