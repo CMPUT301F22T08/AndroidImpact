@@ -273,8 +273,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         });
 
         // delete photo from Firebase Storage
-        futures.add(storageReference.child("images/" + photo).delete()
-                .addOnSuccessListener(aVoid -> Log.i(TAG, "Successfully deleted image from recipe: " + deletedRecipe.getTitle())));
+        if (photo != null) {
+            futures.add(storageReference.child("images/" + photo).delete()
+                    .addOnSuccessListener(aVoid -> Log.i(TAG, "Successfully deleted image from recipe: " + deletedRecipe.getTitle())));
+        }
 
         futures.add(recipeCollection.document(id)
                         .delete()
