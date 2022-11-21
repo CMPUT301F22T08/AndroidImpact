@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:onClick="editUnits"
     tools:context=".activities.RecipeAddEditIngredientActivity">
 
     <TextView
@@ -19,21 +18,31 @@
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ingredient_description_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="80dp"
+        app:counterEnabled="true"
+        android:textColorHint="@color/purple_700"
+        app:counterTextColor="@color/white"
+        app:boxBackgroundColor="@color/background"
+        app:counterMaxLength="200">
     <EditText
         android:id="@+id/ingredient_description"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:ems="10"
         android:hint="@string/description"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_700"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+         />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
         android:id="@+id/ingredient_amount"
@@ -49,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient_description" />
+        app:layout_constraintTop_toBottomOf="@+id/ingredient_description_layout" />
 
     <EditText
         android:id="@+id/ingredient_category"
@@ -97,13 +106,15 @@
         android:id="@+id/recipe_ingredient_unitLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/unit"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredient_unit"
         app:layout_constraintEnd_toStartOf="@+id/recipe_ingredient_unit"
-        app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_unit" />
+        app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_unit"
+        android:textSize="16sp" />
 
-    <Spinner
+    <Spinner style="@android:style/Widget.Holo.Light.Spinner"
         android:id="@+id/recipe_ingredient_unit"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
