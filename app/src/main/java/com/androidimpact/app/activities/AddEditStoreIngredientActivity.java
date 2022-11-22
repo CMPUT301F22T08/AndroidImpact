@@ -20,6 +20,9 @@ import android.widget.Spinner;
 
 import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.Ingredient;
+import com.androidimpact.app.Timestamped;
+import com.androidimpact.app.category.Category;
+import com.androidimpact.app.category.EditCategoriesActivity;
 import com.androidimpact.app.location.EditLocationsActivity;
 import com.androidimpact.app.location.Location;
 import com.androidimpact.app.R;
@@ -30,15 +33,21 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.CancellationException;
 
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
@@ -60,10 +69,13 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     private Location selectedLocation;
     private Spinner unitSpinner;
     private Unit selectedUnit;
+    private Spinner categorySpinner;
+    private Category selectedCategory;
 
     // buttons
     private ImageButton editLocationsBtn;
-    private ImageButton editUnitsBtn;
+    private ImageButton editUnitsBtn;;
+    private ImageButton editCategoriesBtn;
 
     // Calendar for bestBeforeDatePicker
     final Calendar bestBeforeCalendar = Calendar.getInstance();
@@ -72,6 +84,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     FirebaseFirestore db;
     CollectionReference locationCollection;
     CollectionReference unitCollection;
+    CollectionReference categoryCollection;
 
     /**
      * Initalizes button data
@@ -86,15 +99,18 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         locationCollection = db.collection("locations");
         unitCollection = db.collection("units");
+        categoryCollection = db.collection("categories");
 
-        // Init EditText variables
+        // Init EditText views
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
         amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
-        locationSpinner = findViewById(R.id.ingredientStoreAdd_location);
-        unitSpinner = findViewById(R.id.ingredientStoreAdd_unit);
-        categoryEditText = findViewById(R.id.ingredientStoreAdd_category);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
         editLocationsBtn = findViewById(R.id.ingredientStoreAdd_editUnitsBtn);
+
+        // Init spinner views
+        locationSpinner = findViewById(R.id.ingredientStoreAdd_location);
+        unitSpinner = findViewById(R.id.ingredientStoreAdd_unit);
+        categorySpinner = findViewById(R.id.ingredientStoreAdd_category);
 
         // init btns
         Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
@@ -108,6 +124,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         ArrayList<Unit> units = new ArrayList<>();
         ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, units);
         unitSpinner.setAdapter(unitAdapter);
+
+        ArrayList<Category> categories = new ArrayList<>();
+        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        categorySpinner.setAdapter(categoryAdapter);
 
         // Check Bundle - determine if we're editing or adding!
         // Init activity title
@@ -246,29 +266,25 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
         });
 
-        locationCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                return;
-            }
-            if (queryDocumentSnapshots == null) {
-                Log.w(TAG + ":snapshotListener", "Location collection is null!");
-                return;
-            }
-            locations.clear();
-            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                locations.add(doc.toObject(Location.class));
-            }
-            // sort by date added
-            locations.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-            locationAdapter.notifyDataSetChanged();
-            // a bit of a hack to make sure the locationSpinner respects the source of truth (selectedLocation)
-            if (selectedLocation != null) {
-                locationSpinner.setPrompt(selectedLocation.getLocation());
-            }
-        });
+        locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation));
+        unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
+        categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory));
+    }
 
-        unitCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+    /**
+     * A generic snapshot listener for simple user-defined collections (units, locations, categories)
+     * Also sorts the data based on the timestamp data
+     *
+     * This abstracts the snapshot listener
+     */
+    private <T extends Timestamped>EventListener<QuerySnapshot> abstractSnapshotListener(
+            Class<T> valueType,
+            ArrayAdapter<T> adapter,
+            ArrayList<T> data,
+            Spinner spinner,
+            T selectedElem
+    ) {
+        return (queryDocumentSnapshots, error) -> {
             if (error != null) {
                 Log.w(TAG + ":snapshotListener", "Listen failed.", error);
                 return;
@@ -277,21 +293,39 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 Log.w(TAG + ":snapshotListener", "Location collection is null!");
                 return;
             }
-            units.clear();
+            data.clear();
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Unit u = doc.toObject(Unit.class);
-                units.add(u);
-                Log.i(TAG, "Add unit with date " + u.getUnit() + " " + u.getDateAdded());
+                T item = doc.toObject(valueType);
+                data.add(item);
             }
-            Log.i(TAG, "Added " + units.size() + " elements");
+            Log.i(TAG, "Added " + data.size() + " elements");
             // sort by date added
-            units.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-            unitAdapter.notifyDataSetChanged();
+            data.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
+            adapter.notifyDataSetChanged();
             // a bit of a hack...
-            if (selectedUnit != null) {
-                unitSpinner.setPrompt(selectedUnit.getUnit());
+            if (selectedElem != null) {
+                spinner.setPrompt(selectedElem.toString());
             }
-        });
+        };
+    }
+
+
+    /**
+     * A generic onItemSelectedlistener for spinners for the user-defined collections (units, locations, categories)
+     */
+    private <T extends Serializable>AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(T selectedElem) {
+        return new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedElem = (T) parentView.getItemAtPosition(position);
+                Log.i(TAG, "selected unit is " + selectedElem.toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                Log.i(TAG, "Nothing selected");
+            }
+        };
     }
 
     /**
@@ -311,7 +345,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     public void editLocations(View view) {
         Log.i(TAG + ":editLocations", "Going to Edit Locations");
         Intent intent = new Intent(this, EditLocationsActivity.class);
-        editLocationLauncher.launch(intent);
+        discardResultLauncher.launch(intent);
     }
 
     /**
@@ -322,16 +356,29 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     public void editUnits(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditUnitsActivity.class);
-        editLocationLauncher.launch(intent);
+        discardResultLauncher.launch(intent);
     }
 
     /**
-     * A launcher for a previously-prepared call to start the process of executing edit and updation of ingredient
+     * This is run when R.id.ingredientStoreAdd_editUnitsBtn is clicked
      *
-     * we don't care about the callback! the new location (or deleted locations) will be updated automatically
+     * this function jumps to the EditLocations activity.
+     */
+    public void editCategories(View view) {
+        Log.i(TAG + ":editUnits", "Going to Edit units");
+        Intent intent = new Intent(this, EditCategoriesActivity.class);
+        discardResultLauncher.launch(intent);
+    }
+
+    /**
+     * A launcher for any activity where we can discard the result
+     *
+     * This is useful for things like editLocations, editUnits and editCategories
+     *
+     * Note we don't care about the callback! the new data (e.g. location) will be updated automatically
      * by firebase, via the addSnapshotListener
      */
-    final private ActivityResultLauncher<Intent> editLocationLauncher = registerForActivityResult(
+    final private ActivityResultLauncher<Intent> discardResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {}
     );

@@ -2,6 +2,7 @@ package com.androidimpact.app.location;
 
 import androidx.annotation.NonNull;
 
+import com.androidimpact.app.Timestamped;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Location implements Serializable {
+public class Location implements Serializable, Timestamped {
     @DocumentId
     String id;
     String location;

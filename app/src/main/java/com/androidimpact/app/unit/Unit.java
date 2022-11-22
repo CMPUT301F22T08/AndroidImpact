@@ -1,12 +1,13 @@
 package com.androidimpact.app.unit;
 
+import com.androidimpact.app.Timestamped;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class Unit implements Serializable {
+public class Unit implements Serializable, Timestamped {
     @DocumentId
     String unit;
     @ServerTimestamp
