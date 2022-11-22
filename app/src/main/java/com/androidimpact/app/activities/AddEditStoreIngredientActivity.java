@@ -48,6 +48,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
@@ -65,12 +66,14 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
     // spinners
     // NOTE: for these, the source of truth is the selectedLocation and selectedUnit
+    // due to abstractOnItemSelectedListener editing these references,
+    // i "have to" wrap these under AtomicReferences
     private Spinner locationSpinner;
-    private Location selectedLocation;
+    private AtomicReference<Location> selectedLocation;
     private Spinner unitSpinner;
-    private Unit selectedUnit;
+    private AtomicReference<Unit> selectedUnit;
     private Spinner categorySpinner;
-    private Category selectedCategory;
+    private AtomicReference<Category> selectedCategory;
 
     // buttons
     private ImageButton editLocationsBtn;
@@ -150,7 +153,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             DocumentRetrievalListener<Location> getLocationListener = new DocumentRetrievalListener<>() {
                 @Override
                 public void onSuccess(Location data) {
-                    selectedLocation = data;
+                    selectedLocation.set(data);
                 }
                 @Override
                 public void onNullDocument() {
@@ -169,7 +172,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
                 @Override
                 public void onSuccess(Unit data) {
-                    selectedUnit = data;
+                    selectedUnit.set(data);
                 }
                 @Override
                 public void onNullDocument() {
@@ -238,33 +241,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
 
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedLocation = (Location) parentView.getItemAtPosition(position);
-
-                Log.i(TAG, "selected location is " + selectedLocation.getLocation());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                Log.i(TAG, "Nothing selected");
-            }
-        });
-
-        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedUnit = (Unit) parentView.getItemAtPosition(position);
-
-                Log.i(TAG, "selected unit is " + selectedUnit.getUnit());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                Log.i(TAG, "Nothing selected");
-            }
-        });
+        locationSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedLocation));
+        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
+        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
 
         locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation));
         unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
@@ -282,7 +261,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             ArrayAdapter<T> adapter,
             ArrayList<T> data,
             Spinner spinner,
-            T selectedElem
+            AtomicReference<T> selectedElem
     ) {
         return (queryDocumentSnapshots, error) -> {
             if (error != null) {
@@ -303,8 +282,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             data.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
             adapter.notifyDataSetChanged();
             // a bit of a hack...
-            if (selectedElem != null) {
-                spinner.setPrompt(selectedElem.toString());
+            if (selectedElem.get() != null) {
+                spinner.setPrompt(selectedElem.get().toString());
             }
         };
     }
@@ -313,12 +292,15 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     /**
      * A generic onItemSelectedlistener for spinners for the user-defined collections (units, locations, categories)
      */
-    private <T extends Serializable>AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(T selectedElem) {
+    private <T extends Serializable>AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(
+            AtomicReference<T> selectedElem
+    ) {
         return new AdapterView.OnItemSelectedListener() {
             @Override
+            @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedElem = (T) parentView.getItemAtPosition(position);
-                Log.i(TAG, "selected unit is " + selectedElem.toString());
+                selectedElem.set((T) parentView.getItemAtPosition(position));
+                Log.i(TAG, "selected unit is " + selectedElem.get().toString());
             }
 
             @Override
@@ -440,8 +422,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             Date date = bestBeforeCalendar.getTime();
 
             // get document refs
-            DocumentReference locationRef = locationCollection.document(selectedLocation.getId());
-            DocumentReference unitRef = unitCollection.document(selectedUnit.getUnit());
+            DocumentReference locationRef = locationCollection.document(selectedLocation.get().getId());
+            DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
             return new StoreIngredient(id, description, amount, category, date, locationRef.getPath(), unitRef.getPath());
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
