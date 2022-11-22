@@ -151,12 +151,13 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     public void confirm(View view) {
         if (checkInputs()) {
             DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
+            DocumentReference categoryRef = categoriesCollection.document(selectedCategory.get().getCategory());
             RecipeIngredient ingredient = new RecipeIngredient(
                     id,
                     getStr(description),
                     Float.parseFloat(getStr(amount)),
                     unitRef.getPath(),
-                    getStr(category),
+                    categoryRef.getPath(),
                     new Date()
             );
             Intent returnIntent = new Intent();
@@ -280,7 +281,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 getStr(description).isBlank(),
                 getStr(amount).isBlank(),
                 selectedUnit == null,
-                getStr(category).isBlank()
+                selectedCategory == null
         };
 
         // Make sure all inputs are filled

@@ -10,10 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidimpact.app.category.Category;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 /**
  * RecipeIngredientAdapter class
@@ -60,40 +63,58 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
      */
     @Override
     public void onBindViewHolder(@NonNull RecipeIngredientAdapter.RecipeIngredientHolder holder, int position) {
-        Ingredient recyclerData = ingredients.get(position);
-        holder.ingredientDescription.setText(recyclerData.getDescription());
-        holder.ingredientCategory.setText(recyclerData.getCategory());
+        Ingredient currentIngredient = ingredients.get(position);
+        holder.ingredientDescription.setText(currentIngredient.getDescription());
         holder.ingredientEditButton.setOnClickListener(v -> {
             // execute all listeners
             for (RecipeIngredientAdapter.StoreRecipeIngredientEdit listener : editListeners) {
-                listener.storeRecipeIngredientEdit(recyclerData, position);
+                listener.storeRecipeIngredientEdit(currentIngredient, position);
             }
         });
 
         // now, retrieve "unit" from firebase
         // since this takes a while, we first set a loading state
         holder.ingredientAmount.setText("loading...");
-        DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
-            @Override
-            public void onSuccess(Unit data) {
-                String unitStr = context.getString(R.string.store_ingredient_amount_display, recyclerData.getAmount(), data.getUnit());
-                holder.ingredientAmount.setText(unitStr);
-            }
+        currentIngredient.getUnitAsync(abstractDocumentRetrievalListener(
+                holder.ingredientAmount,
+                data -> context.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), data.getUnit()),
+                currentIngredient.getDescription()
+        ));
 
+        holder.ingredientCategory.setText("loading...");
+        currentIngredient.getCategoryAsync(abstractDocumentRetrievalListener(
+                holder.ingredientCategory,
+                Category::toString,
+                currentIngredient.getDescription()
+        ));
+    }
+
+    /**
+     * A generic DocumentRetrievalListener for initial population of ArrayLists for user-defined collections
+     * (units, categories)
+     */
+    private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
+            TextView view,
+            Function<T, String> fromData,
+            String ingredientDescription // for debug purposes
+    ) {
+        return new DocumentRetrievalListener<T>() {
+            @Override
+            public void onSuccess(T data) {
+                view.setText(fromData.apply(data));
+            }
             @Override
             public void onNullDocument() {
-                holder.ingredientAmount.setText("NoDoc!");
+                // happens if the user deletes a document by themselves. We should not allow it!
+                Log.i(TAG, "Bruh moment: ingredient " + ingredientDescription + " cannot retrieve unit - Document does not exist");
             }
-
             @Override
             public void onError(Exception e) {
-                Log.d(TAG, "Cached get failed: ", e);
-                holder.ingredientAmount.setText("Failed!");
+                Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
             }
         };
-        recyclerData.getUnitAsync(getUnitListener);
-
     }
+
 
     /**
      * this method returns the size of recyclerview

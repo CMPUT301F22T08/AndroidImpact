@@ -27,8 +27,8 @@ public class RecipeIngredient extends Ingredient implements Serializable {
      * This constructor is what we use to actually make a RecipeIngredient
      * @return
      */
-    public RecipeIngredient(String id, String description, float amount, String unitPath, String category, Date dateAdded) {
-        super(description, amount, unitPath, category);
+    public RecipeIngredient(String id, String description, float amount, String unitPath, String categoryPath, Date dateAdded) {
+        super(description, amount, unitPath, categoryPath);
         this.id = id;
         this.dateAdded = dateAdded;
     }
