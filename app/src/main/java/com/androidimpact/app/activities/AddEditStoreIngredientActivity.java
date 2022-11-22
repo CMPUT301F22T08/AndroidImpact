@@ -69,11 +69,11 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // due to abstractOnItemSelectedListener editing these references,
     // i "have to" wrap these under AtomicReferences
     private Spinner locationSpinner;
-    private AtomicReference<Location> selectedLocation;
+    private AtomicReference<Location> selectedLocation = new AtomicReference<>();
     private Spinner unitSpinner;
-    private AtomicReference<Unit> selectedUnit;
+    private AtomicReference<Unit> selectedUnit = new AtomicReference<>();
     private Spinner categorySpinner;
-    private AtomicReference<Category> selectedCategory;
+    private AtomicReference<Category> selectedCategory = new AtomicReference<>();
 
     // buttons
     private ImageButton editLocationsBtn;
@@ -88,6 +88,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     CollectionReference locationCollection;
     CollectionReference unitCollection;
     CollectionReference categoryCollection;
+
+    // Other "global" variables
+    // used to track which ingredient we're editing, null if we're creating a new ingredient
+    StoreIngredient ingredient;
 
     /**
      * Initalizes button data
@@ -135,7 +139,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         // Check Bundle - determine if we're editing or adding!
         // Init activity title
         Bundle extras = getIntent().getExtras();
-        StoreIngredient ingredient;
         if (extras != null) {
             ingredient = (StoreIngredient) extras.getSerializable("storeIngredient");
             getSupportActionBar().setTitle("Edit Ingredient");
@@ -167,38 +170,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             bestBeforeCalendar.set(Calendar.DAY_OF_MONTH,day);
             updateLabel();
         };
-
-
-        cancelBtn.setOnClickListener(v -> {
-            Log.i(TAG + ":cancel", "Cancel ingredient add");
-            Intent intent = new Intent(this, IngredientStorageActivity.class);
-            setResult(Activity.RESULT_CANCELED, intent);
-            finish();
-        });
-
-
-        confirmBtn.setOnClickListener(v -> {
-            try {
-                // try to create an ingredient.
-                StoreIngredient newStoreIngredient = createIngredient(ingredient);
-                Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
-
-                // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
-                intent.putExtra("ingredient", newStoreIngredient);
-                setResult(Activity.RESULT_OK, intent);
-
-                Log.i(TAG + ":cancel", "Returning to MainActivity");
-                finish();
-            } catch (Exception e){
-                // Error - add a snackBar
-                Log.i(TAG, "Error making storeIngredient", e);
-                View parentLayout = findViewById(android.R.id.content);
-                Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG)
-                        .setAction("Ok", view1 -> {})
-                        .show();
-            }
-        });
-
 
         bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(
                 AddEditStoreIngredientActivity.this,
@@ -342,6 +313,41 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditCategoriesActivity.class);
         discardResultLauncher.launch(intent);
+    }
+
+    /**
+     * Cancel - This is run when the "Cancel" button is pressed
+     */
+    public void cancel(View view) {
+        Log.i(TAG + ":cancel", "Cancel ingredient add");
+        Intent intent = new Intent(this, IngredientStorageActivity.class);
+        setResult(Activity.RESULT_CANCELED, intent);
+        finish();
+    }
+
+    /**
+     * Confirm - This is run when the "Confirm" button is pressed
+     */
+    public void confirm(View view) {
+        try {
+            // try to create an ingredient.
+            StoreIngredient newStoreIngredient = createIngredient(ingredient);
+            Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
+
+            // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
+            intent.putExtra("ingredient", newStoreIngredient);
+            setResult(Activity.RESULT_OK, intent);
+
+            Log.i(TAG + ":cancel", "Returning to MainActivity");
+            finish();
+        } catch (Exception e){
+            // Error - add a snackBar
+            Log.i(TAG, "Error making storeIngredient", e);
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG)
+                    .setAction("Ok", view1 -> {})
+                    .show();
+        }
     }
 
     /**
