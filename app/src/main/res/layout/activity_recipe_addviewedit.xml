@@ -72,7 +72,7 @@
         android:hint="@string/recipe_title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:maxLength="50"
+        android:maxLength="30"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -121,7 +121,7 @@
         android:textColorHint="@color/purple_500"
         app:counterTextColor="@color/white"
         app:boxBackgroundColor="@color/background"
-        app:counterMaxLength="200">
+        app:counterMaxLength="150">
     <EditText
         android:id="@+id/recipe_comments"
         android:layout_width="229dp"
@@ -129,6 +129,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
+        android:maxLength="150"
         android:textColor="@color/white"
         android:hint="@string/recipe_comments"
         android:importantForAutofill="no"

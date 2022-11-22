@@ -301,16 +301,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         if (exceptionString.size() > 0) {
             throw new Exception(String.join(", ", exceptionString) + " must be filled!");
         }
-        // String limits
-        if (getStr(title).length() > 30) {
-            exceptionString.add("Title");
-        }
-        if (getStr(comments).length() > 150) {
-            exceptionString.add("Comments");
-        }
-        if (exceptionString.size() > 0) {
-            throw new Exception(String.join(", ", exceptionString) + " is too long!");
-        }
 
         // list of futures; we wait for all of them to complete via whenAll at the end of this method
         List<Task<?>> futures = new ArrayList<>();
