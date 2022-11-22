@@ -19,17 +19,24 @@ import android.widget.TextView;
 import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.R;
 import com.androidimpact.app.RecipeIngredient;
+import com.androidimpact.app.Timestamped;
+import com.androidimpact.app.category.Category;
 import com.androidimpact.app.unit.EditUnitsActivity;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class is the activity for ingredient adding/viewing/editing to recipe
@@ -50,14 +57,18 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
     // Spinners
     // as before, the selectedUnit is the source of truth.
+    // Note: we are using atomic references because of some quirks with our abstraction (Josh)
+    // See: addEditStoreIngredientActivity
     Spinner unitSpinner;
-    Unit selectedUnit;
+    AtomicReference<Unit> selectedUnit = new AtomicReference<>();
+    Spinner categorySpinner;
+    AtomicReference<Category> selectedCategory = new AtomicReference<>();
 
     // firebase
     FirebaseFirestore db;
-    // collection of ingredients inside this recipe
-    CollectionReference ingredientsCollection;
+    // other collections we use when editing an ingredient
     CollectionReference unitCollection;
+    CollectionReference categoriesCollection;
 
     /**
      * This method runs when the activity is created
@@ -72,35 +83,29 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         // initialize ingredientsCollection later - after we know whether or not we are editing an ingredient or adding
         db = FirebaseFirestore.getInstance();
         unitCollection = db.collection("units");
+        categoriesCollection = db.collection("categories");
 
         setContentView(R.layout.activity_recipe_addedit_ingredient);
 
 
         description = findViewById(R.id.ingredient_description);
         amount = findViewById(R.id.ingredient_amount);
-        category = findViewById(R.id.ingredient_category);
         activity_title = findViewById(R.id.activity_title);
         unitSpinner = findViewById(R.id.recipe_ingredient_unit);
+        categorySpinner = findViewById(R.id.recipe_ingredient_category);
 
         // init spinners
         ArrayList<Unit> units = new ArrayList<>();
         ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, units);
         unitSpinner.setAdapter(unitAdapter);
 
+        ArrayList<Category> categories = new ArrayList<>();
+        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        categorySpinner.setAdapter(categoryAdapter);
+
         // set onclick for spinner
-        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedUnit = (Unit) parentView.getItemAtPosition(position);
-
-                Log.i(TAG, "selected unit is " + selectedUnit.getUnit());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                Log.i(TAG, "Nothing selected");
-            }
-        });
+        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
+        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -120,53 +125,19 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 // setting initial spinner values are a bit weird
                 // we have to wait for firebase to get the data from the server
                 // thus, we set a location listener on the first data retrieval
-                DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
-                    @Override
-                    public void onSuccess(Unit data) {
-                        selectedUnit = data;
-                    }
-                    @Override
-                    public void onNullDocument() {
-                        // happens if the user deletes a document by themselves. We should not allow it!
-                        Log.i(TAG, "Bruh moment: ingredient " + ingredient.getDescription()
-                                + " cannot retrieve unit - Document does not exist");
-                    }
-                    @Override
-                    public void onError(Exception e) {
-                        Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
-                    }
-                };
-                ingredient.getUnitAsync(getUnitListener);
+                ingredient.getUnitAsync(abstractDocumentRetrievalListener(selectedUnit, ingredient.getDescription()));
+                ingredient.getCategoryAsync(abstractDocumentRetrievalListener(selectedCategory, ingredient.getDescription()));
             } else {
                 // we're adding a new element!
                 // autogenerate an ID
                 id = UUID.randomUUID().toString();
             }
 
-            unitCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-                if (error != null) {
-                    Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                    return;
-                }
-                if (queryDocumentSnapshots == null) {
-                    Log.w(TAG + ":snapshotListener", "Location collection is null!");
-                    return;
-                }
-                units.clear();
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    Unit u = doc.toObject(Unit.class);
-                    units.add(u);
-                    Log.i(TAG, "Add unit with date " + u.getUnit() + " " + u.getDateAdded());
-                }
-                Log.i(TAG, "Added " + units.size() + " elements");
-                // sort by date added
-                units.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-                unitAdapter.notifyDataSetChanged();
-                // a bit of a hack...
-                if (selectedUnit != null) {
-                    unitSpinner.setPrompt(selectedUnit.getUnit());
-                }
-            });
+            // Snapshot listeners for collections
+            unitCollection.addSnapshotListener(abstractSnapshotListener(
+                    Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
+            categoriesCollection.addSnapshotListener(abstractSnapshotListener(
+                    Category.class, categoryAdapter, categories, categorySpinner, selectedCategory));
         }
 
     }
@@ -178,7 +149,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      */
     public void confirm(View view) {
         if (checkInputs()) {
-            DocumentReference unitRef = unitCollection.document(selectedUnit.getUnit());
+            DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
             RecipeIngredient ingredient = new RecipeIngredient(
                     id,
                     getStr(description),
@@ -206,6 +177,90 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         Log.i(TAG + ":cancel", "Cancel ingredient add");
         setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+    /**
+     * A generic onItemSelectedlistener for spinners for the user-defined collections (units, locations, categories)
+     */
+    private <T extends Serializable>AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(
+            AtomicReference<T> selectedElem
+    ) {
+        return new AdapterView.OnItemSelectedListener() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedElem.set((T) parentView.getItemAtPosition(position));
+                Log.i(TAG, "selected unit is " + selectedElem.get().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                Log.i(TAG, "Nothing selected");
+            }
+        };
+    }
+
+    /**
+     * A generic snapshot listener for simple user-defined collections (units, locations, categories)
+     * Also sorts the data based on the timestamp data
+     *
+     * This abstracts the snapshot listener
+     */
+    private <T extends Timestamped> EventListener<QuerySnapshot> abstractSnapshotListener(
+            Class<T> valueType,
+            ArrayAdapter<T> adapter,
+            ArrayList<T> data,
+            Spinner spinner,
+            AtomicReference<T> selectedElem
+    ) {
+        return (queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+            if (queryDocumentSnapshots == null) {
+                Log.w(TAG + ":snapshotListener", "Location collection is null!");
+                return;
+            }
+            data.clear();
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                T item = doc.toObject(valueType);
+                data.add(item);
+            }
+            Log.i(TAG, "Added " + data.size() + " elements");
+            // sort by date added
+            data.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
+            adapter.notifyDataSetChanged();
+            // a bit of a hack...
+            if (selectedElem.get() != null) {
+                spinner.setPrompt(selectedElem.get().toString());
+            }
+        };
+    }
+
+    /**
+     * A generic DocumentRetrievalListener for initial population of ArrayLists for user-defined collections
+     * (units, locations, categories)
+     */
+    private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
+            AtomicReference<T> selectedItem,
+            String ingredientDescription // for debug purposes
+    ) {
+        return new DocumentRetrievalListener<T>() {
+            @Override
+            public void onSuccess(T data) {
+                selectedItem.set(data);
+            }
+            @Override
+            public void onNullDocument() {
+                // happens if the user deletes a document by themselves. We should not allow it!
+                Log.i(TAG, "Bruh moment: ingredient " + ingredientDescription + " cannot retrieve unit - Document does not exist");
+            }
+            @Override
+            public void onError(Exception e) {
+                Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
+            }
+        };
     }
 
     /**
