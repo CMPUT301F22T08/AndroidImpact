@@ -13,13 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.androidimpact.app.DocumentRetrievalListener;
-import com.androidimpact.app.Ingredient;
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
 import com.androidimpact.app.category.EditCategoriesActivity;
@@ -32,11 +29,8 @@ import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -47,7 +41,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -61,7 +54,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // declare all view variables
     private EditText descriptionEditText;
     private EditText amountEditText;
-    private EditText categoryEditText;
     private EditText bestBeforeEditText;
 
     // spinners
@@ -74,11 +66,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     private AtomicReference<Unit> selectedUnit = new AtomicReference<>();
     private Spinner categorySpinner;
     private AtomicReference<Category> selectedCategory = new AtomicReference<>();
-
-    // buttons
-    private ImageButton editLocationsBtn;
-    private ImageButton editUnitsBtn;;
-    private ImageButton editCategoriesBtn;
 
     // Calendar for bestBeforeDatePicker
     final Calendar bestBeforeCalendar = Calendar.getInstance();
@@ -112,16 +99,11 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
         amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
         bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
-        editLocationsBtn = findViewById(R.id.ingredientStoreAdd_editUnitsBtn);
 
         // Init spinner views
         locationSpinner = findViewById(R.id.ingredientStoreAdd_location);
         unitSpinner = findViewById(R.id.ingredientStoreAdd_unit);
         categorySpinner = findViewById(R.id.ingredientStoreAdd_category);
-
-        // init btns
-        Button cancelBtn = findViewById(R.id.ingredientStoreAdd_cancelBtn);
-        Button confirmBtn = findViewById(R.id.ingredientStoreAdd_confirmBtn);
 
         // init spinners
         ArrayList<Location> locations = new ArrayList<>();
@@ -146,9 +128,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // set initial values
             descriptionEditText.setText(ingredient.getDescription());
             amountEditText.setText(String.valueOf(ingredient.getAmount()));
-            categoryEditText.setText(ingredient.getCategory());
             bestBeforeCalendar.setTime(ingredient.getBestBeforeDate());
-            updateLabel();
+            updateDateLabel();
 
             // setting initial spinner values are a bit weird
             // we have to wait for firebase to get the data from the server
@@ -168,7 +149,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             bestBeforeCalendar.set(Calendar.YEAR, year);
             bestBeforeCalendar.set(Calendar.MONTH,month);
             bestBeforeCalendar.set(Calendar.DAY_OF_MONTH,day);
-            updateLabel();
+            updateDateLabel();
         };
 
         bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(
@@ -276,7 +257,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     /**
      * This will set the date label
      */
-    private void updateLabel(){
+    private void updateDateLabel(){
         String myFormat="dd MMMM yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         bestBeforeEditText.setText(dateFormat.format(bestBeforeCalendar.getTime()));
@@ -375,7 +356,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     private StoreIngredient createIngredient(@Nullable StoreIngredient editing) throws Exception {
         String description = descriptionEditText.getText().toString();
         String amountRaw = amountEditText.getText().toString();
-        String category = categoryEditText.getText().toString();
         String bestBefore = bestBeforeEditText.getText().toString();
 
         if (description.equals("")) {
@@ -395,10 +375,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         if (amount < 0) {
             throw new Exception("Amount must be positive!");
-        }
-
-        if (category.equals("")) {
-            throw new Exception("Category cannot be empty.");
         }
 
         if (bestBefore.equals("")) {
@@ -422,7 +398,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // get document refs
             DocumentReference locationRef = locationCollection.document(selectedLocation.get().getId());
             DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
-            return new StoreIngredient(id, description, amount, category, date, locationRef.getPath(), unitRef.getPath());
+            DocumentReference categoryRef = categoryCollection.document(selectedCategory.get().getCategory());
+            return new StoreIngredient(id, description, amount, categoryRef.getPath(), date, locationRef.getPath(), unitRef.getPath());
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");

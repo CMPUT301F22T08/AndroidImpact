@@ -48,7 +48,7 @@ import nl.dionsegijn.konfetti.models.Size;
  */
 public class IngredientStorageFragment extends Fragment implements NavbarFragment {
     final String TAG = "IngredientStorageFragment";
-    final String COLLECTION_NAME = "ingredientStorage";
+    final String COLLECTION_NAME = "ingredientStorage-new";
 
     private static IngredientStorageFragment instance;
 
