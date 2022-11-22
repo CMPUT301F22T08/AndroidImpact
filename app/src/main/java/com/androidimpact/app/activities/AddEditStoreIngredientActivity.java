@@ -149,43 +149,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
             // setting initial spinner values are a bit weird
             // we have to wait for firebase to get the data from the server
-            // thus, we set a location listener on the first data retrieval
-            DocumentRetrievalListener<Location> getLocationListener = new DocumentRetrievalListener<>() {
-                @Override
-                public void onSuccess(Location data) {
-                    selectedLocation.set(data);
-                }
-                @Override
-                public void onNullDocument() {
-                    // happens if the user deletes a document by themselves. We should not allow it!
-                    Log.i(TAG, "Bruh moment: ingredient " + ingredient.getDescription()
-                            + " cannot retrieve location - Document does not exist");
-                }
-                @Override
-                public void onError(Exception e) {
-                    Log.d(TAG, "Bruh moment: ingredient cannot retrieve location: failed ", e);
-                }
-            };
-            ingredient.getLocationAsync(getLocationListener);
-
-            // set unit
-            DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
-                @Override
-                public void onSuccess(Unit data) {
-                    selectedUnit.set(data);
-                }
-                @Override
-                public void onNullDocument() {
-                    // happens if the user deletes a document by themselves. We should not allow it!
-                    Log.i(TAG, "Bruh moment: ingredient " + ingredient.getDescription()
-                            + " cannot retrieve unit - Document does not exist");
-                }
-                @Override
-                public void onError(Exception e) {
-                    Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
-                }
-            };
-            ingredient.getUnitAsync(getUnitListener);
+            // thus, we set location, unit and category listeners on the first data retrieval
+            ingredient.getLocationAsync(abstractDocumentRetrievalListener(selectedLocation, ingredient.getDescription()));
+            ingredient.getUnitAsync(abstractDocumentRetrievalListener(selectedUnit, ingredient.getDescription()));
+            ingredient.getCategoryAsync(abstractDocumentRetrievalListener(selectedCategory, ingredient.getDescription()));
 
         } else {
             ingredient = null;
@@ -306,6 +273,31 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 Log.i(TAG, "Nothing selected");
+            }
+        };
+    }
+
+    /**
+     * A generic DocumentRetrievalListener for initial population of ArrayLists for user-defined collections
+     * (units, locations, categories)
+     */
+    private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
+            AtomicReference<T> selectedItem,
+            String ingredientDescription // for debug purposes
+    ) {
+        return new DocumentRetrievalListener<T>() {
+            @Override
+            public void onSuccess(T data) {
+                selectedItem.set(data);
+            }
+            @Override
+            public void onNullDocument() {
+                // happens if the user deletes a document by themselves. We should not allow it!
+                Log.i(TAG, "Bruh moment: ingredient " + ingredientDescription + " cannot retrieve unit - Document does not exist");
+            }
+            @Override
+            public void onError(Exception e) {
+                Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
             }
         };
     }
