@@ -41,8 +41,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     // Initialize attributes
     final String TAG = "RecipeAddEditIngredientActivity";
     EditText description, amount, category;
-    TextView activity_title;
-    private Boolean isEditing;
+    private Boolean isEditing = false;
     private int position;
 
     // other globals
@@ -79,7 +78,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         description = findViewById(R.id.ingredient_description);
         amount = findViewById(R.id.ingredient_amount);
         category = findViewById(R.id.ingredient_category);
-        activity_title = findViewById(R.id.activity_title);
         unitSpinner = findViewById(R.id.recipe_ingredient_unit);
 
         // init spinners
@@ -102,73 +100,72 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 Log.i(TAG, "Nothing selected");
             }
         });
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String value = extras.getString("activity_name");
-            isEditing = extras.getBoolean("isEditing", false);
-            activity_title.setText(value);
-            if (isEditing) {
-                Button addButton = findViewById(R.id.confirm_button);
-                addButton.setText("Edit");
-                RecipeIngredient ingredient = (RecipeIngredient) extras.getSerializable("ingredient");
-                id = ingredient.getId();
-                description.setText(ingredient.getDescription());
-                amount.setText(Float.toString(ingredient.getAmount()));
-                category.setText(ingredient.getCategory());
-                position = extras.getInt("position");
-
-                // setting initial spinner values are a bit weird
-                // we have to wait for firebase to get the data from the server
-                // thus, we set a location listener on the first data retrieval
-                DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
-                    @Override
-                    public void onSuccess(Unit data) {
-                        selectedUnit = data;
-                    }
-                    @Override
-                    public void onNullDocument() {
-                        // happens if the user deletes a document by themselves. We should not allow it!
-                        Log.i(TAG, "Bruh moment: ingredient " + ingredient.getDescription()
-                                + " cannot retrieve unit - Document does not exist");
-                    }
-                    @Override
-                    public void onError(Exception e) {
-                        Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
-                    }
-                };
-                ingredient.getUnitAsync(getUnitListener);
-            } else {
-                // we're adding a new element!
-                // autogenerate an ID
-                id = UUID.randomUUID().toString();
-            }
-
-            unitCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-                if (error != null) {
-                    Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                    return;
-                }
-                if (queryDocumentSnapshots == null) {
-                    Log.w(TAG + ":snapshotListener", "Location collection is null!");
-                    return;
-                }
-                units.clear();
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    Unit u = doc.toObject(Unit.class);
-                    units.add(u);
-                    Log.i(TAG, "Add unit with date " + u.getUnit() + " " + u.getDateAdded());
-                }
-                Log.i(TAG, "Added " + units.size() + " elements");
-                // sort by date added
-                units.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-                unitAdapter.notifyDataSetChanged();
-                // a bit of a hack...
-                if (selectedUnit != null) {
-                    unitSpinner.setPrompt(selectedUnit.getUnit());
-                }
-            });
+            isEditing = extras.getBoolean("isEditing");
         }
+        if (isEditing) {
+            getSupportActionBar().setTitle("Edit Ingredient");
+            Button addButton = findViewById(R.id.confirm_button);
+            addButton.setText(R.string.edit);
+            RecipeIngredient ingredient = (RecipeIngredient) extras.getSerializable("ingredient");
+            id = ingredient.getId();
+            description.setText(ingredient.getDescription());
+            amount.setText(Float.toString(ingredient.getAmount()));
+            category.setText(ingredient.getCategory());
+            position = extras.getInt("position");
+
+            // setting initial spinner values are a bit weird
+            // we have to wait for firebase to get the data from the server
+            // thus, we set a location listener on the first data retrieval
+            DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
+                @Override
+                public void onSuccess(Unit data) {
+                    selectedUnit = data;
+                }
+                @Override
+                public void onNullDocument() {
+                    // happens if the user deletes a document by themselves. We should not allow it!
+                    Log.i(TAG, "Bruh moment: ingredient " + ingredient.getDescription()
+                            + " cannot retrieve unit - Document does not exist");
+                }
+                @Override
+                public void onError(Exception e) {
+                    Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
+                }
+            };
+            ingredient.getUnitAsync(getUnitListener);
+        } else {
+            // we're adding a new element!
+            // autogenerate an ID
+            id = UUID.randomUUID().toString();
+            getSupportActionBar().setTitle("Add Ingredient");
+        }
+
+        unitCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+            if (queryDocumentSnapshots == null) {
+                Log.w(TAG + ":snapshotListener", "Location collection is null!");
+                return;
+            }
+            units.clear();
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                Unit u = doc.toObject(Unit.class);
+                units.add(u);
+                Log.i(TAG, "Add unit with date " + u.getUnit() + " " + u.getDateAdded());
+            }
+            Log.i(TAG, "Added " + units.size() + " elements");
+            // sort by date added
+            units.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
+            unitAdapter.notifyDataSetChanged();
+            // a bit of a hack...
+            if (selectedUnit != null) {
+                unitSpinner.setPrompt(selectedUnit.getUnit());
+            }
+        });
 
     }
 
