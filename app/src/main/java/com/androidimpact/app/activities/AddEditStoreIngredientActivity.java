@@ -118,7 +118,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         unitSpinner.setAdapter(unitAdapter);
 
         ArrayList<Category> categories = new ArrayList<>();
-        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
 
         // Check Bundle - determine if we're editing or adding!

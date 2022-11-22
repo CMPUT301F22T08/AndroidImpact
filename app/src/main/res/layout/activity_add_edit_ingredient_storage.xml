@@ -14,9 +14,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editCategoryBtn"
-        app:layout_constraintStart_toEndOf="@+id/ingredientStorageAdd_categoryLabel"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_unit"
         tools:visibility="visible" />
 
@@ -25,7 +25,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/category"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_category"
         app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_category"
         app:layout_constraintVertical_bias="0.482" />
@@ -112,10 +114,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editLocationsBtn"
-        app:layout_constraintHorizontal_bias="0.717"
-        app:layout_constraintStart_toEndOf="@+id/ingredientStoreAdd_locationLabel"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
 
     <Button
@@ -163,6 +164,7 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_location"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_location"
         app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_location" />
 
@@ -184,6 +186,7 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_unit"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_unit"
         app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_unit"
         app:layout_constraintVertical_bias="0.551" />
@@ -193,9 +196,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editUnitsBtn"
-        app:layout_constraintStart_toEndOf="@+id/ingredientStorageAdd_unitLabel"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />
 
 
