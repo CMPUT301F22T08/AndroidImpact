@@ -142,31 +142,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                     Category.class, categoryAdapter, categories, categorySpinner, selectedCategory));
         }
 
-        unitCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                return;
-            }
-            if (queryDocumentSnapshots == null) {
-                Log.w(TAG + ":snapshotListener", "Location collection is null!");
-                return;
-            }
-            units.clear();
-            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Unit u = doc.toObject(Unit.class);
-                units.add(u);
-                Log.i(TAG, "Add unit with date " + u.getUnit() + " " + u.getDateAdded());
-            }
-            Log.i(TAG, "Added " + units.size() + " elements");
-            // sort by date added
-            units.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-            unitAdapter.notifyDataSetChanged();
-            // a bit of a hack...
-            if (selectedUnit != null) {
-                unitSpinner.setPrompt(selectedUnit.get().getUnit());
-            }
-        });
-
     }
 
     /**
