@@ -11,6 +11,7 @@
         android:id="@+id/confetti_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
     <TextView
         android:id="@+id/activity_title"
         android:layout_width="wrap_content"
@@ -49,24 +50,34 @@
             app:srcCompat="@drawable/ic_launcher_foreground" />
     </com.google.android.material.card.MaterialCardView>
 
-
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/recipe_title_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="15dp"
+        app:counterEnabled="true"
+        app:counterTextColor="@color/white"
+        android:textColorHint="@color/purple_500"
+        app:boxBackgroundColor="@color/background"
+        app:counterMaxLength="30">
     <EditText
         android:id="@+id/recipe_title"
         android:layout_width="232dp"
         android:layout_height="48dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="15dp"
         android:ems="10"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
         android:hint="@string/recipe_title"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:maxLength="50"
+        android:maxLength="30"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
         android:id="@+id/recipe_prep"
@@ -99,17 +110,18 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_prep" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/recipe_comments_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe_title"
+        app:layout_constraintTop_toBottomOf="@+id/recipe_title_layout"
         app:counterEnabled="true"
+        android:textColorHint="@color/purple_500"
         app:counterTextColor="@color/white"
         app:boxBackgroundColor="@color/background"
-        app:hintTextColor="@color/white"
-        app:counterMaxLength="10">
+        app:counterMaxLength="150">
     <EditText
         android:id="@+id/recipe_comments"
         android:layout_width="229dp"
@@ -117,8 +129,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
+        android:maxLength="150"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
         android:hint="@string/recipe_comments"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"

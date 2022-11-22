@@ -270,29 +270,36 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         .addOnSuccessListener(unused -> {
                             Log.i(TAG, "Successfully added recipe!");
                             setResult(Activity.RESULT_OK);
+
                             finish();
                         });
             }
         } catch (Exception e) {
             confirmBtn.setEnabled(true);
             uploading = false;
-            Log.i(TAG, "Failed to add recipe!", e);
-            generateSnackbar("Failed to add " + getStr(title) + "!");
+            confirmBtn.setText(R.string.confirm);
+            Log.i(TAG, "Failed to confirm", e);
+            generateSnackbar(e.getMessage());
         }
     }
 
     private Task<Recipe> parseRecipe() throws Exception {
+         // Make sure inputs are valid
+        ArrayList<String> exceptionString = new ArrayList<>();
         if (getStr(title).isBlank()) {
-            throw new Exception("Title must be nonempty!");
+            exceptionString.add("Title");
         }
         if (getStr(prep_time).isBlank()) {
-            throw new Exception("Prep time must be nonempty!");
+            exceptionString.add("Prep-time");
         }
         if (getStr(servings).isBlank()) {
-            throw new Exception("Servings must be nonempty!");
+            exceptionString.add("Servings");
         }
         if (getStr(category).isBlank()) {
-            throw new Exception("Category must be nonempty!");
+            exceptionString.add("Category");
+        }
+        if (exceptionString.size() > 0) {
+            throw new Exception(String.join(", ", exceptionString) + " must be filled!");
         }
 
         // list of futures; we wait for all of them to complete via whenAll at the end of this method
