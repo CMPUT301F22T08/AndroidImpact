@@ -32,7 +32,7 @@
         android:id="@+id/recipe_ingredient_editCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="editUnits"
+        android:onClick="editCategories"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredient_category"
         app:layout_constraintEnd_toEndOf="@+id/recipe_ingredient_editUnits"
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_category"

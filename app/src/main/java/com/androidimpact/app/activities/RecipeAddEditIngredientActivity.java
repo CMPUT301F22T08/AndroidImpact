@@ -21,6 +21,7 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.RecipeIngredient;
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
+import com.androidimpact.app.category.EditCategoriesActivity;
 import com.androidimpact.app.unit.EditUnitsActivity;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
@@ -334,16 +335,29 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     public void editUnits(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditUnitsActivity.class);
-        editLocationLauncher.launch(intent);
+        disregardResultLauncher.launch(intent);
     }
 
     /**
-     * A launcher for a previously-prepared call to start the process of executing edit and updation of ingredient
+     * This is run when R.id.ingredientStoreAdd_editUnitsBtn is clicked
      *
-     * we don't care about the callback! the new location (or deleted locations) will be updated automatically
-     * by firebase, via the addSnapshotListener
+     * this function jumps to the EditLocations activity.
      */
-    final private ActivityResultLauncher<Intent> editLocationLauncher = registerForActivityResult(
+    public void editCategories(View view) {
+        Log.i(TAG + ":editCategories", "Going to Edit categories");
+        Intent intent = new Intent(this, EditCategoriesActivity.class);
+        disregardResultLauncher.launch(intent);
+    }
+
+    /**
+     * A launcher that disregards the result
+     *
+     * This is used in editUnits and editCategories
+     *
+     * we don't care about the callback because the new location (or deleted locations)
+     * will be updated automatically by firebase, via the addSnapshotListener
+     */
+    final private ActivityResultLauncher<Intent> disregardResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {}
     );
