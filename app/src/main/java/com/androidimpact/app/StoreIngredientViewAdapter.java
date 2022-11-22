@@ -14,14 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidimpact.app.category.Category;
 import com.androidimpact.app.location.Location;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.function.Function;
 
 /**
  * This class creates a view adapter for StoreIngredient
@@ -75,22 +79,6 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         // set values
         holder.description.setText(currentIngredient.getDescription());
-        holder.category.setText(currentIngredient.getCategory());
-        holder.location.setText("loading...");
-        currentIngredient.getLocationDocument().get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Location l = document.toObject(Location.class);
-                    holder.location.setText(l.getLocation());
-                } else {
-                    holder.location.setText("NoDoc!");
-                }
-            } else {
-                Log.d(TAG, "Cached get failed: ", task.getException());
-                holder.location.setText("Failed!");
-            }
-        });
 
         // if `selected` is the position, make the expandable section visible
         if (position == selected) {
@@ -105,25 +93,14 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
         holder.amount.setText("Loading...");
-        DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
-            @Override
-            public void onSuccess(Unit data) {
-                String unitStr = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), data.getUnit());
-                holder.amount.setText(unitStr);
-            }
+        currentIngredient.getUnitAsync(asyncDataListener(holder.amount,
+                unit -> holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), unit.getUnit())));
 
-            @Override
-            public void onNullDocument() {
-                holder.amount.setText("NoDoc!");
-            }
+        holder.location.setText("loading...");
+        currentIngredient.getLocationAsync(asyncDataListener(holder.location, (Function<Location, String>) Location::getLocation));
 
-            @Override
-            public void onError(Exception e) {
-                Log.d(TAG, "Cached get failed: ", e);
-                holder.amount.setText("Failed!");
-            }
-        };
-        currentIngredient.getUnitAsync(getUnitListener);
+        holder.category.setText("loading...");
+        currentIngredient.getCategoryAsync(asyncDataListener(holder.category, (Function<Category, String>) Category::getCategory));
 
         // setting formatted date
         String myFormat="MMM dd yyyy";
@@ -147,12 +124,34 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     }
 
     /**
+     * Abstracts the `getUnitAsync` and `getCollectionAsync`, etc to a single function
+     */
+    private <T>DocumentRetrievalListener<T> asyncDataListener(TextView view, Function<T, String> fromText) {
+        return new DocumentRetrievalListener<T>() {
+            @Override
+            public void onSuccess(T data) {
+                view.setText(fromText.apply(data));
+            }
+
+            @Override
+            public void onNullDocument() {
+                view.setText("NoDoc!");
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.d(TAG, "asyncDataListener failed: ", e);
+                view.setText("Failed!");
+            }
+        };
+    }
+
+    /**
      * This method returns the size of recyclerview
      * @return
      */
     @Override
     public int getItemCount() {
-
         return ingredientArrayList.size();
     }
 
