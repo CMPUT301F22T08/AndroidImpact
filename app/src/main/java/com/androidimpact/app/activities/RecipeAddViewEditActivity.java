@@ -68,7 +68,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     ArrayList<RecipeIngredient> recipeIngredients;
 
     ImageView photo;
-    TextView activity_title;
     private String docName;
     private Boolean isEditing;
     private String date;
@@ -113,7 +112,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         category = findViewById(R.id.recipe_category);
         comments = findViewById(R.id.recipe_comments);
         photo = findViewById(R.id.recipe_image);
-        activity_title = findViewById(R.id.activity_title);
         confirmBtn = findViewById(R.id.confirm_button);
         uploading = false;
 
@@ -129,11 +127,10 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
          extras = getIntent().getExtras();
          if (extras != null) {
 
-             String value = extras.getString("activity_name");
-             activity_title.setText(value);
              isEditing = extras.getBoolean("isEditing", false);
 
              if (isEditing) {
+                 getSupportActionBar().setTitle("Edit Recipe");
                  Recipe recipe = (Recipe) extras.getSerializable("recipe");
 
                  photoID = recipe.getPhoto();
@@ -171,7 +168,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                  ingredients = db.collection(recipe.getCollectionPath());
              } else {
                  // when non editing, make a new collection
-
+                 getSupportActionBar().setTitle("Add Recipe");
                  // initialize defaults
                  photo.setImageResource(R.drawable.ic_baseline_dining_24);
 
@@ -248,7 +245,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              // runs whenever a store ingredient edit btn is clicked
              Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
              Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
-             intent.putExtra("activity_name", "Edit ingredient");
              intent.putExtra("isEditing",  true);
              intent.putExtra("ingredient", recipeIngredients.get(position));
              editIngredientLauncher.launch(intent);
@@ -270,29 +266,36 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                         .addOnSuccessListener(unused -> {
                             Log.i(TAG, "Successfully added recipe!");
                             setResult(Activity.RESULT_OK);
+
                             finish();
                         });
             }
         } catch (Exception e) {
             confirmBtn.setEnabled(true);
             uploading = false;
-            Log.i(TAG, "Failed to add recipe!", e);
-            generateSnackbar("Failed to add " + getStr(title) + "!");
+            confirmBtn.setText(R.string.confirm);
+            Log.i(TAG, "Failed to confirm", e);
+            generateSnackbar(e.getMessage());
         }
     }
 
     private Task<Recipe> parseRecipe() throws Exception {
+         // Make sure inputs are valid
+        ArrayList<String> exceptionString = new ArrayList<>();
         if (getStr(title).isBlank()) {
-            throw new Exception("Title must be nonempty!");
+            exceptionString.add("Title");
         }
         if (getStr(prep_time).isBlank()) {
-            throw new Exception("Prep time must be nonempty!");
+            exceptionString.add("Prep-time");
         }
         if (getStr(servings).isBlank()) {
-            throw new Exception("Servings must be nonempty!");
+            exceptionString.add("Servings");
         }
         if (getStr(category).isBlank()) {
-            throw new Exception("Category must be nonempty!");
+            exceptionString.add("Category");
+        }
+        if (exceptionString.size() > 0) {
+            throw new Exception(String.join(", ", exceptionString) + " must be filled!");
         }
 
         // list of futures; we wait for all of them to complete via whenAll at the end of this method
@@ -377,7 +380,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     public void addIngredient(View v) {
         Log.i(TAG + ":addPhoto", "Adding ingredient!");
         Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
-        intent.putExtra("activity_name", "Add ingredient");
         addIngredientLauncher.launch(intent);
     }
 

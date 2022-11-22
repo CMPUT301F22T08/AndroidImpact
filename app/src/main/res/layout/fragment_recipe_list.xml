@@ -14,7 +14,7 @@
         -->
 
     <nl.dionsegijn.konfetti.KonfettiView
-        android:id="@+id/confetti_view"
+        android:id="@+id/confetti_view_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

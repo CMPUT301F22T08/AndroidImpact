@@ -191,7 +191,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
         //changing drop down layout
         sortingOptionsAdapter.setDropDownViewResource(
-                android.R.layout.simple_list_item_1
+                android.R.layout.simple_spinner_dropdown_item
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
 
