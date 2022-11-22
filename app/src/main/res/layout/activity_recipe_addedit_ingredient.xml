@@ -8,16 +8,6 @@
     android:background="@color/background"
     tools:context=".activities.RecipeAddEditIngredientActivity">
 
-    <TextView
-        android:id="@+id/activity_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/activity_title"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ingredient_description_layout"
         android:layout_width="wrap_content"
