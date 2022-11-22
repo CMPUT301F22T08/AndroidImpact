@@ -26,6 +26,7 @@ import java.util.Locale;
 /**
  * This class creates a view adapter for StoreIngredient
  * @version 1.0
+ * @author Vedant Vyas
  */
 public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngredientViewAdapter.StoreIngredientViewHolder>{
     private final String TAG = "StoreIngredientViewAdapter";

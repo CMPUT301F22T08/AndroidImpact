@@ -43,6 +43,7 @@ import java.util.UUID;
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
  * @version 1.0
+ * @author Vedant Vyas
  */
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging

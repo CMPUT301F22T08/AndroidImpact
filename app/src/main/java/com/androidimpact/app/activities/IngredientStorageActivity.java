@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 /**
  * Activity class for Ingredient Storage Activity
  * @version 1.0
+ * @author Joshua Ji
  */
 public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
