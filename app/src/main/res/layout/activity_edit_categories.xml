@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editCategories_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".category.EditCategoriesActivity">
+
+    <Button
+        android:id="@+id/addCategoryBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="categoryBtnPressed"
+        android:text="@string/add_category"
+        app:layout_constraintStart_toEndOf="@+id/category_editText"
+        app:layout_constraintTop_toTopOf="@+id/category_editText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/category_listview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constrainedHeight="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category_editText" />
+
+    <EditText
+        android:id="@+id/category_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:onClick="goBack"
+        android:text="@string/go_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category_listview"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>
