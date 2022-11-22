@@ -6,15 +6,22 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.R;
+import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  */
 public class ShoppingListFragment extends Fragment implements NavbarFragment {
     final String TAG = "ShoppingListFragment";
+
+
+    // Declare the variables so that you will be able to reference it later.
+    RecyclerView shoppingListView;
+    StoreIngredientViewAdapter shopIngredientViewAdapter;
+    IngredientStorage shopIngredientDataList;
+
+    // adding cities to firebase
+    FirebaseFirestore db;
+    CollectionReference ingredientsCollection;
+    Spinner sortIngredientSpinner;
+    String[] sortingChoices;
+    TextView sortText;
 
     /**
      * Required empty public constructor
