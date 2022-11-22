@@ -112,7 +112,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         if (extras != null) {
             String value = extras.getString("activity_name");
             isEditing = extras.getBoolean("isEditing", false);
-            activity_title.setText(value);
             if (isEditing) {
                 getSupportActionBar().setTitle("Edit Ingredient");
                 Button addButton = findViewById(R.id.confirm_button);
@@ -164,7 +163,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             unitAdapter.notifyDataSetChanged();
             // a bit of a hack...
             if (selectedUnit != null) {
-                unitSpinner.setPrompt(selectedUnit.getUnit());
+                unitSpinner.setPrompt(selectedUnit.get().getUnit());
             }
         });
 
