@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.androidimpact.app.category.Category;
 import com.androidimpact.app.unit.Unit;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
@@ -21,6 +22,8 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class Ingredient implements Serializable  {
+    @DocumentId
+    protected String id;
     protected String description;
     protected float amount;
     // instead of a document, this is a path to the a firebase document
@@ -35,16 +38,26 @@ public class Ingredient implements Serializable  {
 
     /**
      * Constructor for the Ingredient class
+     * @param id (String) - Document id in Firebase
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
      * @param unitDocumentPath (String) - The unit that amount is measuring e.g. g in 300g
      * @param categoryDocumentPath (String) - Path to category document
      * */
-    public Ingredient(String description, float amount, String unitDocumentPath, String categoryDocumentPath) {
+    public Ingredient(String id, String description, float amount, String unitDocumentPath, String categoryDocumentPath) {
+        this.id = id;
         this.description = description;
         this.amount = amount;
         this.unitDocumentPath = unitDocumentPath;
         this.categoryDocumentPath = categoryDocumentPath;
+    }
+
+    /**
+     * Gets the id of the corresponding ingredient in firebase
+     * @return (String) the id of the ingredient
+     */
+    public String getId() {
+        return id;
     }
 
     /**
@@ -72,21 +85,19 @@ public class Ingredient implements Serializable  {
     }
 
     /**
+     * Set a new id for the Ingredient the element
+     * @param id (String) the id of the document
+     */
+    public void setID(String id) {
+        this.id = id;
+    }
+
+    /**
      * Set a new amount of the ingredient
      * @param amount (float) - The new amount to be used
      */
     public void setAmount(float amount) {
         this.amount = amount;
-    }
-
-    @Exclude
-    public void setAmount(double amount) {
-        this.amount = (float) amount;
-    }
-
-    @Exclude
-    public void setAmount(int amount) {
-        this.amount = (float) amount;
     }
 
     /**
@@ -119,6 +130,7 @@ public class Ingredient implements Serializable  {
      */
     @Exclude
     public void getUnitAsync(DocumentRetrievalListener<Unit> listener) {
+//        Log.d("Why me", unitDocumentPath);
         FirebaseFirestore.getInstance().document(unitDocumentPath).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();

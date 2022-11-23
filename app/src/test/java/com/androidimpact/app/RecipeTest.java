@@ -25,7 +25,7 @@
 //    }
 //
 //    private Ingredient mockIngredient() {
-//        return new Ingredient("Macaroni", 10, "lb", "pasta");
+//        return new Ingredient("0", "Macaroni", 10, "lb", "pasta");
 //    }
 //
 //    @Test
@@ -39,7 +39,7 @@
 //    public void testEditIngredient() {
 //        Recipe recipe = mockRecipe();
 //        recipe.addIngredient(mockIngredient());
-//        Ingredient mockIngredient = new Ingredient("Cheese", 5, "g", "dairy");
+//        Ingredient mockIngredient = new Ingredient("1", "Cheese", 5, "g", "dairy");
 //        recipe.addIngredient(mockIngredient);
 //        mockIngredient.setDescription("White cheese");
 //        recipe.editIngredient(1, mockIngredient);
