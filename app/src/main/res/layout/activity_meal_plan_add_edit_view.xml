@@ -7,6 +7,32 @@
     android:background="@color/background"
     tools:context=".activities.MealPlanAddEditViewActivity">
 
+    <LinearLayout
+        android:id="@+id/mealPlanTitleLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/mealPlanTitleInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meal Plan Day:" />
+
+        <EditText
+            android:id="@+id/editTextMealPlanTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="" />
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/breakfast_card"
         android:layout_width="match_parent"
@@ -17,7 +43,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/lunch_card"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealPlanTitleLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
