@@ -1,9 +1,12 @@
-package com.androidimpact.app;
+package com.androidimpact.app.meal_plan;
+
+import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.SortableItemList;
+import com.androidimpact.app.ingredients.IngredientStorage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 public class MealPlanList extends SortableItemList<MealPlan> {
 

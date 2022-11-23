@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.ingredients;
 
 import com.androidimpact.app.category.Category;
 import com.google.firebase.firestore.DocumentId;

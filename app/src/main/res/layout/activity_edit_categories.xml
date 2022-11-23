@@ -12,7 +12,7 @@
         android:id="@+id/addCategoryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="categoryBtnPressed"
+        android:onClick="addCategory"
         android:text="@string/add_category"
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/category_editText"

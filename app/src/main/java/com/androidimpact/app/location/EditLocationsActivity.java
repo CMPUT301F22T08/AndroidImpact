@@ -16,9 +16,11 @@ import android.widget.EditText;
 
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.R;
+import com.androidimpact.app.category.Category;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -182,7 +184,6 @@ public class EditLocationsActivity extends AppCompatActivity {
     public void addLocation(View view) {
         Log.i(TAG + ":locationBtnPressed", "Adding a new location!");
         String locationName = newLocationInput.getText().toString();
-        newLocationInput.setText("");
 
         // return fast on empty location
         if (locationName.equals("")) {
@@ -190,14 +191,26 @@ public class EditLocationsActivity extends AppCompatActivity {
             return;
         }
 
-        Location l = new Location(locationName);
-        Log.i(TAG, "Adding location " + l.getLocation());
-        locationCollection.document(l.getLocation()).set(l)
+        // check if location already exists
+        // if it does, warn the user (and don't add the location)
+        locationCollection.document(locationName)
+                .get()
+                .continueWithTask(task -> {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        throw new Exception(locationName + " already exists!");
+                    } else {
+                        Location l = new Location(locationName);
+                        Log.i(TAG, "Adding location " + l.getLocation());
+                        newLocationInput.setText("");
+                        return locationCollection.document(l.getLocation()).set(l);
+                    }
+                })
                 .addOnSuccessListener(unused -> {
                     makeSnackbar("Added " + locationName);
                 })
                 .addOnFailureListener(e -> {
-                    makeSnackbar("Failed to add " + locationName);
+                    makeSnackbar("Error: " + e.getMessage());
                 });
     }
 

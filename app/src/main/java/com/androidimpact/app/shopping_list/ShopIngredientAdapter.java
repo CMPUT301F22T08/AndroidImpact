@@ -1,8 +1,7 @@
-package com.androidimpact.app;
+package com.androidimpact.app.shopping_list;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidimpact.app.location.Location;
-import com.androidimpact.app.unit.Unit;
+import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.Ingredient;
+import com.androidimpact.app.ingredients.StoreIngredient;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAdapter.IngredientViewHolder>{
 

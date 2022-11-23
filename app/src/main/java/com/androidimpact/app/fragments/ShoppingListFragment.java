@@ -1,7 +1,6 @@
 package com.androidimpact.app.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,12 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.androidimpact.app.Ingredient;
-import com.androidimpact.app.IngredientStorage;
+import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.R;
-import com.androidimpact.app.ShoppingList;
-import com.androidimpact.app.StoreIngredientViewAdapter;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.androidimpact.app.shopping_list.ShoppingList;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;

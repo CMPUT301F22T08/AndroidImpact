@@ -25,13 +25,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.androidimpact.app.IngredientStorageController;
+import com.androidimpact.app.ingredients.IngredientStorageController;
 import com.androidimpact.app.R;
-import com.androidimpact.app.StoreIngredient;
-import com.androidimpact.app.StoreIngredientViewAdapter;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.MainActivity;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 

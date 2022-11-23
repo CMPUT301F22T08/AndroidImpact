@@ -20,9 +20,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.androidimpact.app.IngredientStorage;
-import com.androidimpact.app.StoreIngredient;
-import com.androidimpact.app.StoreIngredientViewAdapter;
+import com.androidimpact.app.ingredients.IngredientStorage;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
