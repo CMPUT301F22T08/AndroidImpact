@@ -25,7 +25,7 @@ public class IngredientStorageController {
         this.context = context;
         //Instantiate the classes
         db = FirebaseFirestore.getInstance();
-        ingredientStorageCollection = db.collection("ingredientStorage-new");
+        ingredientStorageCollection = db.collection("ingredientStorage");
         ingredientStorage = new IngredientStorage();
     }
 

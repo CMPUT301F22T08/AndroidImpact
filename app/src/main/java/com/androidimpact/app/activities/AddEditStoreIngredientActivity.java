@@ -91,7 +91,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        locationCollection = db.collection("locations-new");
+        locationCollection = db.collection("locations");
         unitCollection = db.collection("units");
         categoryCollection = db.collection("categories");
 
