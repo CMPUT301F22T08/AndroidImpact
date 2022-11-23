@@ -393,6 +393,16 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             throw new Exception("Best before must be a future date.");
         }
 
+        if (selectedLocation.get() == null) {
+            throw new Exception("Location must be non null");
+        }
+        if (selectedUnit.get() == null) {
+            throw new Exception("Location must be non null");
+        }
+        if (selectedCategory.get() == null) {
+            throw new Exception("Location must be non null");
+        }
+
         try {
             String id = null;
             if (editing != null) {
@@ -403,7 +413,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // get values
             String unit = selectedUnit.get().getUnit();
             String category = selectedCategory.get().getCategory();
-
             // get document refs
             DocumentReference locationRef = locationCollection.document(selectedLocation.get().getId());
             return new StoreIngredient(id, description, amount, category, date, locationRef.getPath(), unit);

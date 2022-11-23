@@ -34,10 +34,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
     private int selected = -1; // initialize no ingredients selected
 
-
-
-
-
     public ShopIngredientAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
@@ -76,36 +72,14 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
-        holder.amount.setText("Loading");
-        DocumentRetrievalListener<Unit> getUnitListener = new DocumentRetrievalListener<>() {
-            @Override
-            public void onSuccess(Unit data) {
-                String unitStr = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), data.getUnit());
-                holder.amount.setText(unitStr);
-            }
-
-            @Override
-            public void onNullDocument() {
-                holder.amount.setText("NoDoc!");
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.d(TAG, "Cached get failed: ", e);
-                holder.amount.setText("Failed!");
-            }
-        };
-        currentIngredient.getUnitAsync(getUnitListener);
-
+        String unitStr = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        holder.amount.setText(unitStr);
 
         // OnClick Listener
         holder.dropdownToggle.setOnClickListener(v -> {
             Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
             clickedItem(position);
         });
-
-        //Add a onclick listener for switch button which should launch a fragment ideally.
-
     }
 
 
@@ -164,16 +138,9 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             //Need to be changed for now
             description = itemView.findViewById(R.id.shop_ingredient_description);
             category = itemView.findViewById(R.id.shop_ingredient_category);
-
             dropdownToggle = itemView.findViewById(R.id.shop_ingredient_dropdown_toggle);
-
-
             expandable = itemView.findViewById(R.id.shop_ingredient_expandable_section);
-
-
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
-
-
             amount = itemView.findViewById(R.id.store_ingredient_amount);
         }
     }

@@ -27,7 +27,6 @@
         tools:targetApi="31">
         <activity
             android:name=".category.EditCategoriesActivity"
-            android:name=".activities.MealPlanAddEditViewActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
