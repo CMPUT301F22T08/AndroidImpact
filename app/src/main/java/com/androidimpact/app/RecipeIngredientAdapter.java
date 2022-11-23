@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,15 +73,13 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
             }
         });
 
-        // now, retrieve "unit" from firebase
-        // since this takes a while, we first set a loading state
-        holder.ingredientAmount.setText("loading...");
-        currentIngredient.getUnitAsync(abstractDocumentRetrievalListener(
-                holder.ingredientAmount,
-                data -> context.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), data.getUnit()),
-                currentIngredient.getDescription()
-        ));
+        // set initial ingredient unit
+        // note that we store the unit as a string, not a document path
+        String amountUnit = context.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        holder.ingredientAmount.setText(amountUnit);
 
+        // now, retrieve "category" from firebase
+        // since this takes a while, we first set a loading state
         holder.ingredientCategory.setText("loading...");
         currentIngredient.getCategoryAsync(abstractDocumentRetrievalListener(
                 holder.ingredientCategory,
