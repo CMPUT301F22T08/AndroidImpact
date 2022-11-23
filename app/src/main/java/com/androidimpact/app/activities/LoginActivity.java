@@ -14,8 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidimpact.app.R;
 
+/**
+ * This is the activity for the login page
+ * @version 2.0
+ * @author Curtis Kan
+ */
 public class LoginActivity extends AppCompatActivity {
 
+    // Instantiate XML elements
     TextView title;
     TextView saying;
     EditText username;
@@ -26,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Link XML elements
         title = findViewById(R.id.login_title);
         saying = findViewById(R.id.login_phrase);
         username = findViewById(R.id.username);
@@ -33,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         signup = findViewById(R.id.signup);
         login = findViewById(R.id.login);
 
+        // Fade in animation
         Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         title.startAnimation(fadeIn);
         saying.startAnimation(fadeIn);
@@ -45,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // Go to MainActivity
     public void login(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

@@ -41,7 +41,8 @@
         app:layout_constraintEnd_toEndOf="@+id/recipe_ingredient_editUnits"
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_category"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/icon_edit" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ingredient_description_layout"
@@ -134,7 +135,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredient_unit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_unit"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/icon_edit" />
 
     <Spinner
         android:id="@+id/recipe_ingredient_unit"

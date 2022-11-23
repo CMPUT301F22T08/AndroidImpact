@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:lines="2"
-        android:textColor="@color/white"
+        android:textColor="#8B0000"
         android:text="&quot;Impacting lives\n one food item at a time.&quot;"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -47,16 +47,16 @@
         android:textColorHint="@color/purple_500"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_phrase"
-        app:layout_constraintVertical_bias="0.30" />
+        app:layout_constraintVertical_bias="0.50" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="110dp"
         android:ems="10"
         android:hint="Password"
         android:textColor="@color/white"

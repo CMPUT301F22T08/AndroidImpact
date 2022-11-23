@@ -41,7 +41,8 @@
         app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_category"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/icon_edit"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ingredient_store_description_layout"
@@ -142,7 +143,8 @@
         app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_location"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/icon_edit" />
 
     <Button
         android:id="@+id/ingredientStoreAdd_confirmBtn"
@@ -177,7 +179,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_unit"
         app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_unit"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/icon_edit" />
 
     <TextView
         android:id="@+id/ingredientStorageAdd_unitLabel"
