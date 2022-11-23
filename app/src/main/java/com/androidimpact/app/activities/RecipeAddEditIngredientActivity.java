@@ -205,7 +205,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedElem.set((T) parentView.getItemAtPosition(position));
-                Log.i(TAG, "selected unit is " + selectedElem.get().toString());
+                Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
             }
 
             @Override
@@ -248,7 +248,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             // a bit of a hack...
             if (selectedElem.get() != null) {
-                spinner.setPrompt(selectedElem.get().toString());
+                spinner.setSelection(data.indexOf(selectedElem.get()));
+                Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
             }
         };
     }
