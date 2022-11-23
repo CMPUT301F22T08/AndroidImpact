@@ -1,5 +1,7 @@
 package com.androidimpact.app;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +15,17 @@ import java.util.HashMap;
  */
 public class MealPlan implements Serializable {
     private String date;
+    private String sortString;
     private ArrayList<Recipe> breakfastRecipes, lunchRecipes, dinnerRecipes, snackRecipes;
     private ArrayList<StoreIngredient> breakfastIngredients, lunchIngredients, dinnerIngredients, snackIngredients;
     private HashMap<String, ArrayList<Recipe>> mealRecipeMap;
     private HashMap<String, ArrayList<StoreIngredient>> mealIngredientMap;
+    private RecipeList recipeList;
+    private IngredientStorage ingredientStorage;
 
-    public MealPlan(String date) {
+    public MealPlan(String date, String sortString) {
         this.date = date;
+        this.sortString = sortString;
         this.breakfastRecipes = new ArrayList<>();
         this.lunchRecipes = new ArrayList<>();
         this.dinnerRecipes = new ArrayList<>();
@@ -30,6 +36,12 @@ public class MealPlan implements Serializable {
         this.snackIngredients = new ArrayList<>();
 
         this.putInHashMaps();
+    }
+
+    public MealPlan(String date, String sortString, RecipeList recipeList, IngredientStorage ingredientStorage) {
+        this(date, sortString);
+        this.recipeList = recipeList;
+        this.ingredientStorage = ingredientStorage;
     }
 
     public MealPlan(String date,
@@ -77,6 +89,10 @@ public class MealPlan implements Serializable {
         this.date = date;
     }
 
+    public String getSortString() {
+        return this.sortString;
+    }
+
     public ArrayList<Recipe> getRecipes(String key) {return this.mealRecipeMap.get(key);}
 
     public ArrayList<StoreIngredient> getIngredients(String key) {return this.mealIngredientMap.get(key);}
@@ -111,5 +127,25 @@ public class MealPlan implements Serializable {
 
     public void setSnackIngredients(ArrayList<StoreIngredient> snackIngredients) {
         this.snackIngredients = snackIngredients;
+    }
+
+    public void addMealItemRecipe(String key, String recipeKey, RecipeList recipeList1) {
+        ArrayList<Recipe> currentRecipes = this.mealRecipeMap.get(key);
+        Log.i("data data", recipeList1.getData().toString());
+        recipeList1.getData().forEach(a -> {
+            if(a.getId().equals(recipeKey)) {
+                currentRecipes.add(a);
+                Log.i("added recipe", "bogo");
+            }
+        });
+    }
+
+    public void addMealItemIngredient(String key, String ingredientKey, IngredientStorage ingredientStorage1) {
+        ArrayList<StoreIngredient> currentIngredients = this.mealIngredientMap.get(key);
+        ingredientStorage1.getData().forEach(a -> {
+            if(a.getId().equals(ingredientKey)) {
+                currentIngredients.add(a);
+            }
+        });
     }
 }

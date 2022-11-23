@@ -2,6 +2,8 @@ package com.androidimpact.app;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +62,20 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
      */
     @Override
     public void onBindViewHolder(@NonNull MealAdapter.MealViewHolder holder, int position) {
+        ArrayList<Recipe> sumArrayList = new ArrayList<>();
+        sumArrayList.addAll(this.breakfastRecipes);
+        sumArrayList.addAll(this.lunchRecipes);
+        //sumArrayList.addAll(this.dinnerRecipes);
+        int i = position;
+        //for(int i = 0; i < this.breakfastRecipes.size(); i++) {
+            if(i==0) {
+                holder.type.setText("Breakfast");
+            }
+            holder.item.setText(sumArrayList.get(i).getTitle());
+        //}
+        //this.breakfastRecipes.forEach(recipe -> {
+        //    holder.item.setText(recipe.getTitle());
+        //});
         //MealPlan recyclerData = mealPlan.get(position);
         //holder.date.setText(recyclerData.getDate());
     }

@@ -18,9 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.MealPlan;
 import com.androidimpact.app.MealPlanListAdapter;
 import com.androidimpact.app.R;
+import com.androidimpact.app.RecipeList;
+import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,6 +52,8 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     RecyclerView mealPlanListView;
     MealPlanListAdapter mealPlanAdapter;
     ArrayList<MealPlan> mealPlans;
+    RecipeList recipeList;
+    IngredientStorage ingredientStorage;
 
     // adding recipes to firebase
     FirebaseFirestore db;
@@ -119,8 +124,10 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
 
         // initialize adapters and customList, connect to DB
         mealPlanListView = a.findViewById(R.id.meal_plan_list);
+        recipeList = ((MainActivity) a).getRecipeList();
+        ingredientStorage = ((MainActivity) a).getIngredientStorage();
         mealPlans = new ArrayList<>();
-        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlans);
+        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlans, recipeList, ingredientStorage);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -179,9 +186,18 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             }
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Map<String, Object> data = doc.getData();
-                MealPlan mealPlanToAdd = new MealPlan(doc.getId());
-                //mealPlanToAdd.setBreakfastRecipes(data.get("breakfast"));
-                //MealPlan mealPlanToAdd = doc.toObject(MealPlan.class);
+                MealPlan mealPlanToAdd = new MealPlan(doc.getId(), (String) data.get("sortString"));
+
+                String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
+                for(String key: keys) {
+                    ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
+                    if(recipeIdList != null) {
+                        recipeIdList.forEach(recipeKey -> {
+                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, this.recipeList);
+                            Log.i("naruto", recipeKey);
+                        });
+                    }
+                }
                 mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
             }
 

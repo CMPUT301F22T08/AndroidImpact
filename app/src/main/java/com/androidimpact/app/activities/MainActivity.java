@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.androidimpact.app.IngredientStorage;
+import com.androidimpact.app.MealPlanList;
 import com.androidimpact.app.R;
+import com.androidimpact.app.Recipe;
+import com.androidimpact.app.RecipeList;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
 import com.androidimpact.app.fragments.NavbarFragment;
@@ -15,6 +20,8 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 /**
  * This class is the activity Main Activity
@@ -27,10 +34,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
+    MealPlannerFragment mealPlannerFragment;// mealPlannerFragment = MealPlannerFragment.newInstance();
     final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
+
+    RecipeList recipeList;
+    IngredientStorage ingredientStorage;
+    MealPlanList mealPlanList;
 
     BottomNavigationView bottomnav;
 
@@ -44,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         getSupportActionBar().setTitle("AndroidImpact");
 
+        ArrayList<Recipe> recipes = new ArrayList<>();
+        recipeList = new RecipeList(recipes);
+        Log.i("recipelistboom", recipeList.getData().toString());
+        ingredientStorage = new IngredientStorage();
+
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
 
@@ -53,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
+        this.mealPlannerFragment = MealPlannerFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
@@ -101,5 +118,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getSupportFragmentManager().beginTransaction().hide(active).show(newFragment).commit();
         active = newFragment;
         newFragment.setFabListener(navbarFAB);
+    }
+
+    public RecipeList getRecipeList() {
+        return this.recipeList;
+    }
+
+    public IngredientStorage getIngredientStorage() {
+        return this.ingredientStorage;
     }
 }

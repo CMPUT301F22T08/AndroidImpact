@@ -75,10 +75,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      * @param context         the context for the parent view
      * @param recipeArrayList the recipes to consider in the RecipeListAdapter object
      */
-    public RecipeListAdapter(Context context, ArrayList<Recipe> recipeArrayList) {
-        this.recipeArrayList = recipeArrayList;
+    public RecipeListAdapter(Context context, RecipeList recipeList/*ArrayList<Recipe> recipeArrayList*/) {
+        //this.recipeArrayList = recipeArrayList;
         this.context = context;
-        this.recipeList = new RecipeList(recipeArrayList);
+        this.recipeList = recipeList;
+        this.recipeArrayList = recipeList.getData();
+        //this.recipeList = new RecipeList(recipeArrayList);
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();

@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,9 +41,9 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
      * @param context
      * @param mealPlans
      */
-    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans) {
+    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans, RecipeList recipeList, IngredientStorage ingredientStorage) {
         this.mealPlans = mealPlans;
-        this.mealPlanList = new MealPlanList(this.mealPlans);
+        this.mealPlanList = new MealPlanList(this.mealPlans, recipeList, ingredientStorage);
         this.context = context;
 
         // initialize Firestore
@@ -78,7 +80,12 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
     @Override
     public void onBindViewHolder(@NonNull MealPlanListAdapter.MealPlanHolder holder, int position) {
         MealPlan recyclerData = mealPlans.get(position);
+        MealAdapter mealAdapter = new MealAdapter(recyclerData);
         holder.date.setText(recyclerData.getDate());
+        LinearLayoutManager manager = new LinearLayoutManager(context);
+        holder.mealsList.setLayoutManager(manager);
+        holder.mealsList.setAdapter(mealAdapter);
+        mealAdapter.notifyDataSetChanged();
     }
 
     /**

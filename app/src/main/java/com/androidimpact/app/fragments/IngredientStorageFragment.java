@@ -30,6 +30,7 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -157,7 +158,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
         // initialize adapters and customList
         ingredientListView = a.findViewById(R.id.ingredient_listview);
 
-        ingredientDataList = new com.androidimpact.app.IngredientStorage();
+        ingredientDataList = ((MainActivity) a).getIngredientStorage();//new com.androidimpact.app.IngredientStorage();
         storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
 
 

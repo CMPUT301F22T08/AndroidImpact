@@ -30,10 +30,12 @@ import android.widget.Spinner;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
+import com.androidimpact.app.RecipeList;
 import com.androidimpact.app.RecipeListAdapter;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,6 +63,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
     RecipeListAdapter recipeViewAdapter;
+    RecipeList recipeList;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
     Spinner sortSpinner;
@@ -147,9 +150,12 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
 
         // initialize adapters and customList, connect to DB
         recipeListView = a.findViewById(R.id.recipe_listview);
-        recipeDataList = new ArrayList<>();
-        recipeViewAdapter = new com.androidimpact.app.RecipeListAdapter(getContext(), recipeDataList);
-        sortingOptions = com.androidimpact.app.RecipeList.getSortChoices();
+
+        //recipeDataList = new ArrayList<>();
+        recipeList = ((MainActivity) a).getRecipeList();
+        recipeDataList = recipeList.getData();
+        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeList/*recipeDataList*/);
+        sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
                 R.layout.spinner_item,
@@ -250,6 +256,9 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
             for (Recipe i : recipeDataList) {
                 Log.i(TAG, "Snapshot listener: Added " + i.getTitle() + " to elements");
             }
+
+            Log.i("comp", recipeList.getData().toString());
+            Log.i("comp2", (((MainActivity) a).getRecipeList()).getData().toString());
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
 
