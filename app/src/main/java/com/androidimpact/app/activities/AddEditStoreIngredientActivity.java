@@ -43,6 +43,7 @@ import java.util.UUID;
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
  * @version 1.0
+ * @author Vedant Vyas
  */
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
@@ -118,6 +119,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         if (extras != null) {
             ingredient = (StoreIngredient) extras.getSerializable("storeIngredient");
             getSupportActionBar().setTitle("Edit Ingredient");
+            confirmBtn.setText("Edit");
+
 
             // set initial values
             descriptionEditText.setText(ingredient.getDescription());

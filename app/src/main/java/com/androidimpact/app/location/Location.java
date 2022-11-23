@@ -9,6 +9,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Location
+ * Defines a user defined location
+ * @version 1.0
+ * @author Joshua Ji
+ */
 public class Location implements Serializable {
     @DocumentId
     String id;

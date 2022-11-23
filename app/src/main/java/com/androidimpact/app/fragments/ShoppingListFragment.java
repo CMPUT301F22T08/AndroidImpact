@@ -20,6 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * A simple {@link Fragment} subclass.
  * Use the {@link ShoppingListFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @version 1.0
+ * @author Vedant Vyas
  */
 public class ShoppingListFragment extends Fragment implements NavbarFragment {
     final String TAG = "ShoppingListFragment";

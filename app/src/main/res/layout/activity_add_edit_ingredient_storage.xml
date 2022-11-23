@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,18 +24,18 @@
         app:counterTextColor="@color/white"
         app:boxBackgroundColor="@color/background"
         app:counterMaxLength="30">
-    <EditText
-        android:id="@+id/ingredientStoreAdd_description"
-        android:layout_width="380sp"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/purple_500"
-        android:ems="10"
-        android:hint="@string/description"
-        android:textColor="@color/white"
-        android:inputType="text"
-        android:maxLength="30"
-        android:minHeight="48dp"
-         />
+
+        <EditText
+            android:id="@+id/ingredientStoreAdd_description"
+            android:layout_width="380sp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/description"
+            android:inputType="text"
+            android:maxLength="30"
+            android:minHeight="50dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/purple_500" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
@@ -92,7 +92,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />
 
-    <Spinner
+    <Spinner style="@android:style/Widget.Holo.Light.Spinner"
         android:id="@+id/ingredientStoreAdd_location"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -104,12 +104,12 @@
 
     <Button
         android:id="@+id/ingredientStoreAdd_cancelBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="50dp"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/cancel"
         android:text="@string/cancel"
-        android:backgroundTint="@color/purple_200"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -127,12 +127,12 @@
 
     <Button
         android:id="@+id/ingredientStoreAdd_confirmBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="70dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
-        android:text="@string/confirm"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/confirm"
+        android:text="@string/add"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -162,20 +162,23 @@
         android:id="@+id/ingredientStorageAdd_unitLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:text="@string/unit"
-        android:textSize="16sp"
         android:textColor="@color/white"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_unit"
         app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
-        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_unit" />
+        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_unit"
+        app:layout_constraintVertical_bias="0.576" />
 
-    <Spinner
+    <Spinner style="@android:style/Widget.Holo.Light.Spinner"
         android:id="@+id/ingredientStoreAdd_unit"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="28dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editUnitsBtn"
+        app:layout_constraintHorizontal_bias="0.453"
         app:layout_constraintStart_toEndOf="@+id/ingredientStorageAdd_unitLabel"
         app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
 

@@ -26,6 +26,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * EditLocationsActivity
+ * Activity for modifying user-defined locations
+ * @version 1.0
+ * @author Joshua Ji
+ */
 public class EditLocationsActivity extends AppCompatActivity {
 
     final String TAG = "EditIngredientLocations";

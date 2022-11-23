@@ -24,6 +24,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * EditUnitsActivity
+ * Activity for modifying user-defined units
+ * @version 1.0
+ * @author Joshua Ji
+ */
 public class EditUnitsActivity extends AppCompatActivity {
     final String TAG = "EditUnitsActivity";
     final String COLLECTION_NAME = "units";

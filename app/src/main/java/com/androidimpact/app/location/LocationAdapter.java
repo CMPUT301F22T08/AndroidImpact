@@ -16,8 +16,9 @@ import java.util.ArrayList;
 
 /**
  * LocationAdapter
- *
  * Provides the adapter for managing the recycler view when editing locations
+ * @version 1.0
+ * @author Joshua Ji
  */
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
     private ArrayList<Location> locationArrayList;
