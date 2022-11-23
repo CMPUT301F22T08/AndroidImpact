@@ -6,34 +6,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:onClick="editUnits"
     tools:context=".activities.RecipeAddEditIngredientActivity">
 
-    <TextView
-        android:id="@+id/activity_title"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ingredient_description_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/activity_title"
-        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="80dp"
+        app:counterEnabled="true"
+        android:textColorHint="@color/purple_500"
+        app:counterTextColor="@color/white"
+        app:boxBackgroundColor="@color/background"
+        app:counterMaxLength="30">
     <EditText
         android:id="@+id/ingredient_description"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:ems="10"
         android:hint="@string/description"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:maxLength="30"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_700"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+         />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
         android:id="@+id/ingredient_amount"
@@ -45,11 +45,11 @@
         android:inputType="numberDecimal"
         android:minHeight="48dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_700"
+        android:textColorHint="@color/purple_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient_description" />
+        app:layout_constraintTop_toBottomOf="@+id/ingredient_description_layout" />
 
     <EditText
         android:id="@+id/ingredient_category"
@@ -61,7 +61,7 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_700"
+        android:textColorHint="@color/purple_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,11 +69,11 @@
 
     <Button
         android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="50dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/cancel"
         android:onClick="cancel"
         android:text="@string/cancel"
         android:textColor="@color/white"
@@ -81,12 +81,12 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/confirm_button"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="70dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/confirm"
         android:onClick="confirm"
         android:text="@string/add"
         android:textColor="@color/white"
@@ -97,13 +97,15 @@
         android:id="@+id/recipe_ingredient_unitLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/unit"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredient_unit"
         app:layout_constraintEnd_toStartOf="@+id/recipe_ingredient_unit"
-        app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_unit" />
+        app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_unit"
+        android:textSize="16sp" />
 
-    <Spinner
+    <Spinner style="@android:style/Widget.Holo.Light.Spinner"
         android:id="@+id/recipe_ingredient_unit"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

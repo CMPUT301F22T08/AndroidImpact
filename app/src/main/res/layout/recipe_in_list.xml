@@ -31,11 +31,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:backgroundTint="#2E6578"
+        app:backgroundTint="@color/black"
+        app:borderWidth="2dp"
+        android:backgroundTint="#2E6578"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit"
-        app:tint="@android:color/white" />
+        app:tint="@color/white"/>
 
     <HorizontalScrollView
         android:layout_width="0dp"

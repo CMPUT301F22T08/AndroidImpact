@@ -5,6 +5,7 @@
     android:id="@+id/editIngredientLocations_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".location.EditLocationsActivity">
 
     <Button
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:onClick="locationBtnPressed"
         android:text="@string/add_location"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/location_editText"
         app:layout_constraintTop_toTopOf="@+id/location_editText" />
 
@@ -34,8 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:ems="10"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_500"
         android:inputType="textPersonName"
-        android:text=""
+        android:hint="@string/add_location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
+        android:textColor="@color/white"
         android:onClick="goBack"
         android:text="@string/go_back"
         app:layout_constraintBottom_toBottomOf="parent"

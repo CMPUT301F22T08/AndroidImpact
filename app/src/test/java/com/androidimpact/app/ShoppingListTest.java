@@ -1,4 +1,4 @@
-package com.androidimpact.app;
-
-public class ShoppingListTest {
-}
+//package com.androidimpact.app;
+//
+//public class ShoppingListTest {
+//}

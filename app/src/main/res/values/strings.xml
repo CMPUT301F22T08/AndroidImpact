@@ -41,4 +41,5 @@
     <string name="add_location">Add Location</string>
     <string name="go_back">Go Back</string>
     <string name="add_units">Add Unit</string>
+    <string name="loading">loading...</string>
 </resources>

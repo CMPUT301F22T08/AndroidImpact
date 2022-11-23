@@ -2,6 +2,7 @@ package com.androidimpact.app;
 
 import com.androidimpact.app.location.Location;
 import com.androidimpact.app.unit.Unit;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
@@ -29,6 +30,7 @@ public class StoreIngredient extends Ingredient implements Serializable {
     // instead of a document, this is a path to the location document
     // https://stackoverflow.com/a/57225579
     private String locationDocumentPath;
+    @DocumentId
     private String id;
 
     /**

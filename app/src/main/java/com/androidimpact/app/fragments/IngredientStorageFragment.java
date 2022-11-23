@@ -42,6 +42,8 @@ import nl.dionsegijn.konfetti.models.Size;
  * A simple {@link Fragment} subclass.
  * Use the {@link IngredientStorageFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @version 1.0
+ * @author Vedant Vyas
  */
 public class IngredientStorageFragment extends Fragment implements NavbarFragment {
     final String TAG = "IngredientStorageFragment";
@@ -174,7 +176,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
         //changing drop down layout
         sortingOptionsAdapter.setDropDownViewResource(
-                android.R.layout.simple_list_item_1
+                android.R.layout.simple_spinner_dropdown_item
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
 

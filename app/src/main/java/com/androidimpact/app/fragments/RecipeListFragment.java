@@ -53,6 +53,8 @@ import nl.dionsegijn.konfetti.models.Size;
  * A simple {@link Fragment} subclass.
  * Use the {@link RecipeListFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @version 1.0
+ * @author Vedant Vyas
  */
 public class RecipeListFragment extends Fragment implements NavbarFragment{
     final String TAG = "RecipeListFragment";
@@ -69,7 +71,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     CollectionReference recipeCollection;
 
     // using ActivityResultLaunchers
-    // not that editRecipeLauncher is defined in RecipeListAdapter
+    // note that editRecipeLauncher is defined in RecipeListAdapter
     private ActivityResultLauncher<Intent> addRecipeLauncher;
 
     /**
@@ -101,7 +103,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes-new");
+        recipeCollection = db.collection("recipes");
     }
 
     /**
@@ -220,11 +222,11 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                 recipeViewAdapter.removeItem(position)
                         .addOnSuccessListener(o -> {
                             Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_SHORT).show();
                         })
                         .addOnFailureListener(e -> {
                             Log.d(TAG, description + " could not be deleted!" + e);
-                            Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_SHORT).show();
                         });
             }
             // at last we are adding this
@@ -264,8 +266,8 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                     Log.i(TAG + ":addRecipeResult", "Got bundle");
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        final KonfettiView confetti = a.findViewById(R.id.confetti_view);
-                        Snackbar.make(recipeListView, "Added recipe!", Snackbar.LENGTH_LONG).show();
+                        final KonfettiView confetti = a.findViewById(R.id.confetti_view_recipes);
+                        Snackbar.make(recipeListView, "Added the recipe!", Snackbar.LENGTH_SHORT).show();
                         confetti.build()
                                 .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                                 .setDirection(0.0, 359.0)

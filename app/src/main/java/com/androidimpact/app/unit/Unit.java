@@ -6,6 +6,12 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Unit
+ * Defines a user defined unit
+ * @version 1.0
+ * @author Joshua Ji
+ */
 public class Unit implements Serializable {
     @DocumentId
     String unit;
