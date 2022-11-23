@@ -13,7 +13,7 @@
         android:id="@+id/addLocationBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="locationBtnPressed"
+        android:onClick="addLocation"
         android:text="@string/add_location"
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/location_editText"

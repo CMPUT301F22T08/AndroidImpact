@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
-import com.androidimpact.app.location.Location;
-import com.androidimpact.app.location.LocationAdapter;
 import com.androidimpact.app.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.AggregateSource;
@@ -140,7 +138,6 @@ public class EditLocationsActivity extends AppCompatActivity {
                 // Get the swiped item at a particular position.
                 Location deletedIngredient = locationArrayList.get(position);
                 String location = deletedIngredient.getLocation();
-                String id = deletedIngredient.getId();
 
                 Log.d(TAG, "Swiped " + location + " at position " + position);
 
@@ -157,7 +154,7 @@ public class EditLocationsActivity extends AppCompatActivity {
                                 return;
                             }
                             // delete item from firebase
-                            locationCollection.document(id)
+                            locationCollection.document(location)
                                     .delete()
                                     .addOnSuccessListener(aVoid -> {
                                         Log.d(TAG, location + " has been deleted successfully!");
@@ -182,9 +179,10 @@ public class EditLocationsActivity extends AppCompatActivity {
     /**
      * This is run whenever `R.id.addLocationBtn` is pressed
      */
-    public void locationBtnPressed(View view) {
+    public void addLocation(View view) {
         Log.i(TAG + ":locationBtnPressed", "Adding a new location!");
         String locationName = newLocationInput.getText().toString();
+        newLocationInput.setText("");
 
         // return fast on empty location
         if (locationName.equals("")) {
@@ -194,8 +192,7 @@ public class EditLocationsActivity extends AppCompatActivity {
 
         Location l = new Location(locationName);
         Log.i(TAG, "Adding location " + l.getLocation());
-        newLocationInput.setText("");
-        locationCollection.document(l.getId()).set(l)
+        locationCollection.document(l.getLocation()).set(l)
                 .addOnSuccessListener(unused -> {
                     makeSnackbar("Added " + locationName);
                 })

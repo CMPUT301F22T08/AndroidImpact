@@ -20,51 +20,38 @@ import java.util.UUID;
  */
 public class Location implements Serializable, Timestamped {
     @DocumentId
-    String id;
-    String location;
+    private String location;
     @ServerTimestamp
-    Date dateAdded;
+    private Date dateAdded;
 
     // default empty constructor for Firebase auto deserialization
     public Location() {}
 
     /**
-     * Constructs a Location class from its value
+     * Constructs a Location class from its value, with the current date
      *
      * also generates a UUID
-     * @param location_
+     * @param location
      */
-    public Location(String location_) {
-        UUID uuid = UUID.randomUUID();
-        id = uuid.toString();
-        location = location_;
-        dateAdded = new Date();
+    public Location(String location) {
+        this.location = location;
+        this.dateAdded = new Date();
     }
 
     /**
      * Constructs a Location with the value and its id
      *
-     * @param id_
-     * @param location_
-     * @param date
+     * @param location The string value of the location
+     * @param date current date time
      */
-    public Location(String id_, String location_, Date date) {
-        id = id_;
-        location = location_;
-        dateAdded = date;
+    public Location(String location, Date date) {
+        this.location = location;
+        this.dateAdded = date;
     }
 
     @NonNull
     public String toString() {
         return getLocation();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getLocation() {
@@ -106,6 +93,6 @@ public class Location implements Serializable, Timestamped {
         Location c = (Location) o;
 
         // Compare the data members and return accordingly
-        return Objects.equals(id, c.getId());
+        return Objects.equals(location, c.getLocation());
     }
 }

@@ -104,16 +104,12 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             holder.expandable.setVisibility(View.GONE);
         }
 
-        // set unit
+        // set view values
         // units and categories are stored in an ingredient by their string value
         String amountUnit = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         holder.amount.setText(amountUnit);
-
         holder.category.setText(currentIngredient.getCategory());
-
-        // since we have to fetch from firebase, we'll use a "loading" state
-        holder.location.setText("loading...");
-        currentIngredient.getLocationAsync(asyncDataListener(holder.location, Location::getLocation));
+        holder.location.setText(currentIngredient.getLocation());
 
         // setting formatted date
         String myFormat="MMM dd yyyy";
@@ -134,30 +130,6 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
                 listener.storeIngredientEditClicked(currentIngredient, position);
             }
         });
-    }
-
-    /**
-     * Abstracts the `getUnitAsync` and `getCollectionAsync`, etc to a single function
-     */
-    private <T>DocumentRetrievalListener<T> asyncDataListener(TextView view, Function<T, String> fromText) {
-        return new DocumentRetrievalListener<T>() {
-            @Override
-            public void onSuccess(T data) {
-                Log.i(TAG, "Data listener success for data " + data.toString());
-                view.setText(fromText.apply(data));
-            }
-
-            @Override
-            public void onNullDocument() {
-                view.setText("NoDoc!");
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.d(TAG, "asyncDataListener failed: ", e);
-                view.setText("Failed!");
-            }
-        };
     }
 
     /**

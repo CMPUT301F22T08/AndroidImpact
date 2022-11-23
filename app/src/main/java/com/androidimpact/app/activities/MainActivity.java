@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // adding cities to firebase
     final String TAG = "MainActivity";
-
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
     MealPlannerFragment mealPlannerFragment;// mealPlannerFragment = MealPlannerFragment.newInstance();
