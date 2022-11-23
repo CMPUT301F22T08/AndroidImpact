@@ -11,16 +11,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
-import com.androidimpact.app.category.Category;
-import com.androidimpact.app.category.CategoryAdapter;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.SuccessContinuation;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -173,9 +174,9 @@ public class EditCategoriesActivity extends AppCompatActivity {
     }
 
     /**
-     * This is run whenever `R.id.addCategoryBtn` is pressed
+     * This is run whenever `R.id.addCategoryBtn` is pressed, when the user wants to add a new category
      */
-    public void categoryBtnPressed(View view) {
+    public void addCategory(View view) {
         Log.i(TAG + ":categoryBtnPressed", "Adding a new category!");
         String categoryName = newCategoryInput.getText().toString();
 
@@ -185,10 +186,20 @@ public class EditCategoriesActivity extends AppCompatActivity {
             return;
         }
 
-        Category l = new Category(categoryName);
-        Log.i(TAG, "Adding category " + l.getCategory());
-        newCategoryInput.setText("");
-        categoryCollection.document(l.getCategory()).set(l)
+        // check if category already exists
+        categoryCollection.document(categoryName)
+                .get()
+                .continueWithTask(task -> {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        throw new Exception("Error: " + categoryName + " already exists!");
+                    } else {
+                        Category l = new Category(categoryName);
+                        Log.i(TAG, "Adding category " + l.getCategory());
+                        newCategoryInput.setText("");
+                        return categoryCollection.document(l.getCategory()).set(l);
+                    }
+                })
                 .addOnSuccessListener(unused -> {
                     makeSnackbar("Added " + categoryName);
                 })
