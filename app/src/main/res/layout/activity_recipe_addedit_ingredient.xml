@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
         android:text="@string/category"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredient_category"
@@ -121,6 +120,7 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredient_unit"
+        app:layout_constraintEnd_toStartOf="@+id/recipe_ingredient_unit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredient_unit" />
 
@@ -139,10 +139,10 @@
         android:id="@+id/recipe_ingredient_unit"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/recipe_ingredient_editUnits"
-        app:layout_constraintStart_toEndOf="@+id/recipe_ingredient_unitLabel"
         app:layout_constraintTop_toBottomOf="@+id/ingredient_amount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
