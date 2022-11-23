@@ -180,6 +180,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Map<String, Object> data = doc.getData();
                 MealPlan mealPlanToAdd = new MealPlan(doc.getId());
+                //mealPlanToAdd.setBreakfastRecipes(data.get("breakfast"));
                 //MealPlan mealPlanToAdd = doc.toObject(MealPlan.class);
                 mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
             }

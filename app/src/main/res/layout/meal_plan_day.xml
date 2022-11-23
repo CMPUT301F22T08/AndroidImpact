@@ -38,7 +38,8 @@
             app:srcCompat="@android:drawable/ic_menu_edit" />
     </LinearLayout>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/meals_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
