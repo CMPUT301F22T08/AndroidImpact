@@ -1,7 +1,9 @@
 package com.androidimpact.app.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -39,7 +41,12 @@ public class LoginActivity extends AppCompatActivity {
         signup.startAnimation(fadeIn);
         login.startAnimation(fadeIn);
 
+        //TODO: firebase auth
 
     }
 
+    public void login(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }
