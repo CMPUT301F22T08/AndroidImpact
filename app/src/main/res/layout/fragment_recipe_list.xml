@@ -13,13 +13,12 @@
         android:text="Recipe List" />
         -->
 
+
+    <include layout="@layout/activity_recipe_list_activity" />
+
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/confetti_view_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-    <include layout="@layout/activity_recipe_list_activity">
-
-    </include>
 
 </FrameLayout>
