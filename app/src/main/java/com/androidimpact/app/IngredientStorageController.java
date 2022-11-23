@@ -72,10 +72,8 @@ public class IngredientStorageController {
 
     public void addEdit(StoreIngredient storeIngredient){
         // Adds if id is null else edits
-        String id;
-        if (storeIngredient.getId() != null){
-            id = storeIngredient.getId();
-        } else {
+        String id = storeIngredient.getId();
+        if (id == null){
             UUID uuid = UUID.randomUUID();
             id = uuid.toString();
             storeIngredient.setID(id);
