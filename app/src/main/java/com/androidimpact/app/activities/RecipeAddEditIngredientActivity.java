@@ -48,7 +48,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
     // Initialize attributes
     final String TAG = "RecipeAddEditIngredientActivity";
-    EditText description, amount, category;
+    EditText description, amount;
     private Boolean isEditing = false;
     private int position;
 
@@ -87,10 +87,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_recipe_addedit_ingredient);
 
-
         description = findViewById(R.id.ingredient_description);
         amount = findViewById(R.id.ingredient_amount);
-        category = findViewById(R.id.ingredient_category);
         unitSpinner = findViewById(R.id.recipe_ingredient_unit);
         categorySpinner = findViewById(R.id.recipe_ingredient_category);
 
@@ -101,7 +99,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         unitSpinner.setAdapter(unitAdapter);
 
         ArrayList<Category> categories = new ArrayList<>();
-        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
 
         // set onclick for spinner
@@ -120,7 +119,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 id = ingredient.getId();
                 description.setText(ingredient.getDescription());
                 amount.setText(Float.toString(ingredient.getAmount()));
-                category.setText(ingredient.getCategory());
                 position = extras.getInt("position");
 
                 // setting initial spinner values are a bit weird
@@ -222,7 +220,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 return;
             }
             if (queryDocumentSnapshots == null) {
-                Log.w(TAG + ":snapshotListener", "Location collection is null!");
+                Log.w(TAG + ":snapshotListener", "snapshot listener: collection is null!");
                 return;
             }
             data.clear();

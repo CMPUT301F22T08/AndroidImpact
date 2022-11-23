@@ -12,7 +12,7 @@ import java.util.Date;
  * @version 1.0
  * @see Ingredient
  */
-public class RecipeIngredient extends Ingredient implements Serializable {
+public class RecipeIngredient extends Ingredient implements Serializable, Timestamped {
     @DocumentId
     private String id;
     @ServerTimestamp

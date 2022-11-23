@@ -141,7 +141,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             ingredient.getLocationAsync(abstractDocumentRetrievalListener(selectedLocation, ingredient.getDescription()));
             ingredient.getUnitAsync(abstractDocumentRetrievalListener(selectedUnit, ingredient.getDescription()));
             ingredient.getCategoryAsync(abstractDocumentRetrievalListener(selectedCategory, ingredient.getDescription()));
-
         } else {
             ingredient = null;
             getSupportActionBar().setTitle("Add Ingredient");

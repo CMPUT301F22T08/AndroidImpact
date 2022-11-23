@@ -36,7 +36,6 @@ public class EditCategoriesActivity extends AppCompatActivity {
     CategoryAdapter categoryViewAdapter;
 
     // Views
-    Button addCategoryBtn;
     EditText newCategoryInput;
 
     // Firestore
@@ -70,7 +69,7 @@ public class EditCategoriesActivity extends AppCompatActivity {
 
         categoryCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             if (error != null) {
-                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                Log.w(TAG + ":snapshotListener", "Listen .", error);
                 return;
             }
 
@@ -163,8 +162,8 @@ public class EditCategoriesActivity extends AppCompatActivity {
                                     });
                         })
                         .addOnFailureListener(e -> {
-                            Log.d(TAG, "Failed to count categorys!", e);
-                            makeSnackbar("Failed to count categorys! Check the logs... ");
+                            Log.d(TAG, "Failed to count categories!", e);
+                            makeSnackbar("Failed to count categories! Check the logs... ");
                         });
             }
         };
