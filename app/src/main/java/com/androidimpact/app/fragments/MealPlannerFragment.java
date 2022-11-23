@@ -59,6 +59,8 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference mealPlanCollection;
+    CollectionReference recipeCollection;
+    CollectionReference ingredientCollection;
 
     // using ActivityResultLaunchers
     private ActivityResultLauncher<Intent> addMealPlanLauncher;
@@ -92,6 +94,8 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         mealPlanCollection = db.collection("meal-plan");
+        recipeCollection = db.collection("recipes");
+        ingredientCollection = db.collection("ingredientStorage");
     }
 
     /**
@@ -209,6 +213,14 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             mealPlanAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
 
+        recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            refresh();
+        });
+
+        ingredientCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            refresh();
+        });
+
         /**
          * DEFINE ACTIVITY LAUNCHERS
          *
@@ -257,7 +269,45 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             Log.i(TAG + ":addMealPlan", "Adding meal plan!");
             Intent intent = new Intent(getContext(), MealPlanAddEditViewActivity.class);
             intent.putExtra("activity_name", "Add meal plan");
+            refreshMealItems();
             addMealPlanLauncher.launch(intent);
+        });
+    }
+
+    public void refreshMealItems() {
+        mealPlanAdapter.notifyDataSetChanged();
+    }
+
+    public void refresh() {
+        mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            // Clear the old list
+            mealPlans.clear();
+
+            if (queryDocumentSnapshots == null) {
+                return;
+            }
+            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                Map<String, Object> data = doc.getData();
+                MealPlan mealPlanToAdd = new MealPlan(doc.getId(), (String) data.get("sortString"));
+
+                String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
+                for(String key: keys) {
+                    ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
+                    if(recipeIdList != null) {
+                        recipeIdList.forEach(recipeKey -> {
+                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, this.recipeList);
+                            Log.i("naruto", recipeKey);
+                        });
+                    }
+                }
+                mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
+            }
+
+            Log.i(TAG, "Snapshot listener: Added " + mealPlans.size() + " elements");
+            for (MealPlan i : mealPlans) {
+                Log.i(TAG, "Snapshot listener: Added " + i.getDate() + " to elements");
+            }
+            mealPlanAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
     }
 }
