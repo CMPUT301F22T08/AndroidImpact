@@ -383,12 +383,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         }
 
         try {
-            String id;
+            String id = null;
             if (editing != null) {
                 id = editing.getId();
-            } else {
-                UUID uuid = UUID.randomUUID();
-                id = uuid.toString();
             }
             Date date = bestBeforeCalendar.getTime();
 
