@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 /**
  * Activity class for Ingredient Storage Activity
  * @version 1.0
+ * @author Joshua Ji
  */
 public class IngredientStorageActivity extends AppCompatActivity {
     final String TAG = "IngredientStorageActivity";
@@ -66,7 +67,6 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         // initialize adapters and customList
         ingredientListView = findViewById(R.id.ingredient_listview);
-        addIngredientFAB = findViewById(R.id.navbarFAB);
 
         ingredientDataList = new IngredientStorage();
         storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());

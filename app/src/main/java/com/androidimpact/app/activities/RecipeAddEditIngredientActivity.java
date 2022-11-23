@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,7 +108,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String value = extras.getString("activity_name");
             isEditing = extras.getBoolean("isEditing", false);
             if (isEditing) {
                 getSupportActionBar().setTitle("Edit Ingredient");
@@ -122,14 +122,21 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 // setting initial spinner values are a bit weird
                 // we have to wait for firebase to get the data from the server
                 // thus, we set a location listener on the first data retrieval
-                ingredient.getUnitAsync(abstractDocumentRetrievalListener(selectedUnit, ingredient.getDescription()));
-                ingredient.getCategoryAsync(abstractDocumentRetrievalListener(selectedCategory, ingredient.getDescription()));
+                ingredient.getUnitAsync(abstractDocumentRetrievalListener(
+                        selectedUnit, units, unitSpinner, ingredient.getDescription()));
+                ingredient.getCategoryAsync(abstractDocumentRetrievalListener(
+                        selectedCategory, categories, categorySpinner, ingredient.getDescription()));
             } else {
-                // we're adding a new element!
+                // Here, we're also adding a new element
                 // autogenerate an ID
                 id = UUID.randomUUID().toString();
                 getSupportActionBar().setTitle("Add Ingredient");
             }
+        } else {
+            // Here, we're also adding a new element
+            // autogenerate an ID
+            id = UUID.randomUUID().toString();
+            getSupportActionBar().setTitle("Add Ingredient");
         }
 
         // EVENT LISTENERS
@@ -154,6 +161,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         if (checkInputs()) {
             DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
             DocumentReference categoryRef = categoriesCollection.document(selectedCategory.get().getCategory());
+            Log.i(TAG, "Adding ingredient with Id" + id);
             RecipeIngredient ingredient = new RecipeIngredient(
                     id,
                     getStr(description),
@@ -248,12 +256,16 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      */
     private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
             AtomicReference<T> selectedItem,
+            ArrayList<T> datas,
+            Spinner spinner,
             String ingredientDescription // for debug purposes
     ) {
         return new DocumentRetrievalListener<T>() {
             @Override
             public void onSuccess(T data) {
                 selectedItem.set(data);
+                spinner.setSelection(datas.indexOf(data));
+                Log.i(TAG, "DocumentRetrieval: " + data.toString() + " " + data.getClass() + " - (" + datas.indexOf(data) + ")" + datas.size());
             }
             @Override
             public void onNullDocument() {

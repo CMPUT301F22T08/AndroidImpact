@@ -87,11 +87,11 @@
 
     <Button
         android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="50dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/cancel"
         android:onClick="cancel"
         android:text="@string/cancel"
         android:textColor="@color/white"
@@ -100,11 +100,11 @@
 
     <Button
         android:id="@+id/confirm_button"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="70dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/confirm"
         android:onClick="confirm"
         android:text="@string/add"
         android:textColor="@color/white"

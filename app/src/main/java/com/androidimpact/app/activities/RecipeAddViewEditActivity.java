@@ -116,7 +116,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
         // Initialize database
         db = FirebaseFirestore.getInstance();
-        recipesCollection = db.collection("recipes-new");
+        recipesCollection = db.collection("recipes");
         categoriesCollection = db.collection("categories");
 
         // Initialize storage for photos
@@ -194,7 +194,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 // setting initial spinner values are a bit weird
                 // we have to wait for firebase to get the data from the server
                 // thus, we set a location listener on the first data retrieval
-                recipe.getCategoryAsync(abstractDocumentRetrievalListener(selectedCategory, recipe.getTitle()));
+                recipe.getCategoryAsync(abstractDocumentRetrievalListener(
+                        selectedCategory, categories, categorySpinner, recipe.getTitle()));
             } else {
                 // when non editing, make a new collection
                 getSupportActionBar().setTitle("Add Recipe");
@@ -211,7 +212,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     RecipeIngredient.class, recipeIngredients, null, ingredientAdapter, null, null));
             categoriesCollection.addSnapshotListener(abstractSnapshotListener(
                     Category.class, categories, categoryAdapter, null, categorySpinner, selectedCategory));
-         }
+        }
 
 
         // drag to delete - code duplicated from recycler view in ingredient storage
@@ -261,7 +262,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              intent.putExtra("isEditing",  true);
              intent.putExtra("ingredient", recipeIngredients.get(position));
              editIngredientLauncher.launch(intent);
-         });
+        });
 
         // Cancel button on bottom left
         final Button cancelRecipe = findViewById(R.id.cancel_button);
@@ -412,12 +413,16 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      */
     private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
             AtomicReference<T> selectedItem,
+            ArrayList<T> datas,
+            Spinner spinner,
             String recipeTitle // for debug purposes
     ) {
         return new DocumentRetrievalListener<T>() {
             @Override
             public void onSuccess(T data) {
                 selectedItem.set(data);
+                spinner.setSelection(datas.indexOf(data));
+                Log.i(TAG, "DocumentRetrieval: " + data.toString() + " " + data.getClass() + " - (" + datas.indexOf(data) + ")" + datas.size());
             }
             @Override
             public void onNullDocument() {
@@ -455,6 +460,10 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     assert result.getData() != null;
                     Bundle bundle = result.getData().getExtras();
                     RecipeIngredient ingredient = (RecipeIngredient) bundle.getSerializable("ingredient");
+                    Log.i(TAG + "addIngredientLauncher", "Adding ingredient" + ingredient);
+                    Log.i(TAG + "addIngredientLauncher", "PATH:" + ingredientsCollection.getPath());
+                    Log.i(TAG + "addIngredientLauncher", "ingredient:" + ingredient.toString());
+                    Log.i(TAG + "addIngredientLauncher", "ingredientID:" + ingredient.getId());
                     ingredientsCollection.document(ingredient.getId()).set(ingredient)
                             .addOnSuccessListener(documentReference -> generateSnackbar("Added " + ingredient.getDescription() + "!"))
                             .addOnFailureListener(e -> generateSnackbar("Failed to add " + ingredient.getDescription() + "!"));

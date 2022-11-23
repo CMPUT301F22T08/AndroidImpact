@@ -47,6 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
  * @version 1.0
+ * @author Vedant Vyas
  */
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging
@@ -138,9 +139,12 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // setting initial spinner values are a bit weird
             // we have to wait for firebase to get the data from the server
             // thus, we set location, unit and category listeners on the first data retrieval
-            ingredient.getLocationAsync(abstractDocumentRetrievalListener(selectedLocation, ingredient.getDescription()));
-            ingredient.getUnitAsync(abstractDocumentRetrievalListener(selectedUnit, ingredient.getDescription()));
-            ingredient.getCategoryAsync(abstractDocumentRetrievalListener(selectedCategory, ingredient.getDescription()));
+            ingredient.getLocationAsync(abstractDocumentRetrievalListener(
+                    selectedLocation, locations, locationSpinner, ingredient.getDescription()));
+            ingredient.getUnitAsync(abstractDocumentRetrievalListener(
+                    selectedUnit, units, unitSpinner, ingredient.getDescription()));
+            ingredient.getCategoryAsync(abstractDocumentRetrievalListener(
+                    selectedCategory, categories, categorySpinner, ingredient.getDescription()));
         } else {
             ingredient = null;
             getSupportActionBar().setTitle("Add Ingredient");
@@ -163,9 +167,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
 
-        locationSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedLocation));
-        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
-        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
+        locationSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedLocation, locationSpinner));
+        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit, unitSpinner));
+        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory, categorySpinner));
 
         locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation));
         unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
@@ -203,9 +207,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // sort by date added
             data.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
             adapter.notifyDataSetChanged();
-            // a bit of a hack...
+            // a bit of a hack to get the spinner to show the correct element
             if (selectedElem.get() != null) {
-                spinner.setPrompt(selectedElem.get().toString());
+                spinner.setSelection(data.indexOf(selectedElem.get()));
+                Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
             }
         };
     }
@@ -215,14 +220,14 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
      * A generic onItemSelectedlistener for spinners for the user-defined collections (units, locations, categories)
      */
     private <T extends Serializable>AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(
-            AtomicReference<T> selectedElem
+            AtomicReference<T> selectedElem,
+            Spinner spinner
     ) {
         return new AdapterView.OnItemSelectedListener() {
             @Override
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedElem.set((T) parentView.getItemAtPosition(position));
-                Log.i(TAG, "selected unit is " + selectedElem.get().toString());
             }
 
             @Override
@@ -238,12 +243,16 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
      */
     private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
             AtomicReference<T> selectedItem,
+            ArrayList<T> datas,
+            Spinner spinner,
             String ingredientDescription // for debug purposes
     ) {
         return new DocumentRetrievalListener<T>() {
             @Override
             public void onSuccess(T data) {
                 selectedItem.set(data);
+                spinner.setSelection(datas.indexOf(data));
+                Log.i(TAG, "DocumentRetrieval: " + data.toString() + " " + data.getClass() + " - (" + datas.indexOf(data) + ")" + datas.size());
             }
             @Override
             public void onNullDocument() {

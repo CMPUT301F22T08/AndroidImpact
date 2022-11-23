@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import java.util.function.Function;
 /**
  * This class creates a view adapter for StoreIngredient
  * @version 1.0
+ * @author Vedant Vyas
  */
 public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngredientViewAdapter.StoreIngredientViewHolder>{
     private final String TAG = "StoreIngredientViewAdapter";
@@ -97,10 +99,10 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
                 unit -> holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), unit.getUnit())));
 
         holder.location.setText("loading...");
-        currentIngredient.getLocationAsync(asyncDataListener(holder.location, (Function<Location, String>) Location::getLocation));
+        currentIngredient.getLocationAsync(asyncDataListener(holder.location, Location::getLocation));
 
         holder.category.setText("loading...");
-        currentIngredient.getCategoryAsync(asyncDataListener(holder.category, (Function<Category, String>) Category::getCategory));
+        currentIngredient.getCategoryAsync(asyncDataListener(holder.category, Category::getCategory));
 
         // setting formatted date
         String myFormat="MMM dd yyyy";
@@ -130,6 +132,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         return new DocumentRetrievalListener<T>() {
             @Override
             public void onSuccess(T data) {
+                Log.i(TAG, "Data listener success for data " + data.toString());
                 view.setText(fromText.apply(data));
             }
 

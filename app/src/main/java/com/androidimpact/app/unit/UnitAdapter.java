@@ -15,9 +15,10 @@ import com.androidimpact.app.location.Location;
 import java.util.ArrayList;
 
 /**
- * LocationAdapter
- *
- * Provides the adapter for managing the recycler view when editing locations
+ * UnitAdapter
+ * Provides the adapter for managing the recycler view when editing units
+ * @version 1.0
+ * @author Joshua Ji
  */
 public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder> {
     private ArrayList<Unit> unitArrayList;

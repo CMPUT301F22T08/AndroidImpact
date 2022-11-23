@@ -45,6 +45,8 @@ import nl.dionsegijn.konfetti.models.Size;
  * A simple {@link Fragment} subclass.
  * Use the {@link IngredientStorageFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @version 1.0
+ * @author Vedant Vyas
  */
 public class IngredientStorageFragment extends Fragment implements NavbarFragment {
     final String TAG = "IngredientStorageFragment";
@@ -146,8 +148,6 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
         super.onCreate(savedInstanceState);
 
         Activity a = getActivity();
-
-      //  System.out.println(a);
 
         if (a == null) {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");

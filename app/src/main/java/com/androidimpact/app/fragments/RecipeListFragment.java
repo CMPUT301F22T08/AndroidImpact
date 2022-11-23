@@ -53,6 +53,8 @@ import nl.dionsegijn.konfetti.models.Size;
  * A simple {@link Fragment} subclass.
  * Use the {@link RecipeListFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @version 1.0
+ * @author Vedant Vyas
  */
 public class RecipeListFragment extends Fragment implements NavbarFragment{
     final String TAG = "RecipeListFragment";
@@ -101,7 +103,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes-new");
+        recipeCollection = db.collection("recipes");
     }
 
     /**
