@@ -32,6 +32,7 @@ import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -133,7 +134,6 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
         super.onCreate(savedInstanceState);
 
         Activity a = getActivity();
-
         if (a == null) {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
             return;
@@ -258,6 +258,9 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // edit firebase directly
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                     ingredientStorageController.addEdit(ingredient);
+                    Snackbar.make(((MainActivity)a).findViewById(R.id.nav_fragment), "Edited "+ingredient.getDescription(), Snackbar.LENGTH_LONG)
+                            .setAction("OK", (v)->{}).show();
+
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
@@ -293,6 +296,9 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredientStorageController.addEdit(ingredient);
+                    Snackbar.make(((MainActivity)a).findViewById(R.id.nav_fragment), "Added "+ingredient.getDescription(), Snackbar.LENGTH_LONG)
+                            .setAction("OK", (v)->{}).show();
+
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
