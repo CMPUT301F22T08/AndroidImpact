@@ -11,6 +11,8 @@ import java.util.Objects;
 public class Category implements Serializable, Timestamped {
     @DocumentId
     String category;
+    // we store the dateAdded so, when we retrieve the collection of categories from Firebase,
+    // we can sort them by the time added. This is a more natural form of listing categories.
     @ServerTimestamp
     Date dateAdded;
 

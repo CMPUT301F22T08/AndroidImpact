@@ -105,16 +105,15 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         }
 
         // set unit
-        // units are not stored via a firebase documentID, so we can directly get the amount
+        // units and categories are stored in an ingredient by their string value
         String amountUnit = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         holder.amount.setText(amountUnit);
+
+        holder.category.setText(currentIngredient.getCategory());
 
         // since we have to fetch from firebase, we'll use a "loading" state
         holder.location.setText("loading...");
         currentIngredient.getLocationAsync(asyncDataListener(holder.location, Location::getLocation));
-
-        holder.category.setText("loading...");
-        currentIngredient.getCategoryAsync(asyncDataListener(holder.category, Category::getCategory));
 
         // setting formatted date
         String myFormat="MMM dd yyyy";

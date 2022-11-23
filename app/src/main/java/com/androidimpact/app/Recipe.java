@@ -1,8 +1,6 @@
 package com.androidimpact.app;
 
 import com.androidimpact.app.category.Category;
-import com.androidimpact.app.location.Location;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
@@ -10,7 +8,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.Nullable;
@@ -33,8 +30,7 @@ public class Recipe implements Serializable  {
     private String photo;
     // the list of ingredients is stored in a separate collection
     private String collectionPath;
-    // a path to the category document
-    private String categoryDocumentPath;
+    private String category;
 
 
     /**
@@ -50,7 +46,7 @@ public class Recipe implements Serializable  {
      *     This is the preparation time in minutes
      * @param servings
      *     This is the amount of servings
-     * @param categoryDocumentPath
+     * @param category
      *     This is the path to the category document
      * @param comments
      *     This is the comments regarding the food
@@ -62,12 +58,12 @@ public class Recipe implements Serializable  {
      *     the list of ingredients is stored in a separate collection
      */
     public Recipe(String id, String title, int prep_time, int servings,
-                  String categoryDocumentPath, String comments, Date date, @Nullable String photo, String collectionPath) {
+                  String category, String comments, Date date, @Nullable String photo, String collectionPath) {
         this.id = id;
         this.title = title;
         this.prep_time = prep_time;
         this.servings = servings;
-        this.categoryDocumentPath = categoryDocumentPath;
+        this.category = category;
         this.comments = comments;
         this.date = date;
         this.photo = photo;
@@ -138,7 +134,7 @@ public class Recipe implements Serializable  {
      *     Return the category of the recipe
      */
     public String getCategory() {
-        return categoryDocumentPath;
+        return category;
     }
 
     /**
@@ -147,7 +143,7 @@ public class Recipe implements Serializable  {
      *     This is the category to set for the recipe
      */
     public void setCategory(String category) {
-        this.categoryDocumentPath = category;
+        this.category = category;
     }
 
     /**
@@ -201,7 +197,7 @@ public class Recipe implements Serializable  {
      */
     @Exclude
     public void getCategoryAsync(DocumentRetrievalListener<Category> listener) {
-        FirebaseFirestore.getInstance().document(categoryDocumentPath).get().addOnCompleteListener(task -> {
+        FirebaseFirestore.getInstance().document(category).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {

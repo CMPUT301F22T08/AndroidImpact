@@ -121,12 +121,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 // note that we store the unit as a string, not a document path
                 selectedUnit.set(new Unit(ingredient.getUnit()));
                 Log.i(TAG, "Set unit: " + selectedUnit.get());
-
-                // setting initial spinner values are a bit weird
-                // we have to wait for firebase to get the data from the server
-                // then run the retrieval listener when we get the data
-                ingredient.getCategoryAsync(abstractDocumentRetrievalListener(
-                        selectedCategory, categories, categorySpinner, ingredient.getDescription()));
+                selectedCategory.set(new Category(ingredient.getCategory()));
+                Log.i(TAG, "Set category: " + selectedCategory.get());
             } else {
                 // Here, we're also adding a new element
                 // autogenerate an ID
@@ -161,14 +157,14 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     public void confirm(View view) {
         if (checkInputs()) {
             String unit = selectedUnit.get().toString();
-            DocumentReference categoryRef = categoriesCollection.document(selectedCategory.get().getCategory());
+            String category = selectedCategory.get().toString();
             Log.i(TAG, "Adding ingredient with Id" + id);
             RecipeIngredient ingredient = new RecipeIngredient(
                     id,
                     getStr(description),
                     Float.parseFloat(getStr(amount)),
                     unit,
-                    categoryRef.getPath(),
+                    category,
                     new Date()
             );
             Intent returnIntent = new Intent();
@@ -248,35 +244,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             if (selectedElem.get() != null) {
                 spinner.setSelection(data.indexOf(selectedElem.get()));
                 Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
-            }
-        };
-    }
-
-    /**
-     * A generic DocumentRetrievalListener for initial population of ArrayLists for user-defined collections
-     * (units, locations, categories)
-     */
-    private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
-            AtomicReference<T> selectedItem,
-            ArrayList<T> datas,
-            Spinner spinner,
-            String ingredientDescription // for debug purposes
-    ) {
-        return new DocumentRetrievalListener<T>() {
-            @Override
-            public void onSuccess(T data) {
-                selectedItem.set(data);
-                spinner.setSelection(datas.indexOf(data));
-                Log.i(TAG, "DocumentRetrieval: " + data.toString() + " " + data.getClass() + " - (" + datas.indexOf(data) + ")" + datas.size());
-            }
-            @Override
-            public void onNullDocument() {
-                // happens if the user deletes a document by themselves. We should not allow it!
-                Log.i(TAG, "Bruh moment: ingredient " + ingredientDescription + " cannot retrieve unit - Document does not exist");
-            }
-            @Override
-            public void onError(Exception e) {
-                Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
             }
         };
     }

@@ -156,18 +156,18 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
             if (isEditing) {
                 getSupportActionBar().setTitle("Edit Recipe");
-                Recipe recipe = (Recipe) extras.getSerializable("recipe");
+                Recipe currentRecipe = (Recipe) extras.getSerializable("recipe");
 
-                photoID = recipe.getPhoto();
-                id = recipe.getId();
-                title.setText(recipe.getTitle());
-                prep_time.setText(String.valueOf(recipe.getPrep_time()));
-                servings.setText(String.valueOf(recipe.getServings()));
-                comments.setText(recipe.getComments());
+                photoID = currentRecipe.getPhoto();
+                id = currentRecipe.getId();
+                title.setText(currentRecipe.getTitle());
+                prep_time.setText(String.valueOf(currentRecipe.getPrep_time()));
+                servings.setText(String.valueOf(currentRecipe.getServings()));
+                comments.setText(currentRecipe.getComments());
 
                 // load image for recipe
                 // very similar code as in RecipeListAdapter...
-                String photoURI = recipe.getPhoto();
+                String photoURI = currentRecipe.getPhoto();
                 if (photoURI != null) {
                     try {
                         // get child in storage
@@ -177,25 +177,24 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             Picasso.get().load(uri).into(photo);
                         }).addOnFailureListener(exception -> {
                             // Log any errors
-                            Log.e("Image Not Found", recipe.getTitle(), exception);
+                            Log.e("Image Not Found", currentRecipe.getTitle(), exception);
                             photo.setImageResource(R.drawable.ic_baseline_dining_24);
                         });
                     } catch (Exception exception) {
                         // Log any errors
-                        Log.e("Child Not Found", recipe.getTitle(), exception);
+                        Log.e("Child Not Found", currentRecipe.getTitle(), exception);
                     }
                 } else {
                     photo.setImageResource(R.drawable.ic_baseline_dining_24);
                 }
 
                 // add listener to the ingredients collection
-                ingredientsCollection = db.collection(recipe.getCollectionPath());
+                ingredientsCollection = db.collection(currentRecipe.getCollectionPath());
 
-                // setting initial spinner values are a bit weird
-                // we have to wait for firebase to get the data from the server
-                // thus, we set a location listener on the first data retrieval
-                recipe.getCategoryAsync(abstractDocumentRetrievalListener(
-                        selectedCategory, categories, categorySpinner, recipe.getTitle()));
+                // sets selectedCategory for us to set initial spinner values
+                // although, this is only seen when
+                selectedCategory.set(new Category(currentRecipe.getCategory()));
+                Log.i(TAG, "Set category: " + selectedCategory.get());
             } else {
                 // when non editing, make a new collection
                 getSupportActionBar().setTitle("Add Recipe");
@@ -336,9 +335,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
         // somehow we need this because of the lambda expression below
         String finalNewPhotoID = newPhotoID;
-        String collectionPath = categoriesCollection.document(selectedCategory.get().getCategory()).getPath();
+        String collection = selectedCategory.get().getCategory();
         return Tasks.whenAll(futures).continueWith(unused -> new Recipe(id, getStr(title), Integer.parseInt(getStr(prep_time)), Integer.parseInt(getStr(servings)),
-                collectionPath, getStr(comments), new Date(), finalNewPhotoID, ingredientsCollection.getPath()));
+                collection, getStr(comments), new Date(), finalNewPhotoID, ingredientsCollection.getPath()));
     }
 
 
@@ -400,8 +399,10 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             // a bit of a hack...
             // this is only used when we need to have a selected element, like for spinners and stuff
             if (spinner != null && selectedElem != null) {
+                // make spinner show correct selected element
                 if (selectedElem.get() != null) {
-                    spinner.setPrompt(selectedElem.get().toString());
+                    spinner.setSelection(data.indexOf(selectedElem.get()));
+                    Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
                 }
             }
         };

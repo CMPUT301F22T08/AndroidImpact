@@ -1,11 +1,7 @@
 package com.androidimpact.app;
 
-import android.util.Log;
-
 import com.androidimpact.app.category.Category;
-import com.androidimpact.app.unit.Unit;
 import com.google.firebase.firestore.DocumentId;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,10 +22,10 @@ public class Ingredient implements Serializable  {
     protected String id;
     protected String description;
     protected float amount;
+    // although we have a "units" and "categories" collection, we only store the string value here
+    // this is for faster speeds
     private String unit;
-    // instead of a document, this is a path to the a firebase document
-    // https://stackoverflow.com/a/57225579
-    private String categoryDocumentPath;
+    private String category;
 
     /**
      * Empty constructor - used by StoreIngredient for Firebase's auto deserialization
@@ -42,14 +38,14 @@ public class Ingredient implements Serializable  {
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
      * @param unit (String) - The unit that amount is measuring e.g. g in 300g
-     * @param categoryDocumentPath (String) - Path to category document
+     * @param category (String) - Category of the ingredient
      * */
-    public Ingredient(String id, String description, float amount, String unit, String categoryDocumentPath) {
+    public Ingredient(String id, String description, float amount, String unit, String category) {
         this.id = id;
         this.description = description;
         this.amount = amount;
         this.unit = unit;
-        this.categoryDocumentPath = categoryDocumentPath;
+        this.category = category;
     }
 
     /**
@@ -105,7 +101,7 @@ public class Ingredient implements Serializable  {
      * @return (String) The category of the ingredient
      */
     public String getCategory() {
-        return categoryDocumentPath;
+        return category;
     }
 
     /**
@@ -113,7 +109,7 @@ public class Ingredient implements Serializable  {
      * @param category (String) - The new category of the ingredient
      */
     public void setCategory(String category) {
-        this.categoryDocumentPath = category;
+        this.category = category;
     }
 
     /**
@@ -122,27 +118,5 @@ public class Ingredient implements Serializable  {
      * @return
      */
     public String getUnit() { return unit; };
-
-    /**
-     * A fully-featured function to retrieve the unit from firestore
-     *
-     * this architecture lets us reduce the callback hell somewhat using listeners, i think...
-     */
-    @Exclude
-    public void getCategoryAsync(DocumentRetrievalListener<Category> listener) {
-        FirebaseFirestore.getInstance().document(categoryDocumentPath).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Category c = document.toObject(Category.class);
-                    listener.onSuccess(c);
-                } else {
-                    listener.onNullDocument();
-                }
-            } else {
-                listener.onError(task.getException());
-            }
-        });
-    }
 
 }

@@ -27,7 +27,6 @@ import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.unit.EditUnitsActivity;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -80,7 +78,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
     // Other "global" variables
     // used to track which ingredient we're editing, null if we're creating a new ingredient
-    StoreIngredient ingredient;
+    StoreIngredient currentIngredient;
 
     /**
      * Initalizes button data
@@ -127,29 +125,24 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         // Init activity title
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            ingredient = (StoreIngredient) extras.getSerializable("storeIngredient");
+            currentIngredient = (StoreIngredient) extras.getSerializable("storeIngredient");
             getSupportActionBar().setTitle("Edit Ingredient");
 
             // set initial values
-            descriptionEditText.setText(ingredient.getDescription());
-            amountEditText.setText(String.valueOf(ingredient.getAmount()));
-            bestBeforeCalendar.setTime(ingredient.getBestBeforeDate());
+            descriptionEditText.setText(currentIngredient.getDescription());
+            amountEditText.setText(String.valueOf(currentIngredient.getAmount()));
+            bestBeforeCalendar.setTime(currentIngredient.getBestBeforeDate());
             updateDateLabel();
 
             // set initial ingredient unit
             // note that we store the unit as a string, not a document path
-            selectedUnit.set(new Unit(ingredient.getUnit()));
+            selectedUnit.set(new Unit(currentIngredient.getUnit()));
             Log.i(TAG, "Set unit: " + selectedUnit.get());
-
-            // setting initial spinner values are a bit weird
-            // we have to wait for firebase to get the data from the server
-            // thus, we set location, unit and category listeners on the first data retrieval
-            ingredient.getLocationAsync(abstractDocumentRetrievalListener(
-                    selectedLocation, locations, locationSpinner, ingredient.getDescription()));
-            ingredient.getCategoryAsync(abstractDocumentRetrievalListener(
-                    selectedCategory, categories, categorySpinner, ingredient.getDescription()));
+            // same thing for category
+            selectedCategory.set(new Category(currentIngredient.getCategory()));
+            Log.i(TAG, "Set category: " + selectedCategory.get());
         } else {
-            ingredient = null;
+            currentIngredient = null;
             getSupportActionBar().setTitle("Add Ingredient");
         }
 
@@ -327,7 +320,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     public void confirm(View view) {
         try {
             // try to create an ingredient.
-            StoreIngredient newStoreIngredient = createIngredient(ingredient);
+            StoreIngredient newStoreIngredient = createIngredient(currentIngredient);
             Intent intent = new Intent(AddEditStoreIngredientActivity.this, IngredientStorageActivity.class);
 
             // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
@@ -409,11 +402,11 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
             // get values
             String unit = selectedUnit.get().getUnit();
+            String category = selectedCategory.get().getCategory();
 
             // get document refs
             DocumentReference locationRef = locationCollection.document(selectedLocation.get().getId());
-            DocumentReference categoryRef = categoryCollection.document(selectedCategory.get().getCategory());
-            return new StoreIngredient(id, description, amount, categoryRef.getPath(), date, locationRef.getPath(), unit);
+            return new StoreIngredient(id, description, amount, category, date, locationRef.getPath(), unit);
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");
