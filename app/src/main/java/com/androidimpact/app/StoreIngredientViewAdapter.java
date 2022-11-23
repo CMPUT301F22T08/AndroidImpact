@@ -106,9 +106,8 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
-        holder.amount.setText("Loading...");
-        currentIngredient.getUnitAsync(asyncDataListener(holder.amount,
-                unit -> holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), unit.getUnit())));
+        String amountUnit = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        holder.amount.setText(amountUnit);
 
         holder.location.setText("loading...");
         currentIngredient.getLocationAsync(asyncDataListener(holder.location, Location::getLocation));

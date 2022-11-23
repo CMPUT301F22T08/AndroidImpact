@@ -26,9 +26,9 @@ public class Ingredient implements Serializable  {
     protected String id;
     protected String description;
     protected float amount;
+    private String unit;
     // instead of a document, this is a path to the a firebase document
     // https://stackoverflow.com/a/57225579
-    private String unitDocumentPath;
     private String categoryDocumentPath;
 
     /**
@@ -41,14 +41,14 @@ public class Ingredient implements Serializable  {
      * @param id (String) - Document id in Firebase
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
-     * @param unitDocumentPath (String) - The unit that amount is measuring e.g. g in 300g
+     * @param unit (String) - The unit that amount is measuring e.g. g in 300g
      * @param categoryDocumentPath (String) - Path to category document
      * */
-    public Ingredient(String id, String description, float amount, String unitDocumentPath, String categoryDocumentPath) {
+    public Ingredient(String id, String description, float amount, String unit, String categoryDocumentPath) {
         this.id = id;
         this.description = description;
         this.amount = amount;
-        this.unitDocumentPath = unitDocumentPath;
+        this.unit = unit;
         this.categoryDocumentPath = categoryDocumentPath;
     }
 
@@ -121,17 +121,19 @@ public class Ingredient implements Serializable  {
      * not used by the user, but used by Firebase to know they need to serialize the unitDocumentPath
      * @return
      */
-    public String getUnitDocumentPath() { return unitDocumentPath; };
+    public String getUnit() { return unit; };
 
     /**
      * A fully-featured function to retrieve the unit from firestore
      *
      * this architecture lets us reduce the callback hell somewhat using listeners, i think...
+     *
+     * TODO: delete?
      */
     @Exclude
     public void getUnitAsync(DocumentRetrievalListener<Unit> listener) {
 //        Log.d("Why me", unitDocumentPath);
-        FirebaseFirestore.getInstance().document(unitDocumentPath).get().addOnCompleteListener(task -> {
+        FirebaseFirestore.getInstance().document(unit).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
