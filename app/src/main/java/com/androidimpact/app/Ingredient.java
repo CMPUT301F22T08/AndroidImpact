@@ -2,6 +2,7 @@ package com.androidimpact.app;
 
 import android.util.Log;
 
+import com.androidimpact.app.category.Category;
 import com.androidimpact.app.unit.Unit;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,7 +29,7 @@ public class Ingredient implements Serializable  {
     // instead of a document, this is a path to the a firebase document
     // https://stackoverflow.com/a/57225579
     private String unitDocumentPath;
-    protected String category;
+    private String categoryDocumentPath;
 
     /**
      * Empty constructor - used by StoreIngredient for Firebase's auto deserialization
@@ -41,14 +42,14 @@ public class Ingredient implements Serializable  {
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
      * @param unitDocumentPath (String) - The unit that amount is measuring e.g. g in 300g
-     * @param category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+     * @param categoryDocumentPath (String) - Path to category document
      * */
-    public Ingredient(String id, String description, float amount, String unitDocumentPath, String category) {
+    public Ingredient(String id, String description, float amount, String unitDocumentPath, String categoryDocumentPath) {
         this.id = id;
         this.description = description;
         this.amount = amount;
         this.unitDocumentPath = unitDocumentPath;
-        this.category = category;
+        this.categoryDocumentPath = categoryDocumentPath;
     }
 
     /**
@@ -84,14 +85,6 @@ public class Ingredient implements Serializable  {
     }
 
     /**
-     * Get the ingredient category
-     * @return (String) The category of the ingredient
-     */
-    public String getCategory() {
-        return category;
-    }
-
-    /**
      * Set a new id for the Ingredient the element
      * @param id (String) the id of the document
      */
@@ -107,14 +100,12 @@ public class Ingredient implements Serializable  {
         this.amount = amount;
     }
 
-    @Exclude
-    public void setAmount(double amount) {
-        this.amount = (float) amount;
-    }
-
-    @Exclude
-    public void setAmount(int amount) {
-        this.amount = (float) amount;
+    /**
+     * Get the ingredient category
+     * @return (String) The category of the ingredient
+     */
+    public String getCategory() {
+        return categoryDocumentPath;
     }
 
     /**
@@ -122,7 +113,7 @@ public class Ingredient implements Serializable  {
      * @param category (String) - The new category of the ingredient
      */
     public void setCategory(String category) {
-        this.category = category;
+        this.categoryDocumentPath = category;
     }
 
     /**
@@ -146,6 +137,28 @@ public class Ingredient implements Serializable  {
                 if (document.exists()) {
                     Unit u = document.toObject(Unit.class);
                     listener.onSuccess(u);
+                } else {
+                    listener.onNullDocument();
+                }
+            } else {
+                listener.onError(task.getException());
+            }
+        });
+    }
+
+    /**
+     * A fully-featured function to retrieve the unit from firestore
+     *
+     * this architecture lets us reduce the callback hell somewhat using listeners, i think...
+     */
+    @Exclude
+    public void getCategoryAsync(DocumentRetrievalListener<Category> listener) {
+        FirebaseFirestore.getInstance().document(categoryDocumentPath).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Category c = document.toObject(Category.class);
+                    listener.onSuccess(c);
                 } else {
                     listener.onNullDocument();
                 }

@@ -43,15 +43,15 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * @param id (String) - Document id in Firebase
      * @param description (String) - A short description of the ingredient e.g. peppercorn ranch
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
-     * @param category (String) - Any name that helps categorize the ingredient e.g. Sauce for peppercorn ranch
+     * @param categoryDocumentPath (String) - Document path of the category
      * @param bestBeforeDate (Date) - The best before date for the stored ingredient
-     * @param locationDocumentPath (DocumentReference) - document path of where the ingredient is being stored
+     * @param locationDocumentPath (String) - document path of where the ingredient is being stored
      * @param unitDocumentPath (String) - document path of where the unit is being stored
      * @see Ingredient
      */
-    public StoreIngredient(String id, String description, float amount, String category,
+    public StoreIngredient(String id, String description, float amount, String categoryDocumentPath,
                            Date bestBeforeDate, String locationDocumentPath, String unitDocumentPath){
-        super(id, description, amount, unitDocumentPath, category);
+        super(id, description, amount, unitDocumentPath, categoryDocumentPath);
         this.bestBeforeDate = bestBeforeDate;
         this.locationDocumentPath = locationDocumentPath;
     }

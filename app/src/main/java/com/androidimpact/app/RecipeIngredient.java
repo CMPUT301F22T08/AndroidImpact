@@ -12,7 +12,7 @@ import java.util.Date;
  * @version 1.0
  * @see Ingredient
  */
-public class RecipeIngredient extends Ingredient implements Serializable {
+public class RecipeIngredient extends Ingredient implements Serializable, Timestamped {
     @ServerTimestamp
     private Date dateAdded;
 
@@ -25,8 +25,8 @@ public class RecipeIngredient extends Ingredient implements Serializable {
      * This constructor is what we use to actually make a RecipeIngredient
      * @return
      */
-    public RecipeIngredient(String id, String description, float amount, String unitPath, String category, Date dateAdded) {
-        super(id, description, amount, unitPath, category);
+    public RecipeIngredient(String id, String description, float amount, String unitPath, String categoryPath, Date dateAdded) {
+        super(id, description, amount, unitPath, categoryPath);
         this.dateAdded = dateAdded;
     }
 

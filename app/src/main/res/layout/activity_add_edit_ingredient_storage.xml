@@ -9,26 +9,62 @@
     tools:context=".activities.AddEditStoreIngredientActivity"
     android:id="@+id/content">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ingredient_store_description_layout"
+    <Spinner
+        android:id="@+id/ingredientStoreAdd_category"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="24dp"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editCategoryBtn"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_unit"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/ingredientStorageAdd_categoryLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/category"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
+        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintVertical_bias="0.482" />
+
+    <ImageButton
+        android:id="@+id/ingredientStoreAdd_editCategoryBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="editCategories"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_amount"
+        app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ingredient_store_description_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:counterEnabled="true"
         android:textColorHint="@color/purple_500"
-        app:counterTextColor="@color/white"
         app:boxBackgroundColor="@color/background"
-        app:counterMaxLength="30">
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:counterTextColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/ingredientStoreAdd_description"
-            android:layout_width="380sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
             android:ems="10"
             android:hint="@string/description"
             android:inputType="text"
@@ -40,46 +76,27 @@
 
     <EditText
         android:id="@+id/ingredientStoreAdd_amount"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:textColorHint="@color/purple_500"
         android:ems="10"
         android:hint="@string/amount"
-        android:textColor="@color/white"
         android:inputType="numberDecimal"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient_store_description_layout" />
-
-    <EditText
-        android:id="@+id/ingredientStoreAdd_category"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="@string/category"
-        android:inputType="text"
         android:minHeight="48dp"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_500"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_unit" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/ingredient_store_description_layout"
+        app:layout_constraintTop_toBottomOf="@+id/ingredient_store_description_layout" />
 
     <EditText
         android:id="@+id/ingredientStoreAdd_bestBefore"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:focusable="false"
@@ -88,19 +105,20 @@
         android:textColor="@color/white"
         android:textColorHint="@color/purple_500"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_category" />
 
-    <Spinner style="@android:style/Widget.Holo.Light.Spinner"
+    <Spinner
         android:id="@+id/ingredientStoreAdd_location"
+        style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editLocationsBtn"
-        app:layout_constraintStart_toEndOf="@+id/ingredientStoreAdd_locationLabel"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_category" />
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
 
     <Button
         android:id="@+id/ingredientStoreAdd_cancelBtn"
@@ -108,6 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="20dp"
+        android:onClick="cancel"
         android:backgroundTint="@color/cancel"
         android:text="@string/cancel"
         android:textColor="@color/white"
@@ -120,7 +139,7 @@
         android:layout_height="wrap_content"
         android:onClick="editLocations"
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_location"
-        app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintEnd_toEndOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_location"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/ic_menu_edit" />
@@ -131,8 +150,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
+        android:onClick="confirm"
+        android:text="@string/confirm"
         android:backgroundTint="@color/confirm"
-        android:text="@string/add"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -142,10 +162,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/location"
-        android:textSize="16sp"
         android:textColor="@color/white"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_location"
-        app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_category"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_location"
+        app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_location" />
 
     <ImageButton
@@ -167,20 +188,21 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ingredientStoreAdd_unit"
+        app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_unit"
         app:layout_constraintStart_toStartOf="@+id/ingredientStoreAdd_amount"
         app:layout_constraintTop_toTopOf="@+id/ingredientStoreAdd_unit"
         app:layout_constraintVertical_bias="0.576" />
 
-    <Spinner style="@android:style/Widget.Holo.Light.Spinner"
+    <Spinner
         android:id="@+id/ingredientStoreAdd_unit"
+        style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="24dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/ingredientStoreAdd_editUnitsBtn"
-        app:layout_constraintHorizontal_bias="0.453"
-        app:layout_constraintStart_toEndOf="@+id/ingredientStorageAdd_unitLabel"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_amount" />
+        app:layout_constraintTop_toBottomOf="@+id/ingredientStoreAdd_location" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

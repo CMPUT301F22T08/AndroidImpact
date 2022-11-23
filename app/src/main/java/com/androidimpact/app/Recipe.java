@@ -1,7 +1,12 @@
 package com.androidimpact.app;
 
+import com.androidimpact.app.category.Category;
+import com.androidimpact.app.location.Location;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
@@ -22,13 +27,14 @@ public class Recipe implements Serializable  {
     private String title;
     private int prep_time;
     private int servings;
-    private String category;
     private String comments;
     @ServerTimestamp
     private Date date;
     private String photo;
     // the list of ingredients is stored in a separate collection
     private String collectionPath;
+    // a path to the category document
+    private String categoryDocumentPath;
 
 
     /**
@@ -44,8 +50,8 @@ public class Recipe implements Serializable  {
      *     This is the preparation time in minutes
      * @param servings
      *     This is the amount of servings
-     * @param category
-     *     This is the category of the recipe
+     * @param categoryDocumentPath
+     *     This is the path to the category document
      * @param comments
      *     This is the comments regarding the food
      * @param date
@@ -56,12 +62,12 @@ public class Recipe implements Serializable  {
      *     the list of ingredients is stored in a separate collection
      */
     public Recipe(String id, String title, int prep_time, int servings,
-                  String category, String comments, Date date, @Nullable String photo, String collectionPath) {
+                  String categoryDocumentPath, String comments, Date date, @Nullable String photo, String collectionPath) {
         this.id = id;
         this.title = title;
         this.prep_time = prep_time;
         this.servings = servings;
-        this.category = category;
+        this.categoryDocumentPath = categoryDocumentPath;
         this.comments = comments;
         this.date = date;
         this.photo = photo;
@@ -132,7 +138,7 @@ public class Recipe implements Serializable  {
      *     Return the category of the recipe
      */
     public String getCategory() {
-        return category;
+        return categoryDocumentPath;
     }
 
     /**
@@ -141,7 +147,7 @@ public class Recipe implements Serializable  {
      *     This is the category to set for the recipe
      */
     public void setCategory(String category) {
-        this.category = category;
+        this.categoryDocumentPath = category;
     }
 
     /**
@@ -186,5 +192,27 @@ public class Recipe implements Serializable  {
 
     public String getCollectionPath() {
         return collectionPath;
+    }
+
+    /**
+     * A fully-featured function to retrieve the location from firestore
+     *
+     * this architecture lets us reduce the callback hell somewhat using listeners, i think...
+     */
+    @Exclude
+    public void getCategoryAsync(DocumentRetrievalListener<Category> listener) {
+        FirebaseFirestore.getInstance().document(categoryDocumentPath).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Category u = document.toObject(Category.class);
+                    listener.onSuccess(u);
+                } else {
+                    listener.onNullDocument();
+                }
+            } else {
+                listener.onError(task.getException());
+            }
+        });
     }
 }

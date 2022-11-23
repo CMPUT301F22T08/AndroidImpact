@@ -63,7 +63,7 @@ public class IngredientStorageController {
 
             if (errorCount>0)
                 pushSnackBarToContext("Error reading " + errorCount + " documents!");
-            Log.i(TAG, "Snapshot listener: Added " + ingredientStorage.size() + " elements");
+            Log.i(TAG, "Snapshot listener: Added " + ingredientStorage.size() + " ingredients");
 
             ingredientStorage.sortByChoice();
             storeIngredientViewAdapter.notifyDataSetChanged();

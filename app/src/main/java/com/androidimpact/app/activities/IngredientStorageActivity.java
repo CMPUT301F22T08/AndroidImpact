@@ -67,7 +67,6 @@ public class IngredientStorageActivity extends AppCompatActivity {
 
         // initialize adapters and customList
         ingredientListView = findViewById(R.id.ingredient_listview);
-        addIngredientFAB = findViewById(R.id.navbarFAB);
 
         ingredientDataList = new IngredientStorage();
         storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());

@@ -3,6 +3,7 @@ package com.androidimpact.app.activities;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -20,31 +21,42 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.R;
 import com.androidimpact.app.Recipe;
 import com.androidimpact.app.RecipeIngredient;
 import com.androidimpact.app.RecipeIngredientAdapter;
+import com.androidimpact.app.Timestamped;
+import com.androidimpact.app.category.Category;
+import com.androidimpact.app.category.EditCategoriesActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -60,7 +72,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     // Initialize attributes
     final String TAG = "RecipeAddViewEdit";
     String id;
-    EditText title, prep_time, servings, category, comments;
+    EditText title, prep_time, servings, comments;
     Button confirmBtn;
 
     RecyclerView ingredientList;
@@ -76,12 +88,17 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     // true if we are currently uploading an image to firebase;
     private boolean uploading = false;
 
+    // spinners
+    Spinner categorySpinner;
+    AtomicReference<Category> selectedCategory = new AtomicReference<>();
+
     // firebase
     FirebaseFirestore db;
     FirebaseStorage storage;
     StorageReference storageReference;
-    CollectionReference recipes;
-    CollectionReference ingredients;
+    CollectionReference recipesCollection;
+    CollectionReference ingredientsCollection;
+    CollectionReference categoriesCollection;
     File photoFile;
     Uri fileProvider;
     Bundle extras;
@@ -92,14 +109,15 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      * @param savedInstanceState
      *    Bundle object
      */
-     @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_addviewedit);
 
         // Initialize database
         db = FirebaseFirestore.getInstance();
-        recipes = db.collection("recipes");
+        recipesCollection = db.collection("recipes");
+        categoriesCollection = db.collection("categories");
 
         // Initialize storage for photos
         storage = FirebaseStorage.getInstance();
@@ -109,11 +127,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         title = findViewById(R.id.recipe_title);
         prep_time = findViewById(R.id.recipe_prep);
         servings = findViewById(R.id.recipe_servings);
-        category = findViewById(R.id.recipe_category);
         comments = findViewById(R.id.recipe_comments);
         photo = findViewById(R.id.recipe_image);
         confirmBtn = findViewById(R.id.confirm_button);
         uploading = false;
+        categorySpinner = findViewById(R.id.recipe_category_spinner);
 
         recipeIngredients = new ArrayList<>();
         ingredientList = findViewById(R.id.recipe_ingredients_list);
@@ -123,83 +141,78 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         ingredientList.setLayoutManager(manager);
         ingredientList.setAdapter(ingredientAdapter);
 
-         // extract extras
-         extras = getIntent().getExtras();
-         if (extras != null) {
+        // set up adapters and stuff for custom user-defined category spinner
 
-             isEditing = extras.getBoolean("isEditing", false);
+        ArrayList<Category> categories = new ArrayList<>();
+        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categoryAdapter);
 
-             if (isEditing) {
-                 getSupportActionBar().setTitle("Edit Recipe");
-                 Recipe recipe = (Recipe) extras.getSerializable("recipe");
-                 confirmBtn.setText("Edit");
+        // extract extras
+        extras = getIntent().getExtras();
+        if (extras != null) {
 
-                 photoID = recipe.getPhoto();
-                 id = recipe.getId();
-                 title.setText(recipe.getTitle());
-                 prep_time.setText(String.valueOf(recipe.getPrep_time()));
-                 servings.setText(String.valueOf(recipe.getServings()));
-                 category.setText(recipe.getCategory());
-                 comments.setText(recipe.getComments());
+            isEditing = extras.getBoolean("isEditing", false);
 
-                 // load image for recipe
-                 // very similar code as in RecipeListAdapter...
-                 String photoURI = recipe.getPhoto();
-                 if (photoURI != null) {
-                     try {
-                         // get child in storage
-                         StorageReference photoRef = storageReference.child("images/" + photoURI);
-                         photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                             // Got the download URL and put image in corresponding ImageView
-                             Picasso.get().load(uri).into(photo);
-                         }).addOnFailureListener(exception -> {
-                             // Log any errors
-                             Log.e("Image Not Found", recipe.getTitle(), exception);
-                             photo.setImageResource(R.drawable.ic_baseline_dining_24);
-                         });
-                     } catch (Exception exception) {
-                         // Log any errors
-                         Log.e("Child Not Found", recipe.getTitle(), exception);
-                     }
-                 } else {
-                     photo.setImageResource(R.drawable.ic_baseline_dining_24);
-                 }
+            if (isEditing) {
+                getSupportActionBar().setTitle("Edit Recipe");
+                Recipe recipe = (Recipe) extras.getSerializable("recipe");
 
-                 // add listener to the ingredients collection
-                 ingredients = db.collection(recipe.getCollectionPath());
-             } else {
-                 // when non editing, make a new collection
-                 getSupportActionBar().setTitle("Add Recipe");
-                 // initialize defaults
-                 photo.setImageResource(R.drawable.ic_baseline_dining_24);
+                photoID = recipe.getPhoto();
+                id = recipe.getId();
+                title.setText(recipe.getTitle());
+                prep_time.setText(String.valueOf(recipe.getPrep_time()));
+                servings.setText(String.valueOf(recipe.getServings()));
+                comments.setText(recipe.getComments());
 
-                 // make a new document and photo
-                 id = UUID.randomUUID().toString();
-                 ingredients = recipes.document(id).collection("ingredients");
-             }
+                // load image for recipe
+                // very similar code as in RecipeListAdapter...
+                String photoURI = recipe.getPhoto();
+                if (photoURI != null) {
+                    try {
+                        // get child in storage
+                        StorageReference photoRef = storageReference.child("images/" + photoURI);
+                        photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            // Got the download URL and put image in corresponding ImageView
+                            Picasso.get().load(uri).into(photo);
+                        }).addOnFailureListener(exception -> {
+                            // Log any errors
+                            Log.e("Image Not Found", recipe.getTitle(), exception);
+                            photo.setImageResource(R.drawable.ic_baseline_dining_24);
+                        });
+                    } catch (Exception exception) {
+                        // Log any errors
+                        Log.e("Child Not Found", recipe.getTitle(), exception);
+                    }
+                } else {
+                    photo.setImageResource(R.drawable.ic_baseline_dining_24);
+                }
 
-             // add event listeners to ingredients collection (we are guaranteed to have one)
-             ingredients.addSnapshotListener((queryDocumentSnapshots, error) -> {
-                 if (error != null) {
-                     Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                     return;
-                 }
-                 if (queryDocumentSnapshots == null) {
-                     Log.w(TAG + ":snapshotListener", "Location collection is null!");
-                     return;
-                 }
-                 recipeIngredients.clear();
-                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                     RecipeIngredient i = doc.toObject(RecipeIngredient.class);
-                     recipeIngredients.add(i);
-                     Log.i(TAG, "Add recipeIngredient " + i.getId() + " " + i.getDescription());
-                 }
-                 Log.i(TAG, "Added " + recipeIngredients.size() + " elements");
-                 // sort by date added
-                 recipeIngredients.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
-                 ingredientAdapter.notifyDataSetChanged();
-             });
-         }
+                // add listener to the ingredients collection
+                ingredientsCollection = db.collection(recipe.getCollectionPath());
+
+                // setting initial spinner values are a bit weird
+                // we have to wait for firebase to get the data from the server
+                // thus, we set a location listener on the first data retrieval
+                recipe.getCategoryAsync(abstractDocumentRetrievalListener(
+                        selectedCategory, categories, categorySpinner, recipe.getTitle()));
+            } else {
+                // when non editing, make a new collection
+                getSupportActionBar().setTitle("Add Recipe");
+                // initialize defaults
+                photo.setImageResource(R.drawable.ic_baseline_dining_24);
+
+                // make a new document and photo
+                id = UUID.randomUUID().toString();
+                ingredientsCollection = recipesCollection.document(id).collection("ingredients");
+            }
+
+            // add event listeners to ingredients collection for other changes
+            ingredientsCollection.addSnapshotListener(abstractSnapshotListener(
+                    RecipeIngredient.class, recipeIngredients, null, ingredientAdapter, null, null));
+            categoriesCollection.addSnapshotListener(abstractSnapshotListener(
+                    Category.class, categories, categoryAdapter, null, categorySpinner, selectedCategory));
+        }
 
 
         // drag to delete - code duplicated from recycler view in ingredient storage
@@ -228,7 +241,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 // of the item at that position.
                 int position = viewHolder.getAdapterPosition();;
                 RecipeIngredient toDelete = recipeIngredients.get(position);
-                ingredients.document(toDelete.getId()).delete()
+                ingredientsCollection.document(toDelete.getId()).delete()
                         .addOnSuccessListener(unused -> generateSnackbar("Deleted " + toDelete.getDescription() + "!"))
                         .addOnFailureListener(e -> {
                             Log.i(TAG, "Failed to delete " + toDelete.getId(), e);
@@ -249,11 +262,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              intent.putExtra("isEditing",  true);
              intent.putExtra("ingredient", recipeIngredients.get(position));
              editIngredientLauncher.launch(intent);
-         });
+        });
 
         // Cancel button on bottom left
         final Button cancelRecipe = findViewById(R.id.cancel_button);
         cancelRecipe.setOnClickListener(v -> finish());
+
+        // category spinner stuff
+        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
     }
 
     public void confirm(View view) {
@@ -263,7 +279,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 confirmBtn.setEnabled(false);
                 confirmBtn.setText(R.string.loading);
                 parseRecipe()
-                        .onSuccessTask(r -> recipes.document(r.getId()).set(r))
+                        .onSuccessTask(r -> recipesCollection.document(r.getId()).set(r))
                         .addOnSuccessListener(unused -> {
                             Log.i(TAG, "Successfully added recipe!");
                             setResult(Activity.RESULT_OK);
@@ -292,7 +308,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         if (getStr(servings).isBlank()) {
             exceptionString.add("Servings");
         }
-        if (getStr(category).isBlank()) {
+        if (selectedCategory.get() == null) {
             exceptionString.add("Category");
         }
         if (exceptionString.size() > 0) {
@@ -320,8 +336,104 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
         // somehow we need this because of the lambda expression below
         String finalNewPhotoID = newPhotoID;
+        String collectionPath = categoriesCollection.document(selectedCategory.get().getCategory()).getPath();
         return Tasks.whenAll(futures).continueWith(unused -> new Recipe(id, getStr(title), Integer.parseInt(getStr(prep_time)), Integer.parseInt(getStr(servings)),
-                getStr(category), getStr(comments), new Date(), finalNewPhotoID, ingredients.getPath()));
+                collectionPath, getStr(comments), new Date(), finalNewPhotoID, ingredientsCollection.getPath()));
+    }
+
+
+    /**
+     * A generic onItemSelectedlistener for spinners for the user-defined collections (units, locations, categories)
+     */
+    private <T extends Serializable> AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(
+            AtomicReference<T> selectedElem
+    ) {
+        return new AdapterView.OnItemSelectedListener() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedElem.set((T) parentView.getItemAtPosition(position));
+                Log.i(TAG, "selected unit is " + selectedElem.get().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                Log.i(TAG, "Nothing selected");
+            }
+        };
+    }
+
+    /**
+     * A generic snapshot listener for simple user-defined collections (units, locations, categories)
+     * Also sorts the data based on the timestamp data
+     *
+     * This abstracts the snapshot listener
+     */
+    private <T extends Timestamped, U extends RecyclerView.Adapter<?>> EventListener<QuerySnapshot> abstractSnapshotListener(
+            Class<T> valueType,
+            ArrayList<T> data,
+            @Nullable ArrayAdapter<T> arrayAdapter,
+            @Nullable U recyclerViewAdapter,
+            @Nullable Spinner spinner,
+            @Nullable AtomicReference<T> selectedElem
+    ) {
+        return (queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+            if (queryDocumentSnapshots == null) {
+                Log.w(TAG + ":snapshotListener", "Location collection is null!");
+                return;
+            }
+            data.clear();
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                T item = doc.toObject(valueType);
+                data.add(item);
+            }
+            Log.i(TAG, "Added " + data.size() + " elements of class " + valueType.toString());
+            // sort by date added
+            data.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
+            if (arrayAdapter != null) arrayAdapter.notifyDataSetChanged();
+            if (recyclerViewAdapter != null) recyclerViewAdapter.notifyDataSetChanged();
+
+            // a bit of a hack...
+            // this is only used when we need to have a selected element, like for spinners and stuff
+            if (spinner != null && selectedElem != null) {
+                if (selectedElem.get() != null) {
+                    spinner.setPrompt(selectedElem.get().toString());
+                }
+            }
+        };
+    }
+
+    /**
+     * A generic DocumentRetrievalListener for initial population of ArrayLists for user-defined collections
+     * (units, locations, categories)
+     */
+    private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
+            AtomicReference<T> selectedItem,
+            ArrayList<T> datas,
+            Spinner spinner,
+            String recipeTitle // for debug purposes
+    ) {
+        return new DocumentRetrievalListener<T>() {
+            @Override
+            public void onSuccess(T data) {
+                selectedItem.set(data);
+                spinner.setSelection(datas.indexOf(data));
+                Log.i(TAG, "DocumentRetrieval: " + data.toString() + " " + data.getClass() + " - (" + datas.indexOf(data) + ")" + datas.size());
+            }
+            @Override
+            public void onNullDocument() {
+                // happens if the user deletes a document by themselves. We should not allow it!
+                Log.i(TAG, "Bruh moment: ingredient " + recipeTitle + " cannot retrieve unit - Document does not exist");
+            }
+            @Override
+            public void onError(Exception e) {
+                Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
+            }
+        };
     }
 
     // Editing ingredients
@@ -333,7 +445,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     Bundle bundle = result.getData().getExtras();
                     RecipeIngredient ingredient = (RecipeIngredient) bundle.getSerializable("ingredient");
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
-                    ingredients.document(ingredient.getId()).set(ingredient)
+                    ingredientsCollection.document(ingredient.getId()).set(ingredient)
                             .addOnSuccessListener(unused -> generateSnackbar("Edited " + ingredient.getDescription() + "!"))
                             .addOnFailureListener(e -> generateSnackbar("Failed to edit " + ingredient.getDescription() + "!"));
                     ingredientAdapter.notifyDataSetChanged();
@@ -348,7 +460,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     assert result.getData() != null;
                     Bundle bundle = result.getData().getExtras();
                     RecipeIngredient ingredient = (RecipeIngredient) bundle.getSerializable("ingredient");
-                    ingredients.document(ingredient.getId()).set(ingredient)
+                    Log.i(TAG + "addIngredientLauncher", "Adding ingredient" + ingredient);
+                    Log.i(TAG + "addIngredientLauncher", "PATH:" + ingredientsCollection.getPath());
+                    Log.i(TAG + "addIngredientLauncher", "ingredient:" + ingredient.toString());
+                    Log.i(TAG + "addIngredientLauncher", "ingredientID:" + ingredient.getId());
+                    ingredientsCollection.document(ingredient.getId()).set(ingredient)
                             .addOnSuccessListener(documentReference -> generateSnackbar("Added " + ingredient.getDescription() + "!"))
                             .addOnFailureListener(e -> generateSnackbar("Failed to add " + ingredient.getDescription() + "!"));
 
@@ -403,6 +519,31 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                     changedImage = true;
                 }
             });
+
+
+    /**
+     * This is run when R.id.recipe_category_editbtn is clicked
+     *
+     * this function jumps to the EditLocations activity.
+     */
+    public void editCategories(View view) {
+        Log.i(TAG + ":editCategories", "Going to Edit categories");
+        Intent intent = new Intent(this, EditCategoriesActivity.class);
+        disregardResultLauncher.launch(intent);
+    }
+
+    /**
+     * A launcher that disregards the result
+     *
+     * This is used in editUnits and editCategories
+     *
+     * we don't care about the callback because the new location (or deleted locations)
+     * will be updated automatically by firebase, via the addSnapshotListener
+     */
+    final private ActivityResultLauncher<Intent> disregardResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {}
+    );
 
     /**
      * Opens activity to add photo

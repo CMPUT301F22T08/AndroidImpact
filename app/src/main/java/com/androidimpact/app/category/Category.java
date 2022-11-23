@@ -1,7 +1,6 @@
-package com.androidimpact.app.unit;
+package com.androidimpact.app.category;
 
 import com.androidimpact.app.Timestamped;
-import com.androidimpact.app.location.Location;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -9,43 +8,36 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-
-/**
- * Unit
- * Defines a user defined unit
- * @version 1.0
- * @author Joshua Ji
- */
-public class Unit implements Serializable, Timestamped {
+public class Category implements Serializable, Timestamped {
     @DocumentId
-    String unit;
+    String category;
     @ServerTimestamp
     Date dateAdded;
 
     // default empty constructor for Firebase auto deserialization
-    public Unit() {}
+    public Category() {}
 
     /**
      * toString allows the ArrayAdapter to have sensible defaults
      */
     public String toString() {
-        return getUnit();
+        return getCategory();
     }
 
     /**
-     * Constructs a Unit class from its value
+     * Constructs a Category class from its value
      */
-    public Unit(String unit) {
-        this.unit = unit;
+    public Category(String category) {
+        this.category = category;
         this.dateAdded = new Date();
     }
 
-    public String getUnit() {
-        return unit;
+    public String getCategory() {
+        return category;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Date getDateAdded() {
@@ -71,14 +63,14 @@ public class Unit implements Serializable, Timestamped {
 
         /* Check if o is an instance of Complex or not
           "null instanceof [type]" also returns false */
-        if (!(o instanceof Unit)) {
+        if (!(o instanceof Category)) {
             return false;
         }
 
         // typecast o to Complex so that we can compare data members
-        Unit c = (Unit) o;
+        Category c = (Category) o;
 
         // Compare the data members and return accordingly
-        return Objects.equals(unit, c.getUnit());
+        return Objects.equals(category, c.getCategory());
     }
 }
