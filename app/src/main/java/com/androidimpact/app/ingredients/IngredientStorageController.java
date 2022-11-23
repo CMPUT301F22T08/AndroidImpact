@@ -1,8 +1,9 @@
-package com.androidimpact.app;
+package com.androidimpact.app.ingredients;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;

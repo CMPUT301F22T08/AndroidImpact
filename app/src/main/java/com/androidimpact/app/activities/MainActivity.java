@@ -8,15 +8,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.androidimpact.app.IngredientStorageController;
+import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.util.Log;
 import android.view.View;
 
-import com.androidimpact.app.IngredientStorage;
-import com.androidimpact.app.MealPlanList;
+import com.androidimpact.app.ingredients.IngredientStorage;
+import com.androidimpact.app.meal_plan.MealPlanList;
 import com.androidimpact.app.R;
-import com.androidimpact.app.Recipe;
-import com.androidimpact.app.RecipeList;
+import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
 import com.androidimpact.app.fragments.NavbarFragment;
@@ -25,7 +25,6 @@ import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 

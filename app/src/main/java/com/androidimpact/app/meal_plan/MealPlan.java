@@ -1,6 +1,11 @@
-package com.androidimpact.app;
+package com.androidimpact.app.meal_plan;
 
 import android.util.Log;
+
+import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.IngredientStorage;
 
 import java.io.Serializable;
 import java.util.ArrayList;

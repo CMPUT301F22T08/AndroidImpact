@@ -1,6 +1,7 @@
-package com.androidimpact.app;
+package com.androidimpact.app.recipes;
 
-import com.google.firebase.firestore.DocumentId;
+import com.androidimpact.app.Timestamped;
+import com.androidimpact.app.ingredients.Ingredient;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;

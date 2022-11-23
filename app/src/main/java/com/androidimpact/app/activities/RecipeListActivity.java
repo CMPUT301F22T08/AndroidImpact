@@ -1,28 +1,16 @@
 package com.androidimpact.app.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.Recipe;
-import com.androidimpact.app.RecipeList;
-import com.androidimpact.app.RecipeListAdapter;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
+import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeListAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;

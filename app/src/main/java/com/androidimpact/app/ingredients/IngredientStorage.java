@@ -1,8 +1,9 @@
-package com.androidimpact.app;
+package com.androidimpact.app.ingredients;
+
+import com.androidimpact.app.SortableItemList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 
 

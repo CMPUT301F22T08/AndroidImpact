@@ -1,12 +1,7 @@
-package com.androidimpact.app;
+package com.androidimpact.app.ingredients;
 
-import com.androidimpact.app.location.Location;
-import com.androidimpact.app.unit.Unit;
-import com.google.firebase.firestore.DocumentId;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.androidimpact.app.ingredients.Ingredient;
 import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;

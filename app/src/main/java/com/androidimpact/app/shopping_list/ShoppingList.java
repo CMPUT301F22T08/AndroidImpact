@@ -1,10 +1,13 @@
-package com.androidimpact.app;
+package com.androidimpact.app.shopping_list;
+
+import com.androidimpact.app.SortableItemList;
+import com.androidimpact.app.ingredients.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class ShoppingList extends SortableItemList<Ingredient>{
+public class ShoppingList extends SortableItemList<Ingredient> {
 
     private static String[] sortChoices;
 

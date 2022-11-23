@@ -1,8 +1,6 @@
-package com.androidimpact.app;
+package com.androidimpact.app.recipes;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidimpact.app.category.Category;
-import com.androidimpact.app.unit.Unit;
+import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.Ingredient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 /**
  * RecipeIngredientAdapter class

@@ -1,17 +1,18 @@
-package com.androidimpact.app;
+package com.androidimpact.app.meal_plan;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidimpact.app.R;
+import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.ingredients.IngredientStorage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;

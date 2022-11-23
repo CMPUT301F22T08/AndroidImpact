@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.ingredients;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,25 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidimpact.app.category.Category;
-import com.androidimpact.app.location.Location;
-import com.androidimpact.app.unit.Unit;
+import com.androidimpact.app.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.function.Function;
 
 /**
  * This class creates a view adapter for StoreIngredient

@@ -36,9 +36,9 @@ import java.util.Date;
 
 import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.R;
-import com.androidimpact.app.Recipe;
-import com.androidimpact.app.RecipeIngredient;
-import com.androidimpact.app.RecipeIngredientAdapter;
+import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeIngredient;
+import com.androidimpact.app.recipes.RecipeIngredientAdapter;
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
 import com.androidimpact.app.category.EditCategoriesActivity;

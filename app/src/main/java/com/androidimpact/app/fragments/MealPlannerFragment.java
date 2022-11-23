@@ -18,14 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.androidimpact.app.IngredientStorage;
-import com.androidimpact.app.MealPlan;
-import com.androidimpact.app.MealPlanListAdapter;
+import com.androidimpact.app.ingredients.IngredientStorage;
+import com.androidimpact.app.meal_plan.MealPlan;
+import com.androidimpact.app.meal_plan.MealPlanListAdapter;
 import com.androidimpact.app.R;
-import com.androidimpact.app.RecipeList;
+import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
