@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.meal_icon:
                 getSupportActionBar().setTitle("Meal Plan");
                 updateActiveFragment(mealPlannerFragment);
+                mealPlannerFragment.refreshMealItems();
                 return true;
         }
         return false;
