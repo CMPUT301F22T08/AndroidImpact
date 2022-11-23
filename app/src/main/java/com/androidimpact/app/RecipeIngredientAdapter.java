@@ -80,40 +80,8 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
 
         // now, retrieve "category" from firebase
         // since this takes a while, we first set a loading state
-        holder.ingredientCategory.setText("loading...");
-        currentIngredient.getCategoryAsync(abstractDocumentRetrievalListener(
-                holder.ingredientCategory,
-                Category::toString,
-                currentIngredient.getDescription()
-        ));
+        holder.ingredientCategory.setText(currentIngredient.getCategory());
     }
-
-    /**
-     * A generic DocumentRetrievalListener for initial population of ArrayLists for user-defined collections
-     * (units, categories)
-     */
-    private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
-            TextView view,
-            Function<T, String> fromData,
-            String ingredientDescription // for debug purposes
-    ) {
-        return new DocumentRetrievalListener<T>() {
-            @Override
-            public void onSuccess(T data) {
-                view.setText(fromData.apply(data));
-            }
-            @Override
-            public void onNullDocument() {
-                // happens if the user deletes a document by themselves. We should not allow it!
-                Log.i(TAG, "Bruh moment: ingredient " + ingredientDescription + " cannot retrieve unit - Document does not exist");
-            }
-            @Override
-            public void onError(Exception e) {
-                Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
-            }
-        };
-    }
-
 
     /**
      * this method returns the size of recyclerview
