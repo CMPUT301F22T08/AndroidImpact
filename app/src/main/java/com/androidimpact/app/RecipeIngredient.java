@@ -13,8 +13,6 @@ import java.util.Date;
  * @see Ingredient
  */
 public class RecipeIngredient extends Ingredient implements Serializable {
-    @DocumentId
-    private String id;
     @ServerTimestamp
     private Date dateAdded;
 
@@ -28,13 +26,8 @@ public class RecipeIngredient extends Ingredient implements Serializable {
      * @return
      */
     public RecipeIngredient(String id, String description, float amount, String unitPath, String category, Date dateAdded) {
-        super(description, amount, unitPath, category);
-        this.id = id;
+        super(id, description, amount, unitPath, category);
         this.dateAdded = dateAdded;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public Date getDateAdded() {
