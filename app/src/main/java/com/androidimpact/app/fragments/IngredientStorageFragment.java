@@ -25,17 +25,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.androidimpact.app.IngredientStorage;
+import com.androidimpact.app.IngredientStorageController;
 import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -48,18 +43,13 @@ import nl.dionsegijn.konfetti.models.Size;
  */
 public class IngredientStorageFragment extends Fragment implements NavbarFragment {
     final String TAG = "IngredientStorageFragment";
-    final String COLLECTION_NAME = "ingredientStorage-new";
 
     private static IngredientStorageFragment instance;
 
-    // Declare the variables so that you will be able to reference it later.
     RecyclerView ingredientListView;
-    StoreIngredientViewAdapter storeingredientViewAdapter;
-    IngredientStorage ingredientDataList;
+    StoreIngredientViewAdapter storeIngredientViewAdapter;
+    IngredientStorageController ingredientStorageController;
 
-    // adding cities to firebase
-    FirebaseFirestore db;
-    CollectionReference ingredientsCollection;
     Spinner sortIngredientSpinner;
     String[] sortingChoices;
     TextView sortText;
@@ -106,10 +96,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        ingredientsCollection = db.collection(COLLECTION_NAME);
+        ingredientStorageController = new IngredientStorageController(getContext());
     }
 
 
@@ -157,17 +144,15 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
         // initialize adapters and customList
         ingredientListView = a.findViewById(R.id.ingredient_listview);
 
-        ingredientDataList = new com.androidimpact.app.IngredientStorage();
-        storeingredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
-
+        storeIngredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientStorageController);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         ingredientListView.setLayoutManager(manager);
-        ingredientListView.setAdapter(storeingredientViewAdapter);
+        ingredientListView.setAdapter(storeIngredientViewAdapter);
 
-        // listen for edits in storeingredientViewAdapter`
-        storeingredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
+        // listen for edits in storeIngredientViewAdapter`
+        storeIngredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
             // runs whenever a store ingredient edit btn is clicked
             Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
             Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
@@ -180,7 +165,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
         sortText = a.findViewById(R.id.sort_ingredient_info);
 
         // getting available sorting choices
-        sortingChoices = ingredientDataList.getSortChoices();
+        sortingChoices = ingredientStorageController.getSortingChoices();
 
         // Creating a sorting adapter
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
@@ -207,10 +192,8 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
              */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ingredientDataList.setSortChoice(i);
-                ingredientDataList.sortByChoice();
-                //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
-                storeingredientViewAdapter.notifyDataSetChanged();
+                ingredientStorageController.sortData(i);
+                storeIngredientViewAdapter.notifyDataSetChanged();
             }
 
             /**
@@ -219,11 +202,8 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
              */
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                ingredientDataList.setSortChoice(0);
-                ingredientDataList.sortByChoice();
-                //  sortText.setText("Sort by: "+ ingredientDataList.getSortChoice());
-
-                storeingredientViewAdapter.notifyDataSetChanged();
+                ingredientStorageController.sortData(0);
+                storeIngredientViewAdapter.notifyDataSetChanged();
             }
         });
 
@@ -243,68 +223,21 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             }
 
             /**
-             * this method is called when we swipe our item to right direction
+             * Deletes the swiped object.
+             * Called when we swipe to the right
              * @param viewHolder
              * @param direction
              */
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // get the position of the selected item
                 int position = viewHolder.getAdapterPosition();
-
-                // Get the swiped item at a particular position.
-                StoreIngredient deletedIngredient = ingredientDataList.get(position);
-                String description = deletedIngredient.getDescription();
-                String id = deletedIngredient.getId();
-
-                Log.d(TAG, "Swiped " + description + " at position " + position);
-
-                // delete item from firebase
-                ingredientsCollection.document(id)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> {
-                            Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(a.findViewById(R.id.frameLayout), "Deleted " + description, Snackbar.LENGTH_LONG).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Snackbar.make(a.findViewById(R.id.frameLayout), "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-                            Log.d(TAG, description + " could not be deleted!" + e);
-                        });
+                ingredientStorageController.delete(position);
             }
             // finally, we add this to our recycler view.
         }).attachToRecyclerView(ingredientListView);
 
         // on snapshot listener for the collection
-        ingredientsCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                return;
-            }
-
-            // Clear the old list
-            ingredientDataList.clear();
-
-            if (queryDocumentSnapshots == null) { return; }
-
-            int errorCount = 0;
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                String id = doc.getId();
-                try {
-                    // adding data from firestore
-                    ingredientDataList.add(doc.toObject(StoreIngredient.class));
-                } catch (Exception e) {
-                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
-                    errorCount += 1;
-                }
-            }
-
-            if (errorCount > 0) {
-                Snackbar.make(ingredientListView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
-            }
-            Log.i(TAG, "Snapshot listener: Added " + ingredientDataList.size() + " elements");
-            ingredientDataList.sortByChoice();
-            storeingredientViewAdapter.notifyDataSetChanged();
-        });
+        ingredientStorageController.addDataUpdateSnapshotListener(storeIngredientViewAdapter);
 
         /**
          * DEFINE ACTIVITY LAUNCHERS
@@ -326,7 +259,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // Ok - we have an updated ingredient!
                     // edit firebase directly
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
-                    ingredientsCollection.document(ingredient.getId()).set(ingredient);
+                    ingredientStorageController.add(ingredient);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
@@ -347,6 +280,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // Ok - we have an ingredient!
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
 
+                    // LOL
                     final KonfettiView confetti = a.findViewById(R.id.confetti_view_ingredient_storage);
                     confetti.build()
                             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
@@ -360,7 +294,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                             .streamFor(300, 2000L);
 
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
-                    ingredientsCollection.document(ingredient.getId()).set(ingredient);
+                    ingredientStorageController.add(ingredient);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
