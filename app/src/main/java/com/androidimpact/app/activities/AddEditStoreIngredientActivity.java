@@ -134,13 +134,14 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             bestBeforeCalendar.setTime(currentIngredient.getBestBeforeDate());
             updateDateLabel();
 
-            // set initial ingredient unit
+            // set initial unit, category and locations
             // note that we store the unit as a string, not a document path
             selectedUnit.set(new Unit(currentIngredient.getUnit()));
             Log.i(TAG, "Set unit: " + selectedUnit.get());
-            // same thing for category
             selectedCategory.set(new Category(currentIngredient.getCategory()));
             Log.i(TAG, "Set category: " + selectedCategory.get());
+            selectedLocation.set(new Location(currentIngredient.getLocation()));
+            Log.i(TAG, "Set location: " + selectedLocation.get());
         } else {
             currentIngredient = null;
             getSupportActionBar().setTitle("Add Ingredient");
