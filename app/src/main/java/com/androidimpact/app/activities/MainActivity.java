@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.androidimpact.app.IngredientStorageController;
 import com.androidimpact.app.R;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
     final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
     final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
+
+
+    final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
+
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
 
@@ -59,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
-
     }
 
     /**
@@ -103,4 +107,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         active = newFragment;
         newFragment.setFabListener(navbarFAB);
     }
+
+
+    public IngredientStorageController getIngredientStorageController(){
+        return ingredientStorageController;
+    }
+
 }

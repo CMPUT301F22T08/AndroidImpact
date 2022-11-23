@@ -51,18 +51,9 @@ public class StoreIngredient extends Ingredient implements Serializable {
      */
     public StoreIngredient(String id, String description, float amount, String category,
                            Date bestBeforeDate, String locationDocumentPath, String unitDocumentPath){
-        super(description, amount, unitDocumentPath, category);
-        this.id = id;
+        super(id, description, amount, unitDocumentPath, category);
         this.bestBeforeDate = bestBeforeDate;
         this.locationDocumentPath = locationDocumentPath;
-    }
-
-    /**
-     * Gets the id of the element
-     * @return (String) the id of the document
-     */
-    public String getId() {
-        return id;
     }
 
     /**
@@ -135,6 +126,4 @@ public class StoreIngredient extends Ingredient implements Serializable {
             }
         });
     }
-
-
 }
