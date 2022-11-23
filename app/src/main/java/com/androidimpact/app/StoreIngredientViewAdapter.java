@@ -40,12 +40,24 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
 
     /**
-     * Create constructor class
+     * Constructor for the class
      * @param mContext
      * @param ingredientArrayList
+     *      (ArrayList<StoreIngredient>) The source data for the view adapter
      */
     public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
+        this.mContext = mContext;
+    }
+
+    /**
+     * Create constructor class
+     * @param mContext
+     * @param ingredientStorage
+     *      (IngredientStorage) ingredientStorage
+     */
+    public StoreIngredientViewAdapter(Context mContext, IngredientStorageController controller) {
+        this.ingredientArrayList = controller.getDataAsList();
         this.mContext = mContext;
     }
 
