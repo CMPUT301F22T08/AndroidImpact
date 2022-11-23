@@ -30,6 +30,7 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.StoreIngredient;
 import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.activities.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import nl.dionsegijn.konfetti.KonfettiView;
@@ -96,7 +97,6 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ingredientStorageController = new IngredientStorageController(getContext());
     }
 
 
@@ -134,16 +134,14 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
         Activity a = getActivity();
 
-      //  System.out.println(a);
-
         if (a == null) {
             Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
             return;
         }
 
         // initialize adapters and customList
+        ingredientStorageController = ((MainActivity) a).getIngredientStorageController();
         ingredientListView = a.findViewById(R.id.ingredient_listview);
-
         storeIngredientViewAdapter = new StoreIngredientViewAdapter(getContext(), ingredientStorageController);
 
         // below line is to set layout manager for our recycler view.
@@ -259,7 +257,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // Ok - we have an updated ingredient!
                     // edit firebase directly
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
-                    ingredientStorageController.add(ingredient);
+                    ingredientStorageController.addEdit(ingredient);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
@@ -294,7 +292,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                             .streamFor(300, 2000L);
 
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
-                    ingredientStorageController.add(ingredient);
+                    ingredientStorageController.addEdit(ingredient);
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
                     Log.i(TAG + ":addIngredientResult", "Received cancelled");
