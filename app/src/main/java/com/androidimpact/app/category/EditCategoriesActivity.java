@@ -187,12 +187,13 @@ public class EditCategoriesActivity extends AppCompatActivity {
         }
 
         // check if category already exists
+        // if it does, warn the user (and don't add the category)
         categoryCollection.document(categoryName)
                 .get()
                 .continueWithTask(task -> {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
-                        throw new Exception("Error: " + categoryName + " already exists!");
+                        throw new Exception(categoryName + " already exists!");
                     } else {
                         Category l = new Category(categoryName);
                         Log.i(TAG, "Adding category " + l.getCategory());
@@ -204,7 +205,7 @@ public class EditCategoriesActivity extends AppCompatActivity {
                     makeSnackbar("Added " + categoryName);
                 })
                 .addOnFailureListener(e -> {
-                    makeSnackbar("Failed to add " + categoryName);
+                    makeSnackbar("Error: " + e.getMessage());
                 });
     }
 
