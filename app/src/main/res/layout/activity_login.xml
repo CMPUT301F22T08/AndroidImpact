@@ -39,33 +39,31 @@
         android:id="@+id/username"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="90dp"
         android:ems="10"
         android:hint="Username"
-        android:textColor="@color/white"
         android:inputType="textPersonName"
+        android:textColor="@color/white"
         android:textColorHint="@color/purple_500"
-        app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_phrase"
-        app:layout_constraintVertical_bias="0.50" />
+        app:layout_constraintTop_toBottomOf="@+id/login_phrase" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="110dp"
+        android:layout_marginTop="90dp"
         android:ems="10"
         android:hint="Password"
-        android:textColor="@color/white"
         android:inputType="textPassword"
+        android:textColor="@color/white"
         android:textColorHint="@color/purple_500"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <Button
         android:id="@+id/signup"

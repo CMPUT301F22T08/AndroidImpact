@@ -333,7 +333,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // Error - add a snackBar
             Log.i(TAG, "Error making storeIngredient", e);
             View parentLayout = findViewById(android.R.id.content);
-            Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_LONG)
+            Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_SHORT)
                     .setAction("Ok", view1 -> {})
                     .show();
         }

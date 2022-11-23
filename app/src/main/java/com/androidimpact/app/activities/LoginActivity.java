@@ -3,6 +3,7 @@ package com.androidimpact.app.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     // Go to MainActivity
     public void login(View view) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("username", username.getText().toString());
         startActivity(intent);
     }
 }

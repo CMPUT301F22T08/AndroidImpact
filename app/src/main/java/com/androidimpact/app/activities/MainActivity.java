@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.androidimpact.app.IngredientStorageController;
 import android.util.Log;
+import android.view.View;
 
 import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.MealPlanList;
@@ -23,6 +24,7 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -63,6 +65,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setTitle("AndroidImpact");
+
+        Bundle extras = getIntent().getExtras();
+        String username = extras.getString("username");
+
+        View parentLayout = findViewById(R.id.main_activity_layout);
+        Snackbar.make(parentLayout, "Welcome " + username + "!", Snackbar.LENGTH_SHORT)
+                .setAction("Ok", view1 -> {})
+                .show();
 
         ArrayList<Recipe> recipes = new ArrayList<>();
         recipeList = new RecipeList(recipes);
