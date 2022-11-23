@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 /**
  * MealPlanListAdapter class
- * This class defines an adapter for MealPlan
+ * This class defines an adapter for MealPlanList
  * @version 1.0
  * @author Aneeljyot Alagh
  */
@@ -27,23 +28,33 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
 
     private ArrayList<MealPlan> mealPlans;
     private Context context;
+    private MealPlanList mealPlanList;
 
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference mealPlanCollection;
 
     /**
-     * Constructor for adapter for MealPlan
+     * Constructor for adapter for MealPlanList
      * @param context
      * @param mealPlans
      */
     public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans) {
         this.mealPlans = mealPlans;
+        this.mealPlanList = new MealPlanList(this.mealPlans);
         this.context = context;
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         mealPlanCollection = db.collection("meal-plan");
+
+        this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                sortByChoice();
+            }
+        });
     }
 
     /**
@@ -79,6 +90,13 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
         return mealPlans.size();
     }
 
+    /**
+     * This function allows us to sort the meal plan list by date
+     */
+    public void sortByChoice() {
+        this.mealPlanList.sortByChoice();
+    }
+
 
     /**
      * View Holder Class to handle Recycler View.
@@ -88,6 +106,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
         // creating a variable for our text view and button
         private TextView date;
         private FloatingActionButton mealPlanEditButton;
+        private RecyclerView mealsList;
 
         /**
          * Initializing our text views
@@ -96,6 +115,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
         public MealPlanHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.meal_plan_title);
+            mealsList = itemView.findViewById(R.id.meals_list);
             mealPlanEditButton = itemView.findViewById(R.id.edit_button);
         }
     }
