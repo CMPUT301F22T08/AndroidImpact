@@ -95,7 +95,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
          */
         public MealPlanHolder(@NonNull View itemView) {
             super(itemView);
-            date = itemView.findViewById(R.id.day_title);
+            date = itemView.findViewById(R.id.meal_plan_title);
             mealPlanEditButton = itemView.findViewById(R.id.edit_button);
         }
     }
