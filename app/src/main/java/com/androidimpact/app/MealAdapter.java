@@ -79,9 +79,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public class MealViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view and button
-        private TextView date;
-        private FloatingActionButton mealPlanEditButton;
-        private RecyclerView mealsList;
+        private TextView type, item;
 
         /**
          * Initializing our text views
@@ -89,9 +87,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
          */
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
-            date = itemView.findViewById(R.id.day_title);
-            mealsList = itemView.findViewById(R.id.meals_list);
-            mealPlanEditButton = itemView.findViewById(R.id.edit_button);
+            type = itemView.findViewById(R.id.meal_name);
+            item = itemView.findViewById(R.id.meal_item);
         }
     }
 }
