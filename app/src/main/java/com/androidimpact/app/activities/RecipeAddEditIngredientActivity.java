@@ -2,6 +2,7 @@ package com.androidimpact.app.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -103,10 +105,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
 
-        // set onclick for spinner
-        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
-        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("activity_name");
@@ -132,14 +130,19 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 id = UUID.randomUUID().toString();
                 getSupportActionBar().setTitle("Add Ingredient");
             }
-
-            // Snapshot listeners for collections
-            unitCollection.addSnapshotListener(abstractSnapshotListener(
-                    Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
-            categoriesCollection.addSnapshotListener(abstractSnapshotListener(
-                    Category.class, categoryAdapter, categories, categorySpinner, selectedCategory));
         }
 
+        // EVENT LISTENERS
+
+        // listen for item selected events in spinners
+        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
+        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
+
+        // Listen for events in collections
+        unitCollection.addSnapshotListener(abstractSnapshotListener(
+                Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
+        categoriesCollection.addSnapshotListener(abstractSnapshotListener(
+                Category.class, categoryAdapter, categories, categorySpinner, selectedCategory));
     }
 
     /**
@@ -228,7 +231,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 T item = doc.toObject(valueType);
                 data.add(item);
             }
-            Log.i(TAG, "Added " + data.size() + " elements");
+            Log.i(TAG, "Added " + data.size() + " elements of type: " + valueType.toString());
             // sort by date added
             data.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
             adapter.notifyDataSetChanged();
@@ -279,8 +282,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         boolean[] blankChecks = {
                 getStr(description).isBlank(),
                 getStr(amount).isBlank(),
-                selectedUnit == null,
-                selectedCategory == null
+                selectedUnit.get() == null,
+                selectedCategory.get() == null
         };
 
         // Make sure all inputs are filled

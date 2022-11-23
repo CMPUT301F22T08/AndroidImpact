@@ -245,9 +245,6 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
             }
 
             Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");
-            for (Recipe i : recipeDataList) {
-                Log.i(TAG, "Snapshot listener: Added " + i.getTitle() + " to elements");
-            }
             recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
         });
 

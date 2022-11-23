@@ -15,6 +15,7 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * This class is the activity Main Activity

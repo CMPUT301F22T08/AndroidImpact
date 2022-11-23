@@ -142,10 +142,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipe_ingredients_list"
         android:layout_width="408dp"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginTop="12dp"
-        android:orientation="horizontal"
         android:minHeight="250dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

@@ -390,7 +390,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 T item = doc.toObject(valueType);
                 data.add(item);
             }
-            Log.i(TAG, "Added " + data.size() + " elements");
+            Log.i(TAG, "Added " + data.size() + " elements of class " + valueType.toString());
             // sort by date added
             data.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
             if (arrayAdapter != null) arrayAdapter.notifyDataSetChanged();
