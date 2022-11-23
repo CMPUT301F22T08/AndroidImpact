@@ -27,11 +27,7 @@ import java.util.Date;
 public class StoreIngredient extends Ingredient implements Serializable {
     @ServerTimestamp
     private Date bestBeforeDate;
-    // instead of a document, this is a path to the location document
-    // https://stackoverflow.com/a/57225579
-    private String locationDocumentPath;
-    @DocumentId
-    private String id;
+    private String location;
 
     /**
      * Empty constructor or Firebase to use when deserializing
@@ -45,15 +41,15 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * @param amount (float) - The quantity of the ingredient needed for the recipe/shopping list e.g. 300 in 300g
      * @param category (String) - Category of the ingredient
      * @param bestBeforeDate (Date) - The best before date for the stored ingredient
-     * @param locationDocumentPath (String) - document path of where the ingredient is being stored
-     * @param unitDocumentPath (String) - document path of where the unit is being stored
+     * @param location (String) - document path of where the ingredient is being stored
+     * @param unit (String) - string value of the unit
      * @see Ingredient
      */
     public StoreIngredient(String id, String description, float amount, String category,
-                           Date bestBeforeDate, String locationDocumentPath, String unitDocumentPath){
-        super(id, description, amount, unitDocumentPath, category);
+                           Date bestBeforeDate, String location, String unit){
+        super(id, description, amount, unit, category);
         this.bestBeforeDate = bestBeforeDate;
-        this.locationDocumentPath = locationDocumentPath;
+        this.location = location;
     }
 
     /**
@@ -91,39 +87,7 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * not used by the user, but used by Firebase to know they need to serialize the locationDocumentPath
      * @return
      */
-    public String getLocationDocumentPath() {
-        return locationDocumentPath;
-    }
-
-    /**
-     * Get the location document - where the ingredient is currently stored
-     *
-     * @return (DocumentReference) A (possibly null) reference to the a location document
-     */
-    @Exclude
-    public DocumentReference getLocationDocument() {
-        return FirebaseFirestore.getInstance().document(locationDocumentPath);
-    }
-
-    /**
-     * A fully-featured function to retrieve the location from firestore
-     *
-     * this architecture lets us reduce the callback hell somewhat using listeners, i think...
-     */
-    @Exclude
-    public void getLocationAsync(DocumentRetrievalListener<Location> listener) {
-        FirebaseFirestore.getInstance().document(locationDocumentPath).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Location u = document.toObject(Location.class);
-                    listener.onSuccess(u);
-                } else {
-                    listener.onNullDocument();
-                }
-            } else {
-                listener.onError(task.getException());
-            }
-        });
+    public String getLocation() {
+        return location;
     }
 }

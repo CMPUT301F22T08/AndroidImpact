@@ -163,9 +163,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
 
-        locationSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedLocation, locationSpinner));
-        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit, unitSpinner));
-        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory, categorySpinner));
+        locationSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedLocation));
+        unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
+        categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
 
         locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation));
         unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
@@ -216,8 +216,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
      * A generic onItemSelectedlistener for spinners for the user-defined collections (units, locations, categories)
      */
     private <T extends Serializable>AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(
-            AtomicReference<T> selectedElem,
-            Spinner spinner
+            AtomicReference<T> selectedElem
     ) {
         return new AdapterView.OnItemSelectedListener() {
             @Override
@@ -229,35 +228,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 Log.i(TAG, "Nothing selected");
-            }
-        };
-    }
-
-    /**
-     * A generic DocumentRetrievalListener for initial population of ArrayLists for user-defined collections
-     * (units, locations, categories)
-     */
-    private <T> DocumentRetrievalListener<T> abstractDocumentRetrievalListener(
-            AtomicReference<T> selectedItem,
-            ArrayList<T> datas,
-            Spinner spinner,
-            String ingredientDescription // for debug purposes
-    ) {
-        return new DocumentRetrievalListener<T>() {
-            @Override
-            public void onSuccess(T data) {
-                selectedItem.set(data);
-                spinner.setSelection(datas.indexOf(data));
-                Log.i(TAG, "DocumentRetrieval: " + data.toString() + " " + data.getClass() + " - (" + datas.indexOf(data) + ")" + datas.size());
-            }
-            @Override
-            public void onNullDocument() {
-                // happens if the user deletes a document by themselves. We should not allow it!
-                Log.i(TAG, "Bruh moment: ingredient " + ingredientDescription + " cannot retrieve unit - Document does not exist");
-            }
-            @Override
-            public void onError(Exception e) {
-                Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);
             }
         };
     }
@@ -403,10 +373,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // get values
             String unit = selectedUnit.get().getUnit();
             String category = selectedCategory.get().getCategory();
-
-            // get document refs
-            DocumentReference locationRef = locationCollection.document(selectedLocation.get().getId());
-            return new StoreIngredient(id, description, amount, category, date, locationRef.getPath(), unit);
+            String location = selectedLocation.get().getLocation();
+            return new StoreIngredient(id, description, amount, category, date, location, unit);
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");
