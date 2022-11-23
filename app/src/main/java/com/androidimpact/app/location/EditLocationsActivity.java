@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class EditLocationsActivity extends AppCompatActivity {
 
     final String TAG = "EditIngredientLocations";
-    final String COLLECTION_NAME = "locations";
+    final String COLLECTION_NAME = "locations-new";
 
     RecyclerView locationRecyclerView;
     ArrayList<Location> locationArrayList;
