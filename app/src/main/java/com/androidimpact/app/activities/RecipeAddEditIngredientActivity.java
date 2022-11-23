@@ -111,19 +111,20 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             isEditing = extras.getBoolean("isEditing", false);
             if (isEditing) {
                 getSupportActionBar().setTitle("Edit Ingredient");
-                Button addButton = findViewById(R.id.confirm_button);
-                addButton.setText("Edit");
                 RecipeIngredient ingredient = (RecipeIngredient) extras.getSerializable("ingredient");
                 id = ingredient.getId();
                 description.setText(ingredient.getDescription());
                 amount.setText(Float.toString(ingredient.getAmount()));
                 position = extras.getInt("position");
 
+                // set initial ingredient unit
+                // note that we store the unit as a string, not a document path
+                selectedUnit.set(new Unit(ingredient.getUnit()));
+                Log.i(TAG, "Set unit: " + selectedUnit.get());
+
                 // setting initial spinner values are a bit weird
                 // we have to wait for firebase to get the data from the server
-                // thus, we set a location listener on the first data retrieval
-                ingredient.getUnitAsync(abstractDocumentRetrievalListener(
-                        selectedUnit, units, unitSpinner, ingredient.getDescription()));
+                // then run the retrieval listener when we get the data
                 ingredient.getCategoryAsync(abstractDocumentRetrievalListener(
                         selectedCategory, categories, categorySpinner, ingredient.getDescription()));
             } else {
@@ -159,14 +160,14 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      */
     public void confirm(View view) {
         if (checkInputs()) {
-            DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
+            String unit = selectedUnit.get().toString();
             DocumentReference categoryRef = categoriesCollection.document(selectedCategory.get().getCategory());
             Log.i(TAG, "Adding ingredient with Id" + id);
             RecipeIngredient ingredient = new RecipeIngredient(
                     id,
                     getStr(description),
                     Float.parseFloat(getStr(amount)),
-                    unitRef.getPath(),
+                    unit,
                     categoryRef.getPath(),
                     new Date()
             );
@@ -202,7 +203,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedElem.set((T) parentView.getItemAtPosition(position));
-                Log.i(TAG, "selected unit is " + selectedElem.get().toString());
+                Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
             }
 
             @Override
@@ -245,7 +246,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             // a bit of a hack...
             if (selectedElem.get() != null) {
-                spinner.setPrompt(selectedElem.get().toString());
+                spinner.setSelection(data.indexOf(selectedElem.get()));
+                Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
             }
         };
     }

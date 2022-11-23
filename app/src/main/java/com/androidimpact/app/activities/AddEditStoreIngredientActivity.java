@@ -136,13 +136,16 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             bestBeforeCalendar.setTime(ingredient.getBestBeforeDate());
             updateDateLabel();
 
+            // set initial ingredient unit
+            // note that we store the unit as a string, not a document path
+            selectedUnit.set(new Unit(ingredient.getUnit()));
+            Log.i(TAG, "Set unit: " + selectedUnit.get());
+
             // setting initial spinner values are a bit weird
             // we have to wait for firebase to get the data from the server
             // thus, we set location, unit and category listeners on the first data retrieval
             ingredient.getLocationAsync(abstractDocumentRetrievalListener(
                     selectedLocation, locations, locationSpinner, ingredient.getDescription()));
-            ingredient.getUnitAsync(abstractDocumentRetrievalListener(
-                    selectedUnit, units, unitSpinner, ingredient.getDescription()));
             ingredient.getCategoryAsync(abstractDocumentRetrievalListener(
                     selectedCategory, categories, categorySpinner, ingredient.getDescription()));
         } else {
@@ -404,11 +407,13 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
             Date date = bestBeforeCalendar.getTime();
 
+            // get values
+            String unit = selectedUnit.get().getUnit();
+
             // get document refs
             DocumentReference locationRef = locationCollection.document(selectedLocation.get().getId());
-            DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
             DocumentReference categoryRef = categoryCollection.document(selectedCategory.get().getCategory());
-            return new StoreIngredient(id, description, amount, categoryRef.getPath(), date, locationRef.getPath(), unitRef.getPath());
+            return new StoreIngredient(id, description, amount, categoryRef.getPath(), date, locationRef.getPath(), unit);
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");
