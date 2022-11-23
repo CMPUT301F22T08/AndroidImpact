@@ -9,10 +9,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class IngredientStorageController {
     final String TAG = "IngredientStorageController";
@@ -54,6 +52,8 @@ public class IngredientStorageController {
                 try {
                     // adding data from firestore
                     StoreIngredient ingredient = doc.toObject(StoreIngredient.class);
+                    if (ingredient.getId() == null)
+                        ingredient.setID(id);
                     ingredientStorage.add(ingredient);
                 } catch (Exception e) {
                     Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
@@ -61,7 +61,8 @@ public class IngredientStorageController {
                 }
             }
 
-            pushSnackBarToContext("Error reading " + errorCount + " documents!");
+            if (errorCount>0)
+                pushSnackBarToContext("Error reading " + errorCount + " documents!");
             Log.i(TAG, "Snapshot listener: Added " + ingredientStorage.size() + " elements");
 
             ingredientStorage.sortByChoice();
@@ -69,8 +70,17 @@ public class IngredientStorageController {
         });
     }
 
-    public void add(StoreIngredient storeIngredient){
-        ingredientStorageCollection.document(storeIngredient.getId()).set(storeIngredient);
+    public void addEdit(StoreIngredient storeIngredient){
+        // Adds if id is null else edits
+        String id;
+        if (storeIngredient.getId() != null){
+            id = storeIngredient.getId();
+        } else {
+            UUID uuid = UUID.randomUUID();
+            id = uuid.toString();
+            storeIngredient.setID(id);
+        }
+        ingredientStorageCollection.document(id).set(storeIngredient);
     }
 
     public void delete(int position) {
@@ -101,24 +111,7 @@ public class IngredientStorageController {
         ingredientStorage.sortByChoice();
     }
 
-    public FirebaseFirestore getDb(){
-        return db;
-    }
-
     public ArrayList<StoreIngredient> getDataAsList(){
         return ingredientStorage.getIngredientStorageList();
-    }
-
-    // IMPLEMENTING SERIALIZABLE
-    private void writeObject(ObjectOutputStream oos) throws IOException {
-        oos.defaultWriteObject();
-        oos.writeObject(ingredientStorage);
-    }
-
-
-    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        ois.defaultReadObject();
-        db = FirebaseFirestore.getInstance();
-        ingredientStorageCollection = db.collection("ingredientStorage");
     }
 }
