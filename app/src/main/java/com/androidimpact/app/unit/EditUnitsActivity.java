@@ -16,9 +16,11 @@ import android.widget.EditText;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
+import com.androidimpact.app.location.Location;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -189,16 +191,23 @@ public class EditUnitsActivity extends AppCompatActivity {
             return;
         }
 
-        Unit l = new Unit(unitName);
-        Log.i(TAG, "Adding unit " + l.getUnit());
-        newUnitInput.setText("");
-        unitCollection.document(l.getUnit()).set(l)
-                .addOnSuccessListener(unused -> {
-                    makeSnackbar("Added " + unitName);
+        // check if unit already exists
+        // if it does, warn the user (and don't add the unit)
+        unitCollection.document(unitName)
+                .get()
+                .continueWithTask(task -> {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        throw new Exception(unitName + " already exists!");
+                    } else {
+                        Unit u = new Unit(unitName);
+                        Log.i(TAG, "Adding unit " + u.getUnit());
+                        newUnitInput.setText("");
+                        return unitCollection.document(u.getUnit()).set(u);
+                    }
                 })
-                .addOnFailureListener(e -> {
-                    makeSnackbar("Failed to add " + unitName);
-                });
+                .addOnSuccessListener(unused -> makeSnackbar("Added " + unitName))
+                .addOnFailureListener(e -> makeSnackbar("Error: " + e.getMessage()));
     }
 
     /**
