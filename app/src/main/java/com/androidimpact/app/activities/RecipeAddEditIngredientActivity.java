@@ -111,8 +111,6 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             isEditing = extras.getBoolean("isEditing", false);
             if (isEditing) {
                 getSupportActionBar().setTitle("Edit Ingredient");
-                Button addButton = findViewById(R.id.confirm_button);
-                addButton.setText("Edit");
                 RecipeIngredient ingredient = (RecipeIngredient) extras.getSerializable("ingredient");
                 id = ingredient.getId();
                 description.setText(ingredient.getDescription());
