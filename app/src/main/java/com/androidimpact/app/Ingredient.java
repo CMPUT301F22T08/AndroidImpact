@@ -3,6 +3,7 @@ package com.androidimpact.app;
 import android.util.Log;
 
 import com.androidimpact.app.unit.Unit;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
@@ -20,6 +21,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class Ingredient implements Serializable  {
+    @DocumentId
     protected String id;
     protected String description;
     protected float amount;
