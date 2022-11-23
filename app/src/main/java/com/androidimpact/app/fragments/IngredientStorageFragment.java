@@ -258,8 +258,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // edit firebase directly
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                     ingredientStorageController.addEdit(ingredient);
-                    Snackbar.make(((MainActivity)a).findViewById(R.id.nav_fragment), "Edited "+ingredient.getDescription(), Snackbar.LENGTH_LONG)
-                            .setAction("OK", (v)->{}).show();
+                    Snackbar.make(ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
@@ -296,8 +295,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredientStorageController.addEdit(ingredient);
-                    Snackbar.make(((MainActivity)a).findViewById(R.id.nav_fragment), "Added "+ingredient.getDescription(), Snackbar.LENGTH_LONG)
-                            .setAction("OK", (v)->{}).show();
+                    Snackbar.make(ingredientListView, "Added " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
