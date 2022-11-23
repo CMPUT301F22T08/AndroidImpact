@@ -7,19 +7,6 @@
     android:background="@color/background"
     tools:context=".activities.MealPlanAddEditViewActivity">
 
-    <TextView
-        android:id="@+id/activity_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/activity_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <androidx.cardview.widget.CardView
         android:id="@+id/breakfast_card"
         android:layout_width="match_parent"
@@ -30,8 +17,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/lunch_card"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_title">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -223,7 +209,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/cancel"
         android:textColor="@color/white"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -235,7 +221,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/confirm"
         android:text="@string/add"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
