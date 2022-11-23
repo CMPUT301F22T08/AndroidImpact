@@ -132,6 +132,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              if (isEditing) {
                  getSupportActionBar().setTitle("Edit Recipe");
                  Recipe recipe = (Recipe) extras.getSerializable("recipe");
+                 confirmBtn.setText("Edit");
 
                  photoID = recipe.getPhoto();
                  id = recipe.getId();

@@ -32,16 +32,22 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/edit_store_ingredient"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginEnd="4dp"
             android:clickable="true"
             android:focusable="true"
+            app:borderWidth="2dp"
+            android:backgroundTint="#2E6578"
             android:onClick="editStoreIngredient"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
+            app:backgroundTint="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/store_ingredient_dropdown_toggle"
             app:layout_constraintEnd_toStartOf="@+id/store_ingredient_dropdown_toggle"
             app:layout_constraintTop_toTopOf="@+id/store_ingredient_dropdown_toggle"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@android:drawable/ic_menu_edit"
+            app:tint="@color/white"
+            />
 
         <ImageButton
             android:id="@+id/store_ingredient_dropdown_toggle"

@@ -176,6 +176,9 @@
         android:layout_marginStart="28dp"
         android:clickable="true"
         android:backgroundTint="@color/purple_500"
+        app:borderWidth="2dp"
+        app:tint="@color/white"
+        app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredients_text"
         app:layout_constraintStart_toEndOf="@+id/recipe_ingredients_text"
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredients_text"
@@ -186,27 +189,27 @@
 
     <Button
         android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="50dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
-        android:textColor="@color/white"
+        android:backgroundTint="@color/cancel"
         android:text="@string/cancel"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/confirm_button"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/confirm"
         android:onClick="confirm"
-        android:text="@string/confirm"
+        android:text="@string/add"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cancel_button" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

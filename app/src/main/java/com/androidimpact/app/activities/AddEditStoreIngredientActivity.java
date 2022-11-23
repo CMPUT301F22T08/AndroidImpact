@@ -119,6 +119,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         if (extras != null) {
             ingredient = (StoreIngredient) extras.getSerializable("storeIngredient");
             getSupportActionBar().setTitle("Edit Ingredient");
+            confirmBtn.setText("Edit");
+
 
             // set initial values
             descriptionEditText.setText(ingredient.getDescription());
