@@ -1,20 +1,32 @@
 package com.androidimpact.app.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.androidimpact.app.Ingredient;
+import com.androidimpact.app.IngredientStorage;
 import com.androidimpact.app.R;
+import com.androidimpact.app.ShoppingList;
+import com.androidimpact.app.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +37,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  */
 public class ShoppingListFragment extends Fragment implements NavbarFragment {
     final String TAG = "ShoppingListFragment";
+
+    //Assume collection name is shopping list
+    final String COLLECTION_NAME = "shoppingList";
+
+
+    // Declare the variables so that you will be able to reference it later.
+    RecyclerView shoppingListView;
+    StoreIngredientViewAdapter shopIngredientViewAdapter;
+    ArrayList<Ingredient> shopIngredientDataList;
+
+    ShoppingList shoppingList;
+
+    // adding cities to firebase
+    FirebaseFirestore db;
+    CollectionReference ingredientsCollection;
+    Spinner sortIngredientSpinner;
+    String[] sortingChoices;
+    TextView sortText;
 
     /**
      * Required empty public constructor
@@ -51,6 +81,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        ingredientsCollection = db.collection(COLLECTION_NAME);
     }
 
     /**
@@ -77,6 +110,41 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState ) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG + ":onViewCreated", "onViewCreated called!");
+
+
+        super.onCreate(savedInstanceState);
+
+        Activity a = getActivity();
+
+        if (a == null) {
+            Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
+            return;
+        }
+
+
+        // initialize adapters and customList
+        shoppingListView = a.findViewById(R.id.shopping_listview);
+
+        shopIngredientDataList = new ArrayList<Ingredient>();
+
+        shoppingList = new ShoppingList(shopIngredientDataList);
+
+        //shopIngredientViewAdapter = new ShopIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     /**

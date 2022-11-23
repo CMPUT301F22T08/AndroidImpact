@@ -363,6 +363,16 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             throw new Exception("Best before must be a future date.");
         }
 
+        if (selectedLocation.get() == null) {
+            throw new Exception("Location must be non null");
+        }
+        if (selectedUnit.get() == null) {
+            throw new Exception("Location must be non null");
+        }
+        if (selectedCategory.get() == null) {
+            throw new Exception("Location must be non null");
+        }
+
         try {
             String id = null;
             if (editing != null) {
