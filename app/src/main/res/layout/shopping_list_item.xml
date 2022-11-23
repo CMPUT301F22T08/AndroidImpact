@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Have to change layout so that amount is not in expandable view-->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -46,18 +48,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shop_ingredient_description" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/shop_ingredient_location"
+        <TextView
+            android:id="@+id/shop_ingredient_amount"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:padding="7dp"
+            android:paddingLeft="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginStart="8dp"
+            android:text="Amount"
             android:textColor="@color/white"
-            app:chipBackgroundColor="?attr/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/shop_ingredient_category"
             app:layout_constraintTop_toTopOf="@+id/shop_ingredient_category" />
 
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/shop_ingredient_location"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:chipBackgroundColor="?attr/colorPrimary"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/shop_ingredient_category"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/shop_ingredient_category" />-->
+
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/shop_ingredient_switch"
             android:layout_width="92dp"
             android:layout_height="42dp"
             android:layout_marginStart="68dp"
@@ -73,14 +89,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/store_ingredient_expandable_section"
+        android:id="@+id/shop_ingredient_expandable_section"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
 
 
+
+
         <TextView
-            android:id="@+id/shop_ingredient_amount"
+            android:id="@+id/shop_ingredient_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -94,16 +112,16 @@
             app:layout_constraintVertical_bias="0.0" />
 
 
-        <TextView
-            android:id="@+id/shop_ingredient_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Amount"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/shop_ingredient_amount"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/shop_ingredient_amount" />
+<!--        <TextView-->
+<!--            android:id="@+id/shop_ingredient_cost"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Amount"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="18sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/shop_ingredient_location"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/shop_ingredient_location" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
