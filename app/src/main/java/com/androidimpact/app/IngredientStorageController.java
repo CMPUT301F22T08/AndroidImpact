@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class IngredientStorageController {
     final String TAG = "IngredientStorageController";
@@ -35,6 +34,43 @@ public class IngredientStorageController {
     private void pushSnackBarToContext(String s) {
         Snackbar.make(((MainActivity)context).findViewById(R.id.nav_fragment), s, Snackbar.LENGTH_LONG)
                 .setAction("OK", (v)->{}).show();
+    }
+
+    public void addDataUpdateSnapshotListener(StoreIngredientViewAdapter storeIngredientViewAdapter){
+        ingredientStorageCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+
+            // Clear the old list
+            ingredientStorage.clear();
+
+            if (queryDocumentSnapshots == null) { return; }
+
+            int errorCount = 0;
+            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                String id = doc.getId();
+                try {
+                    // adding data from firestore
+                    StoreIngredient ingredient = doc.toObject(StoreIngredient.class);
+                    ingredientStorage.add(ingredient);
+                } catch (Exception e) {
+                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
+                    errorCount += 1;
+                }
+            }
+
+            pushSnackBarToContext("Error reading " + errorCount + " documents!");
+            Log.i(TAG, "Snapshot listener: Added " + ingredientStorage.size() + " elements");
+
+            ingredientStorage.sortByChoice();
+            storeIngredientViewAdapter.notifyDataSetChanged();
+        });
+    }
+
+    public void add(StoreIngredient storeIngredient){
+        ingredientStorageCollection.document(storeIngredient.getId()).set(storeIngredient);
     }
 
     public void delete(int position) {
@@ -65,23 +101,13 @@ public class IngredientStorageController {
         ingredientStorage.sortByChoice();
     }
 
-    public CollectionReference getIngredientStorageCollection() {
-        return ingredientStorageCollection;
-    }
-
     public FirebaseFirestore getDb(){
         return db;
     }
 
-    public IngredientStorage getIngredientStorage() {
-        return ingredientStorage;
-    }
-
-    public ArrayList<StoreIngredient> getIngredientStorageList(){
+    public ArrayList<StoreIngredient> getDataAsList(){
         return ingredientStorage.getIngredientStorageList();
     }
-
-
 
     // IMPLEMENTING SERIALIZABLE
     private void writeObject(ObjectOutputStream oos) throws IOException {
@@ -95,16 +121,4 @@ public class IngredientStorageController {
         db = FirebaseFirestore.getInstance();
         ingredientStorageCollection = db.collection("ingredientStorage");
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }
