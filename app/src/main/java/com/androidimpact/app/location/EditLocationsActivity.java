@@ -191,8 +191,8 @@ public class EditLocationsActivity extends AppCompatActivity {
             return;
         }
 
-        // check if category already exists
-        // if it does, warn the user (and don't add the category)
+        // check if location already exists
+        // if it does, warn the user (and don't add the location)
         locationCollection.document(locationName)
                 .get()
                 .continueWithTask(task -> {
