@@ -272,6 +272,11 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         final KonfettiView confetti = a.findViewById(R.id.confetti_view_recipes);
                         Snackbar.make(recipeListView, "Added the recipe!", Snackbar.LENGTH_SHORT).show();
+
+                        int[] test = {0,1};
+                        confetti.getLocationInWindow(test);
+                        Log.i(TAG, "location:" + Arrays.toString(test));
+
                         confetti.build()
                                 .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                                 .setDirection(0.0, 359.0)
