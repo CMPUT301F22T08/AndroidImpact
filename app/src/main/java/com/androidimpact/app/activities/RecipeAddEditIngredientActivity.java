@@ -119,11 +119,14 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 amount.setText(Float.toString(ingredient.getAmount()));
                 position = extras.getInt("position");
 
+                // set initial ingredient unit
+                // note that we store the unit as a string, not a document path
+                selectedUnit.set(new Unit(ingredient.getUnit()));
+                Log.i(TAG, "Set unit: " + selectedUnit.get());
+
                 // setting initial spinner values are a bit weird
                 // we have to wait for firebase to get the data from the server
-                // thus, we set a location listener on the first data retrieval
-                ingredient.getUnitAsync(abstractDocumentRetrievalListener(
-                        selectedUnit, units, unitSpinner, ingredient.getDescription()));
+                // then run the retrieval listener when we get the data
                 ingredient.getCategoryAsync(abstractDocumentRetrievalListener(
                         selectedCategory, categories, categorySpinner, ingredient.getDescription()));
             } else {
@@ -159,14 +162,14 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      */
     public void confirm(View view) {
         if (checkInputs()) {
-            DocumentReference unitRef = unitCollection.document(selectedUnit.get().getUnit());
+            String unit = selectedUnit.get().toString();
             DocumentReference categoryRef = categoriesCollection.document(selectedCategory.get().getCategory());
             Log.i(TAG, "Adding ingredient with Id" + id);
             RecipeIngredient ingredient = new RecipeIngredient(
                     id,
                     getStr(description),
                     Float.parseFloat(getStr(amount)),
-                    unitRef.getPath(),
+                    unit,
                     categoryRef.getPath(),
                     new Date()
             );

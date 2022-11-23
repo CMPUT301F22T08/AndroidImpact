@@ -127,31 +127,6 @@ public class Ingredient implements Serializable  {
      * A fully-featured function to retrieve the unit from firestore
      *
      * this architecture lets us reduce the callback hell somewhat using listeners, i think...
-     *
-     * TODO: delete?
-     */
-    @Exclude
-    public void getUnitAsync(DocumentRetrievalListener<Unit> listener) {
-//        Log.d("Why me", unitDocumentPath);
-        FirebaseFirestore.getInstance().document(unit).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Unit u = document.toObject(Unit.class);
-                    listener.onSuccess(u);
-                } else {
-                    listener.onNullDocument();
-                }
-            } else {
-                listener.onError(task.getException());
-            }
-        });
-    }
-
-    /**
-     * A fully-featured function to retrieve the unit from firestore
-     *
-     * this architecture lets us reduce the callback hell somewhat using listeners, i think...
      */
     @Exclude
     public void getCategoryAsync(DocumentRetrievalListener<Category> listener) {
