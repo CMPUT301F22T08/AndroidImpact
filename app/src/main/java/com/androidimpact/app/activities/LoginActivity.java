@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidimpact.app.R;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * This is the activity for the login page
@@ -51,14 +52,46 @@ public class LoginActivity extends AppCompatActivity {
         signup.startAnimation(fadeIn);
         login.startAnimation(fadeIn);
 
-        //TODO: firebase auth
-
     }
 
-    // Go to MainActivity
+    /**
+     * onClick method to start main activity on a successful login
+     * @param view
+     *    THe view that triggers this onClick
+     */
     public void login(View view) {
+
+        //TODO: firebase auth
+
+        if (username.getText().toString().equals("Curtis Kan") && password.getText().toString().equals("CMPUT 301")) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("username", username.getText().toString());
+            // Clear fields
+            username.setText("");
+            password.setText("");
+            startActivity(intent);
+        }
+        else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.login_layout), "Invalid login!", Snackbar.LENGTH_SHORT);
+            View snackbarView = snackbar.getView();
+            TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            snackbar.setAction("Ok", view1 -> {}).show();
+        }
+    }
+
+    /**
+     * onClick method to start main activity on a signup
+     * @param view
+     *    THe view that triggers this onClick
+     */
+    public void signup(View view) {
+        //TODO: create new user
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("username", username.getText().toString());
+        // Clear fields
+        username.setText("");
+        password.setText("");
         startActivity(intent);
     }
 }
