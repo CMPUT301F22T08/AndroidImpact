@@ -1,7 +1,5 @@
 package com.androidimpact.app.recipes;
 
-import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
-
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,24 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Context;
 
-
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.squareup.picasso.Picasso;
 
@@ -38,48 +26,26 @@ import com.squareup.picasso.Picasso;
  * @version 1.0
  */
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeViewHolder> {
-
-    // creating a variable for our array list and context.
-    private ArrayList<Recipe> recipeArrayList;
-
-    //private ArrayList<StoreRecipeEditListener> editListeners = new ArrayList<>();
-    RecipeList recipeList;
-    private Context context;
-
-    // adding recipes to firebase
-    FirebaseFirestore db;
-    CollectionReference recipeCollection;
-    private StorageReference storageReference;
     final String TAG = "RecipeList";
 
-    // using ActivityResultLaunchers
-    // not that addRecipeLauncher is defined in RecipeListFragment
-    private ActivityResultLauncher<Intent> editRecipeLauncher;
+    private RecipeController recipeController;
+    private Context context;
+
 
     /**
      * Constructor for RecipeList
      * @param context         the context for the parent view
-     * @param recipeArrayList the recipes to consider in the RecipeListAdapter object
+     * @param recipeController the recipes to consider in the RecipeListAdapter object
      */
-    public RecipeListAdapter(Context context, RecipeList recipeList/*ArrayList<Recipe> recipeArrayList*/) {
+    public RecipeListAdapter(Context context, RecipeController recipeController/*ArrayList<Recipe> recipeArrayList*/) {
         //this.recipeArrayList = recipeArrayList;
         this.context = context;
-        this.recipeList = recipeList;
-        this.recipeArrayList = recipeList.getData();
-        //this.recipeList = new RecipeList(recipeArrayList);
-
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        //final CollectionReference collectionReference = db.collection("recipes");
-        recipeCollection = db.collection("recipes");
-        FirebaseStorage fs = FirebaseStorage.getInstance();
-        storageReference = fs.getReference();
-
+        this.recipeController = recipeController;
         this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
-                sortByChoice();
+                recipeController.sortData();
             }
         });
     }
@@ -154,42 +120,54 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      */
     @Override
     public void onBindViewHolder(@NonNull RecipeListAdapter.RecipeViewHolder holder, int position) {
-        Recipe recyclerData = recipeArrayList.get(position);
+        Recipe recyclerData = recipeController.get(position);
         holder.recipeTitle.setText(recyclerData.getTitle());
         holder.recipeCategory.setText(recyclerData.getCategory());
-        Recipe currentRecipe = recipeArrayList.get(position);
         holder.recipePrepTime.setText(String.format(this.context.getResources().getString(R.string.recipe_prep_time_in_list
                 ), recyclerData.getPrep_time()));
         holder.recipeServings.setText(String.format(this.context.getResources().getString(R.string.recipe_servings_in_list
                 ), recyclerData.getServings()));
 
-        // load image for recipe
-        String photoURI = recyclerData.getPhoto();
-        if (photoURI != null) {
-            try {
-                // get child in storage
-                StorageReference photoRef = storageReference.child("images/" + photoURI);
-                photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    // Got the download URL and put image in corresponding ImageView
-                    Picasso.get().load(uri).into(holder.recipeImage);
-                }).addOnFailureListener(exception -> {
-                    // Log any errors
-                    Log.e("Image Not Found", recyclerData.getTitle(), exception);
-                    holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
-                });
 
-            } catch (Exception exception) {
-                // Log any errors
-                Log.e("Child Not Found", recyclerData.getTitle(), exception);
-            }
-        } else {
+        OnSuccessListener successListener = o -> Picasso.get().load((String) o).into(holder.recipeImage);
+        OnFailureListener failureListener = e -> {
+            Log.e(TAG, "Image Not Found: "+recyclerData.getTitle(), e);
             holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
+        };
+
+        try {
+            recipeController.processPhoto(position, successListener, failureListener);
+        } catch (Exception e) {
+            Log.e(TAG, "Child Not Found: "+recyclerData.getTitle(), e);
         }
+
+
+
+//        if (photoURI != null) {
+//            try {
+//                // get child in storage
+//                StorageReference photoRef = storageReference.child("images/" + photoURI);
+//                photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+//                    // Got the download URL and put image in corresponding ImageView
+//                    Picasso.get().load(uri).into(holder.recipeImage);
+//                }).addOnFailureListener(exception -> {
+//                    // Log any errors
+//
+//                    holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
+//                });
+//
+//            } catch (Exception exception) {
+//                // Log any errors
+//                Log.e("Child Not Found", recyclerData.getTitle(), exception);
+//            }
+//        } else {
+//            holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
+//        }
 
         holder.editRecipeFAB.setOnClickListener(v -> {
             Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
             intent.putExtra("activity_name", "Edit recipe");
-            intent.putExtra("recipe", currentRecipe);
+            intent.putExtra("recipe", recyclerData);
             intent.putExtra("isEditing", true);
             context.startActivity(intent);
             notifyItemChanged(position);
@@ -198,7 +176,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     @Override
     public int getItemCount() {
-        return this.recipeArrayList.size();
+        return this.recipeController.size();
     }
 
     /**
@@ -222,52 +200,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipeImage = itemView.findViewById(R.id.recipe_image_view);
             editRecipeFAB = itemView.findViewById(R.id.floatingActionButton);
         }
-    }
-
-    /**
-     * Set the sorting choice for the recipe list
-     * @param index the index of the sorting choices for the user
-     */
-    public void setSortChoice(int index) {
-        recipeList.setSortChoice(index);
-    }
-
-    /**
-     * This function allows us to sort the recipe list by the user's choice
-     */
-    public void sortByChoice() {
-        recipeList.sortByChoice();
-    }
-
-    public Task<Void> removeItem(int position) {
-
-        // this method is called when we swipe our item to right direction.
-        // on below line we are getting the item at a particular position.
-        Recipe deletedRecipe = recipeArrayList.get(position);
-        String id = deletedRecipe.getId();
-        String photo = deletedRecipe.getPhoto();
-
-        List<Task<?>> futures = new ArrayList<>();
-
-        CollectionReference ingredients = db.collection(deletedRecipe.getCollectionPath());
-        ingredients.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                futures.add(ingredients.document(doc.getId()).delete());
-            }
-        });
-
-        // delete photo from Firebase Storage
-        if (photo != null) {
-            futures.add(storageReference.child("images/" + photo).delete()
-                    .addOnSuccessListener(aVoid -> Log.i(TAG, "Successfully deleted image from recipe: " + deletedRecipe.getTitle())));
-        }
-
-        futures.add(recipeCollection.document(id)
-                        .delete()
-                        .addOnSuccessListener(unused -> Log.i(TAG, "Successfully deleted recipeDocument: " + deletedRecipe.getTitle())));
-
-        // return the tasks
-        return Tasks.whenAll(futures);
     }
 }
 
