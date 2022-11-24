@@ -26,12 +26,12 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     private final String TAG = "ShopIngredientViewAdapter";
 
     // creating a variable for our array list and context.
-    private ArrayList<StoreIngredient> ingredientArrayList;
+    private ArrayList<Ingredient> ingredientArrayList;
     private Context mContext;
 
     private int selected = -1; // initialize no ingredients selected
 
-    public ShopIngredientAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
+    public ShopIngredientAdapter(Context mContext, ArrayList<Ingredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
     }
@@ -50,6 +50,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         // Set the data to textview from our modal class.
         Ingredient currentIngredient = ingredientArrayList.get(position);
+
+        Log.i("Test", currentIngredient.getDescription());
+        Log.i("Test", String.valueOf(currentIngredient.getAmount()));
+        Log.i("Test", currentIngredient.getUnit());
+
 
         // set values
         holder.description.setText(currentIngredient.getDescription());
@@ -70,6 +75,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
         String unitStr = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        Log.i("String", unitStr);
         holder.amount.setText(unitStr);
 
         // OnClick Listener
@@ -138,7 +144,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             dropdownToggle = itemView.findViewById(R.id.shop_ingredient_dropdown_toggle);
             expandable = itemView.findViewById(R.id.shop_ingredient_expandable_section);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
-            amount = itemView.findViewById(R.id.store_ingredient_amount);
+            amount = itemView.findViewById(R.id.shop_ingredient_amount);
         }
     }
 
