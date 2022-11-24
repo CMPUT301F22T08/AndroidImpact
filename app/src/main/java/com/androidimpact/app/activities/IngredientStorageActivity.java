@@ -69,7 +69,7 @@ public class IngredientStorageActivity extends AppCompatActivity {
         ingredientListView = findViewById(R.id.ingredient_listview);
 
         ingredientDataList = new IngredientStorage();
-        storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.getIngredientStorageList());
+        storeingredientViewAdapter = new StoreIngredientViewAdapter(this, ingredientDataList.detData());
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
