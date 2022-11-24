@@ -1,6 +1,7 @@
 package com.androidimpact.app.recipes;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -129,7 +130,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 ), recyclerData.getServings()));
 
 
-        OnSuccessListener successListener = o -> Picasso.get().load((String) o).into(holder.recipeImage);
+        OnSuccessListener successListener = o -> Picasso.get().load((Uri) o).into(holder.recipeImage);
         OnFailureListener failureListener = e -> {
             Log.e(TAG, "Image Not Found: "+recyclerData.getTitle(), e);
             holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
