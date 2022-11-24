@@ -130,6 +130,13 @@ public abstract class SortableItemList<T> {
     }
 
     /**
+     * Clears the list
+     */
+    public void clear() {
+        this.objectArrayList.clear();
+    }
+
+    /**
      * This class creates a version of a hashmap that maintains an order.
      * @param <K> The key type
      * @param <V> The value type
