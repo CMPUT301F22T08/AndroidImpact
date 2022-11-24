@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.util.Date;
 
 import javax.annotation.Nullable;
@@ -211,5 +212,20 @@ public class Recipe implements Serializable  {
                 listener.onError(task.getException());
             }
         });
+    }
+
+    /**
+     * Set the ID of the Recipe if the ID is null.
+     * Used if when adding a new recipe to the list
+     * @param id
+     *      - (String) The new ID to be set
+     * @throws IllegalArgumentException
+     *      If the recipe already has an ID (ID's cannot be overwritten)
+     */
+    public void setID(String id) throws IllegalArgumentException{
+        if (this.id != null){
+            throw new IllegalArgumentException("The recipe already has an ID ("+id+"), it cannot be changed");
+        }
+        this.id = id;
     }
 }
