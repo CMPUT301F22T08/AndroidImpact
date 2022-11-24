@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public class IngredientStorageController {
     final String TAG = "IngredientStorageController";
+    final String firestorePath = "ingredientStorage";
 
     private Context context;
     private FirebaseFirestore db;
@@ -24,9 +25,8 @@ public class IngredientStorageController {
 
     public IngredientStorageController(Context context) {
         this.context = context;
-        //Instantiate the classes
         db = FirebaseFirestore.getInstance();
-        ingredientStorageCollection = db.collection("ingredientStorage");
+        ingredientStorageCollection = db.collection(firestorePath);
         ingredientStorage = new IngredientStorage();
     }
 
@@ -110,7 +110,13 @@ public class IngredientStorageController {
         ingredientStorage.sortByChoice();
     }
 
-    public ArrayList<StoreIngredient> getDataAsList(){
-        return ingredientStorage.getIngredientStorageList();
+    public ArrayList<StoreIngredient> getData(){
+        return ingredientStorage.detData();
     }
+
+    // TODO: Get rid of this ASAP
+    public IngredientStorage getIngredientStorage() {
+        return ingredientStorage;
+    }
+
 }
