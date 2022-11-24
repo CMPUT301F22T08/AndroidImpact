@@ -2,6 +2,7 @@ package com.androidimpact.app.shopping_list;
 
 import com.androidimpact.app.SortableItemList;
 import com.androidimpact.app.ingredients.Ingredient;
+import com.androidimpact.app.ingredients.ShopIngredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,30 +11,30 @@ import java.util.Comparator;
 /**
  * @author vedantvyas
  */
-public class ShoppingList extends SortableItemList<Ingredient> {
+public class ShoppingList extends SortableItemList<ShopIngredient> {
 
     private static String[] sortChoices;
 
     /**
      * Constructor for ShoppingList
-     * @param shoppingDataList  datalist of type ArrayList<Ingredient> that will populate shopping list
+     * @param shoppingDataList  datalist of type ArrayList<ShopIngredient> that will populate shopping list
      **/
-    public ShoppingList(ArrayList<Ingredient> shoppingDataList)
+    public ShoppingList(ArrayList<ShopIngredient> shoppingDataList)
     {
         super(shoppingDataList,
                 new String[]{
                         "Description",
-                        "Ingredient Category"
+                        "ShopIngredient Category"
                 },
-                (Comparator<Ingredient>[]) Arrays.asList(
-                        Comparator.comparing(Ingredient::getDescription, String.CASE_INSENSITIVE_ORDER),
-                        Comparator.comparing(Ingredient::getCategory, String.CASE_INSENSITIVE_ORDER)
+                (Comparator<ShopIngredient>[]) Arrays.asList(
+                        Comparator.comparing(ShopIngredient::getDescription, String.CASE_INSENSITIVE_ORDER),
+                        Comparator.comparing(ShopIngredient::getCategory, String.CASE_INSENSITIVE_ORDER)
                 ).toArray()
         );
 
         sortChoices = new String[]{
                 "Description",
-                "Ingredient Category"
+                "ShopIngredient Category"
         };
     }
 

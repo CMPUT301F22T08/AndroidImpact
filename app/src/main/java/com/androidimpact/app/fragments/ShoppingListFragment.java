@@ -24,6 +24,7 @@ import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.androidimpact.app.shopping_list.ShoppingList;
@@ -52,7 +53,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     // Declare the variables so that you will be able to reference it later.
     RecyclerView shoppingListView;
     ShopIngredientAdapter shopIngredientViewAdapter;
-    ArrayList<Ingredient> shopIngredientDataList;
+    ArrayList<ShopIngredient> shopIngredientDataList;
 
     ShoppingList shoppingList;
 
@@ -150,7 +151,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 //            }
 //        });
 
-        shopIngredientDataList = new ArrayList<Ingredient>();
+        shopIngredientDataList = new ArrayList<ShopIngredient>();
 
         shoppingList = new ShoppingList(shopIngredientDataList);
         shopIngredientViewAdapter = new ShopIngredientAdapter(getContext(), shopIngredientDataList);
@@ -204,7 +205,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 Log.i("ID", id);
                 try {
                     // adding data from firestore
-                    Ingredient ingredient = doc.toObject(Ingredient.class);
+                    ShopIngredient ingredient = doc.toObject(ShopIngredient.class);
                     if (ingredient.getId() == null)
                         ingredient.setID(id);
                     shoppingList.add(ingredient);

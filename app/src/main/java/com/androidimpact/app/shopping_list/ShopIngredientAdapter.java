@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.Ingredient;
+import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.google.android.material.chip.Chip;
 
@@ -32,12 +33,12 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     private final String TAG = "ShopIngredientViewAdapter";
 
     // creating a variable for our array list and context.
-    private ArrayList<Ingredient> ingredientArrayList;
+    private ArrayList<ShopIngredient> ingredientArrayList;
     private Context mContext;
 
     private int selected = -1; // initialize no ingredients selected
 
-    public ShopIngredientAdapter(Context mContext, ArrayList<Ingredient> ingredientArrayList) {
+    public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
     }
@@ -55,7 +56,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     public void onBindViewHolder(@NonNull ShopIngredientAdapter.IngredientViewHolder holder, int position){
 
         // Set the data to textview from our modal class.
-        Ingredient currentIngredient = ingredientArrayList.get(position);
+        ShopIngredient currentIngredient = ingredientArrayList.get(position);
 
         Log.i("Test", currentIngredient.getDescription());
         Log.i("Test", String.valueOf(currentIngredient.getAmount()));
