@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * @author vedantvyas
+ */
 public class ShoppingList extends SortableItemList<Ingredient> {
 
     private static String[] sortChoices;
