@@ -17,12 +17,12 @@ public class RecipeList extends SortableItemList<Recipe> {
     //private ArrayList<Recipe> recipeArrayList;
     private static String[] sortChoices;
 
+
     /**
-     * Constructor for RecipeList
-     * @param recipeArrayList   the recipes to consider in the RecipeList object
+     * Constructor for an empty recipeList
      */
-    public RecipeList(ArrayList<Recipe> recipeArrayList) {
-        super(recipeArrayList,
+    public RecipeList() {
+        super(new ArrayList<>(),
                 new String[]{
                         "Date Added",
                         "Title",
