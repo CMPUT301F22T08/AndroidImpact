@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
@@ -60,6 +62,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     Spinner sortIngredientSpinner;
     String[] sortingChoices;
     TextView sortText;
+
+    Switch pickupSwitch;
 
     /**
      * Required empty public constructor
@@ -130,27 +134,31 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         // initialize adapters and customList
         shoppingListView = a.findViewById(R.id.shopping_listview);
 
+
+        pickupSwitch = a.findViewById(R.id.shop_ingredient_switch);
+
+//        pickupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked)
+//                {
+//                    //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
+//                }
+//                else
+//                {
+//                    //This means that user accidentaly picked it up so change amount picked up to 0
+//                }
+//            }
+//        });
+
         shopIngredientDataList = new ArrayList<Ingredient>();
 
         shoppingList = new ShoppingList(shopIngredientDataList);
         shopIngredientViewAdapter = new ShopIngredientAdapter(getContext(), shopIngredientDataList);
 
-        //shopIngredientViewAdapter = new ShopIngredientViewAdapter(getContext(), ingredientDataList.getIngredientStorageList());
-
-
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         shoppingListView.setLayoutManager(manager);
         shoppingListView.setAdapter(shopIngredientViewAdapter);
-
-//        // listen for edits in storeIngredientViewAdapter`
-//        storeIngredientViewAdapter.setEditClickListener((storeIngredient, position) -> {
-//            // runs whenever a store ingredient edit btn is clicked
-//            Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
-//            Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
-//            intent.putExtra("storeIngredient", storeIngredient);
-//            editStoreIngredientLauncher.launch(intent);
-//        });
 
         //finding sort spinner
         sortIngredientSpinner = a.findViewById(R.id.sort_shopping_spinner);
@@ -193,6 +201,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             int errorCount = 0;
             for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 String id = doc.getId();
+                Log.i("ID", id);
                 try {
                     // adding data from firestore
                     Ingredient ingredient = doc.toObject(Ingredient.class);
@@ -212,20 +221,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             shoppingList.sortByChoice();
             shopIngredientViewAdapter.notifyDataSetChanged();
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     /**

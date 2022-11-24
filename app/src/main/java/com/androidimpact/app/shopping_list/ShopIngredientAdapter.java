@@ -84,11 +84,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("String", unitStr);
         holder.amount.setText(unitStr);
 
-//        // OnClick Listener
-//        holder.dropdownToggle.setOnClickListener(v -> {
-//            Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
-//            clickedItem(position);
-//        });
     }
 
 
