@@ -5,20 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.androidimpact.app.fragments.ShopPickUpFragment;
+import com.androidimpact.app.ingredients.IngredientStorage;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
 import com.androidimpact.app.fragments.NavbarFragment;
 import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
+import com.androidimpact.app.recipes.RecipeList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -67,6 +71,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Snackbar.make(parentLayout, "Welcome " + username + "!", Snackbar.LENGTH_SHORT)
                 .setAction("Ok", view1 -> {})
                 .show();
+
+        //ArrayList<Recipe> recipes = new ArrayList<>();
+        //this.recipeList = new RecipeList(recipes);
+        //Log.i("recipelistboom", this.recipeList.getData().toString());
+        //ingredientStorage = new IngredientStorage();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
