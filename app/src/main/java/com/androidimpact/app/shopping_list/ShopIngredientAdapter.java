@@ -68,6 +68,12 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
 
+        holder.amountPicked.setText(String.valueOf(currentIngredient.getAmountPicked()));
+
+
+        holder.amountPicked.setText(String.valueOf(currentIngredient.getAmountPicked()));
+
+
 
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -87,6 +93,13 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
                 else
                 {
                     //This means that user accidentaly picked it up so change amount picked up to 0
+
+                    //Will change it tomorrow
+
+                    currentIngredient.setAmountPicked(0);
+
+                    MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
+
                 }
             }
         });
@@ -141,6 +154,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         private ConstraintLayout expandable;
         private TextView amount;
+        private TextView amountPicked;
 
         private Switch pickupButton;
 
@@ -158,6 +172,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             category = itemView.findViewById(R.id.shop_ingredient_category);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
+            amountPicked = itemView.findViewById(R.id.shop_ingredient_amountPick);
         }
     }
 

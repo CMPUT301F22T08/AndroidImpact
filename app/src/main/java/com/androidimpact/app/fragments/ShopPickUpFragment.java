@@ -38,6 +38,7 @@ public class ShopPickUpFragment extends DialogFragment {
 
     // TODO: Rename and change types of parameters
     private int pos =-1;
+    private ShopIngredient ingredient;
 
     private float amountPickUp;
     private String unit;
@@ -55,6 +56,7 @@ public class ShopPickUpFragment extends DialogFragment {
         Log.i("tt1", String.valueOf(pos));
         args.putInt("itemPos", pos);
         args.putFloat("CurrentAmount", ingredient.getAmountPicked());
+        args.putSerializable("ingredient", ingredient);
 
         ShopPickUpFragment fragment = new ShopPickUpFragment();
         fragment.setArguments(args);
@@ -161,6 +163,7 @@ public class ShopPickUpFragment extends DialogFragment {
         if (getArguments() != null)
         {
             pos = getArguments().getInt("itemPos");
+            ingredient = (ShopIngredient) getArguments().getSerializable("ingredient");
         }
         else
         {
@@ -181,7 +184,9 @@ public class ShopPickUpFragment extends DialogFragment {
 
                             float costF = Float.parseFloat(cost);
 
-                            MainActivity.getmInstanceActivity().updateShopIngredient(costF, pos);
+                            ingredient.setAmountPicked(costF);
+
+                            MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
                             //  listener.onOkPressed(cost, pos);
 
                         }

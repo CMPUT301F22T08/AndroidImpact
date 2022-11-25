@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -234,5 +235,22 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         return;
     }
 
+
+    /**
+     *
+     *
+     */
+    public void editShopIngredientFB(ShopIngredient ingredient)
+    {
+        Log.i("check ", "DONEDONEDONE");
+        String id = ingredient.getId();
+        if (id == null){
+            UUID uuid = UUID.randomUUID();
+            id = uuid.toString();
+            ingredient.setID(id);
+        }
+        shoppingCollection.document(id).set(ingredient);
+        shopIngredientViewAdapter.notifyDataSetChanged();
+    }
 
 }

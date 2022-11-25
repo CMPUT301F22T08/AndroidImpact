@@ -13,6 +13,7 @@ import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
@@ -158,10 +159,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         ff.show(getSupportFragmentManager(), "ADD_FOOD");
     }
 
-    public void updateShopIngredient(Float amount, int pos)
+    public void updateShopIngredient(ShopIngredient ingredient)
     {
         getSupportActionBar().setTitle("Shopping List");
         updateActiveFragment(shoppingListFragment);
+        //call a function in shoppingListFragment which does the data updation
+        shoppingListFragment.editShopIngredientFB(ingredient);
     }
 
 
