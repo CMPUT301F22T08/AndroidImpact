@@ -42,8 +42,11 @@ public abstract class SortableItemList<T> {
      * @param i (int)
      * @return object (T) at position i
      */
-    public T get(int i) {
-        return this.objectArrayList.get(i);
+    public T get(int i)  throws ArrayIndexOutOfBoundsException{
+        if (i < this.size() && i >= 0)
+            return this.objectArrayList.get(i);
+        else
+            throw new ArrayIndexOutOfBoundsException("Trying to get item at an invalid index");
     }
 
     /**
@@ -52,7 +55,14 @@ public abstract class SortableItemList<T> {
      * @param object (T)
      */
     public void set(int i, T object){
-        this.objectArrayList.set(i, object);
+        if (i < this.size() && i >= 0)
+            this.objectArrayList.set(i, object);
+        else if (i > this.size()){
+            this.objectArrayList.set(this.size()-1, object);
+        }
+        else{
+            this.objectArrayList.set(0, object);
+        }
     }
 
     /**
@@ -102,7 +112,6 @@ public abstract class SortableItemList<T> {
      * @return the sorting choice at the index chosen by the user
      */
     public String getSortChoice() {
-        //return this.sortChoices[this.sortIndex];
         return this.sortingHashMap.getKey(this.sortIndex);
     }
 
@@ -113,14 +122,6 @@ public abstract class SortableItemList<T> {
     public void setSortChoice(int index) {
         this.sortIndex = index;
     }
-
-    /**
-     * Return the sorting choices for the item list
-     * @return list of available sorting choices
-     */
-//    public static String[] getSortChoices() {
-//        return sortChoices.clone();
-//    }
 
     /**
      * This function allows us to sort the item list by the user's choice
@@ -185,12 +186,5 @@ public abstract class SortableItemList<T> {
             return super.get(keys[i]);
         }
 
-        /**
-         * Returns a copy of the keys in the OrderedHashMap
-         * @return an array of the keys (K[])
-         */
-        public K[] getKeys() {
-            return keys.clone();
-        }
     }
 }
