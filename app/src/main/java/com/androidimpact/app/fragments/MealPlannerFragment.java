@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidimpact.app.ingredients.IngredientStorage;
+import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.meal_plan.MealPlanListAdapter;
 import com.androidimpact.app.R;
@@ -57,7 +58,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     MealPlanListAdapter mealPlanAdapter;
     ArrayList<MealPlan> mealPlans;
     RecipeList recipeList;
-    IngredientStorage ingredientStorage;
+    ArrayList<StoreIngredient> ingredientStorageData;
 
     // adding recipes to firebase
     FirebaseFirestore db;
@@ -133,9 +134,9 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         // initialize adapters and customList, connect to DB
         mealPlanListView = a.findViewById(R.id.meal_plan_list);
         recipeList = ((MainActivity) a).getRecipeList();
-        ingredientStorage = ((MainActivity) a).getIngredientStorage();
+        ingredientStorageData = ((MainActivity) a).getIngredientStorageController().getDataAsList();
         mealPlans = new ArrayList<>();
-        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlans, recipeList, ingredientStorage);
+        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlans, recipeList, ingredientStorageData);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -192,36 +193,38 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         }).attachToRecyclerView(mealPlanListView);
 
         // on snapshot listener for the collection
-        mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            // Clear the old list
-            mealPlans.clear();
+//        mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+//            // Clear the old list
+//            mealPlans.clear();
+//
+//            if (queryDocumentSnapshots == null) {
+//                return;
+//            }
+//            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+//                Map<String, Object> data = doc.getData();
+//                MealPlan mealPlanToAdd = new MealPlan(doc.getId(), (String) data.get("sortString"));
+//
+//                String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
+//                for(String key: keys) {
+//                    ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
+//                    if(recipeIdList != null) {
+//                        recipeIdList.forEach(recipeKey -> {
+//                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, this.recipeList);
+//                            Log.i("naruto", recipeKey);
+//                        });
+//                    }
+//                }
+//                mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
+//            }
+//
+//            Log.i(TAG, "Snapshot listener: Added " + mealPlans.size() + " elements");
+//            for (MealPlan i : mealPlans) {
+//                Log.i(TAG, "Snapshot listener: Added " + i.getDate() + " to elements");
+//            }
+//            mealPlanAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
+//        });
 
-            if (queryDocumentSnapshots == null) {
-                return;
-            }
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Map<String, Object> data = doc.getData();
-                MealPlan mealPlanToAdd = new MealPlan(doc.getId(), (String) data.get("sortString"));
-
-                String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
-                for(String key: keys) {
-                    ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
-                    if(recipeIdList != null) {
-                        recipeIdList.forEach(recipeKey -> {
-                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, this.recipeList);
-                            Log.i("naruto", recipeKey);
-                        });
-                    }
-                }
-                mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
-            }
-
-            Log.i(TAG, "Snapshot listener: Added " + mealPlans.size() + " elements");
-            for (MealPlan i : mealPlans) {
-                Log.i(TAG, "Snapshot listener: Added " + i.getDate() + " to elements");
-            }
-            mealPlanAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-        });
+        refresh();
 
         recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             refresh();
@@ -307,6 +310,14 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
                         recipeIdList.forEach(recipeKey -> {
                             mealPlanToAdd.addMealItemRecipe(key, recipeKey, this.recipeList);
                             Log.i("naruto", recipeKey);
+                        });
+                    }
+
+                    ArrayList<String> ingredientIdList = (ArrayList<String>) data.get(key + "Ingredients");
+                    if(ingredientIdList != null) {
+                        ingredientIdList.forEach(ingredientKey -> {
+                            mealPlanToAdd.addMealItemIngredient(key, ingredientKey, this.ingredientStorageData);
+                            Log.i("naruto", ingredientKey);
                         });
                     }
                 }

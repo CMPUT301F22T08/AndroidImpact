@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.meal_plan.IngredientAddFragment;
 import com.androidimpact.app.meal_plan.RecipeAddFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,7 +28,7 @@ import java.util.Map;
  */
 public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
-    private HashMap<String, ArrayList<String>> recipeIdMap;
+    private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap;
 
     private Button breakfastRecipeAdd,breakfastIngredientAdd, lunchRecipeAdd, lunchIngredientAdd,
             dinnerRecipeAdd, dinnerIngredientAdd, snackRecipeAdd, snackIngredientAdd;
@@ -44,6 +45,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meal_plan_add_edit_view);
 
         this.recipeIdMap = new HashMap<>();
+        this.ingredientIdMap = new HashMap<>();
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         mealPlanCollection = db.collection("meal-plan");
@@ -76,8 +78,29 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             );
         });
         snackRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("snackRecipes").show(
+            new RecipeAddFragment("snacksRecipes").show(
                     getSupportFragmentManager(), "add snack recipe to meal plan"
+            );
+        });
+
+        breakfastIngredientAdd.setOnClickListener(view -> {
+            new IngredientAddFragment("breakfastIngredients").show(
+                    getSupportFragmentManager(), "add breakfast ingredient to meal plan"
+            );
+        });
+        lunchIngredientAdd.setOnClickListener(view -> {
+            new IngredientAddFragment("lunchIngredients").show(
+                    getSupportFragmentManager(), "add lunch ingredient to meal plan"
+            );
+        });
+        dinnerIngredientAdd.setOnClickListener(view -> {
+            new IngredientAddFragment("dinnerIngredients").show(
+                    getSupportFragmentManager(), "add dinner ingredient to meal plan"
+            );
+        });
+        snackIngredientAdd.setOnClickListener(view -> {
+            new IngredientAddFragment("snacksIngredients").show(
+                    getSupportFragmentManager(), "add snack ingredient to meal plan"
             );
         });
 
@@ -89,6 +112,13 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(recipeId);
         this.recipeIdMap.put(mealType, entry);
+    }
+
+    public void addIngredient(String mealType, String ingredientId) {
+        Log.i("data got", mealType + ingredientId);
+        ArrayList<String> entry = this.ingredientIdMap.getOrDefault(mealType, new ArrayList<>());
+        entry.add(ingredientId);
+        this.ingredientIdMap.put(mealType, entry);
     }
 
     /**
@@ -111,11 +141,15 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.recipeIdMap.keySet().forEach(key -> {
             data.put(key, this.recipeIdMap.get(key));
         });
+        this.ingredientIdMap.keySet().forEach(key -> {
+            data.put(key, this.ingredientIdMap.get(key));
+        });
         TextView editText = findViewById(R.id.editTextMealPlanTitle);
-        String docName = editText.getText().toString();
+        String temp = editText.getText().toString();
+        String docName = (temp.equals("")) ? "Day x" : temp;
         mealPlanCollection
                 .document(docName)
-                .set(this.recipeIdMap);
+                .set(data);
         setResult(Activity.RESULT_OK);
         finish();
     }

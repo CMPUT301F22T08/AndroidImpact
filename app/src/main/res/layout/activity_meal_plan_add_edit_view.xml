@@ -70,17 +70,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:text="Add Recipe"
-                    android:clickable="true" />
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/add_breakfast_ingredient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Add Ingredient" />
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -128,17 +130,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:text="Add Recipe"
-                    android:clickable="true" />
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/add_lunch_ingredient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Add Ingredient" />
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -186,17 +190,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:text="Add Recipe"
-                    android:clickable="true" />
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/add_dinner_ingredient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Add Ingredient" />
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -240,21 +246,23 @@
                     android:text="Snacks" />
 
                 <Button
-                android:id="@+id/add_snack_recipe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Add Recipe"
-                android:clickable="true" />
+                    android:id="@+id/add_snack_recipe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:text="Add Recipe"
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/add_snack_ingredient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Add Ingredient" />
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

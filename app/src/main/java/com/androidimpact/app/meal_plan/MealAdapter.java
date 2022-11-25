@@ -3,6 +3,7 @@ package com.androidimpact.app.meal_plan;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,24 +24,30 @@ import java.util.ArrayList;
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     final String TAG = "MealPlanAdapter";
     private MealPlan mealPlan;
-    private ArrayList<Recipe> breakfastRecipes, lunchRecipes, dinnerRecipes, snackRecipes;
-    private ArrayList<StoreIngredient> breakfastIngredients, lunchIngredients, dinnerIngredients, snackIngredients;
+    ArrayList<Recipe> recipeArrayList;
+    ArrayList<StoreIngredient> ingredientArrayList;
+    String key;
+    //private ArrayList<Recipe> breakfastRecipes, lunchRecipes, dinnerRecipes, snackRecipes;
+    //private ArrayList<StoreIngredient> breakfastIngredients, lunchIngredients, dinnerIngredients, snackIngredients;
 
     /**
      * Constructor for adapter for MealPlan
      * @param mealPlan
      */
-    MealAdapter(MealPlan mealPlan)
+    MealAdapter(MealPlan mealPlan, String key)
     {
         this.mealPlan = mealPlan;
-        this.breakfastRecipes = mealPlan.getRecipes("breakfast");
-        this.lunchRecipes = mealPlan.getRecipes("lunch");
-        this.dinnerRecipes = mealPlan.getRecipes("dinner");
-        this.breakfastIngredients = mealPlan.getIngredients("breakfast");
-        this.lunchIngredients = mealPlan.getIngredients("lunch");
-        this.dinnerIngredients = mealPlan.getIngredients("dinner");
-        this.snackRecipes = mealPlan.getRecipes("snacks");
-        this.snackIngredients = mealPlan.getIngredients("snacks");
+        this.key = key;
+        this.recipeArrayList = mealPlan.getRecipes(key);
+        this.ingredientArrayList = mealPlan.getIngredients(key);
+        //this.breakfastRecipes = mealPlan.getRecipes("breakfast");
+        //this.lunchRecipes = mealPlan.getRecipes("lunch");
+        //this.dinnerRecipes = mealPlan.getRecipes("dinner");
+        //this.breakfastIngredients = mealPlan.getIngredients("breakfast");
+        //this.lunchIngredients = mealPlan.getIngredients("lunch");
+        //this.dinnerIngredients = mealPlan.getIngredients("dinner");
+        //this.snackRecipes = mealPlan.getRecipes("snacks");
+        //this.snackIngredients = mealPlan.getIngredients("snacks");
     }
 
     /**
@@ -63,18 +70,30 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
      */
     @Override
     public void onBindViewHolder(@NonNull MealAdapter.MealViewHolder holder, int position) {
-        ArrayList<Recipe> sumArrayList = new ArrayList<>();
-        sumArrayList.addAll(this.breakfastRecipes);
-        sumArrayList.addAll(this.lunchRecipes);
-        sumArrayList.addAll(this.dinnerRecipes);
-        sumArrayList.addAll(this.snackRecipes);
-        //sumArrayList.addAll(this.dinnerRecipes);
-        int i = position;
-        //for(int i = 0; i < this.breakfastRecipes.size(); i++) {
-        if(i==0) {
-            holder.type.setText("Breakfast");
+        if(this.getItemCount() > 0) {
+            if(position == 0) {
+                String header = key + " Meals";
+                holder.type.setText(header);
+            } else {
+                holder.type.setText("");
+            }
         }
-        holder.item.setText(sumArrayList.get(i).getTitle());
+
+        Log.i("size", String.valueOf(this.recipeArrayList.size() + this.ingredientArrayList.size()));
+        Log.i("size", String.valueOf(this.ingredientArrayList.size()));
+        if(this.getItemCount() > 0) {
+            Log.i("tag", "in");
+            if(position < this.recipeArrayList.size()) {
+                Log.i("tag tag", this.recipeArrayList.get(position).getTitle());
+                holder.item.setText(this.recipeArrayList.get(position).getTitle());
+            } else {
+                Log.i("tag tag tag", this.ingredientArrayList.get(position - this.recipeArrayList.size()).getDescription());
+                holder.item.setText(this.ingredientArrayList.get(position - this.recipeArrayList.size()).getDescription());
+            }
+            //holder.item.setText(
+            //        ((position > this.recipeArrayList.size() - 1) ? this.recipeArrayList.get(position).getTitle() : this.ingredientArrayList.get(position - this.recipeArrayList.size() + 1).getDescription())
+            //);
+        }
         //}
         //this.breakfastRecipes.forEach(recipe -> {
         //    holder.item.setText(recipe.getTitle());
@@ -89,7 +108,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
      */
     @Override
     public int getItemCount() {
-        return this.mealPlan.size();
+        return (this.recipeArrayList.size() + this.ingredientArrayList.size());
     }
 
     /**

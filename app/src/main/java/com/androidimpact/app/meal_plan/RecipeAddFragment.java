@@ -63,10 +63,6 @@ public class RecipeAddFragment extends DialogFragment {
     FirebaseFirestore db;
     CollectionReference recipeCollection;
 
-    // using ActivityResultLaunchers
-    // note that editRecipeLauncher is defined in RecipeListAdapter
-    private ActivityResultLauncher<Intent> addRecipeLauncher;
-
     public RecipeAddFragment(String meal) {
         super(R.layout.fragment_recipe_list);
         this.mealType = meal;

@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .show();
 
         ArrayList<Recipe> recipes = new ArrayList<>();
-        recipeList = new RecipeList(recipes);
-        Log.i("recipelistboom", recipeList.getData().toString());
+        this.recipeList = new RecipeList(recipes);
+        Log.i("recipelistboom", this.recipeList.getData().toString());
         ingredientStorage = new IngredientStorage();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
