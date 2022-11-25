@@ -35,7 +35,7 @@ import java.util.UUID;
  */
 public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
-    private HashMap<String, ArrayList<String>> recipeIdMap;
+    private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap;
     private Boolean isEditing;
     Bundle extras;
 
