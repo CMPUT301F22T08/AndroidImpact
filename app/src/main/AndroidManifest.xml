@@ -26,6 +26,13 @@
         android:theme="@style/Theme.AndroidImpact"
         tools:targetApi="31">
         <activity
+            android:name=".shopping_list.AddShoppingListItemActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.MealPlanAddEditRecipeIngredientActivity"
             android:exported="false">
             <meta-data

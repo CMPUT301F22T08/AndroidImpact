@@ -2,8 +2,11 @@ package com.androidimpact.app.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,19 +25,27 @@ import android.widget.TextView;
 
 import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
 import com.androidimpact.app.activities.MainActivity;
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.shopping_list.AddShoppingListItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.androidimpact.app.shopping_list.ShoppingList;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +76,10 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     TextView sortText;
 
     Switch pickupSwitch;
+
+    // use ActivityResultLaunchers to go to different activities
+    // this is defined in onViewCreated, see the comment where we initialize it
+    private ActivityResultLauncher<Intent> addShoppingListItemLauncher;
 
     /**
      * Required empty public constructor
@@ -222,6 +237,43 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             shoppingList.sortByChoice();
             shopIngredientViewAdapter.notifyDataSetChanged();
         });
+
+
+        /**
+         * DEFINE ACTIVITY LAUNCHERS
+         *
+         * It is strongly recommended to register our activity result launchers in onCreate
+         * https://stackoverflow.com/a/70215498
+         */
+        addShoppingListItemLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Log.i(TAG + ":addRecipeResult", "Got bundle");
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        final KonfettiView confetti = a.findViewById(R.id.confetti_view_recipes);
+                        Snackbar.make(shoppingListView, "Added the shopping list!", Snackbar.LENGTH_SHORT).show();
+
+                        int[] test = {0,1};
+                        confetti.getLocationInWindow(test);
+                        Log.i(TAG, "location:" + Arrays.toString(test));
+
+                        confetti.build()
+                                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                                .setDirection(0.0, 359.0)
+                                .setSpeed(1f, 5f)
+                                .setFadeOutEnabled(true)
+                                .setTimeToLive(500L)
+                                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                                .addSizes(new Size(8, 4f))
+                                .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                                .streamFor(300, 2000L);
+
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":addRecipeResult", "Received cancelled");
+                    }
+                });
     }
 
     /**
@@ -231,6 +283,10 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      * @param navigationFAB
      */
     public void setFabListener(FloatingActionButton navigationFAB) {
-        return;
+        navigationFAB.setOnClickListener(v -> {
+            Log.i(TAG + ":addRecipe", "Adding recipe!");
+            Intent intent = new Intent(getContext(), AddShoppingListItemActivity.class);
+            addShoppingListItemLauncher.launch(intent);
+        });
     }
 }
