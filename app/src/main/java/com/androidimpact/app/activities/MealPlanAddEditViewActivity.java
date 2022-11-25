@@ -2,6 +2,7 @@ package com.androidimpact.app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,22 +54,22 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
         breakfastRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("breakfastRecipes").show(
-                    getSupportFragmentManager(), "Test test"
+                    getSupportFragmentManager(), "add breakfast recipe to meal plan"
             );
         });
         lunchRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("lunchRecipes").show(
-                    getSupportFragmentManager(), "Test test"
+                    getSupportFragmentManager(), "add lunch recipe to meal plan"
             );
         });
         dinnerRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("dinnerRecipes").show(
-                    getSupportFragmentManager(), "Test test"
+                    getSupportFragmentManager(), "add dinner recipe to meal plan"
             );
         });
         snackRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("snackRecipes").show(
-                    getSupportFragmentManager(), "Test test"
+                    getSupportFragmentManager(), "add snack recipe to meal plan"
             );
         });
 
@@ -80,7 +81,6 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(recipeId);
         this.recipeIdMap.put(mealType, entry);
-        Log.i("arr", Arrays.toString(entry.toArray()));
     }
 
     /**
@@ -89,6 +89,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
      *    view that calls this method
      */
     public void cancel(View view) {
+        setResult(Activity.RESULT_CANCELED);
         finish();
     }
 
@@ -99,15 +100,13 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
      */
     public void confirm(View view) {
         Map<String, Object> data = new HashMap<>();
-        Log.i("woohoo", "no");
         this.recipeIdMap.keySet().forEach(key -> {
-            //String[] entry = (String[]) this.recipeIdMap.get(key).toArray();
-            data.put(key, this.recipeIdMap.get(key).toArray());
-            //Log.i("data", Arrays.toString(entry));
+            data.put(key, this.recipeIdMap.get(key));
         });
         mealPlanCollection
                 .document("Friday")
                 .set(this.recipeIdMap);
+        setResult(Activity.RESULT_OK);
         finish();
     }
 }
