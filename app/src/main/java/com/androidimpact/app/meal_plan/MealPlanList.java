@@ -25,7 +25,7 @@ public class MealPlanList extends SortableItemList<MealPlan> {
                         "Date"
                 },
                 (Comparator<MealPlan>[]) Arrays.asList(
-                        Comparator.comparing(MealPlan::getSortString, String.CASE_INSENSITIVE_ORDER)
+                        Comparator.comparing(MealPlan::getDate, String.CASE_INSENSITIVE_ORDER)
                 ).toArray());
 
         this.recipeList = recipeList;
