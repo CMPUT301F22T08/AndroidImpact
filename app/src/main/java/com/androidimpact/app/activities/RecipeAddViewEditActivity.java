@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -562,6 +563,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         Log.i(TAG + ":addPhoto", "Adding photo!");
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         photoFile = getPhotoFileUri("photo.png");
+        fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
         addPhotoLauncher.launch(intent);
     }
 
