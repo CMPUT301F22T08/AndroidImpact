@@ -63,6 +63,22 @@
             app:layout_constraintStart_toEndOf="@+id/shop_ingredient_category"
             app:layout_constraintTop_toTopOf="@+id/shop_ingredient_category" />
 
+        <TextView
+            android:id="@+id/shop_ingredient_amountPick"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:paddingTop="13dp"
+            android:paddingLeft="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="8dp"
+            android:text="Amt picked"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/shop_ingredient_amount"
+            app:layout_constraintTop_toTopOf="@+id/shop_ingredient_category" />
+
+
+
+
 
         <Switch
             android:id="@+id/shop_ingredient_switch"
@@ -84,6 +100,10 @@
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
 <!--        android:visibility="visible">-->
+
+
+
+
 
 
 

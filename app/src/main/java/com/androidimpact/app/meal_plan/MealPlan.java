@@ -140,16 +140,17 @@ public class MealPlan implements Serializable {
         recipeList1.getData().forEach(a -> {
             if(a.getId().equals(recipeKey)) {
                 currentRecipes.add(a);
-                Log.i("added recipe", "bogo");
+                Log.i("added recipe", "bogo - recip");
             }
         });
     }
 
-    public void addMealItemIngredient(String key, String ingredientKey, IngredientStorage ingredientStorage1) {
+    public void addMealItemIngredient(String key, String ingredientKey, ArrayList<StoreIngredient> ingredients) {
         ArrayList<StoreIngredient> currentIngredients = this.mealIngredientMap.get(key);
-        ingredientStorage1.getData().forEach(a -> {
+        ingredients.forEach(a -> {
             if(a.getId().equals(ingredientKey)) {
                 currentIngredients.add(a);
+                Log.i("added ingredient", "bogo - ingr");
             }
         });
     }

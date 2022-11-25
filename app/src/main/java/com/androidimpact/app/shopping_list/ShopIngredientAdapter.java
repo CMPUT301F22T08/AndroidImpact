@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -17,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.activities.MainActivity;
+import com.androidimpact.app.fragments.ShopPickUpFragment;
+import com.androidimpact.app.ingredients.ShopIngredient;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -69,16 +73,28 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         holder.category.setText(currentIngredient.getCategory());
 
 
-//
-//        // if `selected` is the position, make the expandable section visible
-//        if (position == selected) {
-//            holder.dropdownToggle.setImageResource(R.drawable.expand_less_white);
-//            Log.i(TAG + ":clickedDropdownToggle", "Set item to visible: " + position);
-//            holder.expandable.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
-//            holder.expandable.setVisibility(View.GONE);
-//        }
+        holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
+
+
+                    //calling new instance method since we also want to pass food object
+                    ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
+
+                    MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
+
+                    //ff.show(getActivity().getSupportFragmentManager(), "ADD_FOOD");
+
+                }
+                else
+                {
+                    //This means that user accidentaly picked it up so change amount picked up to 0
+                }
+            }
+        });
+
 
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state

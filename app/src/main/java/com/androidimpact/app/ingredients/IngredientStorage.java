@@ -49,7 +49,7 @@ public class IngredientStorage extends SortableItemList<StoreIngredient> {
      * this function returns the ingredientStorageList
      * @return ingredientStorageList (ArrayList<StoreIngredient>)
      */
-    public ArrayList<StoreIngredient> getIngredientStorageList() {
+    public ArrayList<StoreIngredient> getData() {
         return super.getData();
     }
 
@@ -58,13 +58,6 @@ public class IngredientStorage extends SortableItemList<StoreIngredient> {
      * @return list of available sorting choices
      */
     public static String[] getSortChoices() {
-        return sortChoices.clone(); }
-
-    /**
-     * this function clears the ingredientStorageList
-     */
-    public void clear()
-    {
-        this.getData().clear();
+        return sortChoices.clone();
     }
 }

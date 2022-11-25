@@ -65,13 +65,24 @@
                     android:paddingEnd="16dp"
                     android:text="Breakfast" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_breakfast"
+                <Button
+                    android:id="@+id/add_breakfast_recipe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_input_add" />
+                    android:text="Add Recipe"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/add_breakfast_ingredient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -114,13 +125,24 @@
                     android:paddingEnd="16dp"
                     android:text="Lunch" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_lunch"
+                <Button
+                    android:id="@+id/add_lunch_recipe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_input_add" />
+                    android:text="Add Recipe"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/add_lunch_ingredient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -163,13 +185,24 @@
                     android:paddingEnd="16dp"
                     android:text="Dinner" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_dinner"
+                <Button
+                    android:id="@+id/add_dinner_recipe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_input_add" />
+                    android:text="Add Recipe"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/add_dinner_ingredient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -212,13 +245,24 @@
                     android:paddingEnd="16dp"
                     android:text="Snacks" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/add_snack"
+                <Button
+                    android:id="@+id/add_snack_recipe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_input_add" />
+                    android:text="Add Recipe"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/add_snack_ingredient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:text="Add Ingredient"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

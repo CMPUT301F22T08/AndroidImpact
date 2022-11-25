@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +61,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import id.zelory.compressor.Compressor;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
@@ -82,9 +84,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     ArrayList<RecipeIngredient> recipeIngredients;
 
     ImageView photo;
-    private String docName;
     private Boolean isEditing;
-    private String date;
     // if we're editing, this is the photoID of the editing photo
     private String photoID;
     // true if we are currently uploading an image to firebase;
@@ -522,7 +522,15 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Bitmap selectedImageBitmap;
                     selectedImageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-
+                    try {
+                        // Image compression
+                        // https://github.com/zetbaitsu/Compressor/blob/master/README_v2.md
+                        // zetbaitsu Mar 22, 2021
+                        photoFile = new Compressor(this).compressToFile(photoFile);
+                        fileProvider = Uri.fromFile(photoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     photo.setImageBitmap(selectedImageBitmap);
 
                     // https://stackoverflow.com/questions/28505123/getting-an-image-path-from-a-imageview

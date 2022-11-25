@@ -1,19 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.IngredientStorageFragment">
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
+    tools:context=".activities.MainActivity">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Ingredient Storage" />
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/ingredient_input"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/background"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/sort_ingredient_info"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingTop="9dp"
+            android:paddingRight="5dp"
+            android:text="Sort by:"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            tools:layout_conversion_absoluteHeight="19dp"
+            tools:layout_conversion_absoluteWidth="363dp"
+            tools:layout_editor_absoluteX="20dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <Spinner
+            android:id="@+id/sort_ingredient_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="48dp"
+            tools:layout_editor_absoluteX="363dp"
+            android:backgroundTint="@color/white"
+            tools:layout_editor_absoluteY="0dp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ingredient_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:layout_conversion_absoluteHeight="383dp"
+        tools:layout_conversion_absoluteWidth="411dp"
+        tools:layout_editor_absoluteX="0dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ingredient_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background" />
+
+    </LinearLayout>
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/confetti_view_ingredient_storage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

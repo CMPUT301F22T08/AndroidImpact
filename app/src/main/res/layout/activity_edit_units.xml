@@ -39,7 +39,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
+        android:textColorHint="@color/purple_200"
         android:hint="@string/add_units"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

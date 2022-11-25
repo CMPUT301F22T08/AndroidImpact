@@ -271,4 +271,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             addShoppingListItemLauncher.launch(intent);
         });
     }
+
+
 }

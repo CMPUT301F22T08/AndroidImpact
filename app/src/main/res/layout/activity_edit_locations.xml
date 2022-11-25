@@ -38,7 +38,7 @@
         android:layout_marginStart="12dp"
         android:ems="10"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
+        android:textColorHint="@color/purple_200"
         android:inputType="textPersonName"
         android:hint="@string/add_location"
         app:layout_constraintStart_toStartOf="parent"
