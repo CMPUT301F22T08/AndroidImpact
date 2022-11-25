@@ -264,12 +264,9 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
             Intent intent = new Intent();
             setResult(Activity.RESULT_OK, intent);
 
-            // upload to firebase, then finish
-            shoppingListCollection.document(ingredient.getId()).set(ingredient)
-                            .addOnSuccessListener(unused -> {
-                                Log.i(TAG + ":confirm", "Returning to parent activity");
-                                finish();
-                            });
+            intent.putExtra("ingredient", ingredient);
+            Log.i(TAG + ":confirm", "Returning to parent activity");
+            finish();
         } catch (Exception e){
             // Error - add a snackBar
             Log.i(TAG, "Error making shopIngredient", e);

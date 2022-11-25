@@ -219,9 +219,16 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                         // Ok - we have an updated ingredient!
                         // edit firebase directly
                         ShopIngredient ingredient = (ShopIngredient) bundle.getSerializable("ingredient");
-                        shoppingListController.addEdit(ingredient);
-                        Snackbar.make(shoppingListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
-
+                        shoppingListController.addEdit(ingredient)
+                                        .addOnSuccessListener(unused -> {
+                                            Snackbar.make(shoppingListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                                        })
+                                .addOnFailureListener(error -> {
+                                    Snackbar.make(shoppingListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT)
+                                            .setAction("Ok", view1 -> {})
+                                            .show();
+                                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                                });
                     } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                         // cancelled request - do nothing.
                         Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
@@ -235,7 +242,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         final KonfettiView confetti = a.findViewById(R.id.confetti_view_shopping_list);
-                        Snackbar.make(shoppingListView, "Added the shopping list!", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(shoppingListView, "Added the shopping list!", Snackbar.LENGTH_SHORT)
+                                .setAction("Ok", view1 -> {})
+                                .show();
 
                         int[] test = {0,1};
                         confetti.getLocationInWindow(test);
@@ -257,6 +266,13 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                         Log.i(TAG + ":addRecipeResult", "Received cancelled");
                     }
                 });
+    }
+
+    /**
+     * Helper function to make a snackbar
+     */
+    private void makeSnackbar(String msg) {
+
     }
 
     /**

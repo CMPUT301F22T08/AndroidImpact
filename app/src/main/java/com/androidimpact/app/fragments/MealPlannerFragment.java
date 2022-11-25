@@ -175,12 +175,16 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
 
                 OnSuccessListener sl = o -> {
                     Log.d(TAG, description + " has been deleted successfully!");
-                    Snackbar.make(mealPlanListView, "Deleted meal plan for " + description, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mealPlanListView, "Deleted meal plan for " + description, Snackbar.LENGTH_LONG)
+                            .setAction("Ok", view1 -> {})
+                            .show();
                     mealPlans.remove(deletedMealPlan);
                 };
                 OnFailureListener fl = e -> {
                     Log.d(TAG, description + " could not be deleted!" + e);
-                    Snackbar.make(mealPlanListView, "Could not delete meal plan for " + description + "!", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mealPlanListView, "Could not delete meal plan for " + description + "!", Snackbar.LENGTH_LONG)
+                            .setAction("Ok", view1 -> {})
+                            .show();
                 };
 
                 mealPlanCollection.document(description)
@@ -255,7 +259,9 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
                         confetti.getLocationInWindow(test);
                         Log.i(TAG, "location:" + Arrays.toString(test));
 
-                        Snackbar.make(mealPlanListView, "Added day meal plan!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mealPlanListView, "Added day meal plan!", Snackbar.LENGTH_LONG)
+                                .setAction("Ok", view1 -> {})
+                                .show();
                         confetti.build()
                                 .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                                 .setDirection(0.0, 359.0)

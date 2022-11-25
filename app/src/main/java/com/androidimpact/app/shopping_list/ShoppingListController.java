@@ -7,6 +7,7 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,9 +73,9 @@ public class ShoppingListController {
         });
     }
 
-    public void addEdit(ShopIngredient storeIngredient){
-        Log.i(TAG,"Edit shopping list controller called");
-        //TODO
+    public Task<Void> addEdit(ShopIngredient storeIngredient){
+        Log.i(TAG + ":addEdit","AddEdit called on " + storeIngredient.getDescription());
+        return shoppingListCollection.document(storeIngredient.getId()).set(storeIngredient);
     }
 
     public void delete(int position) {
