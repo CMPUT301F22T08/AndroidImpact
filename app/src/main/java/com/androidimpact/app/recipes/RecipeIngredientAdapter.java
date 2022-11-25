@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 /**
- * RecipeIngredientAdapter class
+ * RecipeIngredientAdapter class that does what??????????????????????????
  * This class connects Recipe with Ingredient View
  * @version 1.0
  * @author Curtis Kan
