@@ -53,7 +53,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="80dp"
         app:counterEnabled="true"
-        android:textColorHint="@color/purple_500"
+        android:textColorHint="@color/purple_200"
         app:counterTextColor="@color/white"
         app:boxBackgroundColor="@color/background"
         app:counterMaxLength="30">
@@ -67,7 +67,7 @@
         android:minHeight="48dp"
         android:maxLength="30"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_700"
+        android:textColorHint="@color/purple_200"
          />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,7 +81,7 @@
         android:inputType="numberDecimal"
         android:minHeight="48dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/purple_500"
+        android:textColorHint="@color/purple_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
