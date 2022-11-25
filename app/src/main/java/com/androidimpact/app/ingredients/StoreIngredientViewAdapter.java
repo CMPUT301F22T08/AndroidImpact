@@ -99,7 +99,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         // set view values
         // units and categories are stored in an ingredient by their string value
-        String amountUnit = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        String amountUnit = holder.res.getString(R.string.shop_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         holder.amount.setText(amountUnit);
         holder.category.setText(currentIngredient.getCategory());
         holder.location.setText(currentIngredient.getLocation());
