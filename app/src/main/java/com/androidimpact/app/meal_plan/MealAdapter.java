@@ -66,13 +66,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         ArrayList<Recipe> sumArrayList = new ArrayList<>();
         sumArrayList.addAll(this.breakfastRecipes);
         sumArrayList.addAll(this.lunchRecipes);
+        sumArrayList.addAll(this.dinnerRecipes);
+        sumArrayList.addAll(this.snackRecipes);
         //sumArrayList.addAll(this.dinnerRecipes);
         int i = position;
         //for(int i = 0; i < this.breakfastRecipes.size(); i++) {
-            if(i==0) {
-                holder.type.setText("Breakfast");
-            }
-            holder.item.setText(sumArrayList.get(i).getTitle());
+        if(i==0) {
+            holder.type.setText("Breakfast");
+        }
+        holder.item.setText(sumArrayList.get(i).getTitle());
         //}
         //this.breakfastRecipes.forEach(recipe -> {
         //    holder.item.setText(recipe.getTitle());
