@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Cost"
-        android:inputType="text|numberDecimal" />
+        android:inputType="numberDecimal" />
 
 </FrameLayout>

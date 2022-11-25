@@ -35,6 +35,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.UUID;
 import java.util.Arrays;
 
 import nl.dionsegijn.konfetti.KonfettiView;
@@ -299,5 +301,29 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         });
     }
 
+
+    /**
+     *
+     *
+     */
+    public void editShopIngredientFB(ShopIngredient ingredient)
+    {
+        Log.i("check ", "DONEDONEDONE");
+        String id = ingredient.getId();
+        if (id == null){
+            UUID uuid = UUID.randomUUID();
+            id = uuid.toString();
+            ingredient.setID(id);
+        }
+        shoppingCollection.document(id).set(ingredient);
+        shopIngredientViewAdapter.notifyDataSetChanged();
+    }
+
+//    public void cancelPickUp(int pos)
+//    {
+//        pickupSwitch.setChecked(false);
+//        shopIngredientViewAdapter.notifyDataSetChanged();
+//
+//    }
 
 }

@@ -71,6 +71,16 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
 
+        float amt = currentIngredient.getAmountPicked();
+        holder.amountPicked.setText(String.valueOf(amt));
+
+        if (currentIngredient.getAmountPicked() == 0)
+            holder.pickupButton.setChecked(false);
+
+
+
+
+
 
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -80,19 +90,33 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
 
                     //calling new instance method since we also want to pass food object
+                    //maybe remove position from here coz android is crying
                     ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
 
                     MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
 
-                    //ff.show(getActivity().getSupportFragmentManager(), "ADD_FOOD");
+                    //It doesn't handle the value being zero for the DATA
+
 
                 }
                 else
                 {
                     //This means that user accidentaly picked it up so change amount picked up to 0
+                    if (currentIngredient.getAmountPicked() != 0)
+                    {
+                        currentIngredient.setAmountPicked(0);
+                        MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
+                    }
+
+//
+//
+//
+
+
                 }
             }
         });
+//
 
 
         // set unit
@@ -146,6 +170,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         private ImageButton dropdownToggle;
         private ConstraintLayout root;
         private TextView amount;
+        private TextView amountPicked;
 
         private Switch pickupButton;
 
@@ -163,6 +188,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             category = itemView.findViewById(R.id.shop_ingredient_category);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
+            amountPicked = itemView.findViewById(R.id.shop_ingredient_amountPick);
             root = itemView.findViewById(R.id.shop_ingredient_item_root);
         }
     }
