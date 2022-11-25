@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import id.zelory.compressor.Compressor;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
@@ -510,7 +511,15 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Bitmap selectedImageBitmap;
                     selectedImageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-
+                    try {
+                        // Image compression
+                        // https://github.com/zetbaitsu/Compressor/blob/master/README_v2.md
+                        // zetbaitsu Mar 22, 2021
+                        photoFile = new Compressor(this).compressToFile(photoFile);
+                        fileProvider = Uri.fromFile(photoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     photo.setImageBitmap(selectedImageBitmap);
 
                     // https://stackoverflow.com/questions/28505123/getting-an-image-path-from-a-imageview
@@ -553,8 +562,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         Log.i(TAG + ":addPhoto", "Adding photo!");
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         photoFile = getPhotoFileUri("photo.png");
-        fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
         addPhotoLauncher.launch(intent);
     }
 
