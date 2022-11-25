@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.Switch;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.ingredients.ShopIngredient;
+import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
