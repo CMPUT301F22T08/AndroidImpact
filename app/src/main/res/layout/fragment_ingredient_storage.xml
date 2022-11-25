@@ -23,6 +23,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="Sort By:"
+            android:paddingLeft="15dp"
             android:textColor="@color/white"
             android:textSize="15sp"
             tools:layout_conversion_absoluteHeight="19dp"
