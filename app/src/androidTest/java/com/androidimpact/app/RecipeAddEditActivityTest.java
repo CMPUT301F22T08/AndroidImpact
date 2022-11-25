@@ -1,25 +1,24 @@
 //package com.androidimpact.app;
 //
-//import static org.junit.Assert.assertEquals;
 //
-//import android.app.Activity;
-//import android.content.Context;
-//
-//import androidx.test.platform.app.InstrumentationRegistry;
+//import androidx.test.ext.junit.runners.AndroidJUnit4;
+//import androidx.test.filters.LargeTest;
 //import androidx.test.rule.ActivityTestRule;
 //
-//import com.androidimpact.app.activities.RecipeAddEditIngredientActivity;
-//import com.robotium.solo.Solo;
+//import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 //
 //import org.junit.Before;
 //import org.junit.Rule;
 //import org.junit.Test;
+//import org.junit.runner.RunWith;
 //
+//@RunWith(AndroidJUnit4.class)
+//@LargeTest
 //public class RecipeAddEditActivityTest {
-//    private Solo solo;
+//
 //    @Rule
-//    public ActivityTestRule<RecipeAddEditIngredientActivity> rule =
-//            new ActivityTestRule<>(RecipeAddEditIngredientActivity.class, true, true);
+//    public ActivityTestRule<RecipeAddViewEditActivity> rule =
+//            new ActivityTestRule<>(RecipeAddViewEditActivity.class, true, true);
 //
 //    /**
 //     * Runs before all tests and creates solo instance.
