@@ -15,7 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.androidimpact.app.meal_plan.OnSelectInterface;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,6 +34,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     private RecipeController recipeController;
     private Context context;
+    private boolean isSelection;
+    private OnSelectInterface onSelectInterface;
+
 
 
     /**
@@ -39,10 +44,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      * @param context         the context for the parent view
      * @param recipeController the recipes to consider in the RecipeListAdapter object
      */
-    public RecipeListAdapter(Context context, RecipeController recipeController/*ArrayList<Recipe> recipeArrayList*/) {
-        //this.recipeArrayList = recipeArrayList;
+    public RecipeListAdapter(Context context, RecipeController recipeController) {
         this.context = context;
         this.recipeController = recipeController;
+        this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                recipeController.sortData();
+            }
+        });
+        isSelection = false;
         this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -55,10 +67,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     /**
      * Constructor for RecipeList
      * @param context         the context for the parent view
-     * @param recipeArrayList the recipes to consider in the RecipeListAdapter object
+     * @param recipeList the recipes to consider in the RecipeListAdapter object
      */
-    public RecipeListAdapter(Context context, RecipeList recipeList/*ArrayList<Recipe> recipeArrayList*/, OnSelectInterface onSelectInterface) {
-        this(context, recipeList);
+    public RecipeListAdapter(Context context, RecipeList recipeList, OnSelectInterface onSelectInterface) {
+        this(context, ((MainActivity) context).getRecipeController());
         this.isSelection = true;
         this.onSelectInterface = onSelectInterface;
     }
@@ -144,7 +156,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             holder.editRecipeFAB.setOnClickListener(v -> {
                 Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
                 intent.putExtra("activity_name", "Edit recipe");
-                intent.putExtra("recipe", currentRecipe);
+                intent.putExtra("recipe", recipe);
                 intent.putExtra("isEditing", true);
                 context.startActivity(intent);
                 notifyItemChanged(position);
@@ -155,6 +167,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public int getItemCount() {
         return this.recipeController.size();
+    }
+
+    public void sortData(int i) {
+        recipeController.sortData(i);
+    }
+    public void sortData() {
+        recipeController.sortData();
     }
 
     /**
