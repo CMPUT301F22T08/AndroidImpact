@@ -233,4 +233,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     public void setFabListener(FloatingActionButton navigationFAB) {
         return;
     }
+
+
 }

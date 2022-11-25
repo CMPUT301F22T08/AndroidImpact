@@ -74,8 +74,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment IngredientStorage.
-     */
-    // TODO: Rename and change types and number of parameters
+     */// TODO: Rename and change types and number of parameters
     public static IngredientStorageFragment newInstance() {
 
         if (instance == null)

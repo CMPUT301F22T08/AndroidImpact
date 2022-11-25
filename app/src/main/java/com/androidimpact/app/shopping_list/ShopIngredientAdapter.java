@@ -16,10 +16,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.fragments.shopPickUpFragment;
-import com.androidimpact.app.ingredients.Ingredient;
+import com.androidimpact.app.activities.MainActivity;
+import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.androidimpact.app.ingredients.ShopIngredient;
-import com.androidimpact.app.ingredients.StoreIngredient;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -75,9 +74,13 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
                 if (isChecked)
                 {
                     //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
-                    shopPickUpFragment ff = new shopPickUpFragment();
-                    //calling show method to show the fragment dialog box
-                   // showDialog(R.string.dialog_title, R.string.dialog_message, false);
+
+
+                    //calling new instance method since we also want to pass food object
+                    ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
+
+                    MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
+
                     //ff.show(getActivity().getSupportFragmentManager(), "ADD_FOOD");
 
                 }
@@ -157,6 +160,9 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
         }
     }
+
+
+
 
 
 

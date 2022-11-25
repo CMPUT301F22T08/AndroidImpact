@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // adding cities to firebase
     final String TAG = "MainActivity";
+    public static WeakReference<MainActivity> weakActivity;
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
     MealPlannerFragment mealPlannerFragment;// mealPlannerFragment = MealPlannerFragment.newInstance();
@@ -87,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         this.mealPlannerFragment = MealPlannerFragment.newInstance();
+
+        weakActivity = new WeakReference<>(MainActivity.this);
+
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
@@ -159,4 +165,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public IngredientStorage getIngredientStorage() {
         return this.ingredientStorage;
     }
+
+    public static MainActivity getmInstanceActivity() {
+        return weakActivity.get();
+    }
+
+    public void showShopPickUpFragment(ShopPickUpFragment ff)
+    {
+        ff.show(getSupportFragmentManager(), "ADD_FOOD");
+    }
+
+    public void updateShopIngredient(Float amount, int pos)
+    {
+        getSupportActionBar().setTitle("Shopping List");
+        updateActiveFragment(shoppingListFragment);
+    }
+
+
+
 }
