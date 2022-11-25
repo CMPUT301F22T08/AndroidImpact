@@ -18,6 +18,7 @@ import android.widget.Spinner;
 
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
+import com.androidimpact.app.NullableSpinnerAdapter;
 import com.androidimpact.app.category.EditCategoriesActivity;
 import com.androidimpact.app.location.EditLocationsActivity;
 import com.androidimpact.app.location.Location;
@@ -105,18 +106,15 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         // init spinners
         ArrayList<Location> locations = new ArrayList<>();
-        ArrayAdapter<Location> locationAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, locations);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NullableSpinnerAdapter<Location> locationAdapter = new NullableSpinnerAdapter<>(this, locations);
         locationSpinner.setAdapter(locationAdapter);
 
         ArrayList<Unit> units = new ArrayList<>();
-        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, units);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NullableSpinnerAdapter<Unit> unitAdapter = new NullableSpinnerAdapter<>(this, units);
         unitSpinner.setAdapter(unitAdapter);
 
         ArrayList<Category> categories = new ArrayList<>();
-        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NullableSpinnerAdapter<Category> categoryAdapter = new NullableSpinnerAdapter<>(this, categories);
         categorySpinner.setAdapter(categoryAdapter);
 
         // Check Bundle - determine if we're editing or adding!
@@ -166,9 +164,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
         categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
 
-        locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation));
-        unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
-        categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory));
+        locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation, "Location"));
+        unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Unit"));
+        categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Category"));
     }
 
     /**
@@ -176,13 +174,22 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
      * Also sorts the data based on the timestamp data
      *
      * This abstracts the snapshot listener
+     * @param valueType the class type we deserialize to
+     * @param adapter the array adapter of the class type
+     * @param data the raw data to use
+     * @param spinner the spinner to set the data to
+     * @param selectedElem the selected item (wrapped in an AtomicReference)
+     * @param debugName DEBUG: the name of the spinner
+     * @param <T> a timestamped class
+     * @return the event listener to use in an addSnapshotListener
      */
     private <T extends Timestamped>EventListener<QuerySnapshot> abstractSnapshotListener(
             Class<T> valueType,
             ArrayAdapter<T> adapter,
             ArrayList<T> data,
             Spinner spinner,
-            AtomicReference<T> selectedElem
+            AtomicReference<T> selectedElem,
+            String debugName
     ) {
         return (queryDocumentSnapshots, error) -> {
             if (error != null) {
@@ -204,8 +211,16 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             // a bit of a hack to get the spinner to show the correct element
             if (selectedElem.get() != null) {
-                spinner.setSelection(data.indexOf(selectedElem.get()));
-                Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
+                int idx = data.indexOf(selectedElem.get());
+                // add 1 to the spinner - this allows us to select the "null" element
+                spinner.setSelection(idx + 1);
+                if (idx == -1) {
+                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                    Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
+                    selectedElem.set(null);
+                } else {
+                    Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
+                }
             }
         };
     }
@@ -221,7 +236,13 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedElem.set((T) parentView.getItemAtPosition(position));
+                selectedElem.set((T) parentView.getItemAtPosition(position - 1));
+                if (selectedElem.get() != null) {
+                    Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
+
+                } else {
+                    Log.i(TAG, "onItemSelected: selected null");
+                }
             }
 
             @Override
@@ -301,11 +322,18 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         } catch (Exception e){
             // Error - add a snackBar
             Log.i(TAG, "Error making storeIngredient", e);
-            View parentLayout = findViewById(android.R.id.content);
-            Snackbar.make(parentLayout, e.getMessage(), Snackbar.LENGTH_SHORT)
-                    .setAction("Ok", view1 -> {})
-                    .show();
+            generateSnackbar(e.getMessage());
         }
+    }
+
+    /**
+     * Helper function to make a snackbar
+     */
+    private void generateSnackbar(String message) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, message, Snackbar.LENGTH_SHORT)
+                .setAction("Ok", view1 -> {})
+                .show();
     }
 
     /**
@@ -366,10 +394,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             throw new Exception("Location must be non null");
         }
         if (selectedUnit.get() == null) {
-            throw new Exception("Location must be non null");
+            throw new Exception("Unit must be non null");
         }
         if (selectedCategory.get() == null) {
-            throw new Exception("Location must be non null");
+            throw new Exception("Category must be non null");
         }
 
         try {

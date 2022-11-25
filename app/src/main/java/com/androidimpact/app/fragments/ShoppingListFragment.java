@@ -1,5 +1,7 @@
 package com.androidimpact.app.fragments;
 
+import static java.util.Objects.isNull;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,19 +26,15 @@ import android.widget.TextView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
-import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.shopping_list.ShopIngredient;
-import com.androidimpact.app.shopping_list.AddEditShoppingListItemActivity;
+import com.androidimpact.app.shopping_list.AddEditShoppingItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
-import com.androidimpact.app.shopping_list.ShoppingList;
 import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import nl.dionsegijn.konfetti.KonfettiView;
@@ -74,6 +72,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     // use ActivityResultLaunchers to go to different activities
     // this is defined in onViewCreated, see the comment where we initialize it
     private ActivityResultLauncher<Intent> addShoppingListItemLauncher;
+    private ActivityResultLauncher<Intent> editShoppingListItemLauncher;
 
     /**
      * Required empty public constructor
@@ -190,7 +189,14 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
 
         // EVENT LISTENERS
-
+        shopIngredientViewAdapter.setEditClickListener((food, position) -> {
+            // when a shop ingredient is clicked, we edit
+            // yeah, it's a bit different than ingredient and recipe
+            Log.i(TAG + ":addRecipe", "Adding recipe!");
+            Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
+            intent.putExtra("ingredient", food);
+            editShoppingListItemLauncher.launch(intent);
+        });
 
 
         /**
@@ -199,6 +205,28 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
          * It is strongly recommended to register our activity result launchers in onCreate
          * https://stackoverflow.com/a/70215498
          */
+        editShoppingListItemLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (isNull(result.getData())) {
+                        return;
+                    }
+                    Bundle bundle = result.getData().getExtras();
+
+                    Log.i(TAG + ":editStoreIngredientLauncher", "Got bundle");
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Ok - we have an updated ingredient!
+                        // edit firebase directly
+                        ShopIngredient ingredient = (ShopIngredient) bundle.getSerializable("ingredient");
+                        shoppingListController.addEdit(ingredient);
+                        Snackbar.make(shoppingListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                    }
+                });
         addShoppingListItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -239,7 +267,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     public void setFabListener(FloatingActionButton navigationFAB) {
         navigationFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addRecipe", "Adding recipe!");
-            Intent intent = new Intent(getContext(), AddEditShoppingListItemActivity.class);
+            Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
             addShoppingListItemLauncher.launch(intent);
         });
     }

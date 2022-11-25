@@ -37,6 +37,9 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
     private int selected = -1; // initialize no ingredients selected
 
+    // functions that subscribe for edit callbacks
+    private ArrayList<ShopIngredientClickListener> clickListeners = new ArrayList<>();
+
     public ShopIngredientAdapter(Context mContext, ShoppingListController shoppingListController) {
         this.ingredientArrayList = shoppingListController.getData();
         this.mContext = mContext;
@@ -82,6 +85,12 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         String unitStr = holder.res.getString(R.string.shop_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         Log.i("String", unitStr);
         holder.amount.setText(unitStr);
+
+        holder.root.setOnClickListener(v -> {
+            for (ShopIngredientClickListener l : clickListeners) {
+                l.shopIngredientClicked(currentIngredient, position);
+            }
+        });
     }
 
 
@@ -119,11 +128,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         // creating a variable for category
         private Chip category;
-
-
         private ImageButton dropdownToggle;
-
-        private ConstraintLayout expandable;
+        private ConstraintLayout root;
         private TextView amount;
 
         private Switch pickupButton;
@@ -142,6 +148,24 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             category = itemView.findViewById(R.id.shop_ingredient_category);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
+            root = itemView.findViewById(R.id.shop_ingredient_item_root);
         }
+    }
+
+    /**
+     * this interface lets people subscribe to clicks in every shopIngredient
+     * this is because we need the parent activity to react to changes because it has the Context and Activity info
+     * https://stackoverflow.com/a/36662886
+     */
+    public interface ShopIngredientClickListener {
+        void shopIngredientClicked(ShopIngredient food, int position);
+    }
+
+    /**
+     * Edit button listener
+     * @param toAdd
+     */
+    public void setEditClickListener(ShopIngredientClickListener toAdd) {
+        clickListeners.add(toAdd);
     }
 }

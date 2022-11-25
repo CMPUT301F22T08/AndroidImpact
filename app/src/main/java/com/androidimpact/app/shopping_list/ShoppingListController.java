@@ -72,7 +72,8 @@ public class ShoppingListController {
         });
     }
 
-    public void addEdit(StoreIngredient storeIngredient){
+    public void addEdit(ShopIngredient storeIngredient){
+        Log.i(TAG,"Edit shopping list controller called");
         //TODO
     }
 
