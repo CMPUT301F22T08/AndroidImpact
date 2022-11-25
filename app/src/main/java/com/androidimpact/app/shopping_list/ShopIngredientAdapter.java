@@ -35,9 +35,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     private ArrayList<ShopIngredient> ingredientArrayList;
     private Context mContext;
 
-    // keep a list of listeners for when we click an item
-    ArrayList<ItemClickListener> itemClickListeners;
-
     private int selected = -1; // initialize no ingredients selected
 
     public ShopIngredientAdapter(Context mContext, ShoppingListController shoppingListController) {
@@ -67,7 +64,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         // set values
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
-        itemClickListeners = new ArrayList<>();
 
 
 //
@@ -147,22 +143,5 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
         }
-    }
-
-    /**
-     * this interface lets people subscribe to changes in the ShoppingListAdapter
-     * this is because we need the parent activity to react to changes because it has the Context and Activity info
-     * https://stackoverflow.com/a/36662886
-     */
-    public interface ItemClickListener {
-        void shopIngredientItemClicked(StoreIngredient food, int position);
-    }
-
-    /**
-     * Edit button listener
-     * @param toAdd
-     */
-    public void setItemClickListener(ItemClickListener toAdd) {
-        itemClickListeners.add(toAdd);
     }
 }

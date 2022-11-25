@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
+import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.shopping_list.AddEditShoppingListItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
@@ -187,6 +188,10 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
         shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
+
+        // EVENT LISTENERS
+
+
 
         /**
          * DEFINE ACTIVITY LAUNCHERS
