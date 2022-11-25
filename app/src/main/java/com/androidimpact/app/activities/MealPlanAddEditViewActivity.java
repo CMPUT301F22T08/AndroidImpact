@@ -103,8 +103,10 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.recipeIdMap.keySet().forEach(key -> {
             data.put(key, this.recipeIdMap.get(key));
         });
+        TextView editText = findViewById(R.id.editTextMealPlanTitle);
+        String docName = editText.getText().toString();
         mealPlanCollection
-                .document("Friday")
+                .document(docName)
                 .set(this.recipeIdMap);
         setResult(Activity.RESULT_OK);
         finish();
