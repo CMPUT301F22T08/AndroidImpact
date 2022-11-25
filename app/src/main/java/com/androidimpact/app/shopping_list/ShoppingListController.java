@@ -36,7 +36,7 @@ public class ShoppingListController {
                 .setAction("OK", (v)->{}).show();
     }
 
-    public void addDataUpdateSnapshotListener(StoreIngredientViewAdapter storeIngredientViewAdapter){
+    public void addDataUpdateSnapshotListener(ShopIngredientAdapter shopIngredientViewAdapter){
         shoppingListCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             if (error != null) {
                 Log.w(TAG + ":snapshotListener", "Listen failed.", error);
@@ -65,10 +65,10 @@ public class ShoppingListController {
 
             if (errorCount>0)
                 pushSnackBarToContext("Error reading " + errorCount + " documents!");
-            Log.i(TAG, "Snapshot listener: Added " + shoppingList.size() + " ingredients");
+            Log.i(TAG, "Snapshot listener: Added " + shoppingList.size() + " shoppingList items");
 
             shoppingList.sortByChoice();
-            storeIngredientViewAdapter.notifyDataSetChanged();
+            shopIngredientViewAdapter.notifyDataSetChanged();
         });
     }
 

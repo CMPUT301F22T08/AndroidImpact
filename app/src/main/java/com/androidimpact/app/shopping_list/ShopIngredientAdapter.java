@@ -15,6 +15,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -33,10 +35,13 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     private ArrayList<ShopIngredient> ingredientArrayList;
     private Context mContext;
 
+    // keep a list of listeners for when we click an item
+    ArrayList<ItemClickListener> itemClickListeners;
+
     private int selected = -1; // initialize no ingredients selected
 
-    public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> ingredientArrayList) {
-        this.ingredientArrayList = ingredientArrayList;
+    public ShopIngredientAdapter(Context mContext, ShoppingListController shoppingListController) {
+        this.ingredientArrayList = shoppingListController.getData();
         this.mContext = mContext;
     }
 
@@ -59,10 +64,10 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("Test", String.valueOf(currentIngredient.getAmount()));
         Log.i("Test", currentIngredient.getUnit());
 
-
         // set values
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
+        itemClickListeners = new ArrayList<>();
 
 
 //
@@ -81,7 +86,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         String unitStr = holder.res.getString(R.string.shop_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         Log.i("String", unitStr);
         holder.amount.setText(unitStr);
-
     }
 
 
@@ -145,6 +149,20 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         }
     }
 
+    /**
+     * this interface lets people subscribe to changes in the ShoppingListAdapter
+     * this is because we need the parent activity to react to changes because it has the Context and Activity info
+     * https://stackoverflow.com/a/36662886
+     */
+    public interface ItemClickListener {
+        void shopIngredientItemClicked(StoreIngredient food, int position);
+    }
 
-
+    /**
+     * Edit button listener
+     * @param toAdd
+     */
+    public void setItemClickListener(ItemClickListener toAdd) {
+        itemClickListeners.add(toAdd);
+    }
 }

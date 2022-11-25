@@ -22,6 +22,7 @@ import com.androidimpact.app.fragments.MealPlannerFragment;
 import com.androidimpact.app.fragments.NavbarFragment;
 import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
+import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
+    final ShoppingListController shoppingListController = new ShoppingListController(this);
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
@@ -152,6 +154,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return ingredientStorageController;
     }
 
+    public ShoppingListController getShoppingListController(){
+        return shoppingListController;
+    }
+
     public RecipeList getRecipeList() {
         return this.recipeList;
     }
@@ -159,4 +165,5 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public IngredientStorage getIngredientStorage() {
         return this.ingredientStorage;
     }
+
 }
