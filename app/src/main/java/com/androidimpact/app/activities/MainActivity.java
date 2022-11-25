@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
+import android.widget.Switch;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.ShopIngredient;
@@ -164,7 +165,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getSupportActionBar().setTitle("Shopping List");
         updateActiveFragment(shoppingListFragment);
         //call a function in shoppingListFragment which does the data updation
+//        if (ingredient.getAmountPicked() != 0)
         shoppingListFragment.editShopIngredientFB(ingredient);
+//        else
+//            cancelUpdateShopIngredient(ingredient);
+    }
+
+    public void cancelUpdateShopIngredient(ShopIngredient ingredient)
+    {
+       // shoppingListFragment.cancelPickUp();
+
+        getSupportActionBar().setTitle("Shopping List");
+        updateActiveFragment(shoppingListFragment);
+        shoppingListFragment.editShopIngredientFB(ingredient);
+//        Switch pickup = findViewById(R.id.shop_ingredient_switch);
+//        pickup.setChecked(false);
     }
 
 

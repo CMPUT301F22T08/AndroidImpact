@@ -68,10 +68,14 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
 
-        holder.amountPicked.setText(String.valueOf(currentIngredient.getAmountPicked()));
+        float amt = currentIngredient.getAmountPicked();
+        holder.amountPicked.setText(String.valueOf(amt));
+
+        if (currentIngredient.getAmountPicked() == 0)
+            holder.pickupButton.setChecked(false);
 
 
-        holder.amountPicked.setText(String.valueOf(currentIngredient.getAmountPicked()));
+
 
 
 
@@ -83,26 +87,33 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
 
                     //calling new instance method since we also want to pass food object
+                    //maybe remove position from here coz android is crying
                     ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
 
                     MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
 
-                    //ff.show(getActivity().getSupportFragmentManager(), "ADD_FOOD");
+                    //It doesn't handle the value being zero for the DATA
+
 
                 }
                 else
                 {
                     //This means that user accidentaly picked it up so change amount picked up to 0
+                    if (currentIngredient.getAmountPicked() != 0)
+                    {
+                        currentIngredient.setAmountPicked(0);
+                        MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
+                    }
 
-                    //Will change it tomorrow
+//
+//
+//
 
-                    currentIngredient.setAmountPicked(0);
-
-                    MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
 
                 }
             }
         });
+//
 
 
         // set unit

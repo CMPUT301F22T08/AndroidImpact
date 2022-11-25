@@ -253,4 +253,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         shopIngredientViewAdapter.notifyDataSetChanged();
     }
 
+//    public void cancelPickUp(int pos)
+//    {
+//        pickupSwitch.setChecked(false);
+//        shopIngredientViewAdapter.notifyDataSetChanged();
+//
+//    }
+
 }
