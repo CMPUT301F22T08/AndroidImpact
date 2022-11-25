@@ -5,24 +5,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.androidimpact.app.fragments.ShopPickUpFragment;
+import com.androidimpact.app.ingredients.IngredientStorage;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.Switch;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.shopping_list.ShopIngredient;
+import com.androidimpact.app.recipes.Recipe;
+
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
 import com.androidimpact.app.fragments.NavbarFragment;
 import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
+import com.androidimpact.app.shopping_list.ShoppingListController;
+import com.androidimpact.app.recipes.RecipeList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 /**
  * This class is the activity Main Activity
@@ -31,7 +41,7 @@ import java.lang.ref.WeakReference;
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     final String TAG = "MainActivity";
-    public static WeakReference<MainActivity> weakMainActivity;
+    public static WeakReference<MainActivity> weakActivity;
 
     // adding cities to firebase
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
@@ -41,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
+    final ShoppingListController shoppingListController = new ShoppingListController(this);
     final RecipeController recipeController = new RecipeController(this);
 
     FloatingActionButton navbarFAB;
@@ -75,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         weakMainActivity = new WeakReference<>(MainActivity.this);
+
+        weakActivity = new WeakReference<>(MainActivity.this);
+
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
@@ -139,11 +153,43 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return ingredientStorageController;
     }
 
+    public ShoppingListController getShoppingListController(){
+        return shoppingListController;
+    }
+
     public RecipeController getRecipeController(){
         return recipeController;
     }
 
     public static MainActivity getmInstanceActivity() {
-        return weakMainActivity.get();
+        return weakActivity.get();
     }
+
+    public void showShopPickUpFragment(ShopPickUpFragment ff)
+    {
+        ff.show(getSupportFragmentManager(), "ADD_FOOD");
+    }
+
+    public void updateShopIngredient(ShopIngredient ingredient)
+    {
+        getSupportActionBar().setTitle("Shopping List");
+        updateActiveFragment(shoppingListFragment);
+        //call a function in shoppingListFragment which does the data updation
+//        if (ingredient.getAmountPicked() != 0)
+        shoppingListFragment.editShopIngredientFB(ingredient);
+//        else
+//            cancelUpdateShopIngredient(ingredient);
+    }
+
+    public void cancelUpdateShopIngredient(ShopIngredient ingredient)
+    {
+       // shoppingListFragment.cancelPickUp();
+
+        getSupportActionBar().setTitle("Shopping List");
+        updateActiveFragment(shoppingListFragment);
+        shoppingListFragment.editShopIngredientFB(ingredient);
+//        Switch pickup = findViewById(R.id.shop_ingredient_switch);
+//        pickup.setChecked(false);
+    }
+
 }

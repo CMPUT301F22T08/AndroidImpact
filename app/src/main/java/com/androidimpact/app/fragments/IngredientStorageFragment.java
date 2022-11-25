@@ -74,8 +74,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment IngredientStorage.
-     */
-    // TODO: Rename and change types and number of parameters
+     */// TODO: Rename and change types and number of parameters
     public static IngredientStorageFragment newInstance() {
         if (instance == null) {
             IngredientStorageFragment fragment = new IngredientStorageFragment();
@@ -110,8 +109,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // TODO: change this to fragment_ingredient_storage
-        return inflater.inflate(R.layout.activity_ingredient_storage, container, false);
+        return inflater.inflate(R.layout.fragment_ingredient_storage, container, false);
     }
 
 
@@ -254,7 +252,9 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // edit firebase directly
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                     ingredientStorageController.addEdit(ingredient);
-                    Snackbar.make(ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT)
+                            .setAction("Ok", view1 -> {})
+                            .show();
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
@@ -291,7 +291,9 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredientStorageController.addEdit(ingredient);
-                    Snackbar.make(ingredientListView, "Added " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(ingredientListView, "Added " + ingredient.getDescription(), Snackbar.LENGTH_SHORT)
+                            .setAction("Ok", view1 -> {})
+                            .show();
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.

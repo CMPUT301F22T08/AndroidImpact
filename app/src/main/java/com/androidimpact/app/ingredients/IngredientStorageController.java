@@ -51,9 +51,9 @@ public class IngredientStorageController {
 
     /**
      * Add a snapshot listener to the FireStore collection that repopulates the ingredient storage when changes are detected.
-     * Notifies the current ViewAdapter that the data may have changed on .
+     * Notifies the current ViewAdapter that the data may have changed.
      * @param storeIngredientViewAdapter (StoreIngredientViewAdapter) - The adapter to be updated when the latest data is pulled from firestore
-     * @throws RuntimeException if the
+     * @throws RuntimeException if the snapshot listener has already been added
      */
     public void addDataUpdateSnapshotListener(StoreIngredientViewAdapter storeIngredientViewAdapter) throws RuntimeException {
         if (snapshotAdded){
@@ -143,7 +143,6 @@ public class IngredientStorageController {
     }
 
 
-
     /**
      * Adds/updates a storeIngredient object to the FireStore database.
      * Updates if the id of the parameter StoreIngredient object is not null.
@@ -209,25 +208,12 @@ public class IngredientStorageController {
      * @return ArrayList<StoreIngredient>
      */
     public ArrayList<StoreIngredient> getData(){
-        return ingredientStorage.detData();
+        return ingredientStorage.getData();
     }
 
     // TODO: Get rid of this ASAP
     public IngredientStorage getIngredientStorage() {
         return ingredientStorage;
     }
-
-    /**
-     * Returns the number of elements in the storage
-     * @return The number of elements in the storage
-     */
-    public int size() {
-        return ingredientStorage.size();
-    }
-
-    public StoreIngredient get(int i) {
-        return ingredientStorage.get(i);
-    }
-
 
 }

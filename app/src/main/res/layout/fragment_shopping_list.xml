@@ -13,7 +13,6 @@
         android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        app:layout_constraintBottom_toTopOf="@+id/ingredient_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,9 +20,8 @@
             android:id="@+id/sort_shopping_info"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingTop="9dp"
-            android:paddingRight="5dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
             android:text="Sort by:"
             android:textColor="@color/white"
             android:textSize="15sp" />
@@ -32,7 +30,8 @@
             android:id="@+id/sort_shopping_spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/white" />
+            android:backgroundTint="@color/white"
+            android:minHeight="32dp"/>
 
 
     </LinearLayout>
@@ -57,5 +56,9 @@
 
     </LinearLayout>
 
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/confetti_view_shopping_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

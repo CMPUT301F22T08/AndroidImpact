@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.ingredients.IngredientStorage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,9 +46,9 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
      * @param context
      * @param mealPlans
      */
-    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans, RecipeList recipeList, IngredientStorage ingredientStorage) {
+    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans, RecipeList recipeList, ArrayList<StoreIngredient> ingredients) {
         this.mealPlans = mealPlans;
-        this.mealPlanList = new MealPlanList(this.mealPlans, recipeList, ingredientStorage);
+        this.mealPlanList = new MealPlanList(this.mealPlans/*, recipeList, ingredients*/);
         this.context = context;
 
         // initialize Firestore
@@ -84,12 +85,25 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
     @Override
     public void onBindViewHolder(@NonNull MealPlanListAdapter.MealPlanHolder holder, int position) {
         MealPlan recyclerData = mealPlans.get(position);
-        MealAdapter mealAdapter = new MealAdapter(recyclerData);
         holder.date.setText(recyclerData.getDate());
-        LinearLayoutManager manager = new LinearLayoutManager(context);
-        holder.mealsList.setLayoutManager(manager);
-        holder.mealsList.setAdapter(mealAdapter);
-        mealAdapter.notifyDataSetChanged();
+
+        String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
+        RecyclerView[] recyclerViews = {holder.mealsListBreakfast, holder.mealsListLunch, holder.mealsListDinner, holder.mealsListSnacks};
+
+        for(int i = 0; i < keys.length; i++) {
+            MealAdapter adapter = new MealAdapter(recyclerData, keys[i]);
+            LinearLayoutManager manager = new LinearLayoutManager(context);
+            recyclerViews[i].setLayoutManager(manager);
+            recyclerViews[i].setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+
+//        MealAdapter mealAdapterBreakfast = new MealAdapter(recyclerData, "breakfast");
+//
+//        LinearLayoutManager manager = new LinearLayoutManager(context);
+//        holder.mealsListBreakfast.setLayoutManager(manager);
+//        holder.mealsListBreakfast.setAdapter(mealAdapterBreakfast);
+//        mealAdapterBreakfast.notifyDataSetChanged();
 
 
         holder.mealPlanEditButton.setOnClickListener(v -> {
@@ -127,7 +141,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
         // creating a variable for our text view and button
         private TextView date;
         private FloatingActionButton mealPlanEditButton;
-        private RecyclerView mealsList;
+        private RecyclerView mealsListBreakfast, mealsListLunch, mealsListDinner, mealsListSnacks;
 
         /**
          * Initializing our text views
@@ -136,7 +150,10 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
         public MealPlanHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.meal_plan_title);
-            mealsList = itemView.findViewById(R.id.meals_list);
+            mealsListBreakfast = itemView.findViewById(R.id.meals_list_breakfast);
+            mealsListLunch = itemView.findViewById(R.id.meals_list_lunch);
+            mealsListDinner = itemView.findViewById(R.id.meals_list_dinner);
+            mealsListSnacks = itemView.findViewById(R.id.meals_list_snacks);
             mealPlanEditButton = itemView.findViewById(R.id.edit_button);
         }
     }

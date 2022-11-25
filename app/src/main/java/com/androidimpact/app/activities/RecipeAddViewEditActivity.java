@@ -30,12 +30,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.androidimpact.app.DocumentRetrievalListener;
+import com.androidimpact.app.NullableSpinnerAdapter;
 import com.androidimpact.app.R;
+import com.androidimpact.app.location.Location;
 import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.recipes.RecipeIngredientAdapter;
@@ -58,6 +61,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import id.zelory.compressor.Compressor;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
@@ -142,8 +146,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         // set up adapters and stuff for custom user-defined category spinner
 
         ArrayList<Category> categories = new ArrayList<>();
-        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NullableSpinnerAdapter<Category> categoryAdapter = new NullableSpinnerAdapter<>(this, categories);
         categorySpinner.setAdapter(categoryAdapter);
 
         // extract extras
@@ -206,9 +209,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
 
             // add event listeners to ingredients collection for other changes
             ingredientsCollection.addSnapshotListener(abstractSnapshotListener(
-                    RecipeIngredient.class, recipeIngredients, null, ingredientAdapter, null, null));
+                    RecipeIngredient.class, recipeIngredients, "RecipeIngredient", null, ingredientAdapter, null, null));
             categoriesCollection.addSnapshotListener(abstractSnapshotListener(
-                    Category.class, categories, categoryAdapter, null, categorySpinner, selectedCategory));
+                    Category.class, categories, "Category", categoryAdapter, null, categorySpinner, selectedCategory));
         }
 
 
@@ -349,8 +352,13 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedElem.set((T) parentView.getItemAtPosition(position));
-                Log.i(TAG, "selected unit is " + selectedElem.get().toString());
+                selectedElem.set((T) parentView.getItemAtPosition(position - 1));
+                if (selectedElem.get() != null) {
+                    Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
+
+                } else {
+                    Log.i(TAG, "onItemSelected: selected null");
+                }
             }
 
             @Override
@@ -369,6 +377,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     private <T extends Timestamped, U extends RecyclerView.Adapter<?>> EventListener<QuerySnapshot> abstractSnapshotListener(
             Class<T> valueType,
             ArrayList<T> data,
+            String debugName,
             @Nullable ArrayAdapter<T> arrayAdapter,
             @Nullable U recyclerViewAdapter,
             @Nullable Spinner spinner,
@@ -397,10 +406,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             // a bit of a hack...
             // this is only used when we need to have a selected element, like for spinners and stuff
             if (spinner != null && selectedElem != null) {
-                // make spinner show correct selected element
-                if (selectedElem.get() != null) {
-                    spinner.setSelection(data.indexOf(selectedElem.get()));
-                    Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
+                int idx = data.indexOf(selectedElem.get());
+                // add 1 to the spinner - this allows us to select the "null" element
+                spinner.setSelection(idx + 1);
+                String classStr = selectedElem.get() == null ? "null" : selectedElem.get().getClass().toString();
+                Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + classStr + " - (" + data.indexOf(selectedElem.get()) + ")");
+                if (idx == -1) {
+                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                    selectedElem.set(null);
                 }
             }
         };
@@ -510,7 +523,15 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Bitmap selectedImageBitmap;
                     selectedImageBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-
+                    try {
+                        // Image compression
+                        // https://github.com/zetbaitsu/Compressor/blob/master/README_v2.md
+                        // zetbaitsu Mar 22, 2021
+                        photoFile = new Compressor(this).compressToFile(photoFile);
+                        fileProvider = Uri.fromFile(photoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     photo.setImageBitmap(selectedImageBitmap);
 
                     // https://stackoverflow.com/questions/28505123/getting-an-image-path-from-a-imageview

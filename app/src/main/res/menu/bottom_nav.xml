@@ -14,9 +14,9 @@
     <item
         android:id="@+id/cart_icon"
         android:icon="@drawable/icon_shoppinglist"
-        android:title="shopping list" />
+        android:title="Shopping List" />
     <item
         android:id="@+id/meal_icon"
         android:icon="@drawable/icon_mealplan"
-        android:title="meal plan" />
+        android:title="Meal Plan" />
 </menu>

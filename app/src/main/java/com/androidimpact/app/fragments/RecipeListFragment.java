@@ -117,8 +117,6 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // TODO: change this to fragment_recipe_list
-        //return inflater.inflate(R.layout.activity_recipe_list_activity, container, false);
         return inflater.inflate(R.layout.fragment_recipe_list, container, false);
     }
 
@@ -238,8 +236,10 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
                     Log.i(TAG + ":addRecipeResult", "Got bundle");
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        final KonfettiView confetti = a.findViewById(R.id.confetti_view_recipes);
-                        Snackbar.make(recipeListView, "Added the recipe!", Snackbar.LENGTH_SHORT).show();
+                        final KonfettiView confetti = a.findViewById(R.id.confetti_view_recipe);
+                        Snackbar.make(recipeListView, "Added the recipe!", Snackbar.LENGTH_SHORT).setAction("Ok", view1 -> {})
+                                .setAction("Ok", view1 -> {})
+                                .show();
 
                         int[] test = {0,1};
                         confetti.getLocationInWindow(test);

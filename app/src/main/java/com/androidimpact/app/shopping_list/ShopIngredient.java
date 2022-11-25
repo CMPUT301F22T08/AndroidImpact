@@ -1,4 +1,6 @@
-package com.androidimpact.app.ingredients;
+package com.androidimpact.app.shopping_list;
+
+import com.androidimpact.app.ingredients.Ingredient;
 
 import java.io.Serializable;
 

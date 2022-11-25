@@ -91,7 +91,8 @@ public class EditCategoriesActivity extends AppCompatActivity {
             }
 
             if (errorCount > 0) {
-                Snackbar.make(categoryRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(categoryRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG)
+                    .setAction("Ok", view1 -> {}).show();
             }
             Log.i(TAG, "Snapshot listener: Added " + categoryArrayList.size() + " elements");
             categoryArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));

@@ -33,6 +33,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     final String TAG = "RecipeList";
 
     private RecipeController recipeController;
+    private RecipeList recipeList;
     private Context context;
     private boolean isSelection;
     private OnSelectInterface onSelectInterface;
@@ -74,6 +75,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         this.isSelection = true;
         this.onSelectInterface = onSelectInterface;
     }
+
+
 
 
     /**

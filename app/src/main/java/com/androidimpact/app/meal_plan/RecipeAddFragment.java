@@ -29,6 +29,7 @@ import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.recipes.RecipeListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +54,7 @@ public class RecipeAddFragment extends DialogFragment {
     RecyclerView recipeListView;
     RecipeListAdapter recipeViewAdapter;
     RecipeList recipeList;
+    RecipeController recipeController;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
     Spinner sortSpinner;
@@ -62,10 +64,6 @@ public class RecipeAddFragment extends DialogFragment {
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference recipeCollection;
-
-    // using ActivityResultLaunchers
-    // note that editRecipeLauncher is defined in RecipeListAdapter
-    private ActivityResultLauncher<Intent> addRecipeLauncher;
 
     public RecipeAddFragment(String meal) {
         super(R.layout.fragment_recipe_list);
@@ -131,9 +129,11 @@ public class RecipeAddFragment extends DialogFragment {
 
         recipeDataList = new ArrayList<>();
         recipeList = new RecipeList(recipeDataList);
+        this.recipeController = ((MealPlanAddEditViewActivity) getActivity()).getRecipeController();
         //recipeList = ((MainActivity) a).getRecipeList();
         //recipeDataList = recipeList.getData();
-        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeList, onSelectInterface);
+        recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface);
+        this.recipeController.addDataUpdateSnapshotListener(recipeViewAdapter);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
