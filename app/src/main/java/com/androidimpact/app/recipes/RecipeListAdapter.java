@@ -73,43 +73,22 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      *         <ul>
      *             <li>Geeks for Geeks: How to Retrieve Image from Firebase in Realtime in Android?
      *                 <ul>
-     *                     <li>
-     *                         URL: https://www.geeksforgeeks.org/how-to-retrieve-image-from-firebase-in-realtime-in-android/
-     *                     </li>
-     *                     <li>
-     *                         Author: surajkeshr023
-     *                     </li>
-     *                     <li>
-     *                         Editor: marcus007
-     *                     </li>
-     *                     <li>
-     *                         Licence: CCBY-SA
-     *                     </li>
-     *                     <li>
-     *                         Use: Inspired use of Picasso library
-     *                     </li>
-     *                     <li>
-     *                         Accessed: 2022-11-01, 2:45 PM
+     *                     <li>URL: https://www.geeksforgeeks.org/how-to-retrieve-image-from-firebase-in-realtime-in-android/</li>
+     *                     <li>Author: surajkeshr023</li>
+     *                     <li>Editor: marcus007</li>
+     *                     <li>Licence: CCBY-SA</li>
+     *                     <li>Use: Inspired use of Picasso library</li>
+     *                     <li>Accessed: 2022-11-01, 2:45 PM
      *                     </li>
      *                 </ul>
      *             </li>
      *             <li>Firebase Storage Docs: Download files with Cloud Storage on Android
      *                 <ul>
-     *                     <li>
-     *                         URL: https://firebase.google.com/docs/storage/android/download-files
-     *                     </li>
-     *                     <li>
-     *                         Author: Google Inc.
-     *                     </li>
-     *                     <li>
-     *                         Licence: http://www.apache.org/licenses/LICENSE-2.0
-     *                     </li>
-     *                     <li>
-     *                         Use: Motivated adding images to ImageView
-     *                     </li>
-     *                     <li>
-     *                         Accessed: 2022-11-01, 2:50 PM
-     *                     </li>
+     *                     <li>URL: https://firebase.google.com/docs/storage/android/download-files</li>
+     *                     <li>Author: Google Inc.</li>
+     *                     <li>Licence: http://www.apache.org/licenses/LICENSE-2.0</li>
+     *                     <li>Use: Motivated adding images to ImageView</li>
+     *                     <li>Accessed: 2022-11-01, 2:50 PM</li>
      *                 </ul>
      *             </li>
      *         </ul>
