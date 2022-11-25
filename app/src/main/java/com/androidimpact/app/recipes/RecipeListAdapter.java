@@ -120,54 +120,31 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      */
     @Override
     public void onBindViewHolder(@NonNull RecipeListAdapter.RecipeViewHolder holder, int position) {
-        Recipe recyclerData = recipeController.get(position);
-        holder.recipeTitle.setText(recyclerData.getTitle());
-        holder.recipeCategory.setText(recyclerData.getCategory());
+        Recipe recipe = recipeController.get(position);
+        holder.recipeTitle.setText(recipe.getTitle());
+        holder.recipeCategory.setText(recipe.getCategory());
         holder.recipePrepTime.setText(String.format(this.context.getResources().getString(R.string.recipe_prep_time_in_list
-                ), recyclerData.getPrep_time()));
+                ), recipe.getPrep_time()));
         holder.recipeServings.setText(String.format(this.context.getResources().getString(R.string.recipe_servings_in_list
-                ), recyclerData.getServings()));
+                ), recipe.getServings()));
 
 
         OnSuccessListener successListener = o -> Picasso.get().load((String) o).into(holder.recipeImage);
         OnFailureListener failureListener = e -> {
-            Log.e(TAG, "Image Not Found: "+recyclerData.getTitle(), e);
+            Log.e(TAG, "Image Not Found: "+recipe.getTitle(), e);
             holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
         };
 
         try {
             recipeController.processPhoto(position, successListener, failureListener);
         } catch (Exception e) {
-            Log.e(TAG, "Child Not Found: "+recyclerData.getTitle(), e);
+            Log.e(TAG, "Child Not Found: "+recipe.getTitle(), e);
         }
-
-
-
-//        if (photoURI != null) {
-//            try {
-//                // get child in storage
-//                StorageReference photoRef = storageReference.child("images/" + photoURI);
-//                photoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                    // Got the download URL and put image in corresponding ImageView
-//                    Picasso.get().load(uri).into(holder.recipeImage);
-//                }).addOnFailureListener(exception -> {
-//                    // Log any errors
-//
-//                    holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
-//                });
-//
-//            } catch (Exception exception) {
-//                // Log any errors
-//                Log.e("Child Not Found", recyclerData.getTitle(), exception);
-//            }
-//        } else {
-//            holder.recipeImage.setImageResource(R.drawable.ic_baseline_dining_24);
-//        }
 
         holder.editRecipeFAB.setOnClickListener(v -> {
             Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
             intent.putExtra("activity_name", "Edit recipe");
-            intent.putExtra("recipe", recyclerData);
+            intent.putExtra("recipe", recipe);
             intent.putExtra("isEditing", true);
             context.startActivity(intent);
             notifyItemChanged(position);
