@@ -11,11 +11,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.IngredientStorageController;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
@@ -44,12 +46,16 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
     // Initialize attributes
     final String TAG = "RecipeAddEditIngredientActivity";
-    EditText description, amount;
+    AutoCompleteTextView description;
+    EditText amount;
     private Boolean isEditing = false;
     private int position;
 
     // other globals
     String id;
+    IngredientStorageController ingredientStorageController;
+    ArrayList<String> autoCompleteSource;
+    ArrayAdapter<String> autoCompleteAdapter;
 
     // Spinners
     // as before, the selectedUnit is the source of truth.
@@ -75,6 +81,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         // initialize Firestore
         // initialize ingredientsCollection later - after we know whether or not we are editing an ingredient or adding
         db = FirebaseFirestore.getInstance();
@@ -87,6 +94,13 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         amount = findViewById(R.id.ingredient_amount);
         unitSpinner = findViewById(R.id.recipe_ingredient_unit);
         categorySpinner = findViewById(R.id.recipe_ingredient_category);
+
+        // AutoComplete from IngredientStorage
+        ingredientStorageController = new IngredientStorageController(this);
+        autoCompleteSource = new ArrayList();
+        ingredientStorageController.addSnapshotListenerNoView(autoCompleteSource);
+        autoCompleteAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, autoCompleteSource);
+        description.setAdapter(autoCompleteAdapter);
 
         // init spinners
         ArrayList<Unit> units = new ArrayList<>();
