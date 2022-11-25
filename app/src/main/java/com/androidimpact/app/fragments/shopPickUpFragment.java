@@ -23,9 +23,9 @@ import com.androidimpact.app.R;
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
+ * @version 1.0
+ * @author Vedant Vyas
  */
-
-
 //Add a toggle listener to adapter class, which opens this dialog box. I guess that's good enough for now
 
 
