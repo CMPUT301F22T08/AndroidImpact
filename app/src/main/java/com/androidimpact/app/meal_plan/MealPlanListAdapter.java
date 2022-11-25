@@ -1,6 +1,7 @@
 package com.androidimpact.app.meal_plan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.ingredients.IngredientStorage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -87,6 +90,16 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
         holder.mealsList.setLayoutManager(manager);
         holder.mealsList.setAdapter(mealAdapter);
         mealAdapter.notifyDataSetChanged();
+
+
+        holder.mealPlanEditButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MealPlanAddEditViewActivity.class);
+            intent.putExtra("activity_name", "Edit meal plan");
+            //intent.putExtra("recipe", currentRecipe);
+            intent.putExtra("isEditing", true);
+            context.startActivity(intent);
+            notifyItemChanged(position);
+        });
     }
 
     /**

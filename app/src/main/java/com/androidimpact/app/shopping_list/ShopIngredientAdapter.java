@@ -16,22 +16,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.Ingredient;
+import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
+
+
+/**
+ *
+ * @author vedantvyas
+ */
 
 public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAdapter.IngredientViewHolder>{
 
     private final String TAG = "ShopIngredientViewAdapter";
 
     // creating a variable for our array list and context.
-    private ArrayList<StoreIngredient> ingredientArrayList;
+    private ArrayList<ShopIngredient> ingredientArrayList;
     private Context mContext;
 
     private int selected = -1; // initialize no ingredients selected
 
-    public ShopIngredientAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
+    public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
     }
@@ -49,34 +56,35 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     public void onBindViewHolder(@NonNull ShopIngredientAdapter.IngredientViewHolder holder, int position){
 
         // Set the data to textview from our modal class.
-        Ingredient currentIngredient = ingredientArrayList.get(position);
+        ShopIngredient currentIngredient = ingredientArrayList.get(position);
+
+        Log.i("Test", currentIngredient.getDescription());
+        Log.i("Test", String.valueOf(currentIngredient.getAmount()));
+        Log.i("Test", currentIngredient.getUnit());
+
 
         // set values
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
 
 
-
-        // if `selected` is the position, make the expandable section visible
-        if (position == selected) {
-            holder.dropdownToggle.setImageResource(R.drawable.expand_less_white);
-            Log.i(TAG + ":clickedDropdownToggle", "Set item to visible: " + position);
-            holder.expandable.setVisibility(View.VISIBLE);
-        } else {
-            holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
-            holder.expandable.setVisibility(View.GONE);
-        }
+//
+//        // if `selected` is the position, make the expandable section visible
+//        if (position == selected) {
+//            holder.dropdownToggle.setImageResource(R.drawable.expand_less_white);
+//            Log.i(TAG + ":clickedDropdownToggle", "Set item to visible: " + position);
+//            holder.expandable.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
+//            holder.expandable.setVisibility(View.GONE);
+//        }
 
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
-        String unitStr = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        String unitStr = holder.res.getString(R.string.shop_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        Log.i("String", unitStr);
         holder.amount.setText(unitStr);
 
-        // OnClick Listener
-        holder.dropdownToggle.setOnClickListener(v -> {
-            Log.i(TAG + ":clickedDropdownToggle", "Clicked dropdown of item at position " + position);
-            clickedItem(position);
-        });
     }
 
 
@@ -135,10 +143,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             //Need to be changed for now
             description = itemView.findViewById(R.id.shop_ingredient_description);
             category = itemView.findViewById(R.id.shop_ingredient_category);
-            dropdownToggle = itemView.findViewById(R.id.shop_ingredient_dropdown_toggle);
-            expandable = itemView.findViewById(R.id.shop_ingredient_expandable_section);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
-            amount = itemView.findViewById(R.id.store_ingredient_amount);
+            amount = itemView.findViewById(R.id.shop_ingredient_amount);
         }
     }
 

@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,8 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -140,46 +143,53 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         mealPlanListView.setAdapter(mealPlanAdapter);
 
         // drag to delete
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-//            /**
-//             * This method is called when the item is moved
-//             * @param recyclerView
-//             * @param viewHolder
-//             * @param target
-//             * @return
-//             */
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            /**
-//             * Creates swipe to delete functionality
-//             * @param viewHolder
-//             * @param direction
-//             */
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                // below line is to get the position
-//                // of the item at that position.
-//                int position = viewHolder.getAdapterPosition();
-//                Recipe deletedRecipe = recipeDataList.get(position);
-//                String description = deletedRecipe.getTitle();
-//
-//                OnSuccessListener sl = o -> {
-//                    Log.d(TAG, description + " has been deleted successfully!");
-//                    Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_LONG).show();
-//                };
-//                OnFailureListener fl = e -> {
-//                    Log.d(TAG, description + " could not be deleted!" + e);
-//                    Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_LONG).show();
-//                };
-//                recipeViewAdapter.removeItem(position, sl, fl);
-//
-//            }
-//            // at last we are adding this
-//            // to our recycler view.
-//        }).attachToRecyclerView(recipeListView);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            /**
+             * This method is called when the item is moved
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             */
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            /**
+             * Creates swipe to delete functionality
+             * @param viewHolder
+             * @param direction
+             */
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // below line is to get the position
+                // of the item at that position.
+                int position = viewHolder.getAdapterPosition();
+                MealPlan deletedMealPlan = mealPlans.get(position);
+                String description = deletedMealPlan.getDate();
+
+                OnSuccessListener sl = o -> {
+                    Log.d(TAG, description + " has been deleted successfully!");
+                    Snackbar.make(mealPlanListView, "Deleted meal plan for " + description, Snackbar.LENGTH_LONG).show();
+                    mealPlans.remove(deletedMealPlan);
+                };
+                OnFailureListener fl = e -> {
+                    Log.d(TAG, description + " could not be deleted!" + e);
+                    Snackbar.make(mealPlanListView, "Could not delete meal plan for " + description + "!", Snackbar.LENGTH_LONG).show();
+                };
+
+                mealPlanCollection.document(description)
+                        .delete()
+                        .addOnSuccessListener(sl)
+                        .addOnFailureListener(fl);
+
+                mealPlanAdapter.notifyDataSetChanged();
+
+            }
+            // at last we are adding this
+            // to our recycler view.
+        }).attachToRecyclerView(mealPlanListView);
 
         // on snapshot listener for the collection
         mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {

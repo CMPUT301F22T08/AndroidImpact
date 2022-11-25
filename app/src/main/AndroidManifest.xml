@@ -26,6 +26,13 @@
         android:theme="@style/Theme.AndroidImpact"
         tools:targetApi="31">
         <activity
+            android:name=".activities.MealPlanAddEditRecipeIngredientActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".category.EditCategoriesActivity"
             android:exported="false">
             <meta-data
@@ -38,8 +45,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-        <!-- make sure within the application tag, otherwise app will crash with XmlResourceParser errors -->
+        </activity> <!-- make sure within the application tag, otherwise app will crash with XmlResourceParser errors -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.codepath.fileprovider"

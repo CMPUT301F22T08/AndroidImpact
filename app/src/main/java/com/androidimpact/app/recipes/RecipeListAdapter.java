@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
@@ -49,6 +50,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 recipeController.sortData();
             }
         });
+    }
+
+    /**
+     * Constructor for RecipeList
+     * @param context         the context for the parent view
+     * @param recipeArrayList the recipes to consider in the RecipeListAdapter object
+     */
+    public RecipeListAdapter(Context context, RecipeList recipeList/*ArrayList<Recipe> recipeArrayList*/, OnSelectInterface onSelectInterface) {
+        this(context, recipeList);
+        this.isSelection = true;
+        this.onSelectInterface = onSelectInterface;
     }
 
 
@@ -122,14 +134,22 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             Log.e(TAG, "Child Not Found: "+recipe.getTitle(), e);
         }
 
-        holder.editRecipeFAB.setOnClickListener(v -> {
-            Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
-            intent.putExtra("activity_name", "Edit recipe");
-            intent.putExtra("recipe", recipe);
-            intent.putExtra("isEditing", true);
-            context.startActivity(intent);
-            notifyItemChanged(position);
-        });
+        if(this.isSelection) {
+            holder.editRecipeFAB.setVisibility(View.GONE);
+            holder.container.setOnClickListener(view -> {
+                this.onSelectInterface.selectItem(position);
+
+            });
+        } else {
+            holder.editRecipeFAB.setOnClickListener(v -> {
+                Intent intent = new Intent(context, RecipeAddViewEditActivity.class);
+                intent.putExtra("activity_name", "Edit recipe");
+                intent.putExtra("recipe", currentRecipe);
+                intent.putExtra("isEditing", true);
+                context.startActivity(intent);
+                notifyItemChanged(position);
+            });
+        }
     }
 
     @Override
@@ -146,6 +166,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         private TextView recipeTitle, recipeCategory, recipePrepTime, recipeServings;
         private ImageView recipeImage;
         private FloatingActionButton editRecipeFAB;
+        private ConstraintLayout container;
         //private FloatingActionButton editRecipeFAB;
 
         public RecipeViewHolder(@NonNull View itemView) {
@@ -157,6 +178,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipeServings = itemView.findViewById(R.id.recipe_servings);
             recipeImage = itemView.findViewById(R.id.recipe_image_view);
             editRecipeFAB = itemView.findViewById(R.id.floatingActionButton);
+            container = itemView.findViewById(R.id.recipe_container);
         }
     }
 }
