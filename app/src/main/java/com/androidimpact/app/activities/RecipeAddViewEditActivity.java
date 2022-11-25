@@ -80,9 +80,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     ArrayList<RecipeIngredient> recipeIngredients;
 
     ImageView photo;
-    private String docName;
     private Boolean isEditing;
-    private String date;
     // if we're editing, this is the photoID of the editing photo
     private String photoID;
     // true if we are currently uploading an image to firebase;

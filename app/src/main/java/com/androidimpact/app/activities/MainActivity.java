@@ -9,14 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.androidimpact.app.ingredients.IngredientStorageController;
-import android.util.Log;
 import android.view.View;
 
-import com.androidimpact.app.ingredients.IngredientStorage;
-import com.androidimpact.app.meal_plan.MealPlanList;
 import com.androidimpact.app.R;
-import com.androidimpact.app.recipes.Recipe;
-import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
 import com.androidimpact.app.fragments.NavbarFragment;
@@ -39,18 +35,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     final String TAG = "MainActivity";
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    MealPlannerFragment mealPlannerFragment;// mealPlannerFragment = MealPlannerFragment.newInstance();
+    MealPlannerFragment mealPlannerFragment;
     final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
 
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
+    final RecipeController recipeController = new RecipeController(this);
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
-
-    RecipeList recipeList;
-    IngredientStorage ingredientStorage;
-    MealPlanList mealPlanList;
 
     BottomNavigationView bottomnav;
 
@@ -71,11 +64,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Snackbar.make(parentLayout, "Welcome " + username + "!", Snackbar.LENGTH_SHORT)
                 .setAction("Ok", view1 -> {})
                 .show();
-
-        ArrayList<Recipe> recipes = new ArrayList<>();
-        recipeList = new RecipeList(recipes);
-        Log.i("recipelistboom", recipeList.getData().toString());
-        ingredientStorage = new IngredientStorage();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
@@ -147,16 +135,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         newFragment.setFabListener(navbarFAB);
     }
 
-
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorageController;
     }
 
-    public RecipeList getRecipeList() {
-        return this.recipeList;
-    }
-
-    public IngredientStorage getIngredientStorage() {
-        return this.ingredientStorage;
+    public RecipeController getRecipeController(){
+        return recipeController;
     }
 }

@@ -52,6 +52,12 @@ public class LoginActivity extends AppCompatActivity {
         signup.startAnimation(fadeIn);
         login.startAnimation(fadeIn);
 
+
+
+        // TODO: Remove this, its for convenience
+        username.setText("Curtis Kan");
+        password.setText("CMPUT 301");
+
     }
 
     /**

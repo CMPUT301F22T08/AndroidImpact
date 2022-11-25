@@ -25,6 +25,7 @@ import android.widget.Spinner;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.recipes.RecipeListAdapter;
 import com.androidimpact.app.activities.MainActivity;
@@ -55,14 +56,17 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
     RecipeListAdapter recipeViewAdapter;
-    RecipeList recipeList;
-    ArrayList<Recipe> recipeDataList;
+
+    RecipeController recipeController;
+
+    // These must go
+    FirebaseFirestore db;
+    CollectionReference recipeCollection;
+
+
     String[] sortingOptions;
     Spinner sortSpinner;
 
-    // adding recipes to firebase
-    FirebaseFirestore db;
-    CollectionReference recipeCollection;
 
     // using ActivityResultLaunchers
     // note that editRecipeLauncher is defined in RecipeListAdapter
@@ -135,16 +139,15 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
             return;
         }
 
+        recipeController = ((MainActivity)a).getRecipeController();
+
         // Initialize views
         sortSpinner = a.findViewById(R.id.sort_recipe_spinner);
 
         // initialize adapters and customList, connect to DB
         recipeListView = a.findViewById(R.id.recipe_listview);
 
-        //recipeDataList = new ArrayList<>();
-        recipeList = ((MainActivity) a).getRecipeList();
-        recipeDataList = recipeList.getData();
-        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeList/*recipeDataList*/);
+        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeController);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
@@ -165,8 +168,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
              */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                recipeViewAdapter.setSortChoice(i);
-                recipeViewAdapter.sortByChoice();
+                recipeController.sortData(i);
                 recipeViewAdapter.notifyDataSetChanged();
             }
 
@@ -176,8 +178,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
              */
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                recipeViewAdapter.setSortChoice(0);
-                recipeViewAdapter.sortByChoice();
+                recipeController.sortData(0);
                 recipeViewAdapter.notifyDataSetChanged();
             }
         });
@@ -210,40 +211,17 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 // below line is to get the position
                 // of the item at that position.
-                int position = viewHolder.getAdapterPosition();
-                Recipe deletedRecipe = recipeDataList.get(position);
-                String description = deletedRecipe.getTitle();
 
-                recipeViewAdapter.removeItem(position)
-                        .addOnSuccessListener(o -> {
-                            Log.d(TAG, description + " has been deleted successfully!");
-                            Snackbar.make(recipeListView, "Deleted " + description, Snackbar.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.d(TAG, description + " could not be deleted!" + e);
-                            Snackbar.make(recipeListView, "Could not delete " + description + "!", Snackbar.LENGTH_SHORT).show();
-                        });
+                int position = viewHolder.getAdapterPosition();
+                Log.d(TAG, "Swiped " + recipeController.get(position).getTitle() + " at position " + position);
+                recipeController.delete(position);
             }
             // at last we are adding this
             // to our recycler view.
         }).attachToRecyclerView(recipeListView);
 
         // on snapshot listener for the collection
-        recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            // Clear the old list
-            recipeDataList.clear();
-
-            if (queryDocumentSnapshots == null) {
-                return;
-            }
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Recipe recipeToAdd = doc.toObject(Recipe.class);
-                recipeDataList.add(recipeToAdd); // Adding the recipe attributes from FireStore
-            }
-
-            Log.i(TAG, "Snapshot listener: Added " + recipeDataList.size() + " elements");
-            recipeViewAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-        });
+        recipeController.addDataUpdateSnapshotListener(recipeViewAdapter);
 
 
         /**

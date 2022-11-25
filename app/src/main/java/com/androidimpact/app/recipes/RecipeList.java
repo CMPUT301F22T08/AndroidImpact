@@ -17,12 +17,38 @@ public class RecipeList extends SortableItemList<Recipe> {
     //private ArrayList<Recipe> recipeArrayList;
     private static String[] sortChoices;
 
+
     /**
-     * Constructor for RecipeList
-     * @param recipeArrayList   the recipes to consider in the RecipeList object
+     * Constructor for an empty recipeList
      */
-    public RecipeList(ArrayList<Recipe> recipeArrayList) {
-        super(recipeArrayList,
+    public RecipeList() {
+        super(new ArrayList<>(),
+                new String[]{
+                        "Date Added",
+                        "Title",
+                        "Preparation Time",
+                        "Number of Servings",
+                        "Recipe Category"
+                },
+                (Comparator<Recipe>[]) Arrays.asList(
+                        Comparator.comparingInt(a -> (int) ((Recipe) a).getDate().getTime()),
+                        Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER),
+                        Comparator.comparingInt(Recipe::getPrep_time),
+                        Comparator.comparingInt(Recipe::getServings),
+                        Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER)
+                ).toArray());
+        //this.recipeArrayList = recipeArrayList;
+        sortChoices = new String[]{
+                "Date Added",
+                "Title",
+                "Preparation Time",
+                "Number of Servings",
+                "Recipe Category"
+        };
+    }
+
+    public RecipeList(ArrayList<Recipe> recipeList) {
+        super(recipeList,
                 new String[]{
                         "Date Added",
                         "Title",
