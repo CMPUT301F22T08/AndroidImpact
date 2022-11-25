@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
-import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.google.android.material.snackbar.Snackbar;
@@ -14,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class ShoppingListController {
     final String TAG = "ShoppingListController";

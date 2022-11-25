@@ -15,9 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.ingredients.Ingredient;
-import com.androidimpact.app.ingredients.ShopIngredient;
-import com.androidimpact.app.ingredients.StoreIngredient;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
