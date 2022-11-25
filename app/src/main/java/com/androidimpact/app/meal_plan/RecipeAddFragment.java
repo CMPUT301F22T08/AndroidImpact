@@ -155,8 +155,7 @@ public class RecipeAddFragment extends DialogFragment {
              */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                recipeViewAdapter.setSortChoice(i);
-                recipeViewAdapter.sortByChoice();
+                recipeViewAdapter.sortData(i);
                 recipeViewAdapter.notifyDataSetChanged();
             }
 
@@ -167,8 +166,7 @@ public class RecipeAddFragment extends DialogFragment {
              */
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                recipeViewAdapter.setSortChoice(0);
-                recipeViewAdapter.sortByChoice();
+                recipeViewAdapter.sortData(0);
                 recipeViewAdapter.notifyDataSetChanged();
             }
         });

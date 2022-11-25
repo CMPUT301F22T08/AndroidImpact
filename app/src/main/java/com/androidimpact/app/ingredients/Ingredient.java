@@ -83,8 +83,12 @@ public class Ingredient implements Serializable  {
     /**
      * Set a new id for the Ingredient the element
      * @param id (String) the id of the document
+     * @throws IllegalArgumentException if the instance already has an ID associated with it.
      */
-    public void setID(String id) {
+    public void setID(String id) throws IllegalArgumentException{
+        if (this.id != null){
+            throw new IllegalArgumentException("The StoreIngredient already has an ID ("+id+"), it cannot be changed");
+        }
         this.id = id;
     }
 
