@@ -160,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return shoppingListController;
     }
 
-    public RecipeList getRecipeList() {
-        return this.recipeList;
-    }
-    
     public RecipeController getRecipeController(){
         return recipeController;
     }

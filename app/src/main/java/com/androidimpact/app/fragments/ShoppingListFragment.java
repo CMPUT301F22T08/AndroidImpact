@@ -227,13 +227,14 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                         Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
                     }
                 });
+
         addShoppingListItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     Log.i(TAG + ":addRecipeResult", "Got bundle");
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        final KonfettiView confetti = a.findViewById(R.id.confetti_view_recipes);
+                        final KonfettiView confetti = a.findViewById(R.id.confetti_view_shopping_list);
                         Snackbar.make(shoppingListView, "Added the shopping list!", Snackbar.LENGTH_SHORT).show();
 
                         int[] test = {0,1};

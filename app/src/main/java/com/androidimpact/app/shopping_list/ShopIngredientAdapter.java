@@ -20,7 +20,6 @@ import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.fragments.ShopPickUpFragment;
-import com.androidimpact.app.ingredients.ShopIngredient;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
