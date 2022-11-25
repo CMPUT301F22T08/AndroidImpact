@@ -136,7 +136,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         };
 
         try {
-            recipeController.processPhoto(position, successListener, failureListener);
+            String photoURI = recipeController.get(position).getPhoto();
+            recipeController.processPhoto(photoURI, successListener, failureListener);
         } catch (Exception e) {
             Log.e(TAG, "Child Not Found: "+recipe.getTitle(), e);
         }

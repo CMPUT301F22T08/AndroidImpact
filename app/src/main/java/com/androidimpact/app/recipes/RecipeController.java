@@ -144,8 +144,7 @@ public class RecipeController {
         return recipeList;
     }
 
-    public void processPhoto(int pos, OnSuccessListener sl, OnFailureListener fl){
-        String photoURI = this.get(pos).getPhoto();
+    public void processPhoto(String photoURI, OnSuccessListener sl, OnFailureListener fl){
         StorageReference photoRef = photoStorage.child("images/" + photoURI);
         photoRef.getDownloadUrl()
                 .addOnSuccessListener(sl)
