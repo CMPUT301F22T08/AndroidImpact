@@ -20,6 +20,7 @@
             android:id="@+id/sort_shopping_info"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:text="Sort by:"
             android:textColor="@color/white"
             android:textSize="15sp" />
@@ -28,7 +29,8 @@
             android:id="@+id/sort_shopping_spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/white" />
+            android:backgroundTint="@color/white"
+            android:minHeight="32dp"/>
 
 
     </LinearLayout>

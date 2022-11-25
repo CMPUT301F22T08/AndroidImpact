@@ -11,22 +11,20 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
         app:layout_constraintBottom_toTopOf="@+id/ingredient_input"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/background"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/sort_ingredient_info"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingTop="9dp"
-            android:paddingRight="5dp"
-            android:text="Sort by:"
-            android:textSize="15sp"
+            android:gravity="center_vertical"
+            android:text="Sort By:"
             android:textColor="@color/white"
+            android:textSize="15sp"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="363dp"
             tools:layout_editor_absoluteX="20dp"
@@ -35,11 +33,12 @@
         <Spinner
             android:id="@+id/sort_ingredient_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:minHeight="32dp"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="48dp"
             tools:layout_editor_absoluteX="363dp"
-            android:backgroundTint="@color/white"
             tools:layout_editor_absoluteY="0dp" />
 
 
