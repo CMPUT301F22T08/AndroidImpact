@@ -98,8 +98,8 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         // AutoComplete from IngredientStorage
         ingredientStorageController = new IngredientStorageController(this);
         autoCompleteSource = new ArrayList();
-        ingredientStorageController.addSnapshotListenerNoView(autoCompleteSource);
-        autoCompleteAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, autoCompleteSource);
+        ingredientStorageController.addSnapshotListenerAutocomplete(autoCompleteSource);
+        autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, autoCompleteSource);
         description.setAdapter(autoCompleteAdapter);
 
         // init spinners
