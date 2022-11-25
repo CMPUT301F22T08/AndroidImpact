@@ -10,16 +10,23 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.category.Category;
+import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.meal_plan.IngredientAddFragment;
 import com.androidimpact.app.meal_plan.RecipeAddFragment;
+import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeIngredient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Activity for adding, viewing, and editing a meal plan
@@ -28,7 +35,9 @@ import java.util.Map;
  */
 public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
-    private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap;
+    private HashMap<String, ArrayList<String>> recipeIdMap;
+    private Boolean isEditing;
+    Bundle extras;
 
     private Button breakfastRecipeAdd,breakfastIngredientAdd, lunchRecipeAdd, lunchIngredientAdd,
             dinnerRecipeAdd, dinnerIngredientAdd, snackRecipeAdd, snackIngredientAdd;
@@ -60,6 +69,28 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         lunchIngredientAdd = findViewById(R.id.add_lunch_ingredient);
         dinnerIngredientAdd = findViewById(R.id.add_dinner_ingredient);
         snackIngredientAdd = findViewById(R.id.add_snack_ingredient);
+
+        //!!! Add link to xml here once it exists !!!///
+
+        // extract extras
+        extras = getIntent().getExtras();
+        if (extras != null) {
+
+            isEditing = extras.getBoolean("isEditing", false);
+            MealPlan currentMealPlan = (MealPlan) extras.getSerializable("meal plan");
+
+            if (isEditing) {
+                getSupportActionBar().setTitle("Edit MealPlan");
+
+
+    } else {
+                // when non editing, make a new collection
+                getSupportActionBar().setTitle("Add Meal Plan");
+                // initialize defaults
+            }
+
+
+        }
 
 
         breakfastRecipeAdd.setOnClickListener(view -> {
