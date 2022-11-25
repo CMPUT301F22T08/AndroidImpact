@@ -13,11 +13,13 @@ import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.androidimpact.app.ingredients.IngredientStorage;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.Switch;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.recipes.Recipe;
+
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
@@ -28,7 +30,6 @@ import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -39,13 +40,13 @@ import java.util.ArrayList;
  * @author Vedant Vyas
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-
-    // adding cities to firebase
     final String TAG = "MainActivity";
     public static WeakReference<MainActivity> weakActivity;
+
+    // adding cities to firebase
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    MealPlannerFragment mealPlannerFragment;
+    final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
     final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
 
@@ -72,14 +73,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String username = extras.getString("username");
 
         View parentLayout = findViewById(R.id.main_activity_layout);
-        Snackbar.make(parentLayout, "Welcome " + username + "!", Snackbar.LENGTH_SHORT)
-                .setAction("Ok", view1 -> {})
-                .show();
 
-        //ArrayList<Recipe> recipes = new ArrayList<>();
-        //this.recipeList = new RecipeList(recipes);
-        //Log.i("recipelistboom", this.recipeList.getData().toString());
-        //ingredientStorage = new IngredientStorage();
+        Toast.makeText(this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
@@ -89,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
-
-        this.mealPlannerFragment = MealPlannerFragment.newInstance();
 
         weakActivity = new WeakReference<>(MainActivity.this);
 

@@ -68,14 +68,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     /**
      * Constructor for RecipeList
      * @param context         the context for the parent view
-     * @param recipeList the recipes to consider in the RecipeListAdapter object
+     * @param recipeController the recipes to consider in the RecipeListAdapter object
      */
     public RecipeListAdapter(Context context, RecipeController recipeController, OnSelectInterface onSelectInterface) {
         this(context, recipeController);
-
-        //this.context = context;
-        //this.recipeController = recipeController;
-        //this.recipeList = recipeList;
         this.isSelection = true;
         this.onSelectInterface = onSelectInterface;
     }

@@ -49,7 +49,7 @@ public class IngredientStorage extends SortableItemList<StoreIngredient> {
      * this function returns the ingredientStorageList
      * @return ingredientStorageList (ArrayList<StoreIngredient>)
      */
-    public ArrayList<StoreIngredient> getData() {
+    public ArrayList<StoreIngredient> detData() {
         return super.getData();
     }
 
