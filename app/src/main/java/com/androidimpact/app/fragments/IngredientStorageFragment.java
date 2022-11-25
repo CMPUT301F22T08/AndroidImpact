@@ -186,7 +186,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
              * Create method to get item for sort
              * @param adapterView
              * @param view
-             * @param i
+             * @param if
              * @param l
              */
             @Override
