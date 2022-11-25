@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/background"
     tools:context=".fragments.RecipeListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <!--
-    <TextView
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:paddingLeft="25dp"
+            android:id="@+id/sort_recipe_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="Sort by:" />
+
+        <Spinner
+            android:id="@+id/sort_recipe_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            tools:ignore="TouchTargetSizeCheck" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipe_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Recipe List" />
-        -->
-
-
-    <include layout="@layout/activity_recipe_list_activity" />
+        android:layout_height="match_parent" />
 
     <nl.dionsegijn.konfetti.KonfettiView
-        android:id="@+id/confetti_view_recipes"
+        android:id="@+id/confetti_view_recipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</FrameLayout>
+</LinearLayout>
