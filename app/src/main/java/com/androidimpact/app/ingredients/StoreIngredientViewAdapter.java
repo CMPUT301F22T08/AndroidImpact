@@ -1,6 +1,7 @@
 package com.androidimpact.app.ingredients;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.androidimpact.app.meal_plan.OnSelectInterface;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,6 +38,9 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     private Context mContext;
     private int selected = -1; // initialize no ingredients selected
 
+    private boolean isSelection;
+    private OnSelectInterface onSelectInterface;
+
     // functions that subscribe for edit callbacks
     private ArrayList<StoreIngredientEditListener> editListeners = new ArrayList<>();
 
@@ -47,6 +54,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
     public StoreIngredientViewAdapter(Context mContext, ArrayList<StoreIngredient> ingredientArrayList) {
         this.ingredientArrayList = ingredientArrayList;
         this.mContext = mContext;
+        this.isSelection = false;
     }
 
     /**
@@ -56,8 +64,22 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
      *      (IngredientStorageController) The controller object that the data is pulled from
      */
     public StoreIngredientViewAdapter(Context mContext, IngredientStorageController controller) {
-        this.ingredientArrayList = controller.getData();
-        this.mContext = mContext;
+        this(mContext, controller.getData());
+        //this.ingredientArrayList = controller.getDataAsList();
+        //this.mContext = mContext;
+        this.isSelection = false;
+    }
+
+    /**
+     * Create constructor class
+     * @param mContext
+     * @param ingredientStorage
+     *      (IngredientStorageController) The controller object that the data is pulled from
+     */
+    public StoreIngredientViewAdapter(Context mContext, IngredientStorage ingredientStorage, OnSelectInterface onSelectInterface) {
+        this(mContext, ingredientStorage.getData());
+        this.isSelection = true;
+        this.onSelectInterface = onSelectInterface;
     }
 
     /**
@@ -99,7 +121,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         // set view values
         // units and categories are stored in an ingredient by their string value
-        String amountUnit = holder.res.getString(R.string.store_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
+        String amountUnit = holder.res.getString(R.string.shop_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         holder.amount.setText(amountUnit);
         holder.category.setText(currentIngredient.getCategory());
         holder.location.setText(currentIngredient.getLocation());
@@ -117,12 +139,22 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             clickedItem(position);
         });
 
-        holder.editIngredientFAB.setOnClickListener(v -> {
-            // execute all listeners
-            for (StoreIngredientEditListener listener : editListeners) {
-                listener.storeIngredientEditClicked(currentIngredient, position);
-            }
-        });
+        if(this.isSelection) {
+            holder.editIngredientFAB.setVisibility(View.GONE);
+            holder.content.setOnClickListener(view -> {
+                this.onSelectInterface.selectItem(position);
+
+            });
+        } else {
+            holder.editIngredientFAB.setOnClickListener(v -> {
+                // execute all listeners
+                for (StoreIngredientEditListener listener : editListeners) {
+                    listener.storeIngredientEditClicked(currentIngredient, position);
+                }
+            });
+        }
+
+
     }
 
     /**
@@ -151,6 +183,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         private FloatingActionButton editIngredientFAB;
 
         private ConstraintLayout expandable;
+        private LinearLayout content;
         private TextView amount;
         private TextView date;
 
@@ -170,6 +203,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             editIngredientFAB = itemView.findViewById(R.id.edit_store_ingredient);
 
             expandable = itemView.findViewById(R.id.store_ingredient_expandable_section);
+            content = itemView.findViewById(R.id.linearLayout);
             date = itemView.findViewById(R.id.store_ingredient_expiry);
             amount = itemView.findViewById(R.id.store_ingredient_amount);
         }

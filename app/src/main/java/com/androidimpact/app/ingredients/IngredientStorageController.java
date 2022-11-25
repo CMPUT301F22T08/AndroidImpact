@@ -154,7 +154,7 @@ public class IngredientStorageController {
      * @return ArrayList<StoreIngredient>
      */
     public ArrayList<StoreIngredient> getData(){
-        return ingredientStorage.detData();
+        return ingredientStorage.getData();
     }
 
     // TODO: Get rid of this ASAP

@@ -20,6 +20,7 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.ingredients.ShopIngredient;
 import com.google.android.material.snackbar.Snackbar;
+import com.androidimpact.app.shopping_list.ShopIngredient;
 
 /**
  * A simple {@link Fragment} subclass.

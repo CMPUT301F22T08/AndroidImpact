@@ -1,8 +1,6 @@
 package com.androidimpact.app.shopping_list;
 
 import com.androidimpact.app.SortableItemList;
-import com.androidimpact.app.ingredients.Ingredient;
-import com.androidimpact.app.ingredients.ShopIngredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -97,7 +97,9 @@ public class EditLocationsActivity extends AppCompatActivity {
             }
 
             if (errorCount > 0) {
-                Snackbar.make(locationRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(locationRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG)
+                        .setAction("Ok", view1 -> {})
+                        .show();
             }
             Log.i(TAG, "Snapshot listener: Added " + locationArrayList.size() + " elements");
             locationArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
