@@ -103,7 +103,7 @@ public class IngredientStorageController {
                 });
     }
 
-    public String[] getSortingChoices() { return ingredientStorage.getSortChoices();}
+    public String[] getSortingChoices() { return IngredientStorage.getSortChoices();}
 
     public void sortData(int sortChoice){
         ingredientStorage.setSortChoice(sortChoice);
