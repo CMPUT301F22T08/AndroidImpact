@@ -1,9 +1,14 @@
 package com.androidimpact.app.fragments;
 
+import static java.util.Objects.isNull;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,26 +20,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
-import com.androidimpact.app.activities.MainActivity;
-import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.R;
-import com.androidimpact.app.ingredients.ShopIngredient;
-import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.activities.MainActivity;
+import com.androidimpact.app.shopping_list.ShopIngredient;
+import com.androidimpact.app.shopping_list.AddEditShoppingItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
-import com.androidimpact.app.shopping_list.ShoppingList;
-import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,9 +58,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     // Declare the variables so that you will be able to reference it later.
     RecyclerView shoppingListView;
     ShopIngredientAdapter shopIngredientViewAdapter;
-    ArrayList<ShopIngredient> shopIngredientDataList;
-
-    ShoppingList shoppingList;
+    ShoppingListController shoppingListController;
 
     // adding cities to firebase
     FirebaseFirestore db;
@@ -65,6 +68,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     TextView sortText;
 
     Switch pickupSwitch;
+
+    // use ActivityResultLaunchers to go to different activities
+    // this is defined in onViewCreated, see the comment where we initialize it
+    private ActivityResultLauncher<Intent> addShoppingListItemLauncher;
+    private ActivityResultLauncher<Intent> editShoppingListItemLauncher;
 
     /**
      * Required empty public constructor
@@ -151,10 +159,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 //            }
 //        });
 
-        shopIngredientDataList = new ArrayList<ShopIngredient>();
-
-        shoppingList = new ShoppingList(shopIngredientDataList);
-        shopIngredientViewAdapter = new ShopIngredientAdapter(getContext(), shopIngredientDataList);
+        shoppingListController = ((MainActivity) a).getShoppingListController();
+        shopIngredientViewAdapter = new ShopIngredientAdapter(getContext(), shoppingListController);
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -166,7 +172,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         sortText = a.findViewById(R.id.sort_shopping_info);
 
         // getting available sorting choices
-        sortingChoices = shoppingList.getSortChoices();
+        sortingChoices = shoppingListController.getSortingChoices();
 
         // Creating a sorting adapter
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
@@ -180,48 +186,103 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 android.R.layout.simple_spinner_dropdown_item
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
+        shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
+
+        // EVENT LISTENERS
+        shopIngredientViewAdapter.setEditClickListener((food, position) -> {
+            // when a shop ingredient is clicked, we edit
+            // yeah, it's a bit different than ingredient and recipe
+            Log.i(TAG + ":addRecipe", "Adding recipe!");
+            Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
+            intent.putExtra("ingredient", food);
+            editShoppingListItemLauncher.launch(intent);
+        });
+
 
         /**
-         * Needs to be removed when controller class is implemented
+         * DEFINE ACTIVITY LAUNCHERS
          *
-         *
-         *
+         * It is strongly recommended to register our activity result launchers in onCreate
+         * https://stackoverflow.com/a/70215498
          */
+        editShoppingListItemLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (isNull(result.getData())) {
+                        return;
+                    }
+                    Bundle bundle = result.getData().getExtras();
 
-        shoppingCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            if (error != null) {
-                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
-                return;
-            }
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Ok - we have an updated ingredient!
+                        ShopIngredient ingredient = (ShopIngredient) bundle.getSerializable("ingredient");
+                        shoppingListController.addEdit(ingredient)
+                                        .addOnSuccessListener(unused -> {
+                                            makeSnackbar("Edited " + ingredient.getDescription());
+                                        })
+                                .addOnFailureListener(error -> {
+                                    makeSnackbar("Edited " + ingredient.getDescription());
+                                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                                });
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                    }
+                });
 
-            // Clear the old list
-            shoppingList.clear();
+        addShoppingListItemLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Log.i(TAG + ":addRecipeResult", "Got bundle");
+                    Bundle bundle = result.getData().getExtras();
 
-            if (queryDocumentSnapshots == null) { return; }
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        ShopIngredient ingredient = (ShopIngredient) bundle.getSerializable("ingredient");
 
-            int errorCount = 0;
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                String id = doc.getId();
-                Log.i("ID", id);
-                try {
-                    // adding data from firestore
-                    ShopIngredient ingredient = doc.toObject(ShopIngredient.class);
-                    if (ingredient.getId() == null)
-                        ingredient.setID(id);
-                    shoppingList.add(ingredient);
-                } catch (Exception e) {
-                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
-                    errorCount += 1;
-                }
-            }
+                        shoppingListController.addEdit(ingredient)
+                                .addOnSuccessListener(unused -> {
+                                    makeSnackbar("Added " + ingredient.getDescription());
+                                    makeConfetti(a);
+                                })
+                                .addOnFailureListener(error -> {
+                                    makeSnackbar( "Edited " + ingredient.getDescription());
+                                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                                });
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":addRecipeResult", "Received cancelled");
+                    }
+                });
+    }
 
-//            if (errorCount>0)
-//                pushSnackBarToContext("Error reading " + errorCount + " documents!");
-            Log.i(TAG, "Snapshot listener: Added " + shoppingList.size() + " ingredients");
+    /**
+     * Helper function to make a snackbar
+     */
+    private void makeSnackbar(String msg ) {
+        Snackbar.make(shoppingListView, msg, Snackbar.LENGTH_SHORT)
+                .setAction("Ok", view1 -> {})
+                .show();
+    }
 
-            shoppingList.sortByChoice();
-            shopIngredientViewAdapter.notifyDataSetChanged();
-        });
+    /**
+     * Helper function to make confetti
+     */
+    private void makeConfetti(Activity a) {
+        final KonfettiView confetti = a.findViewById(R.id.confetti_view_shopping_list);
+
+        int[] test = {0,1};
+        confetti.getLocationInWindow(test);
+        Log.i(TAG + ":makeConfetti", "Confetti location:" + Arrays.toString(test));
+        confetti.build()
+                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                .setDirection(0.0, 359.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(500L)
+                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                .addSizes(new Size(8, 4f))
+                .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                .streamFor(300, 2000L);
     }
 
     /**
@@ -231,7 +292,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      * @param navigationFAB
      */
     public void setFabListener(FloatingActionButton navigationFAB) {
-        return;
+        navigationFAB.setOnClickListener(v -> {
+            Log.i(TAG + ":addRecipe", "Adding recipe!");
+            Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
+            addShoppingListItemLauncher.launch(intent);
+        });
     }
 
 

@@ -15,7 +15,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.androidimpact.app.NullableSpinnerAdapter;
 import com.androidimpact.app.R;
+import com.androidimpact.app.location.Location;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
@@ -90,13 +92,11 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
         // init spinners
         ArrayList<Unit> units = new ArrayList<>();
-        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, units);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NullableSpinnerAdapter<Unit> unitAdapter = new NullableSpinnerAdapter<>(this, units);
         unitSpinner.setAdapter(unitAdapter);
 
         ArrayList<Category> categories = new ArrayList<>();
-        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NullableSpinnerAdapter<Category> categoryAdapter = new NullableSpinnerAdapter<>(this, categories);
         categorySpinner.setAdapter(categoryAdapter);
 
         Bundle extras = getIntent().getExtras();
@@ -137,9 +137,9 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
         // Listen for events in collections
         unitCollection.addSnapshotListener(abstractSnapshotListener(
-                Unit.class, unitAdapter, units, unitSpinner, selectedUnit));
+                Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Unit"));
         categoriesCollection.addSnapshotListener(abstractSnapshotListener(
-                Category.class, categoryAdapter, categories, categorySpinner, selectedCategory));
+                Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Category"));
     }
 
     /**
@@ -191,8 +191,13 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedElem.set((T) parentView.getItemAtPosition(position));
-                Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
+                selectedElem.set((T) parentView.getItemAtPosition(position - 1));
+                if (selectedElem.get() != null) {
+                    Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
+
+                } else {
+                    Log.i(TAG, "onItemSelected: selected null");
+                }
             }
 
             @Override
@@ -207,13 +212,22 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
      * Also sorts the data based on the timestamp data
      *
      * This abstracts the snapshot listener
+     * @param valueType the class type we deserialize to
+     * @param adapter the array adapter of the class type
+     * @param data the raw data to use
+     * @param spinner the spinner to set the data to
+     * @param selectedElem the selected item (wrapped in an AtomicReference)
+     * @param debugName DEBUG: the name of the spinner
+     * @param <T> a timestamped class
+     * @return the event listener to use in an addSnapshotListener
      */
     private <T extends Timestamped> EventListener<QuerySnapshot> abstractSnapshotListener(
             Class<T> valueType,
             ArrayAdapter<T> adapter,
             ArrayList<T> data,
             Spinner spinner,
-            AtomicReference<T> selectedElem
+            AtomicReference<T> selectedElem,
+            String debugName
     ) {
         return (queryDocumentSnapshots, error) -> {
             if (error != null) {
@@ -235,8 +249,14 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             // a bit of a hack...
             if (selectedElem.get() != null) {
-                spinner.setSelection(data.indexOf(selectedElem.get()));
+                int idx = data.indexOf(selectedElem.get());
+                // add 1 to the spinner - this allows us to select the "null" element
+                spinner.setSelection(idx + 1);
                 Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
+                if (idx == -1) {
+                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                    selectedElem.set(null);
+                }
             }
         };
     }

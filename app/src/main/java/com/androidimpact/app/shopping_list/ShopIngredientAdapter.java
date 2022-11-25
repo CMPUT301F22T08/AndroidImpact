@@ -16,9 +16,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.fragments.ShopPickUpFragment;
-import com.androidimpact.app.ingredients.ShopIngredient;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -39,8 +40,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
     private int selected = -1; // initialize no ingredients selected
 
-    public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> ingredientArrayList) {
-        this.ingredientArrayList = ingredientArrayList;
+    // functions that subscribe for edit callbacks
+    private ArrayList<ShopIngredientClickListener> clickListeners = new ArrayList<>();
+
+    public ShopIngredientAdapter(Context mContext, ShoppingListController shoppingListController) {
+        this.ingredientArrayList = shoppingListController.getData();
         this.mContext = mContext;
     }
 
@@ -62,7 +66,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("Test", currentIngredient.getDescription());
         Log.i("Test", String.valueOf(currentIngredient.getAmount()));
         Log.i("Test", currentIngredient.getUnit());
-
 
         // set values
         holder.description.setText(currentIngredient.getDescription());
@@ -98,6 +101,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("String", unitStr);
         holder.amount.setText(unitStr);
 
+        holder.root.setOnClickListener(v -> {
+            for (ShopIngredientClickListener l : clickListeners) {
+                l.shopIngredientClicked(currentIngredient, position);
+            }
+        });
     }
 
 
@@ -135,11 +143,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         // creating a variable for category
         private Chip category;
-
-
         private ImageButton dropdownToggle;
-
-        private ConstraintLayout expandable;
+        private ConstraintLayout root;
         private TextView amount;
 
         private Switch pickupButton;
@@ -158,12 +163,24 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             category = itemView.findViewById(R.id.shop_ingredient_category);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
+            root = itemView.findViewById(R.id.shop_ingredient_item_root);
         }
     }
 
+    /**
+     * this interface lets people subscribe to clicks in every shopIngredient
+     * this is because we need the parent activity to react to changes because it has the Context and Activity info
+     * https://stackoverflow.com/a/36662886
+     */
+    public interface ShopIngredientClickListener {
+        void shopIngredientClicked(ShopIngredient food, int position);
+    }
 
-
-
-
-
+    /**
+     * Edit button listener
+     * @param toAdd
+     */
+    public void setEditClickListener(ShopIngredientClickListener toAdd) {
+        clickListeners.add(toAdd);
+    }
 }

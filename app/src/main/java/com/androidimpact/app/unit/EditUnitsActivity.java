@@ -96,7 +96,9 @@ public class EditUnitsActivity extends AppCompatActivity {
             }
 
             if (errorCount > 0) {
-                Snackbar.make(unitRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(unitRecyclerView, "Error reading " + errorCount + " documents!", Snackbar.LENGTH_LONG)
+                        .setAction("Ok", view1 -> {})
+                        .show();
             }
             Log.i(TAG, "Snapshot listener: Added " + unitArrayList.size() + " elements");
             unitArrayList.sort((l1, l2) -> (int) (l1.getDateAdded().getTime() - l2.getDateAdded().getTime()));
