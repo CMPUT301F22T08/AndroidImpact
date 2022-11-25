@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.fragments.shopPickUpFragment;
 import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.ingredients.StoreIngredient;
@@ -68,16 +70,24 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         holder.category.setText(currentIngredient.getCategory());
 
 
-//
-//        // if `selected` is the position, make the expandable section visible
-//        if (position == selected) {
-//            holder.dropdownToggle.setImageResource(R.drawable.expand_less_white);
-//            Log.i(TAG + ":clickedDropdownToggle", "Set item to visible: " + position);
-//            holder.expandable.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.dropdownToggle.setImageResource(R.drawable.expand_more_white);
-//            holder.expandable.setVisibility(View.GONE);
-//        }
+        holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
+                    shopPickUpFragment ff = new shopPickUpFragment();
+                    //calling show method to show the fragment dialog box
+                   // showDialog(R.string.dialog_title, R.string.dialog_message, false);
+                    //ff.show(getActivity().getSupportFragmentManager(), "ADD_FOOD");
+
+                }
+                else
+                {
+                    //This means that user accidentaly picked it up so change amount picked up to 0
+                }
+            }
+        });
+
 
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
