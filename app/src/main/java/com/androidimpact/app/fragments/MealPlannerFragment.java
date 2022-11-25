@@ -135,8 +135,8 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         // initialize adapters and customList, connect to DB
         mealPlanListView = a.findViewById(R.id.meal_plan_list);
 
-        recipeList = ((MainActivity) a).getRecipeList();
-        ingredientStorageData = ((MainActivity) a).getIngredientStorageController().getDataAsList();
+        recipeList = new RecipeList(((MainActivity) a).getRecipeController().getData());
+        ingredientStorageData = ((MainActivity) a).getIngredientStorageController().getData();
 
         mealPlans = new ArrayList<>();
         mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlans, recipeList, ingredientStorageData);

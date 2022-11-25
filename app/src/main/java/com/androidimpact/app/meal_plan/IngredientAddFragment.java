@@ -112,7 +112,7 @@ public class IngredientAddFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // TODO: change this to fragment_ingredient_storage
-        return inflater.inflate(R.layout.activity_ingredient_storage, container, false);
+        return inflater.inflate(R.layout.fragment_ingredient_storage, container, false);
     }
 
 

@@ -15,6 +15,7 @@ import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.meal_plan.IngredientAddFragment;
 import com.androidimpact.app.meal_plan.RecipeAddFragment;
 import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,6 +38,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap;
     private Boolean isEditing;
+    private RecipeController recipeController;
     Bundle extras;
 
     private Button breakfastRecipeAdd,breakfastIngredientAdd, lunchRecipeAdd, lunchIngredientAdd,
@@ -60,6 +62,8 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         mealPlanCollection = db.collection("meal-plan");
         recipeCollection = db.collection("recipes");
         ingredientCollection = db.collection("ingredientStorage");
+
+        this.recipeController = new RecipeController(this);
 
         breakfastRecipeAdd = findViewById(R.id.add_breakfast_recipe);
         lunchRecipeAdd = findViewById(R.id.add_lunch_recipe);
@@ -183,5 +187,9 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                 .set(data);
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+    public RecipeController getRecipeController(){
+        return recipeController;
     }
 }

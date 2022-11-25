@@ -33,6 +33,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     final String TAG = "RecipeList";
 
     private RecipeController recipeController;
+    private RecipeList recipeList;
     private Context context;
     private boolean isSelection;
     private OnSelectInterface onSelectInterface;
@@ -69,11 +70,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      * @param context         the context for the parent view
      * @param recipeList the recipes to consider in the RecipeListAdapter object
      */
-    public RecipeListAdapter(Context context, RecipeList recipeList, OnSelectInterface onSelectInterface) {
-        this(context, ((MainActivity) context).getRecipeController());
+    public RecipeListAdapter(Context context, RecipeController recipeController, OnSelectInterface onSelectInterface) {
+        this(context, recipeController);
+
+        //this.context = context;
+        //this.recipeController = recipeController;
+        //this.recipeList = recipeList;
         this.isSelection = true;
         this.onSelectInterface = onSelectInterface;
     }
+
+
 
 
     /**
