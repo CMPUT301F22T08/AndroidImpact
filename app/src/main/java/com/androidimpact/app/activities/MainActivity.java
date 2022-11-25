@@ -8,15 +8,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.androidimpact.app.ingredients.IngredientStorageController;
-import android.util.Log;
 import android.view.View;
 
-import com.androidimpact.app.ingredients.IngredientStorage;
-import com.androidimpact.app.meal_plan.MealPlanList;
 import com.androidimpact.app.R;
-import com.androidimpact.app.recipes.Recipe;
-import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
 import com.androidimpact.app.fragments.NavbarFragment;
@@ -26,6 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -37,20 +35,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // adding cities to firebase
     final String TAG = "MainActivity";
+    public static WeakReference<MainActivity> weakActivity;
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    MealPlannerFragment mealPlannerFragment;// mealPlannerFragment = MealPlannerFragment.newInstance();
+    MealPlannerFragment mealPlannerFragment;
     final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
 
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
+    final RecipeController recipeController = new RecipeController(this);
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
-
-    RecipeList recipeList;
-    IngredientStorage ingredientStorage;
-    MealPlanList mealPlanList;
 
     BottomNavigationView bottomnav;
 
@@ -87,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         this.mealPlannerFragment = MealPlannerFragment.newInstance();
+
+        weakActivity = new WeakReference<>(MainActivity.this);
+
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
@@ -147,16 +146,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         newFragment.setFabListener(navbarFAB);
     }
 
-
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorageController;
     }
 
-    public RecipeList getRecipeList() {
-        return this.recipeList;
+    public RecipeController getRecipeController(){
+        return recipeController;
     }
 
-    public IngredientStorage getIngredientStorage() {
-        return this.ingredientStorage;
+    public static MainActivity getmInstanceActivity() {
+        return weakActivity.get();
     }
+
+    public void showShopPickUpFragment(ShopPickUpFragment ff)
+    {
+        ff.show(getSupportFragmentManager(), "ADD_FOOD");
+    }
+
+    public void updateShopIngredient(Float amount, int pos)
+    {
+        getSupportActionBar().setTitle("Shopping List");
+        updateActiveFragment(shoppingListFragment);
+    }
+
+
+
 }
