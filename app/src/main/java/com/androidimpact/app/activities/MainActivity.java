@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.recipes.RecipeController;
@@ -20,9 +21,6 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
 
 /**
  * This class is the activity Main Activity
@@ -61,9 +59,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String username = extras.getString("username");
 
         View parentLayout = findViewById(R.id.main_activity_layout);
-        Snackbar.make(parentLayout, "Welcome " + username + "!", Snackbar.LENGTH_SHORT)
-                .setAction("Ok", view1 -> {})
-                .show();
+
+        Toast.makeText(this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
