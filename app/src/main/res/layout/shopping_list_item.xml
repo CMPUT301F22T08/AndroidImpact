@@ -80,6 +80,8 @@
 
 
 
+
+
         <Switch
             android:id="@+id/shop_ingredient_switch"
             android:layout_width="92dp"
@@ -102,6 +104,10 @@
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
 <!--        android:visibility="visible">-->
+
+
+
+
 
 
 
