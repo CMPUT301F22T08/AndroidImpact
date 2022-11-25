@@ -22,18 +22,21 @@ import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.ref.WeakReference;
+
 /**
  * This class is the activity Main Activity
  * @version 1.0
  * @author Vedant Vyas
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+    final String TAG = "MainActivity";
+    public static WeakReference<MainActivity> weakMainActivity;
 
     // adding cities to firebase
-    final String TAG = "MainActivity";
     final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    MealPlannerFragment mealPlannerFragment;
+    final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
     final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
 
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
-        this.mealPlannerFragment = MealPlannerFragment.newInstance();
+        weakMainActivity = new WeakReference<>(MainActivity.this);
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
@@ -138,5 +141,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public RecipeController getRecipeController(){
         return recipeController;
+    }
+
+    public static MainActivity getmInstanceActivity() {
+        return weakMainActivity.get();
     }
 }
