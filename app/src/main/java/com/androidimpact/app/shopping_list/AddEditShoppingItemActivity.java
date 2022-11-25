@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AddEditShoppingItemActivity extends AppCompatActivity {
@@ -59,6 +60,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
 
     // firebase
     FirebaseFirestore db;
+    CollectionReference shoppingListCollection;
     CollectionReference unitCollection;
     CollectionReference categoryCollection;
 
@@ -79,6 +81,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         unitCollection = db.collection("units");
         categoryCollection = db.collection("categories");
+        shoppingListCollection = db.collection("shoppingList");
 
         // Init EditText views
         descriptionEditText = findViewById(R.id.shopping_item_addEdit_description);
@@ -92,7 +95,6 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
 
         ArrayList<Unit> units = new ArrayList<>();
         NullableSpinnerAdapter<Unit> unitAdapter = new NullableSpinnerAdapter<>(this, units);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitSpinner.setAdapter(unitAdapter);
 
         ArrayList<Category> categories = new ArrayList<>();
@@ -258,15 +260,16 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
     public void confirm(View view) {
         try {
             // try to create an ingredient.
-            ShopIngredient newStoreIngredient = createIngredient(currentIngredient);
+            ShopIngredient ingredient = createIngredient(currentIngredient);
             Intent intent = new Intent();
-
-            // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
-            intent.putExtra("ingredient", newStoreIngredient);
             setResult(Activity.RESULT_OK, intent);
 
-            Log.i(TAG + ":confirm", "Returning to parent activity");
-            finish();
+            // upload to firebase, then finish
+            shoppingListCollection.document(ingredient.getId()).set(ingredient)
+                            .addOnSuccessListener(unused -> {
+                                Log.i(TAG + ":confirm", "Returning to parent activity");
+                                finish();
+                            });
         } catch (Exception e){
             // Error - add a snackBar
             Log.i(TAG, "Error making shopIngredient", e);
@@ -337,15 +340,18 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
         }
 
         try {
-            String id = null;
+            String id;
             if (editing != null) {
                 id = editing.getId();
+            } else {
+                // autogenerate ID
+                id = UUID.randomUUID().toString();
             }
 
             // get values
             String unit = selectedUnit.get().getUnit();
             String category = selectedCategory.get().getCategory();
-            return new ShopIngredient(id, description, amount, category, unit);
+            return new ShopIngredient(id, description, amount, unit, category);
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");
