@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -188,6 +189,34 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 android.R.layout.simple_spinner_dropdown_item
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
+
+
+        //setting up the on item selected listener which lets user sort on the basis of selection
+        sortIngredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * Create method to get item for sort
+             * @param adapterView
+             * @param view
+             * @param i
+             * @param l
+             */
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                shoppingListController.sortData(i);
+                shopIngredientViewAdapter.notifyDataSetChanged();
+            }
+
+            /**
+             * This function ensures default sorting if no other sorting selected
+             * @param adapterView   The adapterView that does not contain any user selection
+             */
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                shoppingListController.sortData(0);
+                shopIngredientViewAdapter.notifyDataSetChanged();
+            }
+        });
+
         shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
 
         // EVENT LISTENERS
