@@ -213,20 +213,15 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                     }
                     Bundle bundle = result.getData().getExtras();
 
-                    Log.i(TAG + ":editStoreIngredientLauncher", "Got bundle");
-
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // Ok - we have an updated ingredient!
-                        // edit firebase directly
                         ShopIngredient ingredient = (ShopIngredient) bundle.getSerializable("ingredient");
                         shoppingListController.addEdit(ingredient)
                                         .addOnSuccessListener(unused -> {
-                                            Snackbar.make(shoppingListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                                            makeSnackbar("Edited " + ingredient.getDescription());
                                         })
                                 .addOnFailureListener(error -> {
-                                    Snackbar.make(shoppingListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT)
-                                            .setAction("Ok", view1 -> {})
-                                            .show();
+                                    makeSnackbar("Edited " + ingredient.getDescription());
                                     Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
                                 });
                     } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
@@ -239,28 +234,20 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     Log.i(TAG + ":addRecipeResult", "Got bundle");
+                    Bundle bundle = result.getData().getExtras();
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        final KonfettiView confetti = a.findViewById(R.id.confetti_view_shopping_list);
-                        Snackbar.make(shoppingListView, "Added the shopping list!", Snackbar.LENGTH_SHORT)
-                                .setAction("Ok", view1 -> {})
-                                .show();
+                        ShopIngredient ingredient = (ShopIngredient) bundle.getSerializable("ingredient");
 
-                        int[] test = {0,1};
-                        confetti.getLocationInWindow(test);
-                        Log.i(TAG, "location:" + Arrays.toString(test));
-
-                        confetti.build()
-                                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-                                .setDirection(0.0, 359.0)
-                                .setSpeed(1f, 5f)
-                                .setFadeOutEnabled(true)
-                                .setTimeToLive(500L)
-                                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
-                                .addSizes(new Size(8, 4f))
-                                .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
-                                .streamFor(300, 2000L);
-
+                        shoppingListController.addEdit(ingredient)
+                                .addOnSuccessListener(unused -> {
+                                    makeSnackbar("Added " + ingredient.getDescription());
+                                    makeConfetti(a);
+                                })
+                                .addOnFailureListener(error -> {
+                                    makeSnackbar( "Edited " + ingredient.getDescription());
+                                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                                });
                     } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                         // cancelled request - do nothing.
                         Log.i(TAG + ":addRecipeResult", "Received cancelled");
@@ -271,8 +258,31 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     /**
      * Helper function to make a snackbar
      */
-    private void makeSnackbar(String msg) {
+    private void makeSnackbar(String msg ) {
+        Snackbar.make(shoppingListView, msg, Snackbar.LENGTH_SHORT)
+                .setAction("Ok", view1 -> {})
+                .show();
+    }
 
+    /**
+     * Helper function to make confetti
+     */
+    private void makeConfetti(Activity a) {
+        final KonfettiView confetti = a.findViewById(R.id.confetti_view_shopping_list);
+
+        int[] test = {0,1};
+        confetti.getLocationInWindow(test);
+        Log.i(TAG + ":makeConfetti", "Confetti location:" + Arrays.toString(test));
+        confetti.build()
+                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                .setDirection(0.0, 359.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(500L)
+                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                .addSizes(new Size(8, 4f))
+                .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
+                .streamFor(300, 2000L);
     }
 
     /**
