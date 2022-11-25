@@ -136,8 +136,8 @@ public class IngredientStorageController {
 
             ingredientStorage.sortByChoice();
 
-            for (int i = 0; i<size(); i++){
-                autoCompleteSource.add(get(i).getDescription());
+            for (int i = 0; i<ingredientStorage.size(); i++){
+                autoCompleteSource.add(ingredientStorage.get(i).getDescription());
             }
         });
     }

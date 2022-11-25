@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
-        weakMainActivity = new WeakReference<>(MainActivity.this);
-
         weakActivity = new WeakReference<>(MainActivity.this);
 
 
