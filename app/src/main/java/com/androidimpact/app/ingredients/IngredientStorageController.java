@@ -99,7 +99,7 @@ public class IngredientStorageController {
      * Add a snapshot listener to the FireStore collection that repopulates the ingredient storage when changes are detected.
      *
      */
-    public void addSnapshotListenerNoView(ArrayList<String> autoCompleteSource){
+    public void addSnapshotListenerAutocomplete(ArrayList<String> autoCompleteSource){
         if (snapshotAdded){
             throw new RuntimeException("Can only call addSnapshotListener once");
         }
@@ -228,4 +228,6 @@ public class IngredientStorageController {
     public StoreIngredient get(int i) {
         return ingredientStorage.get(i);
     }
+
+
 }
