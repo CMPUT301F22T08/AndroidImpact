@@ -77,15 +77,10 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
      */
     // TODO: Rename and change types and number of parameters
     public static IngredientStorageFragment newInstance() {
-
-        if (instance == null)
-        {
+        if (instance == null) {
             IngredientStorageFragment fragment = new IngredientStorageFragment();
             instance = fragment;
-
-            return fragment;
         }
-
         return instance;
     }
 
@@ -317,5 +312,13 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
             addStoreIngredientLauncher.launch(intent);
         });
+    }
+
+    public static IngredientStorageFragment getInstance() {
+        return instance;
+    }
+
+    public IngredientStorageController getIngredientStorageController() {
+        return ingredientStorageController;
     }
 }
