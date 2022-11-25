@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
@@ -27,7 +28,9 @@ import java.util.Map;
 public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     private HashMap<String, ArrayList<String>> recipeIdMap;
-    private FloatingActionButton breakfastRecipeAdd, lunchRecipeAdd, dinnerRecipeAdd, snackRecipeAdd;
+
+    private Button breakfastRecipeAdd,breakfastIngredientAdd, lunchRecipeAdd, lunchIngredientAdd,
+            dinnerRecipeAdd, dinnerIngredientAdd, snackRecipeAdd, snackIngredientAdd;
 
     // adding recipes to firebase
     FirebaseFirestore db;
@@ -47,10 +50,15 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         recipeCollection = db.collection("recipes");
         ingredientCollection = db.collection("ingredientStorage");
 
-        breakfastRecipeAdd = findViewById(R.id.add_breakfast);
-        lunchRecipeAdd = findViewById(R.id.add_lunch);
-        dinnerRecipeAdd = findViewById(R.id.add_dinner);
-        snackRecipeAdd = findViewById(R.id.add_snack);
+        breakfastRecipeAdd = findViewById(R.id.add_breakfast_recipe);
+        lunchRecipeAdd = findViewById(R.id.add_lunch_recipe);
+        dinnerRecipeAdd = findViewById(R.id.add_dinner_recipe);
+        snackRecipeAdd = findViewById(R.id.add_snack_recipe);
+        breakfastIngredientAdd = findViewById(R.id.add_breakfast_ingredient);
+        lunchIngredientAdd = findViewById(R.id.add_lunch_ingredient);
+        dinnerIngredientAdd = findViewById(R.id.add_dinner_ingredient);
+        snackIngredientAdd = findViewById(R.id.add_snack_ingredient);
+
 
         breakfastRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("breakfastRecipes").show(
