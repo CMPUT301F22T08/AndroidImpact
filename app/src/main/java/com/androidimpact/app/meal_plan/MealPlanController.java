@@ -8,16 +8,12 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import com.androidimpact.app.ingredients.StoreIngredient;
-import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -29,17 +25,14 @@ public class MealPlanController {
     final String firestorePath = "meal-plan";
 
     private Context context;
-    private FirebaseFirestore db;
-    private CollectionReference mealPlanCollection;
-    CollectionReference recipeCollection;
-    CollectionReference ingredientCollection;
+    private CollectionReference mealPlanCollection, recipeCollection, ingredientCollection;
     private MealPlanList mealPlanList;
     RecipeList recipeList;
     ArrayList<StoreIngredient> ingredientStorageData;
 
     public MealPlanController(Context context, RecipeController recipeController, IngredientStorageController ingredientStorageController) {
         this.context = context;
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         mealPlanCollection = db.collection(firestorePath);
         recipeCollection = db.collection("recipes");
         ingredientCollection = db.collection("ingredientStorage");
@@ -115,22 +108,10 @@ public class MealPlanController {
         });
     }
 
-    public void addEdit(Recipe recipe){
-        /*// Adds if id is null else edits
-        String id = recipe.getId();
-        if (id == null){
-            UUID uuid = UUID.randomUUID();
-            id = uuid.toString();
-            recipe.setID(id);
-        }
-        recipeCollection.document(id).set(recipe);*/
-    }
-
 
     public void delete(int position, View view, MealPlanListAdapter mealPlanListAdapter) {
         MealPlan deletedMealPlan = this.mealPlanList.get(position);
         String description = deletedMealPlan.getDate();
-        Log.i("size", String.valueOf(mealPlanList.size()));
 
         OnSuccessListener sl = o -> {
             Log.d(TAG, description + " has been deleted successfully!");

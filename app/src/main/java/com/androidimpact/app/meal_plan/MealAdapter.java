@@ -73,14 +73,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 String header = keyDisplay + " Meals";
                 holder.type.setText(header);
             } else {
-                holder.type.setText("");
+                holder.type.setText("\t");
             }
         }
 
-        Log.i("size", String.valueOf(this.recipeArrayList.size() + this.ingredientArrayList.size()));
-        Log.i("size", String.valueOf(this.ingredientArrayList.size()));
         if(this.getItemCount() > 0) {
-            Log.i("tag", "in");
             if(position < this.recipeArrayList.size()) {
                 holder.item.setText(this.recipeArrayList.get(position).getTitle());
                 holder.servings.setText(String.valueOf(this.recipeServingsArrayList.get(position)));
