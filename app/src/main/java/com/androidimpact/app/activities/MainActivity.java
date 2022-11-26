@@ -17,6 +17,8 @@ import android.widget.Toast;
 import android.widget.Switch;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.recipes.Recipe;
 
@@ -181,13 +183,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
     {
-       // shoppingListFragment.cancelPickUp();
-
         getSupportActionBar().setTitle("Shopping List");
         updateActiveFragment(shoppingListFragment);
         shoppingListFragment.editShopIngredientFB(ingredient);
-//        Switch pickup = findViewById(R.id.shop_ingredient_switch);
-//        pickup.setChecked(false);
+
+    }
+
+    public void AddShopListToShopIngredient(ArrayList<ShopIngredient> data)
+    {
+        for (ShopIngredient item: data)
+        {
+            StoreIngredient ingredient = new StoreIngredient(item);
+            ingredientStorageController.addEdit(ingredient);
+        }
+
+        //Delete all the items from Shopping List that were moved
+
     }
 
 }

@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -195,6 +196,40 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
 
 
+
+        // drag to delete
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+            /**
+             * this method is called when the item is moved
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             */
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            /**
+             * Deletes the swiped object.
+             * Called when we swipe to the right
+             * @param viewHolder
+             * @param direction
+             */
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                //ShoppingListController.delete(position);
+            }
+            // finally, we add this to our recycler view.
+        }).attachToRecyclerView(shoppingListView);
+
+        // on snapshot listener for the collection
+        shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
+
+
         moveFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,6 +253,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
                 //add the ingredients from List to the the Ingredient Storage
 
+                ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
 
             }
         });
