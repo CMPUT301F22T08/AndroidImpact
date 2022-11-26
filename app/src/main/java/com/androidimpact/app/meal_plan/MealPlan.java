@@ -154,4 +154,20 @@ public class MealPlan implements Serializable {
             }
         });
     }
+
+    public ArrayList<Recipe> getBreakfastRecipes() {
+        return breakfastRecipes;
+    }
+
+    public ArrayList<Recipe> getLunchRecipes() {
+        return lunchRecipes;
+    }
+
+    public ArrayList<Recipe> getDinnerRecipes() {
+        return dinnerRecipes;
+    }
+
+    public ArrayList<Recipe> getSnackRecipes() {
+        return snackRecipes;
+    }
 }
