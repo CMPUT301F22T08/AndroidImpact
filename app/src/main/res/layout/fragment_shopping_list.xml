@@ -50,15 +50,28 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shopping_listview"
             android:layout_width="424dp"
-            android:layout_height="645dp"
+            android:layout_height="599dp"
             android:background="@color/background"
             android:padding="7dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/move_fab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:paddingLeft="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:src="?attr/actionModeCloseDrawable" />
 
     </LinearLayout>
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/confetti_view_shopping_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
