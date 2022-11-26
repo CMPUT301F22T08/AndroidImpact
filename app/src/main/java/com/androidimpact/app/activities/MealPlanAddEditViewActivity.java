@@ -92,12 +92,6 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
         }
 
-        /*breakfastRecipeAdd.setOnClickListener(view -> {
-            new AddMealItemContainerFragment("breakfastRecipes", true).show(
-                    getSupportFragmentManager(), "add breakfast recipe to meal plan"
-            );
-        });*/
-
         breakfastRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("breakfastRecipes").show(
                     getSupportFragmentManager(), "add breakfast recipe to meal plan"
