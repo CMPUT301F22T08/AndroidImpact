@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.androidimpact.app.ingredients.IngredientStorage;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.meal_plan.MealPlan;
+import com.androidimpact.app.meal_plan.MealPlanController;
 import com.androidimpact.app.meal_plan.MealPlanListAdapter;
 import com.androidimpact.app.R;
 import com.androidimpact.app.recipes.RecipeList;
@@ -58,8 +59,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     RecyclerView mealPlanListView;
     MealPlanListAdapter mealPlanAdapter;
     ArrayList<MealPlan> mealPlans;
-    RecipeList recipeList;
-    ArrayList<StoreIngredient> ingredientStorageData;
+    MealPlanController mealPlanController;
 
     // adding recipes to firebase
     FirebaseFirestore db;
@@ -132,14 +132,12 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             return;
         }
 
-        // initialize adapters and customList, connect to DB
+        // initialize controller
+        mealPlanController = ((MainActivity) a).getMealPlanController();
+
+        // initialize adapters and customList
         mealPlanListView = a.findViewById(R.id.meal_plan_list);
-
-        recipeList = new RecipeList(((MainActivity) a).getRecipeController().getData());
-        ingredientStorageData = ((MainActivity) a).getIngredientStorageController().getData();
-
-        mealPlans = new ArrayList<>();
-        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlans, recipeList, ingredientStorageData);
+        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlanController.getData());
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -170,46 +168,15 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
                 // below line is to get the position
                 // of the item at that position.
                 int position = viewHolder.getAdapterPosition();
-                MealPlan deletedMealPlan = mealPlans.get(position);
-                String description = deletedMealPlan.getDate();
-
-                OnSuccessListener sl = o -> {
-                    Log.d(TAG, description + " has been deleted successfully!");
-                    Snackbar.make(mealPlanListView, "Deleted meal plan for " + description, Snackbar.LENGTH_LONG)
-                            .setAction("Ok", view1 -> {})
-                            .show();
-                    mealPlans.remove(deletedMealPlan);
-                };
-                OnFailureListener fl = e -> {
-                    Log.d(TAG, description + " could not be deleted!" + e);
-                    Snackbar.make(mealPlanListView, "Could not delete meal plan for " + description + "!", Snackbar.LENGTH_LONG)
-                            .setAction("Ok", view1 -> {})
-                            .show();
-                };
-
-                mealPlanCollection.document(description)
-                        .delete()
-                        .addOnSuccessListener(sl)
-                        .addOnFailureListener(fl);
-
-                mealPlanAdapter.notifyDataSetChanged();
+                mealPlanController.delete(position, mealPlanListView, mealPlanAdapter);
 
             }
             // at last we are adding this
             // to our recycler view.
         }).attachToRecyclerView(mealPlanListView);
 
-
-
-        refresh();
-
-        recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            refresh();
-        });
-
-        ingredientCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            refresh();
-        });
+        mealPlanController.refresh(mealPlanAdapter);
+        mealPlanController.addDataUpdateSnapshotListener(mealPlanAdapter);
 
         /**
          * DEFINE ACTIVITY LAUNCHERS
@@ -268,56 +235,5 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
 
     public void refreshMealItems() {
         mealPlanAdapter.notifyDataSetChanged();
-    }
-
-    public void refresh() {
-        mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-            // Clear the old list
-            mealPlans.clear();
-
-            if (queryDocumentSnapshots == null) {
-                return;
-            }
-            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                Map<String, Object> data = doc.getData();
-                MealPlan mealPlanToAdd = new MealPlan(doc.getId(), (String) data.get("sortString"));
-
-                String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
-                for(String key: keys) {
-                    ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
-                    ArrayList<Double> recipeServingsList = (ArrayList<Double>) data.get(key + "RecipesServings");
-                    if(recipeIdList != null) {
-                        for(int i = 0; i < recipeIdList.size(); i++) {
-                            mealPlanToAdd.addMealItemRecipe(
-                                    key,
-                                    recipeIdList.get(i),
-                                    recipeServingsList.get(i),
-                                    this.recipeList
-                            );
-                        }
-                    }
-
-                    ArrayList<String> ingredientIdList = (ArrayList<String>) data.get(key + "Ingredients");
-                    ArrayList<Double> ingredientServingsList = (ArrayList<Double>) data.get(key + "IngredientsServings");
-                    if(ingredientIdList != null) {
-                        for(int i = 0; i < ingredientIdList.size(); i++) {
-                            mealPlanToAdd.addMealItemIngredient(
-                                    key,
-                                    ingredientIdList.get(i),
-                                    ingredientServingsList.get(i),
-                                    this.ingredientStorageData
-                            );
-                        }
-                    }
-                }
-                mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
-            }
-
-            Log.i(TAG, "Snapshot listener: Added " + mealPlans.size() + " elements");
-            for (MealPlan i : mealPlans) {
-                Log.i(TAG, "Snapshot listener: Added " + i.getDate() + " to elements");
-            }
-            mealPlanAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-        });
     }
 }

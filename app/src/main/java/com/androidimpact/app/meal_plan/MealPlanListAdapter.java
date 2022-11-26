@@ -46,7 +46,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
      * @param context
      * @param mealPlans
      */
-    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans, RecipeList recipeList, ArrayList<StoreIngredient> ingredients) {
+    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans) {
         this.mealPlans = mealPlans;
         this.mealPlanList = new MealPlanList(this.mealPlans/*, recipeList, ingredients*/);
         this.context = context;

@@ -2,6 +2,7 @@ package com.androidimpact.app.meal_plan;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
@@ -19,13 +20,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class MealPlanController {
     final String TAG = "MealPlanController";
@@ -34,6 +31,8 @@ public class MealPlanController {
     private Context context;
     private FirebaseFirestore db;
     private CollectionReference mealPlanCollection;
+    CollectionReference recipeCollection;
+    CollectionReference ingredientCollection;
     private MealPlanList mealPlanList;
     RecipeList recipeList;
     ArrayList<StoreIngredient> ingredientStorageData;
@@ -42,6 +41,8 @@ public class MealPlanController {
         this.context = context;
         db = FirebaseFirestore.getInstance();
         mealPlanCollection = db.collection(firestorePath);
+        recipeCollection = db.collection("recipes");
+        ingredientCollection = db.collection("ingredientStorage");
         mealPlanList = new MealPlanList(new ArrayList<>());
         this.recipeList = new RecipeList(recipeController.getData());
         this.ingredientStorageData = ingredientStorageController.getData();
@@ -52,7 +53,7 @@ public class MealPlanController {
                 .setAction("OK", (v)->{}).show();
     }
 
-    public void addDataUpdateSnapshotListener(MealPlanListAdapter mealPlanListAdapter){
+    public void refresh(MealPlanListAdapter mealPlanListAdapter){
         mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
             mealPlanList.clear();
@@ -103,6 +104,17 @@ public class MealPlanController {
         });
     }
 
+    public void addDataUpdateSnapshotListener(MealPlanListAdapter mealPlanListAdapter) {
+        refresh(mealPlanListAdapter);
+        recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            refresh(mealPlanListAdapter);
+        });
+
+        ingredientCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            refresh(mealPlanListAdapter);
+        });
+    }
+
     public void addEdit(Recipe recipe){
         /*// Adds if id is null else edits
         String id = recipe.getId();
@@ -115,44 +127,30 @@ public class MealPlanController {
     }
 
 
-    public void delete(int position) {
+    public void delete(int position, View view, MealPlanListAdapter mealPlanListAdapter) {
+        MealPlan deletedMealPlan = this.mealPlanList.get(position);
+        String description = deletedMealPlan.getDate();
+        Log.i("size", String.valueOf(mealPlanList.size()));
 
-       /* // Get the swiped item at a particular position.
-        Recipe deletedRecipe = recipeList.get(position);
-        String title = deletedRecipe.getTitle();
-        String id = deletedRecipe.getId();
-        String photo = deletedRecipe.getPhoto();
+        OnSuccessListener sl = o -> {
+            Log.d(TAG, description + " has been deleted successfully!");
+            Snackbar.make(view, "Deleted meal plan for " + description, Snackbar.LENGTH_LONG)
+                    .setAction("Ok", view1 -> {})
+                    .show();
+        };
+        OnFailureListener fl = e -> {
+            Log.d(TAG, description + " could not be deleted!" + e);
+            Snackbar.make(view, "Could not delete meal plan for " + description + "!", Snackbar.LENGTH_LONG)
+                    .setAction("Ok", view1 -> {})
+                    .show();
+        };
 
-        List<Task<?>> futures = new ArrayList<>();
-
-        // Delete all the ingredients associated with the Recipe
-        CollectionReference ingredients = db.collection(deletedRecipe.getCollectionPath());
-        ingredients.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                futures.add(ingredients.document(doc.getId()).delete());
-            }
-        });
-
-        // Delete the photo associated with the Recipe
-        if (photo != null) {
-            futures.add(photoStorage.child("images/" + photo).delete()
-                    .addOnSuccessListener(aVoid -> Log.i(TAG, "Successfully deleted image from recipe: " + deletedRecipe.getTitle())));
-        }
-
-        // Delete the Recipe
-        futures.add(recipeCollection.document(id)
+        mealPlanCollection.document(description)
                 .delete()
-                .addOnSuccessListener(unused -> Log.i(TAG, "Successfully deleted recipeDocument: " + deletedRecipe.getTitle())));
+                .addOnSuccessListener(sl)
+                .addOnFailureListener(fl);
 
-        Tasks.whenAll(futures)
-                .addOnSuccessListener(o -> {
-                    Log.d(TAG, title + " has been deleted successfully!");
-                    pushSnackBarToContext("Deleted " + title);
-                })
-                .addOnFailureListener(e -> {
-                    Log.d(TAG, title + " could not be deleted!" + e);
-                    pushSnackBarToContext("Could not delete " + title);
-                });*/
+        mealPlanListAdapter.notifyDataSetChanged();
     }
 
 
