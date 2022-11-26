@@ -214,7 +214,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
             // so we have to pass in listeners instead of adding addSuccessListeners
             shoppingListAutomator.automateShoppingList(
-                    shopIngredients -> Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success!"),
+                    shopIngredients -> {
+                        Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
+                    },
                     e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
         } catch (Exception e) {
             Log.i(TAG, "Error running shoppingListAutomator!", e);
