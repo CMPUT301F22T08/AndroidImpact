@@ -71,6 +71,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     TextView sortText;
 
     Switch pickupSwitch;
+    FloatingActionButton moveFAB;
 
     // use ActivityResultLaunchers to go to different activities
     // this is defined in onViewCreated, see the comment where we initialize it
@@ -163,6 +164,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 //        });
 
         shoppingListController = ((MainActivity) a).getShoppingListController();
+        moveFAB  = a.findViewById(R.id.move_fab);
         shopIngredientViewAdapter = new ShopIngredientAdapter(getContext(), shoppingListController);
 
         // below line is to set layout manager for our recycler view.
@@ -172,6 +174,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
         //finding sort spinner
         sortIngredientSpinner = a.findViewById(R.id.sort_shopping_spinner);
+
         sortText = a.findViewById(R.id.sort_shopping_info);
 
         // getting available sorting choices
@@ -189,6 +192,31 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 android.R.layout.simple_spinner_dropdown_item
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
+
+
+
+        moveFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<ShopIngredient> moveIngredientList = new ArrayList<>();
+
+
+                ArrayList<ShopIngredient> tempList = shoppingListController.getData();
+
+
+                for (int i = 0; i < tempList.size(); ++i)
+                {
+                    ShopIngredient moveIngredient = tempList.get(i);
+
+                    if (moveIngredient.getAmountPicked() != 0)
+                    {
+                        moveIngredientList.add(moveIngredient);
+                        Log.i("Adding item to be moved", moveIngredient.getDescription());
+                    }
+                }
+
+            }
+        });
 
 
         //setting up the on item selected listener which lets user sort on the basis of selection
