@@ -50,7 +50,6 @@ public class ShopPickUpFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-
     public static ShopPickUpFragment newInstance(ShopIngredient ingredient, int pos) {
         Bundle args = new Bundle();
         //putting all the arguments to bundle so that we can retrieve them later
@@ -71,12 +70,10 @@ public class ShopPickUpFragment extends DialogFragment {
 
     }
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_shop_pick_up, null);
-
 
         editAmountPickUp = view.findViewById(R.id.editAmountPickedUp);
 
@@ -84,8 +81,7 @@ public class ShopPickUpFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
             //initializing dialog box with existing object values
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             pos = getArguments().getInt("itemPos");
             ingredient = (ShopIngredient) getArguments().getSerializable("ingredient");
             editAmountPickUp.setText(String.valueOf(ingredient.getAmount()));
@@ -136,16 +132,11 @@ public class ShopPickUpFragment extends DialogFragment {
                             }
                             Log.i("Amount Picked up", String.valueOf(costF));
 
-
                             ingredient.setAmountPicked(costF);
 
                             MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
-
-
                         }
                     })
                     .create();
-
-
     }
 }
