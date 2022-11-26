@@ -80,9 +80,17 @@ public class StoreIngredient extends Ingredient implements Serializable {
     /**
      * gets the location document path
      * not used by the user, but used by Firebase to know they need to serialize the locationDocumentPath
-     * @return
+     * @return location
      */
     public String getLocation() {
         return location;
+    }
+
+    /**
+     * Returns true if either the best before date is null or the location is null
+     * @return boolean
+     */
+    public boolean hasNull(){
+        return (bestBeforeDate==null || location==null);
     }
 }
