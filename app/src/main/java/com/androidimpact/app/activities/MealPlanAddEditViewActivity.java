@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.category.Category;
+import com.androidimpact.app.meal_plan.AddMealItemContainerFragment;
 import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.meal_plan.IngredientAddFragment;
 import com.androidimpact.app.meal_plan.RecipeAddFragment;
@@ -37,6 +38,7 @@ import java.util.UUID;
 public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap;
+    private HashMap<String, ArrayList<Float>> recipeServingsMap, ingredientServingsMap;
     private Boolean isEditing;
     private RecipeController recipeController;
     Bundle extras;
@@ -57,6 +59,9 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
         this.recipeIdMap = new HashMap<>();
         this.ingredientIdMap = new HashMap<>();
+        this.recipeServingsMap = new HashMap<>();
+        this.ingredientServingsMap = new HashMap<>();
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         mealPlanCollection = db.collection("meal-plan");
@@ -87,7 +92,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                 getSupportActionBar().setTitle("Edit MealPlan");
 
 
-    } else {
+            } else {
                 // when non editing, make a new collection
                 getSupportActionBar().setTitle("Add Meal Plan");
                 // initialize defaults
@@ -96,6 +101,11 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
         }
 
+        /*breakfastRecipeAdd.setOnClickListener(view -> {
+            new AddMealItemContainerFragment("breakfastRecipes", true).show(
+                    getSupportFragmentManager(), "add breakfast recipe to meal plan"
+            );
+        });*/
 
         breakfastRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("breakfastRecipes").show(
@@ -147,6 +157,10 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(recipeId);
         this.recipeIdMap.put(mealType, entry);
+
+        ArrayList<Float> servings = this.recipeServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+        servings.add(1F);
+        this.recipeServingsMap.put(mealType + "Servings", servings);
     }
 
     public void addIngredient(String mealType, String ingredientId) {
@@ -154,6 +168,10 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         ArrayList<String> entry = this.ingredientIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(ingredientId);
         this.ingredientIdMap.put(mealType, entry);
+
+        ArrayList<Float> servings = this.ingredientServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+        servings.add(1F);
+        this.ingredientServingsMap.put(mealType + "Servings", servings);
     }
 
     /**
@@ -178,6 +196,12 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         });
         this.ingredientIdMap.keySet().forEach(key -> {
             data.put(key, this.ingredientIdMap.get(key));
+        });
+        this.recipeServingsMap.keySet().forEach(key -> {
+            data.put(key, this.recipeServingsMap.get(key));
+        });
+        this.ingredientServingsMap.keySet().forEach(key -> {
+            data.put(key, this.ingredientServingsMap.get(key));
         });
         TextView editText = findViewById(R.id.editTextMealPlanTitle);
         String temp = editText.getText().toString();

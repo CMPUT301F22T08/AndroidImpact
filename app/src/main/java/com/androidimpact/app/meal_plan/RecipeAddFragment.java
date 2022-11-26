@@ -19,6 +19,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,6 +85,11 @@ public class RecipeAddFragment extends DialogFragment {
             selectedRecipeId = recipeDataList.get(i).getId();
             MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
             mealPlanAddEditViewActivity.addRecipe(this.mealType, selectedRecipeId);
+
+            //IngredientAddFragment ingredientAddFragment = new IngredientAddFragment(this.mealType);
+            //FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            //ingredientAddFragment.show(transaction, "NEWWWW");
+
             dismiss();
         };
 
@@ -120,12 +127,17 @@ public class RecipeAddFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG + ":onViewCreated", "onViewCreated called!");
 
+        Activity a = getActivity();
+        if (a == null) {
+            Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
+            return;
+        }
 
         // Initialize views
-        sortSpinner = getDialog().findViewById(R.id.sort_recipe_spinner);
+        sortSpinner = getView().findViewById(R.id.sort_recipe_spinner);
 
         // initialize adapters and customList, connect to DB
-        recipeListView = getDialog().findViewById(R.id.recipe_listview);
+        recipeListView = getView().findViewById(R.id.recipe_listview);
 
         recipeDataList = new ArrayList<>();
         recipeList = new RecipeList(recipeDataList);
