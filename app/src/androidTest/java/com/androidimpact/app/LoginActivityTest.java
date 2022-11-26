@@ -91,33 +91,10 @@ public class LoginActivityTest {
      */
     @Test
     public void signUpTest() {
-        // Click on username edit text
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.username),
-                        childAtPosition(
-                                allOf(withId(R.id.login_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText3.perform(click());
-
-        // Clear the field
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.username),
-                        childAtPosition(
-                                allOf(withId(R.id.login_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText(""));
 
         // Click on the signup button
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.signup), withText("Signup"),
+                allOf(withId(R.id.signup),
                         childAtPosition(
                                 allOf(withId(R.id.login_layout),
                                         childAtPosition(

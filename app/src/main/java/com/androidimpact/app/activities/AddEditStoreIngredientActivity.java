@@ -365,7 +365,14 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             throw new Exception("Best before cannot be empty.");
         }
 
-        if (bestBeforeCalendar.compareTo(Calendar.getInstance()) <= 0) {
+        // Set date comparison to 0th hour so same day is allowed
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        if (bestBeforeCalendar.compareTo(calendar) < 0) {
             throw new Exception("Best before must be a future date.");
         }
 
