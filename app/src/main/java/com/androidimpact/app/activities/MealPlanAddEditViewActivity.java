@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
@@ -78,14 +79,15 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
             isEditing = extras.getBoolean("isEditing", false);
             MealPlan currentMealPlan = (MealPlan) extras.getSerializable("meal plan");
+            getSupportActionBar().setTitle(extras.getString("activity_name"));
 
             if (isEditing) {
-                getSupportActionBar().setTitle("Edit MealPlan");
+
 
 
             } else {
                 // when non editing, make a new collection
-                getSupportActionBar().setTitle("Add Meal Plan");
+                //getSupportActionBar().setTitle("Add Meal Plan");
                 // initialize defaults
             }
 
@@ -188,7 +190,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.ingredientServingsMap.keySet().forEach(key -> {
             data.put(key, this.ingredientServingsMap.get(key));
         });
-        TextView editText = findViewById(R.id.editTextMealPlanTitle);
+        EditText editText = findViewById(R.id.editTextMealPlanTitle);
         String temp = editText.getText().toString();
         String docName = (temp.equals("")) ? "Day x" : temp;
         mealPlanCollection

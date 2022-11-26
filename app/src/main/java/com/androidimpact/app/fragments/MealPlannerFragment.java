@@ -217,7 +217,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         navigationFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addMealPlan", "Adding meal plan!");
             Intent intent = new Intent(getContext(), MealPlanAddEditViewActivity.class);
-            intent.putExtra("activity_name", "Add meal plan");
+            intent.putExtra("activity_name", "Add Meal Plan");
             refreshMealItems();
             addMealPlanLauncher.launch(intent);
         });

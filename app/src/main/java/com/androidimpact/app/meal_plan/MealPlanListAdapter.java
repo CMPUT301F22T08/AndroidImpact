@@ -102,7 +102,8 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
 
         holder.mealPlanEditButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, MealPlanAddEditViewActivity.class);
-            intent.putExtra("activity_name", "Edit meal plan");
+            intent.putExtra("activity_name", "Edit Meal Plan");
+            intent.putExtra("meal plan", recyclerData);
             //intent.putExtra("recipe", currentRecipe);
             intent.putExtra("isEditing", true);
             context.startActivity(intent);

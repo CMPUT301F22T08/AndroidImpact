@@ -38,7 +38,6 @@ public class RecipeAddFragment extends DialogFragment {
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
     RecipeListAdapter recipeViewAdapter;
-    RecipeList recipeList;
     RecipeController recipeController;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
@@ -119,9 +118,8 @@ public class RecipeAddFragment extends DialogFragment {
         // initialize adapters and customList, connect to DB
         recipeListView = getView().findViewById(R.id.recipe_listview);
 
-        recipeDataList = new ArrayList<>();
-        recipeList = new RecipeList(recipeDataList);
         this.recipeController = ((MealPlanAddEditViewActivity) getActivity()).getRecipeController();
+        this.recipeDataList = this.recipeController.getData();
         recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface);
         this.recipeController.addDataUpdateSnapshotListener(recipeViewAdapter);
         sortingOptions = RecipeList.getSortChoices();
