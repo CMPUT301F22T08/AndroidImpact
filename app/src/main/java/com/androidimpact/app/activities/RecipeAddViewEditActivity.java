@@ -272,6 +272,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
     }
 
+    /**
+     * onClick method that runs on confirm
+     * @param view
+     *     The view that triggers this method
+     */
     public void confirm(View view) {
         try {
             if (!uploading) {
@@ -512,7 +517,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         addIngredientLauncher.launch(intent);
     }
 
-    // Adding photo
+    // Adding photo launcher
     final private ActivityResultLauncher<Intent> addPhotoLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -579,7 +584,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         addPhotoLauncher.launch(intent);
     }
 
-    // Returns the File for a photo stored on disk given the fileName
+    /**
+     * Returns the File for a photo stored on disk given the fileName
+     * @param fileName
+     *    String of the name of the file
+     */
     public File getPhotoFileUri(String fileName) {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.

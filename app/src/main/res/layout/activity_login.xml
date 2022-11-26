@@ -29,7 +29,7 @@
         android:layout_marginTop="36dp"
         android:lines="2"
         android:textColor="#00FFFF"
-        android:text="&quot;Impacting lives\n one food item at a time.&quot;"
+        android:text="Impacting lives\n one food item at a time."
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
