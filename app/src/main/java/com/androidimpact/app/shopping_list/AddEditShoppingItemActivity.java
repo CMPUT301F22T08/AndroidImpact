@@ -1,4 +1,4 @@
-package com.androidimpact.app.activities;
+package com.androidimpact.app.shopping_list;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,14 +15,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.androidimpact.app.NullableSpinnerAdapter;
+import com.androidimpact.app.R;
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
-import com.androidimpact.app.NullableSpinnerAdapter;
 import com.androidimpact.app.category.EditCategoriesActivity;
+import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.location.EditLocationsActivity;
 import com.androidimpact.app.location.Location;
-import com.androidimpact.app.R;
-import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.unit.EditUnitsActivity;
 import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,47 +36,37 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Activity class for  Adding/Edit/Store Ingredient Activity
- * @version 1.0
- * @author Vedant Vyas
- */
-public class AddEditStoreIngredientActivity extends AppCompatActivity {
+public class AddEditShoppingItemActivity extends AppCompatActivity {
+
     // TAG: useful for logging
-    final String TAG = "AddEditStoreIngredientActivity";
+    final String TAG = "AddShoppingListItemActivity";
 
     // declare all view variables
     private EditText descriptionEditText;
     private EditText amountEditText;
-    private EditText bestBeforeEditText;
 
     // spinners
     // NOTE: for these, the source of truth is the selectedLocation and selectedUnit
     // due to abstractOnItemSelectedListener editing these references,
     // i "have to" wrap these under AtomicReferences
-    private Spinner locationSpinner;
-    private AtomicReference<Location> selectedLocation = new AtomicReference<>();
     private Spinner unitSpinner;
     private AtomicReference<Unit> selectedUnit = new AtomicReference<>();
     private Spinner categorySpinner;
     private AtomicReference<Category> selectedCategory = new AtomicReference<>();
 
-    // Calendar for bestBeforeDatePicker
-    final Calendar bestBeforeCalendar = Calendar.getInstance();
-
     // firebase
     FirebaseFirestore db;
-    CollectionReference locationCollection;
+    CollectionReference shoppingListCollection;
     CollectionReference unitCollection;
     CollectionReference categoryCollection;
 
     // Other "global" variables
     // used to track which ingredient we're editing, null if we're creating a new ingredient
-    StoreIngredient currentIngredient;
+    ShopIngredient currentIngredient;
 
     /**
      * Initalizes button data
@@ -86,28 +75,23 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_ingredient_storage);
+        setContentView(R.layout.activity_add_edit_shopping_list_item);
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        locationCollection = db.collection("locations");
         unitCollection = db.collection("units");
         categoryCollection = db.collection("categories");
+        shoppingListCollection = db.collection("shoppingList");
 
         // Init EditText views
-        descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
-        amountEditText = findViewById(R.id.ingredientStoreAdd_amount);
-        bestBeforeEditText = findViewById(R.id.ingredientStoreAdd_bestBefore);
+        descriptionEditText = findViewById(R.id.shopping_item_addEdit_description);
+        amountEditText = findViewById(R.id.shopping_item_addEdit_amount);
 
         // Init spinner views
-        locationSpinner = findViewById(R.id.ingredientStoreAdd_location);
-        unitSpinner = findViewById(R.id.ingredientStoreAdd_unit);
-        categorySpinner = findViewById(R.id.ingredientStoreAdd_category);
+        unitSpinner = findViewById(R.id.shopping_item_addEdit_unit);
+        categorySpinner = findViewById(R.id.shopping_item_addEdit_category);
 
         // init spinners
-        ArrayList<Location> locations = new ArrayList<>();
-        NullableSpinnerAdapter<Location> locationAdapter = new NullableSpinnerAdapter<>(this, locations);
-        locationSpinner.setAdapter(locationAdapter);
 
         ArrayList<Unit> units = new ArrayList<>();
         NullableSpinnerAdapter<Unit> unitAdapter = new NullableSpinnerAdapter<>(this, units);
@@ -121,14 +105,12 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         // Init activity title
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            currentIngredient = (StoreIngredient) extras.getSerializable("storeIngredient");
-            getSupportActionBar().setTitle("Edit Ingredient");
+            currentIngredient = (ShopIngredient) extras.getSerializable("ingredient");
+            getSupportActionBar().setTitle("Edit Shopping List Item");
 
             // set initial values
             descriptionEditText.setText(currentIngredient.getDescription());
             amountEditText.setText(String.valueOf(currentIngredient.getAmount()));
-            bestBeforeCalendar.setTime(currentIngredient.getBestBeforeDate());
-            updateDateLabel();
 
             // set initial unit, category and locations
             // note that we store the unit as a string, not a document path
@@ -136,35 +118,15 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             Log.i(TAG, "Set unit: " + selectedUnit.get());
             selectedCategory.set(new Category(currentIngredient.getCategory()));
             Log.i(TAG, "Set category: " + selectedCategory.get());
-            selectedLocation.set(new Location(currentIngredient.getLocation()));
-            Log.i(TAG, "Set location: " + selectedLocation.get());
         } else {
             currentIngredient = null;
-            getSupportActionBar().setTitle("Add Ingredient");
+            getSupportActionBar().setTitle("Add Shopping List Item");
         }
 
         // EVENT LISTENERS
-
-        DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
-            bestBeforeCalendar.set(Calendar.YEAR, year);
-            bestBeforeCalendar.set(Calendar.MONTH,month);
-            bestBeforeCalendar.set(Calendar.DAY_OF_MONTH,day);
-            updateDateLabel();
-        };
-
-        bestBeforeEditText.setOnClickListener(view -> new DatePickerDialog(
-                AddEditStoreIngredientActivity.this,
-                date,
-                bestBeforeCalendar.get(Calendar.YEAR),
-                bestBeforeCalendar.get(Calendar.MONTH),
-                bestBeforeCalendar.get(Calendar.DAY_OF_MONTH)).show());
-
-
-        locationSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedLocation));
         unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
         categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
 
-        locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation, "Location"));
         unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Unit"));
         categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Category"));
     }
@@ -183,7 +145,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
      * @param <T> a timestamped class
      * @return the event listener to use in an addSnapshotListener
      */
-    private <T extends Timestamped>EventListener<QuerySnapshot> abstractSnapshotListener(
+    private <T extends Timestamped> EventListener<QuerySnapshot> abstractSnapshotListener(
             Class<T> valueType,
             ArrayAdapter<T> adapter,
             ArrayList<T> data,
@@ -214,12 +176,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 int idx = data.indexOf(selectedElem.get());
                 // add 1 to the spinner - this allows us to select the "null" element
                 spinner.setSelection(idx + 1);
+                Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
                 if (idx == -1) {
                     generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
-                    Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
                     selectedElem.set(null);
-                } else {
-                    Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
                 }
             }
         };
@@ -229,7 +189,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     /**
      * A generic onItemSelectedlistener for spinners for the user-defined collections (units, locations, categories)
      */
-    private <T extends Serializable>AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(
+    private <T extends Serializable> AdapterView.OnItemSelectedListener abstractOnItemSelectedListener(
             AtomicReference<T> selectedElem
     ) {
         return new AdapterView.OnItemSelectedListener() {
@@ -251,21 +211,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             }
         };
     }
-
     /**
-     * This will set the date label
-     */
-    private void updateDateLabel(){
-        String myFormat="dd MMMM yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        bestBeforeEditText.setText(dateFormat.format(bestBeforeCalendar.getTime()));
-    }
-
-    /**
-     * This is run when R.id.ingredientStoreAdd_editLocationsBtn is clicked
+     * This is run when R.id.shopping_item_addEdit_editLocationsBtn is clicked
+     *
      * this function jumps to the EditLocations activity.
-     * @param view
-     *     The view that triggers the method
      */
     public void editLocations(View view) {
         Log.i(TAG + ":editLocations", "Going to Edit Locations");
@@ -274,10 +223,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     }
 
     /**
-     * This is run when R.id.ingredientStoreAdd_editUnitsBtn is clicked
+     * This is run when R.id.shopping_item_addEdit_editUnitsBtn is clicked
+     *
      * this function jumps to the EditLocations activity.
-     * @param view
-     *     The view that triggers the method
      */
     public void editUnits(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
@@ -286,10 +234,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     }
 
     /**
-     * This is run when R.id.ingredientStoreAdd_editUnitsBtn is clicked
+     * This is run when R.id.shopping_item_addEdit_editUnitsBtn is clicked
+     *
      * this function jumps to the EditLocations activity.
-     * @param view
-     *     The view that triggers the method
      */
     public void editCategories(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
@@ -299,11 +246,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
     /**
      * Cancel - This is run when the "Cancel" button is pressed
-     * @param view
-     *     The view that triggers the method
      */
     public void cancel(View view) {
-        Log.i(TAG + ":cancel", "Cancel ingredient add");
+        Log.i(TAG + ":cancel", "Cancel addEditShoppingListItem");
         Intent intent = new Intent();
         setResult(Activity.RESULT_CANCELED, intent);
         finish();
@@ -311,24 +256,20 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
     /**
      * Confirm - This is run when the "Confirm" button is pressed
-     * @param view
-     *     The view that triggers the method
      */
     public void confirm(View view) {
         try {
             // try to create an ingredient.
-            StoreIngredient newStoreIngredient = createIngredient(currentIngredient);
+            ShopIngredient ingredient = createIngredient(currentIngredient);
             Intent intent = new Intent();
-
-            // put the ingredient as an extra to our intent before we pass it back to the IngredientStorage
-            intent.putExtra("ingredient", newStoreIngredient);
             setResult(Activity.RESULT_OK, intent);
 
-            Log.i(TAG + ":cancel", "Returning to MainActivity");
+            intent.putExtra("ingredient", ingredient);
+            Log.i(TAG + ":confirm", "Returning to parent activity");
             finish();
         } catch (Exception e){
             // Error - add a snackBar
-            Log.i(TAG, "Error making storeIngredient", e);
+            Log.i(TAG, "Error making shopIngredient", e);
             generateSnackbar(e.getMessage());
         }
     }
@@ -359,16 +300,15 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     /**
      * Validates the data input by the user
      * Create a StoreIngredient object if the data is valid.
-     * @param editing (StoreIngredient) Possible storeIngredient we are editing
+     * @param editing (ShopIngredient) Possible shopIngredient we are editing
      * @return A StoreIngredient object created using the data from the editTexts
      * @throws Exception if the data is invalid or if the Ingredient could not be created
      * @see StoreIngredient
      */
     // Should we throw an exception or have a snack-bar that says fields can't be empty?
-    private StoreIngredient createIngredient(@Nullable StoreIngredient editing) throws Exception {
+    private ShopIngredient createIngredient(@Nullable ShopIngredient editing) throws Exception {
         String description = descriptionEditText.getText().toString();
         String amountRaw = amountEditText.getText().toString();
-        String bestBefore = bestBeforeEditText.getText().toString();
 
         if (description.equals("")) {
             throw new Exception("Description cannot be empty.");
@@ -389,24 +329,6 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             throw new Exception("Amount must be positive!");
         }
 
-        if (bestBefore.equals("")) {
-            throw new Exception("Best before cannot be empty.");
-        }
-
-        // Set date comparison to 0th hour so same day is allowed
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        if (bestBeforeCalendar.compareTo(calendar) < 0) {
-            throw new Exception("Best before must be a future date.");
-        }
-
-        if (selectedLocation.get() == null) {
-            throw new Exception("Location must be non null");
-        }
         if (selectedUnit.get() == null) {
             throw new Exception("Unit must be non null");
         }
@@ -415,17 +337,18 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         }
 
         try {
-            String id = null;
+            String id;
             if (editing != null) {
                 id = editing.getId();
+            } else {
+                // autogenerate ID
+                id = UUID.randomUUID().toString();
             }
-            Date date = bestBeforeCalendar.getTime();
 
             // get values
             String unit = selectedUnit.get().getUnit();
             String category = selectedCategory.get().getCategory();
-            String location = selectedLocation.get().getLocation();
-            return new StoreIngredient(id, description, amount, category, date, location, unit);
+            return new ShopIngredient(id, description, amount, unit, category);
         } catch(Exception e) {
             Log.i(TAG, "Error parsing ingredients", e);
             throw new Exception("Error parsing ingredients");

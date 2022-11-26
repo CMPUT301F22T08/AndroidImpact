@@ -10,16 +10,13 @@ import java.util.Comparator;
 
 public class MealPlanList extends SortableItemList<MealPlan> {
 
-    private RecipeList recipeList;
-    private IngredientStorage ingredientStorage;
-
     /**
      * Constructor for SortableItemList class
      *
      * @param objectArrayList (ArrayList of type MealPlan) an arraylist of meal plan data, with
      *                        any number of days' worth of meal plans
      */
-    public MealPlanList(ArrayList<MealPlan> objectArrayList, RecipeList recipeList, IngredientStorage ingredientStorage) {
+    public MealPlanList(ArrayList<MealPlan> objectArrayList/*, RecipeList recipeList, ArrayList<> ingredientStorage*/) {
         super(objectArrayList,
                 new String[]{
                         "Date"
@@ -28,7 +25,7 @@ public class MealPlanList extends SortableItemList<MealPlan> {
                         Comparator.comparing(MealPlan::getDate, String.CASE_INSENSITIVE_ORDER)
                 ).toArray());
 
-        this.recipeList = recipeList;
-        this.ingredientStorage = ingredientStorage;
+        /*this.recipeList = recipeList;
+        this.ingredientStorage = ingredientStorage;*/
     }
 }

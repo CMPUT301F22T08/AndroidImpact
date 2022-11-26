@@ -25,6 +25,7 @@ public class IngredientStorageController {
     private FirebaseFirestore db;
     private CollectionReference ingredientStorageCollection;
     private IngredientStorage ingredientStorage;
+    private boolean snapshotAdded;
 
     /**
      * Constructor: Creates an empty IngredientStorage class and populates it with data from FireStore
@@ -36,6 +37,7 @@ public class IngredientStorageController {
         db = FirebaseFirestore.getInstance();
         ingredientStorageCollection = db.collection(firestorePath);
         ingredientStorage = new IngredientStorage();
+        snapshotAdded = false;
     }
 
     /**
@@ -49,11 +51,15 @@ public class IngredientStorageController {
 
     /**
      * Add a snapshot listener to the FireStore collection that repopulates the ingredient storage when changes are detected.
-     * Notifies the current ViewAdapter that the data may have changed on .
-     * @param storeIngredientViewAdapter
-     *      (StoreIngredientViewAdapter) - The adapter to be updated when the latest data is pulled from firestore
+     * Notifies the current ViewAdapter that the data may have changed.
+     * @param storeIngredientViewAdapter (StoreIngredientViewAdapter) - The adapter to be updated when the latest data is pulled from firestore
+     * @throws RuntimeException if the snapshot listener has already been added
      */
-    public void addDataUpdateSnapshotListener(StoreIngredientViewAdapter storeIngredientViewAdapter){
+    public void addDataUpdateSnapshotListener(StoreIngredientViewAdapter storeIngredientViewAdapter) throws RuntimeException {
+        if (snapshotAdded){
+            throw new RuntimeException("Can only call addSnapshotListener once");
+        }
+        snapshotAdded = true;
         ingredientStorageCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             if (error != null) {
                 Log.w(TAG + ":snapshotListener", "Listen failed.", error);
@@ -88,6 +94,54 @@ public class IngredientStorageController {
             storeIngredientViewAdapter.notifyDataSetChanged();
         });
     }
+
+    /**
+     * Add a snapshot listener to the FireStore collection that repopulates the ingredient storage when changes are detected.
+     *
+     */
+    public void addSnapshotListenerAutocomplete(ArrayList<String> autoCompleteSource){
+        if (snapshotAdded){
+            throw new RuntimeException("Can only call addSnapshotListener once");
+        }
+        snapshotAdded = true;
+        ingredientStorageCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
+            if (error != null) {
+                Log.w(TAG + ":snapshotListener", "Listen failed.", error);
+                return;
+            }
+
+            // Clear the old list
+            ingredientStorage.clear();
+
+            if (queryDocumentSnapshots == null) { return; }
+
+            int errorCount = 0;
+            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                String id = doc.getId();
+                try {
+                    // adding data from firestore
+                    StoreIngredient ingredient = doc.toObject(StoreIngredient.class);
+                    if (ingredient.getId() == null)
+                        ingredient.setID(id);
+                    ingredientStorage.add(ingredient);
+                } catch (Exception e) {
+                    Log.i(TAG + ":snapshotListener", "Error retrieving document " + id + ":" + e);
+                    errorCount += 1;
+                }
+            }
+
+            if (errorCount>0)
+                pushSnackBarToContext("Error reading " + errorCount + " documents!");
+            Log.i(TAG, "Snapshot listener: Added " + ingredientStorage.size() + " ingredients");
+
+            ingredientStorage.sortByChoice();
+
+            for (int i = 0; i<ingredientStorage.size(); i++){
+                autoCompleteSource.add(ingredientStorage.get(i).getDescription());
+            }
+        });
+    }
+
 
     /**
      * Adds/updates a storeIngredient object to the FireStore database.
@@ -154,7 +208,7 @@ public class IngredientStorageController {
      * @return ArrayList<StoreIngredient>
      */
     public ArrayList<StoreIngredient> getData(){
-        return ingredientStorage.detData();
+        return ingredientStorage.getData();
     }
 
     // TODO: Get rid of this ASAP

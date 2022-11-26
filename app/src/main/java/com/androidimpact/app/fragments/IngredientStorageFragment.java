@@ -74,18 +74,12 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment IngredientStorage.
-     */
-    // TODO: Rename and change types and number of parameters
+     */// TODO: Rename and change types and number of parameters
     public static IngredientStorageFragment newInstance() {
-
-        if (instance == null)
-        {
+        if (instance == null) {
             IngredientStorageFragment fragment = new IngredientStorageFragment();
             instance = fragment;
-
-            return fragment;
         }
-
         return instance;
     }
 
@@ -258,7 +252,9 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                     // edit firebase directly
                     StoreIngredient ingredient = (StoreIngredient) bundle.getSerializable("ingredient");
                     ingredientStorageController.addEdit(ingredient);
-                    Snackbar.make(ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT)
+                            .setAction("Ok", view1 -> {})
+                            .show();
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
@@ -295,7 +291,9 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
 
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredientStorageController.addEdit(ingredient);
-                    Snackbar.make(ingredientListView, "Added " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(ingredientListView, "Added " + ingredient.getDescription(), Snackbar.LENGTH_SHORT)
+                            .setAction("Ok", view1 -> {})
+                            .show();
 
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     // cancelled request - do nothing.
@@ -316,5 +314,13 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
             addStoreIngredientLauncher.launch(intent);
         });
+    }
+
+    public static IngredientStorageFragment getInstance() {
+        return instance;
+    }
+
+    public IngredientStorageController getIngredientStorageController() {
+        return ingredientStorageController;
     }
 }

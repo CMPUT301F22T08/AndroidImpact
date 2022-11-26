@@ -16,11 +16,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.fragments.shopPickUpFragment;
-import com.androidimpact.app.ingredients.Ingredient;
-import com.androidimpact.app.ingredients.ShopIngredient;
 import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.activities.MainActivity;
+import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -40,8 +41,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
     private int selected = -1; // initialize no ingredients selected
 
-    public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> ingredientArrayList) {
-        this.ingredientArrayList = ingredientArrayList;
+    // functions that subscribe for edit callbacks
+    private ArrayList<ShopIngredientClickListener> clickListeners = new ArrayList<>();
+
+    public ShopIngredientAdapter(Context mContext, ShoppingListController shoppingListController) {
+        this.ingredientArrayList = shoppingListController.getData();
         this.mContext = mContext;
     }
 
@@ -64,10 +68,22 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("Test", String.valueOf(currentIngredient.getAmount()));
         Log.i("Test", currentIngredient.getUnit());
 
-
         // set values
         holder.description.setText(currentIngredient.getDescription());
         holder.category.setText(currentIngredient.getCategory());
+
+        float amt = currentIngredient.getAmountPicked();
+        holder.amountPicked.setText(String.valueOf(amt));
+
+        if (amt == 0)
+            holder.pickupButton.setChecked(false);
+        else
+            holder.pickupButton.setChecked(true);
+
+
+
+
+
 
 
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -75,19 +91,28 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
                 if (isChecked)
                 {
                     //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
-                    shopPickUpFragment ff = new shopPickUpFragment();
-                    //calling show method to show the fragment dialog box
-                   // showDialog(R.string.dialog_title, R.string.dialog_message, false);
-                    //ff.show(getActivity().getSupportFragmentManager(), "ADD_FOOD");
+
+
+                    //calling new instance method since we also want to pass food object
+                    //maybe remove position from here coz android is crying
+                    if (currentIngredient.getAmountPicked() == 0) {
+                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
+
+                        MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
+                    }
 
                 }
                 else
                 {
                     //This means that user accidentaly picked it up so change amount picked up to 0
+                    if (currentIngredient.getAmountPicked() != 0)
+                    {
+                        currentIngredient.setAmountPicked(0);
+                        MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
+                    }
                 }
             }
         });
-
 
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
@@ -95,6 +120,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("String", unitStr);
         holder.amount.setText(unitStr);
 
+        holder.root.setOnClickListener(v -> {
+            for (ShopIngredientClickListener l : clickListeners) {
+                l.shopIngredientClicked(currentIngredient, position);
+            }
+        });
     }
 
 
@@ -132,14 +162,14 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         // creating a variable for category
         private Chip category;
-
-
         private ImageButton dropdownToggle;
-
-        private ConstraintLayout expandable;
+        private ConstraintLayout root;
         private TextView amount;
+        private TextView amountPicked;
 
         private Switch pickupButton;
+
+        private FloatingActionButton moveFAB;
 
 
         /**
@@ -155,9 +185,26 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             category = itemView.findViewById(R.id.shop_ingredient_category);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
+            amountPicked = itemView.findViewById(R.id.shop_ingredient_amountPick);
+            root = itemView.findViewById(R.id.shop_ingredient_item_root);
+            moveFAB = itemView.findViewById(R.id.move_fab);
         }
     }
 
+    /**
+     * this interface lets people subscribe to clicks in every shopIngredient
+     * this is because we need the parent activity to react to changes because it has the Context and Activity info
+     * https://stackoverflow.com/a/36662886
+     */
+    public interface ShopIngredientClickListener {
+        void shopIngredientClicked(ShopIngredient food, int position);
+    }
 
-
+    /**
+     * Edit button listener
+     * @param toAdd
+     */
+    public void setEditClickListener(ShopIngredientClickListener toAdd) {
+        clickListeners.add(toAdd);
+    }
 }

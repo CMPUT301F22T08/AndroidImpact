@@ -237,7 +237,9 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         final KonfettiView confetti = a.findViewById(R.id.confetti_view_recipe);
-                        Snackbar.make(recipeListView, "Added the recipe!", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(recipeListView, "Added the recipe!", Snackbar.LENGTH_SHORT).setAction("Ok", view1 -> {})
+                                .setAction("Ok", view1 -> {})
+                                .show();
 
                         int[] test = {0,1};
                         confetti.getLocationInWindow(test);
