@@ -25,6 +25,7 @@ public class MealPlan implements Serializable {
     private ArrayList<StoreIngredient> breakfastIngredients, lunchIngredients, dinnerIngredients, snackIngredients;
     private HashMap<String, ArrayList<Recipe>> mealRecipeMap;
     private HashMap<String, ArrayList<StoreIngredient>> mealIngredientMap;
+    private HashMap<String, ArrayList<Float>> mealRecipeServingsMap, mealIngredientServingsMap;
 
     public MealPlan(String date, String sortString) {
         this.date = date;
