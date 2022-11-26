@@ -218,6 +218,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
                 //add the ingredients from List to the the Ingredient Storage
 
+                ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
 
             }
         });
