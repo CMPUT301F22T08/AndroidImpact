@@ -81,7 +81,6 @@ public class ShoppingListAutomate {
     public Task<ArrayList<ShopIngredient>> automateShoppingList() throws Exception {
         try {
             Tasks.await(fetchTopLevelData());
-            ArrayList<ShopIngredient> recommendations = new ArrayList<>();
 
             // now, the mealPlan and recipe should be populated
             ArrayList<Task<ArrayList<ShopIngredient>>> futures = new ArrayList<>();
@@ -91,13 +90,24 @@ public class ShoppingListAutomate {
                     futures.add(getRecipeRecommendations(recipe));
                 }
             }
-            // TODO: wait for futures to finish, then add them to recommendations
-            // return a result wrapped in a task
-            // https://developers.google.com/android/reference/com/google/android/gms/tasks/TaskCompletionSource
-            // https://stackoverflow.com/q/69933562
-            TaskCompletionSource<ArrayList<ShopIngredient>> taskCompletionSource = new TaskCompletionSource<>();
-            taskCompletionSource.setResult(recommendations);
-            return taskCompletionSource.getTask();
+
+            // wait for futures to finish, and return aggregated result
+            return Tasks.whenAllSuccess(futures).continueWith(task -> {
+                try {
+                    ArrayList<ShopIngredient> recommendations = new ArrayList<>();
+                    List<Object> res = task.getResult();
+                    for (Object r : res) {
+                        // attempt to cast
+                        // why does whenAllSuccess return Object and is not typesafe?!?!?!
+                        List<ShopIngredient> casted = (List<ShopIngredient>) r;
+                        recommendations.addAll(casted);
+                    }
+                    return recommendations;
+                } catch (Exception e) {
+                    Log.i(TAG, "Failed to automate shoping list", e);
+                    throw e;
+                }
+            });
         } catch (Exception e) {
             Log.i(TAG, "Error automating shopping list!", e);
             throw e;
