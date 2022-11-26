@@ -78,8 +78,25 @@ public class ShoppingListController {
         return shoppingListCollection.document(storeIngredient.getId()).set(storeIngredient);
     }
 
-    public void delete(int position) {
-        //TODO
+    public void delete(int position) throws ArrayIndexOutOfBoundsException{
+        // Get the swiped item at a particular position.
+        ShopIngredient deletedIngredient = shoppingList.get(position);
+        String description = deletedIngredient.getDescription();
+        String id = deletedIngredient.getId();
+
+        Log.d(TAG, "Swiped " + description + " at position " + position);
+
+        // delete item from firebase
+        shoppingListCollection.document(id)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, description + " has been deleted successfully!");
+                    pushSnackBarToContext("Deleted " + description);
+                })
+                .addOnFailureListener(e -> {
+                    pushSnackBarToContext("Could not delete " + description + "!");
+                    Log.d(TAG, description + " could not be deleted: " + e);
+                });
     }
 
     public String[] getSortingChoices() { return ShoppingList.getSortChoices();}
