@@ -2,13 +2,11 @@ package com.androidimpact.app;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -18,11 +16,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.Locale;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,26 +25,21 @@ import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.CoordinatesProvider;
-import androidx.test.espresso.action.GeneralClickAction;
 import androidx.test.espresso.action.GeneralLocation;
 import androidx.test.espresso.action.GeneralSwipeAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Swipe;
-import androidx.test.espresso.action.Tap;
-import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
-import com.androidimpact.app.activities.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,12 +55,13 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IngredientStorageFragmentActivityTest {
+public class IngredientStorageFragmentTest {
 
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
 
+    @Before
     public void signup() {
         // Click on the signup button
         ViewInteraction materialButton2 = onView(
@@ -93,8 +82,6 @@ public class IngredientStorageFragmentActivityTest {
     @Test
     public void A_rightFragmentTest() {
 
-        signup();
-
         // Make sure on IngredientStorage fragment
         ViewInteraction textView = onView(
                 allOf(withText("Ingredient Storage"),
@@ -109,8 +96,6 @@ public class IngredientStorageFragmentActivityTest {
      */
     @Test
     public void B_addIngredientTest() throws InterruptedException {
-
-        signup();
 
         // Click on global fab
         ViewInteraction floatingActionButton = onView(
@@ -290,7 +275,6 @@ public class IngredientStorageFragmentActivityTest {
     @Test
     public void C_editIngredientTest() throws InterruptedException {
 
-        signup();
         Thread.sleep(1000);
         // Click on first ingredient in list, should be the item just added
 
