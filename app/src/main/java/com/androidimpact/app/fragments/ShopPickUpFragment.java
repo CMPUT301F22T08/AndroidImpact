@@ -93,10 +93,10 @@ public class ShopPickUpFragment extends DialogFragment {
         else
         {
             pos = -1;
-            Log.i("tt2", "NULL");
+
         }
 
-        Log.i("tt", String.valueOf(pos));
+
 
             return builder
                     .setView(view)
@@ -115,27 +115,24 @@ public class ShopPickUpFragment extends DialogFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             String cost = editAmountPickUp.getText().toString();
 
+                            //To be Removed
+                            Log.i("Empty", cost);
+
                             float costF;
                             try
                             {
                                 costF = Float.parseFloat(cost);
                                 if (costF > Float.MAX_VALUE)
-                                    throw new IllegalArgumentException("Too big number");
-                            }
-                            catch(IllegalArgumentException e)
-                            {
-                                costF = ingredient.getAmountPicked();
-                                //SnackBar pop which is specific to large numbers
-                                Toast.makeText(getActivity(), "Invalid Input", Toast.LENGTH_SHORT).show();
-
-                                //Snackbar.make(getActivity().ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                                    throw new IllegalArgumentException("Large Number");
                             }
                             catch(Exception e)
                             {
                                 costF = ingredient.getAmountPicked();
-                                Toast.makeText(getActivity(), "Invalid Input", Toast.LENGTH_SHORT).show();
+                                //SnackBar pop which is specific to large numbers
+                                String errorMessage = e.getMessage();
+                                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
 
-                                //Illegal Argument Exception
+
                             }
                             Log.i("Amount Picked up", String.valueOf(costF));
 
