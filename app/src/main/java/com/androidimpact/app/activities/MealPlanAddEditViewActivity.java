@@ -10,24 +10,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.category.Category;
 import com.androidimpact.app.meal_plan.MealPlan;
-import com.androidimpact.app.meal_plan.IngredientAddFragment;
-import com.androidimpact.app.meal_plan.RecipeAddFragment;
-import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.fragments.IngredientAddFragment;
+import com.androidimpact.app.fragments.RecipeAddFragment;
 import com.androidimpact.app.recipes.RecipeController;
-import com.androidimpact.app.recipes.RecipeIngredient;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Activity for adding, viewing, and editing a meal plan
@@ -37,6 +29,7 @@ import java.util.UUID;
 public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap;
+    private HashMap<String, ArrayList<Double>> recipeServingsMap, ingredientServingsMap;
     private Boolean isEditing;
     private RecipeController recipeController;
     Bundle extras;
@@ -57,6 +50,9 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
         this.recipeIdMap = new HashMap<>();
         this.ingredientIdMap = new HashMap<>();
+        this.recipeServingsMap = new HashMap<>();
+        this.ingredientServingsMap = new HashMap<>();
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         mealPlanCollection = db.collection("meal-plan");
@@ -87,7 +83,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                 getSupportActionBar().setTitle("Edit MealPlan");
 
 
-    } else {
+            } else {
                 // when non editing, make a new collection
                 getSupportActionBar().setTitle("Add Meal Plan");
                 // initialize defaults
@@ -95,7 +91,6 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
 
         }
-
 
         breakfastRecipeAdd.setOnClickListener(view -> {
             new RecipeAddFragment("breakfastRecipes").show(
@@ -142,18 +137,26 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     }
 
-    public void addRecipe(String mealType, String recipeId) {
+    public void addRecipe(String mealType, String recipeId, double f) {
         Log.i("data got", mealType + recipeId);
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(recipeId);
         this.recipeIdMap.put(mealType, entry);
+
+        ArrayList<Double> servings = this.recipeServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+        servings.add(f);
+        this.recipeServingsMap.put(mealType + "Servings", servings);
     }
 
-    public void addIngredient(String mealType, String ingredientId) {
+    public void addIngredient(String mealType, String ingredientId, double f) {
         Log.i("data got", mealType + ingredientId);
         ArrayList<String> entry = this.ingredientIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(ingredientId);
         this.ingredientIdMap.put(mealType, entry);
+
+        ArrayList<Double> servings = this.ingredientServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+        servings.add(f);
+        this.ingredientServingsMap.put(mealType + "Servings", servings);
     }
 
     /**
@@ -178,6 +181,12 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         });
         this.ingredientIdMap.keySet().forEach(key -> {
             data.put(key, this.ingredientIdMap.get(key));
+        });
+        this.recipeServingsMap.keySet().forEach(key -> {
+            data.put(key, this.recipeServingsMap.get(key));
+        });
+        this.ingredientServingsMap.keySet().forEach(key -> {
+            data.put(key, this.ingredientServingsMap.get(key));
         });
         TextView editText = findViewById(R.id.editTextMealPlanTitle);
         String temp = editText.getText().toString();

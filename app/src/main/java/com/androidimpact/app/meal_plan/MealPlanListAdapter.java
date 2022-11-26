@@ -46,7 +46,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
      * @param context
      * @param mealPlans
      */
-    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans, RecipeList recipeList, ArrayList<StoreIngredient> ingredients) {
+    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans) {
         this.mealPlans = mealPlans;
         this.mealPlanList = new MealPlanList(this.mealPlans/*, recipeList, ingredients*/);
         this.context = context;
@@ -98,12 +98,6 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
             adapter.notifyDataSetChanged();
         }
 
-//        MealAdapter mealAdapterBreakfast = new MealAdapter(recyclerData, "breakfast");
-//
-//        LinearLayoutManager manager = new LinearLayoutManager(context);
-//        holder.mealsListBreakfast.setLayoutManager(manager);
-//        holder.mealsListBreakfast.setAdapter(mealAdapterBreakfast);
-//        mealAdapterBreakfast.notifyDataSetChanged();
 
 
         holder.mealPlanEditButton.setOnClickListener(v -> {

@@ -19,6 +19,7 @@ import android.widget.Switch;
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.meal_plan.MealPlanController;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.recipes.Recipe;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
     final ShoppingListController shoppingListController = new ShoppingListController(this);
     final RecipeController recipeController = new RecipeController(this);
+    private MealPlanController mealPlanController;
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
@@ -88,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         weakActivity = new WeakReference<>(MainActivity.this);
+
+        mealPlanController = new MealPlanController(this, this.recipeController, this.ingredientStorageController);
 
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
@@ -159,6 +163,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public RecipeController getRecipeController(){
         return recipeController;
+    }
+
+    public MealPlanController getMealPlanController() {
+        return this.mealPlanController;
     }
 
     public static MainActivity getmInstanceActivity() {
