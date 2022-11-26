@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
@@ -122,9 +123,6 @@ public class ShopPickUpFragment extends DialogFragment {
                             catch(IllegalArgumentException e)
                             {
                                 costF = ingredient.getAmountPicked();
-                                //SnackBar pop which is specific to large numbers
-
-                                //Snackbar.make(getActivity().ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
                             }
                             catch(Exception e)
                             {
@@ -133,16 +131,11 @@ public class ShopPickUpFragment extends DialogFragment {
                             }
                             Log.i("Amount Picked up", String.valueOf(costF));
 
-
                             ingredient.setAmountPicked(costF);
 
                             MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
-
-
                         }
                     })
                     .create();
-
-
     }
 }
