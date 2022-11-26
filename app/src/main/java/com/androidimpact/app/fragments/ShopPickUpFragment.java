@@ -79,6 +79,7 @@ public class ShopPickUpFragment extends DialogFragment {
 
         editAmountPickUp = view.findViewById(R.id.editAmountPickedUp);
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
             //initializing dialog box with existing object values
@@ -86,6 +87,7 @@ public class ShopPickUpFragment extends DialogFragment {
         {
             pos = getArguments().getInt("itemPos");
             ingredient = (ShopIngredient) getArguments().getSerializable("ingredient");
+            editAmountPickUp.setText(String.valueOf(ingredient.getAmount()));
         }
         else
         {
