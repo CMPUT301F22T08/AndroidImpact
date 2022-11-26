@@ -1,4 +1,4 @@
-package com.androidimpact.app.meal_plan;
+package com.androidimpact.app.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -114,12 +114,14 @@ public class ServingsAddFragment extends DialogFragment {
             EditText servingsInput = view.findViewById(R.id.editTextServings);
             String input = servingsInput.getText().toString();
             try {
-                double f = Double.parseDouble(input);
-                assert f > 0;
+                double floatingPoint = Double.parseDouble(input);
+                if(!(floatingPoint>0)) {
+                    throw new Exception("invalid entry");
+                }
                 if(this.isRecipe) {
-                    mealPlanAddEditViewActivity.addRecipe(this.mealType, this.hash, f);
+                    mealPlanAddEditViewActivity.addRecipe(this.mealType, this.hash, floatingPoint);
                 } else {
-                    mealPlanAddEditViewActivity.addIngredient(this.mealType, this.hash, f);
+                    mealPlanAddEditViewActivity.addIngredient(this.mealType, this.hash, floatingPoint);
                 }
                 dismiss();
             }

@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.meal_plan.MealPlan;
-import com.androidimpact.app.meal_plan.IngredientAddFragment;
-import com.androidimpact.app.meal_plan.RecipeAddFragment;
+import com.androidimpact.app.fragments.IngredientAddFragment;
+import com.androidimpact.app.fragments.RecipeAddFragment;
 import com.androidimpact.app.recipes.RecipeController;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
