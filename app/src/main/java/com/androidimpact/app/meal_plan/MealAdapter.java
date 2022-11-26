@@ -26,7 +26,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private MealPlan mealPlan;
     ArrayList<Recipe> recipeArrayList;
     ArrayList<StoreIngredient> ingredientArrayList;
-    ArrayList<Float> recipeServingsArrayList, ingredientServingsArrayList;
+    ArrayList<Double> recipeServingsArrayList, ingredientServingsArrayList;
 
 
     String key;

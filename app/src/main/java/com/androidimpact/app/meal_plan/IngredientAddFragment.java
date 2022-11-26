@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,8 +88,12 @@ public class IngredientAddFragment extends DialogFragment {
 
         onSelectInterface = i -> {
             selectedIngredientId = ingredientDataList.get(i).getId();
-            MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
-            mealPlanAddEditViewActivity.addIngredient(this.mealType, selectedIngredientId);
+            //MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
+            //mealPlanAddEditViewActivity.addIngredient(this.mealType, selectedIngredientId);
+            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedIngredientId, false);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            servingsAddFragment.show(transaction, "Add Servings");
+
             dismiss();
         };
 

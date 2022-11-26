@@ -50,7 +50,7 @@ import nl.dionsegijn.konfetti.models.Size;
 public class RecipeAddFragment extends DialogFragment {
     private String mealType;
 
-    final String TAG = "RecipeListFragment";
+    final String TAG = "RecipeAddFragment";
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
@@ -83,12 +83,9 @@ public class RecipeAddFragment extends DialogFragment {
 
         onSelectInterface = i -> {
             selectedRecipeId = recipeDataList.get(i).getId();
-            MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
-            mealPlanAddEditViewActivity.addRecipe(this.mealType, selectedRecipeId);
-
-            //IngredientAddFragment ingredientAddFragment = new IngredientAddFragment(this.mealType);
-            //FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            //ingredientAddFragment.show(transaction, "NEWWWW");
+            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedRecipeId, true);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            servingsAddFragment.show(transaction, "Add Servings");
 
             dismiss();
         };

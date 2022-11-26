@@ -285,19 +285,29 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
                 String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
                 for(String key: keys) {
                     ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
+                    ArrayList<Double> recipeServingsList = (ArrayList<Double>) data.get(key + "RecipesServings");
                     if(recipeIdList != null) {
-                        recipeIdList.forEach(recipeKey -> {
-                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, 1, this.recipeList);
-                            Log.i("naruto", recipeKey);
-                        });
+                        for(int i = 0; i < recipeIdList.size(); i++) {
+                            mealPlanToAdd.addMealItemRecipe(
+                                    key,
+                                    recipeIdList.get(i),
+                                    recipeServingsList.get(i),
+                                    this.recipeList
+                            );
+                        }
                     }
 
                     ArrayList<String> ingredientIdList = (ArrayList<String>) data.get(key + "Ingredients");
+                    ArrayList<Double> ingredientServingsList = (ArrayList<Double>) data.get(key + "IngredientsServings");
                     if(ingredientIdList != null) {
-                        ingredientIdList.forEach(ingredientKey -> {
-                            mealPlanToAdd.addMealItemIngredient(key, ingredientKey, 1, this.ingredientStorageData);
-                            Log.i("naruto", ingredientKey);
-                        });
+                        for(int i = 0; i < ingredientIdList.size(); i++) {
+                            mealPlanToAdd.addMealItemIngredient(
+                                    key,
+                                    ingredientIdList.get(i),
+                                    ingredientServingsList.get(i),
+                                    this.ingredientStorageData
+                            );
+                        }
                     }
                 }
                 mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
