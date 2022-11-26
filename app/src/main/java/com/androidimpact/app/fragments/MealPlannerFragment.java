@@ -50,7 +50,7 @@ import nl.dionsegijn.konfetti.models.Size;
  * Use the {@link MealPlannerFragment#newInstance} factory method to
  * create an instance of this fragment.
  * @version 1.0
- * @author Vedant Vyas
+ * @author Aneeljyot Alagh and Vedant Vyas
  */
 public class MealPlannerFragment extends Fragment implements NavbarFragment {
     final String TAG = "MealPlannerFragment";
@@ -60,12 +60,6 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     MealPlanListAdapter mealPlanAdapter;
     ArrayList<MealPlan> mealPlans;
     MealPlanController mealPlanController;
-
-    // adding recipes to firebase
-    FirebaseFirestore db;
-    CollectionReference mealPlanCollection;
-    CollectionReference recipeCollection;
-    CollectionReference ingredientCollection;
 
     // using ActivityResultLaunchers
     private ActivityResultLauncher<Intent> addMealPlanLauncher;
@@ -95,12 +89,6 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        mealPlanCollection = db.collection("meal-plan");
-        recipeCollection = db.collection("recipes");
-        ingredientCollection = db.collection("ingredientStorage");
     }
 
     /**
@@ -117,6 +105,8 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     }
 
     /**
+     * Fragment Called immediately after onCreateView(LayoutInflater, ViewGroup, Bundle) has returned, but before any saved state has been restored in to the view.
+     * This gives subclasses a chance to initialize themselves once they know their view hierarchy has been completely created.
      * @param view
      * @param savedInstanceState
      */
@@ -233,6 +223,9 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         });
     }
 
+    /**
+     * Updates the meal plan when recipes/ingredients change.
+     */
     public void refreshMealItems() {
         mealPlanAdapter.notifyDataSetChanged();
     }
