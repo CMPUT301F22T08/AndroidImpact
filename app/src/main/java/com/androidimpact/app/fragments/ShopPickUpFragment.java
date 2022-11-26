@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
@@ -125,12 +126,15 @@ public class ShopPickUpFragment extends DialogFragment {
                             {
                                 costF = ingredient.getAmountPicked();
                                 //SnackBar pop which is specific to large numbers
+                                Toast.makeText(getActivity(), "Invalid Input", Toast.LENGTH_SHORT).show();
 
                                 //Snackbar.make(getActivity().ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
                             }
                             catch(Exception e)
                             {
                                 costF = ingredient.getAmountPicked();
+                                Toast.makeText(getActivity(), "Invalid Input", Toast.LENGTH_SHORT).show();
+
                                 //Illegal Argument Exception
                             }
                             Log.i("Amount Picked up", String.valueOf(costF));
