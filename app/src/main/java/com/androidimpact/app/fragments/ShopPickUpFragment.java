@@ -24,12 +24,10 @@ import com.androidimpact.app.shopping_list.ShopIngredient;
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
+ * Add a toggle listener to adapter class, which opens this dialog box. I guess that's good enough for now
+ * 
+ * @author Vedant Vyas
  */
-
-
-//Add a toggle listener to adapter class, which opens this dialog box. I guess that's good enough for now
-
-
 public class ShopPickUpFragment extends DialogFragment {
 
     // TODO: Rename parameter arguments, choose names that match
