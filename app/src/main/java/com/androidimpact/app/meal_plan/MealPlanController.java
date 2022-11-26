@@ -20,6 +20,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Controller Class for MealPlanList
+ * Acts as a wrapper around MealPlanList and implements functionality to back up the storage on FireStore
+ * @version 1.0
+ * @author Aneeljyot Alagh
+ */
 public class MealPlanController {
     final String TAG = "MealPlanController";
     final String firestorePath = "meal-plan";
@@ -30,6 +36,12 @@ public class MealPlanController {
     RecipeList recipeList;
     ArrayList<StoreIngredient> ingredientStorageData;
 
+    /**
+     * Constructor: Creates an empty MealPlanList class and populates it with data from FireStore
+     * @param context (Context) The current context, used to push success/failure SnackBars to the screen.
+     * @param recipeController (RecipeController) The current controller handling recipes
+     * @param ingredientStorageController (IngredientStorageController) The current controller handling recipes
+     */
     public MealPlanController(Context context, RecipeController recipeController, IngredientStorageController ingredientStorageController) {
         this.context = context;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -41,11 +53,20 @@ public class MealPlanController {
         this.ingredientStorageData = ingredientStorageController.getData();
     }
 
+    /**
+     * Creates a SnackBar that pup-up on the screen
+     * @param s (String) - The text to be shown in the SnackBar
+     */
     private void pushSnackBarToContext(String s) {
         Snackbar.make(((MainActivity)context).findViewById(R.id.nav_fragment), s, Snackbar.LENGTH_LONG)
                 .setAction("OK", (v)->{}).show();
     }
 
+    /**
+     * Add a snapshot listener to the FireStore collection that repopulates the meal plan list when changes are detected.
+     * Notifies the current ViewAdapter that the data may have changed.
+     * @param mealPlanListAdapter (MealPlanListAdapter) The adapter to be updated when the latest data is pulled from firestore
+     */
     public void refresh(MealPlanListAdapter mealPlanListAdapter){
         mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
@@ -97,6 +118,10 @@ public class MealPlanController {
         });
     }
 
+    /**
+     * Adds snapshot listeners to the given list adapter, whenever the Firestore collections of meal plan, recipes, and/or ingredients have changes.
+     * @param mealPlanListAdapter (MealPlanListAdapter) The adapter to be updated when the latest data is pulled from firestore
+     */
     public void addDataUpdateSnapshotListener(MealPlanListAdapter mealPlanListAdapter) {
         refresh(mealPlanListAdapter);
         recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
@@ -108,7 +133,12 @@ public class MealPlanController {
         });
     }
 
-
+    /**
+     * Deletes the object in list at the parameter position
+     * @param position (int) The position at which to delete the item
+     * @param view (View) The view to add Snackbars to
+     * @param mealPlanListAdapter (MealPlanListAdapter) The list adapter that needs to be updated when object is deleted
+     */
     public void delete(int position, View view, MealPlanListAdapter mealPlanListAdapter) {
         MealPlan deletedMealPlan = this.mealPlanList.get(position);
         String description = deletedMealPlan.getDate();
@@ -134,7 +164,12 @@ public class MealPlanController {
         mealPlanListAdapter.notifyDataSetChanged();
     }
 
-
+    /**
+     * Returns the meal plan at the given position, if it exists.
+     * @param position (int) the position of the item to return
+     * @return meal plan at the given position
+     * @throws IndexOutOfBoundsException if given position is outside the bounds of the meal plan list
+     */
     public MealPlan get(int position) throws IndexOutOfBoundsException {
         if (position < mealPlanList.size() && position>=0){
             return mealPlanList.get(position);
@@ -142,14 +177,25 @@ public class MealPlanController {
         throw new IndexOutOfBoundsException("Please enter an invalid index");
     }
 
+    /**
+     * Sorts the data in the meal plan list
+     */
     public void sortData(){
         mealPlanList.sortByChoice();
     }
 
+    /**
+     * Returns the data in the meal plan list
+     * @return meal plans data (ArrayList&lt;MealPlan&gt;)
+     */
     public ArrayList<MealPlan> getData(){
         return mealPlanList.getData();
     }
 
+    /**
+     * Returns the number of items in the meal plan list
+     * @return the size of meal plan list
+     */
     public int size(){
         return mealPlanList.size();
     }
