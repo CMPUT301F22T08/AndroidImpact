@@ -21,6 +21,7 @@ import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -74,8 +75,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         float amt = currentIngredient.getAmountPicked();
         holder.amountPicked.setText(String.valueOf(amt));
 
-        if (currentIngredient.getAmountPicked() == 0)
+        if (amt == 0)
             holder.pickupButton.setChecked(false);
+        else
+            holder.pickupButton.setChecked(true);
+
 
 
 
@@ -91,12 +95,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
                     //calling new instance method since we also want to pass food object
                     //maybe remove position from here coz android is crying
-                    ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
+                    if (currentIngredient.getAmountPicked() == 0) {
+                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
 
-                    MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
-
-                    //It doesn't handle the value being zero for the DATA
-
+                        MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
+                    }
 
                 }
                 else
@@ -107,17 +110,9 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
                         currentIngredient.setAmountPicked(0);
                         MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
                     }
-
-//
-//
-//
-
-
                 }
             }
         });
-//
-
 
         // set unit
         // since we have to fetch from firebase, we'll use a "loading" state
@@ -174,6 +169,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         private Switch pickupButton;
 
+        private FloatingActionButton moveFAB;
+
 
         /**
          * initializing our text views
@@ -190,6 +187,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             amount = itemView.findViewById(R.id.shop_ingredient_amount);
             amountPicked = itemView.findViewById(R.id.shop_ingredient_amountPick);
             root = itemView.findViewById(R.id.shop_ingredient_item_root);
+            moveFAB = itemView.findViewById(R.id.move_fab);
         }
     }
 

@@ -6,6 +6,11 @@ import android.os.Bundle;
 
 import com.androidimpact.app.R;
 
+/**
+ * Activity to add/edit meal plan recipes
+ * @version 1.0
+ * @author Aneeljyot Alagh, Clare Chen
+ */
 public class MealPlanAddEditRecipeIngredientActivity extends AppCompatActivity {
 
     @Override

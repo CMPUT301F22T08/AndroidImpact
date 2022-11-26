@@ -1,6 +1,7 @@
 package com.androidimpact.app.ingredients;
 
 import com.androidimpact.app.ingredients.Ingredient;
+import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  *  - bestBeforeDate (Calendar) - The best before date for the stored ingredient
  *  - location (String) - Where the ingredient is stored e.g. Pantry or Freezer
  *  - id (String) - id of the ingredient inside Firebase
+ *  Need to add some unit testing
  * @author Kailash Seshadri
  * @version 1.0
  * @see Ingredient
@@ -45,6 +47,15 @@ public class StoreIngredient extends Ingredient implements Serializable {
         super(id, description, amount, unit, category);
         this.bestBeforeDate = bestBeforeDate;
         this.location = location;
+    }
+
+
+    public StoreIngredient(ShopIngredient ingredient)
+    {
+        super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmount(), ingredient.getUnit(), ingredient.getCategory());
+        //To be changed to null
+        this.bestBeforeDate = null;
+        this.location = null;
     }
 
     /**

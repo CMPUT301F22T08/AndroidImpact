@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
@@ -23,12 +24,10 @@ import com.androidimpact.app.shopping_list.ShopIngredient;
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
+ * Add a toggle listener to adapter class, which opens this dialog box. I guess that's good enough for now
+ * 
+ * @author Vedant Vyas
  */
-
-
-//Add a toggle listener to adapter class, which opens this dialog box. I guess that's good enough for now
-
-
 public class ShopPickUpFragment extends DialogFragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -48,7 +47,6 @@ public class ShopPickUpFragment extends DialogFragment {
     public ShopPickUpFragment() {
         // Required empty public constructor
     }
-
 
     public static ShopPickUpFragment newInstance(ShopIngredient ingredient, int pos) {
         Bundle args = new Bundle();
@@ -70,30 +68,29 @@ public class ShopPickUpFragment extends DialogFragment {
 
     }
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_shop_pick_up, null);
 
-
         editAmountPickUp = view.findViewById(R.id.editAmountPickedUp);
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
             //initializing dialog box with existing object values
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             pos = getArguments().getInt("itemPos");
             ingredient = (ShopIngredient) getArguments().getSerializable("ingredient");
+            editAmountPickUp.setText(String.valueOf(ingredient.getAmount()));
         }
         else
         {
             pos = -1;
-            Log.i("tt2", "NULL");
+
         }
 
-        Log.i("tt", String.valueOf(pos));
+
 
             return builder
                     .setView(view)
@@ -112,37 +109,32 @@ public class ShopPickUpFragment extends DialogFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             String cost = editAmountPickUp.getText().toString();
 
+                            //To be Removed
+                            Log.i("Empty", cost);
+
                             float costF;
                             try
                             {
                                 costF = Float.parseFloat(cost);
                                 if (costF > Float.MAX_VALUE)
-                                    throw new IllegalArgumentException("Too big number");
-                            }
-                            catch(IllegalArgumentException e)
-                            {
-                                costF = ingredient.getAmountPicked();
-                                //SnackBar pop which is specific to large numbers
-
-                                //Snackbar.make(getActivity().ingredientListView, "Edited " + ingredient.getDescription(), Snackbar.LENGTH_SHORT).show();
+                                    throw new IllegalArgumentException("Large Number");
                             }
                             catch(Exception e)
                             {
                                 costF = ingredient.getAmountPicked();
-                                //Illegal Argument Exception
+                                //SnackBar pop which is specific to large numbers
+                                String errorMessage = e.getMessage();
+                                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+
+
                             }
                             Log.i("Amount Picked up", String.valueOf(costF));
-
 
                             ingredient.setAmountPicked(costF);
 
                             MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
-
-
                         }
                     })
                     .create();
-
-
     }
 }
