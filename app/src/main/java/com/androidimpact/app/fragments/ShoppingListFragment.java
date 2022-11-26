@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -79,6 +81,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     TextView sortText;
 
     Switch pickupSwitch;
+    FloatingActionButton moveFAB;
 
     // use ActivityResultLaunchers to go to different activities
     // this is defined in onViewCreated, see the comment where we initialize it
@@ -172,6 +175,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 //        });
 
         shoppingListController = ((MainActivity) a).getShoppingListController();
+        moveFAB  = a.findViewById(R.id.move_fab);
         shopIngredientViewAdapter = new ShopIngredientAdapter(getContext(), shoppingListController);
 
         // below line is to set layout manager for our recycler view.
@@ -181,6 +185,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
         //finding sort spinner
         sortIngredientSpinner = a.findViewById(R.id.sort_shopping_spinner);
+
         sortText = a.findViewById(R.id.sort_shopping_info);
 
         // getting available sorting choices
@@ -198,6 +203,98 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 android.R.layout.simple_spinner_dropdown_item
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
+
+
+
+
+        // drag to delete
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+            /**
+             * this method is called when the item is moved
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             */
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            /**
+             * Deletes the swiped object.
+             * Called when we swipe to the right
+             * @param viewHolder
+             * @param direction
+             */
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                //ShoppingListController.delete(position);
+            }
+            // finally, we add this to our recycler view.
+        }).attachToRecyclerView(shoppingListView);
+
+        // on snapshot listener for the collection
+        shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
+
+
+        moveFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<ShopIngredient> moveIngredientList = new ArrayList<>();
+
+
+                ArrayList<ShopIngredient> tempList = shoppingListController.getData();
+
+
+                for (int i = 0; i < tempList.size(); ++i)
+                {
+                    ShopIngredient moveIngredient = tempList.get(i);
+
+                    if (moveIngredient.getAmountPicked() != 0)
+                    {
+                        moveIngredientList.add(moveIngredient);
+                        Log.i("Adding item to be moved", moveIngredient.getDescription());
+                    }
+                }
+
+                //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
+                //add the ingredients from List to the the Ingredient Storage
+
+                ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
+
+            }
+        });
+
+
+        //setting up the on item selected listener which lets user sort on the basis of selection
+        sortIngredientSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * Create method to get item for sort
+             * @param adapterView
+             * @param view
+             * @param i
+             * @param l
+             */
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                shoppingListController.sortData(i);
+                shopIngredientViewAdapter.notifyDataSetChanged();
+            }
+
+            /**
+             * This function ensures default sorting if no other sorting selected
+             * @param adapterView   The adapterView that does not contain any user selection
+             */
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                shoppingListController.sortData(0);
+                shopIngredientViewAdapter.notifyDataSetChanged();
+            }
+        });
+
         shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
 
         // EVENT LISTENERS

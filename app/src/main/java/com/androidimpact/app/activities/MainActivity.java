@@ -13,11 +13,16 @@ import com.androidimpact.app.fragments.ShopPickUpFragment;
 import com.androidimpact.app.ingredients.IngredientStorage;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.Switch;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.meal_plan.MealPlanController;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.recipes.Recipe;
+
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.fragments.MealPlannerFragment;
@@ -28,7 +33,6 @@ import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -41,8 +45,6 @@ import java.util.concurrent.Executors;
  * @author Vedant Vyas
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-
-    // adding cities to firebase
     final String TAG = "MainActivity";
 
     // define ExecutorService (thread pool) so things can run in the background
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
     final ShoppingListController shoppingListController = new ShoppingListController(this);
     final RecipeController recipeController = new RecipeController(this);
+    private MealPlanController mealPlanController;
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
@@ -79,9 +82,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String username = extras.getString("username");
 
         View parentLayout = findViewById(R.id.main_activity_layout);
-        Snackbar.make(parentLayout, "Welcome " + username + "!", Snackbar.LENGTH_SHORT)
-                .setAction("Ok", view1 -> {})
-                .show();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         weakActivity = new WeakReference<>(MainActivity.this);
+
+        mealPlanController = new MealPlanController(this, this.recipeController, this.ingredientStorageController);
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
@@ -164,6 +166,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return recipeController;
     }
 
+    public MealPlanController getMealPlanController() {
+        return this.mealPlanController;
+    }
+
     public static MainActivity getmInstanceActivity() {
         return weakActivity.get();
     }
@@ -186,13 +192,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
     {
-       // shoppingListFragment.cancelPickUp();
-
         getSupportActionBar().setTitle("Shopping List");
         updateActiveFragment(shoppingListFragment);
         shoppingListFragment.editShopIngredientFB(ingredient);
-//        Switch pickup = findViewById(R.id.shop_ingredient_switch);
-//        pickup.setChecked(false);
+
+    }
+
+    public void AddShopListToShopIngredient(ArrayList<ShopIngredient> data)
+    {
+        for (ShopIngredient item: data)
+        {
+            StoreIngredient ingredient = new StoreIngredient(item);
+            ingredientStorageController.addEdit(ingredient);
+        }
+
+        //Delete all the items from Shopping List that were moved
+
     }
 
 }

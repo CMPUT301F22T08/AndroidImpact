@@ -1,10 +1,5 @@
-package com.androidimpact.app.meal_plan;
+package com.androidimpact.app.fragments;
 
-import static java.util.Objects.isNull;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,36 +10,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.activities.AddEditStoreIngredientActivity;
-import com.androidimpact.app.activities.MainActivity;
-import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
-import com.androidimpact.app.fragments.IngredientStorageFragment;
 import com.androidimpact.app.ingredients.IngredientStorage;
-import com.androidimpact.app.ingredients.IngredientStorageController;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
-import com.androidimpact.app.recipes.Recipe;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.androidimpact.app.meal_plan.OnSelectInterface;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 public class IngredientAddFragment extends DialogFragment {
     final String TAG = "IngredientAddFragment";
@@ -87,8 +69,12 @@ public class IngredientAddFragment extends DialogFragment {
 
         onSelectInterface = i -> {
             selectedIngredientId = ingredientDataList.get(i).getId();
-            MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
-            mealPlanAddEditViewActivity.addIngredient(this.mealType, selectedIngredientId);
+            //MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
+            //mealPlanAddEditViewActivity.addIngredient(this.mealType, selectedIngredientId);
+            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedIngredientId, false);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            servingsAddFragment.show(transaction, "Add Servings");
+
             dismiss();
         };
 
