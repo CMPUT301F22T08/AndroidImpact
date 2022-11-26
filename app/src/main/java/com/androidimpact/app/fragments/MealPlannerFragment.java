@@ -199,37 +199,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             // to our recycler view.
         }).attachToRecyclerView(mealPlanListView);
 
-        // on snapshot listener for the collection
-//        mealPlanCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
-//            // Clear the old list
-//            mealPlans.clear();
-//
-//            if (queryDocumentSnapshots == null) {
-//                return;
-//            }
-//            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-//                Map<String, Object> data = doc.getData();
-//                MealPlan mealPlanToAdd = new MealPlan(doc.getId(), (String) data.get("sortString"));
-//
-//                String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
-//                for(String key: keys) {
-//                    ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
-//                    if(recipeIdList != null) {
-//                        recipeIdList.forEach(recipeKey -> {
-//                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, this.recipeList);
-//                            Log.i("naruto", recipeKey);
-//                        });
-//                    }
-//                }
-//                mealPlans.add(mealPlanToAdd); // Adding the recipe attributes from FireStore
-//            }
-//
-//            Log.i(TAG, "Snapshot listener: Added " + mealPlans.size() + " elements");
-//            for (MealPlan i : mealPlans) {
-//                Log.i(TAG, "Snapshot listener: Added " + i.getDate() + " to elements");
-//            }
-//            mealPlanAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-//        });
+
 
         refresh();
 
@@ -317,7 +287,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
                     ArrayList<String> recipeIdList = (ArrayList<String>) data.get(key + "Recipes");
                     if(recipeIdList != null) {
                         recipeIdList.forEach(recipeKey -> {
-                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, this.recipeList);
+                            mealPlanToAdd.addMealItemRecipe(key, recipeKey, 1, this.recipeList);
                             Log.i("naruto", recipeKey);
                         });
                     }
@@ -325,7 +295,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
                     ArrayList<String> ingredientIdList = (ArrayList<String>) data.get(key + "Ingredients");
                     if(ingredientIdList != null) {
                         ingredientIdList.forEach(ingredientKey -> {
-                            mealPlanToAdd.addMealItemIngredient(key, ingredientKey, this.ingredientStorageData);
+                            mealPlanToAdd.addMealItemIngredient(key, ingredientKey, 1, this.ingredientStorageData);
                             Log.i("naruto", ingredientKey);
                         });
                     }

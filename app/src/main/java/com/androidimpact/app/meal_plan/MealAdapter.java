@@ -26,9 +26,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private MealPlan mealPlan;
     ArrayList<Recipe> recipeArrayList;
     ArrayList<StoreIngredient> ingredientArrayList;
+    ArrayList<Float> recipeServingsArrayList, ingredientServingsArrayList;
+
+
     String key;
-    //private ArrayList<Recipe> breakfastRecipes, lunchRecipes, dinnerRecipes, snackRecipes;
-    //private ArrayList<StoreIngredient> breakfastIngredients, lunchIngredients, dinnerIngredients, snackIngredients;
 
     /**
      * Constructor for adapter for MealPlan
@@ -40,14 +41,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         this.key = key;
         this.recipeArrayList = mealPlan.getRecipes(key);
         this.ingredientArrayList = mealPlan.getIngredients(key);
-        //this.breakfastRecipes = mealPlan.getRecipes("breakfast");
-        //this.lunchRecipes = mealPlan.getRecipes("lunch");
-        //this.dinnerRecipes = mealPlan.getRecipes("dinner");
-        //this.breakfastIngredients = mealPlan.getIngredients("breakfast");
-        //this.lunchIngredients = mealPlan.getIngredients("lunch");
-        //this.dinnerIngredients = mealPlan.getIngredients("dinner");
-        //this.snackRecipes = mealPlan.getRecipes("snacks");
-        //this.snackIngredients = mealPlan.getIngredients("snacks");
+
+        this.recipeServingsArrayList = mealPlan.getRecipeServings(key);
+        this.ingredientServingsArrayList = mealPlan.getIngredientServings(key);
+
     }
 
     /**
@@ -72,7 +69,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealAdapter.MealViewHolder holder, int position) {
         if(this.getItemCount() > 0) {
             if(position == 0) {
-                String header = key + " Meals";
+                String keyDisplay = key.substring(0,1).toUpperCase().concat(key.substring(1));
+                String header = keyDisplay + " Meals";
                 holder.type.setText(header);
             } else {
                 holder.type.setText("");
@@ -84,22 +82,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         if(this.getItemCount() > 0) {
             Log.i("tag", "in");
             if(position < this.recipeArrayList.size()) {
-                Log.i("tag tag", this.recipeArrayList.get(position).getTitle());
                 holder.item.setText(this.recipeArrayList.get(position).getTitle());
+                holder.servings.setText(String.valueOf(this.recipeServingsArrayList.get(position)));
             } else {
-                Log.i("tag tag tag", this.ingredientArrayList.get(position - this.recipeArrayList.size()).getDescription());
                 holder.item.setText(this.ingredientArrayList.get(position - this.recipeArrayList.size()).getDescription());
+                holder.servings.setText(String.valueOf(this.ingredientServingsArrayList.get(position - this.recipeArrayList.size())));
             }
-            //holder.item.setText(
-            //        ((position > this.recipeArrayList.size() - 1) ? this.recipeArrayList.get(position).getTitle() : this.ingredientArrayList.get(position - this.recipeArrayList.size() + 1).getDescription())
-            //);
+
         }
-        //}
-        //this.breakfastRecipes.forEach(recipe -> {
-        //    holder.item.setText(recipe.getTitle());
-        //});
-        //MealPlan recyclerData = mealPlan.get(position);
-        //holder.date.setText(recyclerData.getDate());
+
     }
 
     /**
@@ -117,7 +108,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public class MealViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view and button
-        private TextView type, item;
+        private TextView type, item, servings;
 
         /**
          * Initializing our text views
@@ -127,6 +118,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             super(itemView);
             type = itemView.findViewById(R.id.meal_name);
             item = itemView.findViewById(R.id.meal_item);
+            servings = itemView.findViewById(R.id.meal_serving);
         }
     }
 }

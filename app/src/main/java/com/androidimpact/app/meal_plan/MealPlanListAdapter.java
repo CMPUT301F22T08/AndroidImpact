@@ -98,12 +98,6 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
             adapter.notifyDataSetChanged();
         }
 
-//        MealAdapter mealAdapterBreakfast = new MealAdapter(recyclerData, "breakfast");
-//
-//        LinearLayoutManager manager = new LinearLayoutManager(context);
-//        holder.mealsListBreakfast.setLayoutManager(manager);
-//        holder.mealsListBreakfast.setAdapter(mealAdapterBreakfast);
-//        mealAdapterBreakfast.notifyDataSetChanged();
 
 
         holder.mealPlanEditButton.setOnClickListener(v -> {
