@@ -32,6 +32,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class is the activity Main Activity
@@ -42,13 +44,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     // adding cities to firebase
     final String TAG = "MainActivity";
+
+    // define ExecutorService (thread pool) so things can run in the background
+    // e.g. ShoppingListAutomator
+    final ExecutorService executorService = Executors.newFixedThreadPool(2);
+
     public static WeakReference<MainActivity> weakActivity;
-    final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
-    final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    MealPlannerFragment mealPlannerFragment;
-    final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
+    private final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
+    private final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance(executorService);
+    private final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
+    private final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
-
+    // store controllers in MainActivity so they can access the context
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
     final ShoppingListController shoppingListController = new ShoppingListController(this);
     final RecipeController recipeController = new RecipeController(this);
@@ -76,24 +83,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .setAction("Ok", view1 -> {})
                 .show();
 
-        //ArrayList<Recipe> recipes = new ArrayList<>();
-        //this.recipeList = new RecipeList(recipes);
-        //Log.i("recipelistboom", this.recipeList.getData().toString());
-        //ingredientStorage = new IngredientStorage();
-
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
 
         bottomnav = findViewById(R.id.bottom_navigation_view);
         bottomnav.setBackground(null);
-
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
-        this.mealPlannerFragment = MealPlannerFragment.newInstance();
-
         weakActivity = new WeakReference<>(MainActivity.this);
-
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();

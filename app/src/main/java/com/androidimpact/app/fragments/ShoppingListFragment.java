@@ -30,6 +30,9 @@ import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.shopping_list.AddEditShoppingItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.androidimpact.app.shopping_list.ShoppingListController;
+import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -38,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Arrays;
+import java.util.concurrent.Executor;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -56,6 +60,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     //Assume collection name is shopping list
     final String COLLECTION_NAME = "shoppingList";
 
+    // This class lets us automate the shopping list fragment, pulling it from Firebase
+    ShoppingListAutomator shoppingListAutomator;
+    // for ShoppingListAutomator to work, we need an Executor instance
+    // this class helps us manage background threads. ShoppingListAutomator basically does one long background task!
+    private final Executor executor;
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView shoppingListView;
@@ -77,9 +86,10 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     private ActivityResultLauncher<Intent> editShoppingListItemLauncher;
 
     /**
-     * Required empty public constructor
+     * public constructor. This is nonempty because it helps us initialize the Executor
      */
-    public ShoppingListFragment() {
+    public ShoppingListFragment(Executor executor) {
+        this.executor = executor;
     }
 
     /**
@@ -89,8 +99,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      * @return A new instance of fragment ShoppingList.
      */
     // TODO: Rename and change types and number of parameters
-    public static ShoppingListFragment newInstance() {
-        ShoppingListFragment fragment = new ShoppingListFragment();
+    public static ShoppingListFragment newInstance(Executor executor) {
+        ShoppingListFragment fragment = new ShoppingListFragment(executor);
         return fragment;
     }
 
@@ -104,6 +114,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         shoppingCollection = db.collection(COLLECTION_NAME);
+
+        // initialize shopping list
+        shoppingListAutomator = new ShoppingListAutomator(db, executor);
     }
 
     /**
@@ -141,11 +154,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             return;
         }
 
-
         // initialize adapters and customList
         shoppingListView = a.findViewById(R.id.shopping_listview);
-
-
         pickupSwitch = a.findViewById(R.id.shop_ingredient_switch);
 
 //        pickupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -199,6 +209,16 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             intent.putExtra("ingredient", food);
             editShoppingListItemLauncher.launch(intent);
         });
+
+        try {
+            // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
+            // so we have to pass in listeners instead of adding addSuccessListeners
+            shoppingListAutomator.automateShoppingList(
+                    shopIngredients -> Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success!"),
+                    e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
+        } catch (Exception e) {
+            Log.i(TAG, "Error running shoppingListAutomator!", e);
+        }
 
 
         /**
