@@ -7,17 +7,7 @@
     android:padding="16dp"
     tools:context=".activities.MealPlanAddEditRecipeIngredientActivity">
 
-    <TextView
-        android:id="@+id/add_edit_meal_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+
 
     <TextView
         android:id="@+id/add_edit_meal_item"
@@ -26,29 +16,29 @@
         android:layout_marginStart="10dp"
         android:text="TextView"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/add_edit_meal_name"
-
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/add_edit_serving_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginStart="75dp"
         android:text="Servings"
+        android:layout_marginEnd="10dp"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/add_edit_meal_item"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/add_edit_meal_serving"
+        app:layout_constraintTop_toBottomOf="@+id/add_edit_meal_item" />
 
     <TextView
         android:id="@+id/add_edit_meal_serving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:text="TextView"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/add_edit_serving_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_edit_serving_name"
+
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

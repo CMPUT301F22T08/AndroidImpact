@@ -168,70 +168,74 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
         RecyclerView[] recyclerViews = new RecyclerView[]{breakfastListView, lunchListView, dinnerListView, snacksListView};
 
-        ArrayList<String> recipeIds = this.recipeIdMap.get("breakfast" + "Recipes");
-        ArrayList<String> ingredientIds = this.ingredientIdMap.get("breakfast" + "Ingredients");
-        ArrayList<String> recipeTitles = this.recipeTitleMap.get("breakfast" + "Recipes");
-        ArrayList<String> ingredientTitles = this.ingredientDescriptionMap.get("breakfast" + "Ingredients");
-        ArrayList<Double> recipeServings = this.recipeServingsMap.get("breakfast" + "RecipesServings");
-        ArrayList<Double> ingredientServings = this.ingredientServingsMap.get("breakfast" + "IngredientsServings");
-        MealAdapterAddEdit mealAdapter = new MealAdapterAddEdit(
-                this,
-                recipeTitles,
-                ingredientTitles,
-                recipeServings,
-                ingredientServings/*,
-                "breakfast"*/
-                );
+        for(int i = 0; i < keys.length; i++) {
+            ArrayList<String> recipeIds = this.recipeIdMap.get(keys[i] + "Recipes");
+            ArrayList<String> ingredientIds = this.ingredientIdMap.get(keys[i] + "Ingredients");
+            ArrayList<String> recipeTitles = this.recipeTitleMap.get(keys[i] + "Recipes");
+            ArrayList<String> ingredientTitles = this.ingredientDescriptionMap.get(keys[i] + "Ingredients");
+            ArrayList<Double> recipeServings = this.recipeServingsMap.get(keys[i] + "RecipesServings");
+            ArrayList<Double> ingredientServings = this.ingredientServingsMap.get(keys[i] + "IngredientsServings");
+            MealAdapterAddEdit mealAdapter = new MealAdapterAddEdit(
+                    this,
+                    recipeTitles,
+                    ingredientTitles,
+                    recipeServings,
+                    ingredientServings
 
-        // below line is to set layout manager for our recycler view.
-        LinearLayoutManager manager = new LinearLayoutManager(MealPlanAddEditViewActivity.this);
-        breakfastListView.setLayoutManager(manager);
-        breakfastListView.setAdapter(mealAdapter);
+            );
+
+            // below line is to set layout manager for our recycler view.
+            LinearLayoutManager manager = new LinearLayoutManager(MealPlanAddEditViewActivity.this);
+            recyclerViews[i].setLayoutManager(manager);
+            recyclerViews[i].setAdapter(mealAdapter);
 
 
-        // drag to delete
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            /**
-             * This method is called when the item is moved
-             * @param recyclerView
-             * @param viewHolder
-             * @param target
-             * @return
-             */
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            /**
-             * Creates swipe to delete functionality
-             * @param viewHolder
-             * @param direction
-             */
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // below line is to get the position
-                // of the item at that position.
-                int position = viewHolder.getAdapterPosition();
-                if(position < recipeIds.size()) {
-                    recipeIds.remove(position);
-                    recipeTitles.remove(position);
-                    recipeServings.remove(position);
-                } else {
-                    ingredientIds.remove(position - recipeIds.size());
-                    ingredientTitles.remove(position - recipeIds.size());
-                    ingredientServings.remove(position - recipeIds.size());
+            // drag to delete
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                /**
+                 * This method is called when the item is moved
+                 *
+                 * @param recyclerView
+                 * @param viewHolder
+                 * @param target
+                 * @return
+                 */
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
                 }
 
-                mealAdapter.notifyDataSetChanged();
+                /**
+                 * Creates swipe to delete functionality
+                 *
+                 * @param viewHolder
+                 * @param direction
+                 */
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    // below line is to get the position
+                    // of the item at that position.
+                    int position = viewHolder.getAdapterPosition();
+                    if (position < recipeIds.size()) {
+                        recipeIds.remove(position);
+                        recipeTitles.remove(position);
+                        recipeServings.remove(position);
+                    } else {
+                        ingredientIds.remove(position - recipeIds.size());
+                        ingredientTitles.remove(position - recipeIds.size());
+                        ingredientServings.remove(position - recipeIds.size());
+                    }
 
-            }
-            // at last we are adding this
-            // to our recycler view.
-        }).attachToRecyclerView(breakfastListView);
-        mealAdapter.notifyDataSetChanged();
+                    mealAdapter.notifyDataSetChanged();
 
-        this.adapterAddEditHashMap.put(keys[0], mealAdapter);
+                }
+                // at last we are adding this
+                // to our recycler view.
+            }).attachToRecyclerView(recyclerViews[i]);
+            mealAdapter.notifyDataSetChanged();
+
+            this.adapterAddEditHashMap.put(keys[i], mealAdapter);
+        }
 
     }
 
