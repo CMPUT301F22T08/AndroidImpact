@@ -77,17 +77,23 @@ public class ShopPickUpFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-            //initializing dialog box with existing object values
+        //initializing dialog box with existing object values
+
+        //We are indeed using arguments passed in to dialog fragment
         if (getArguments() != null) {
            // pos = getArguments().getInt("itemPos");
             ingredient = (ShopIngredient) getArguments().getSerializable("ingredient");
             editAmountPickUp.setText(String.valueOf(ingredient.getAmount()));
         }
-        else
-        {
-            pos = -1;
-
+        else{
+            //This case is not possible as we never call the PickUpFragment class with out arguments, but here just for the sake of good practices
+            return builder
+                    .setView(view)
+                    .setTitle("Wrong Usage of PickUp Dialog Box")
+                    .create();
         }
+
+
 
 
 
@@ -100,7 +106,10 @@ public class ShopPickUpFragment extends DialogFragment {
 
                             //might be an issue if user is cancelling to cancel the toggle back
                             ingredient.setAmountPicked(0);
-                            MainActivity.getmInstanceActivity().cancelUpdateShopIngredient(ingredient);
+                            MainActivity main = (MainActivity)getActivity();
+                            main.cancelUpdateShopIngredient(ingredient);
+
+                            //MainActivity.getmInstanceActivity().cancelUpdateShopIngredient(ingredient);
                         }
                     })
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -130,8 +139,10 @@ public class ShopPickUpFragment extends DialogFragment {
                             Log.i("Amount Picked up", String.valueOf(costF));
 
                             ingredient.setAmountPicked(costF);
+                            MainActivity main = (MainActivity)getActivity();
+                            main.updateShopIngredient(ingredient);
 
-                            MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
+                            //MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
                         }
                     })
                     .create();
