@@ -66,6 +66,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     // for ShoppingListAutomator to work, we need an Executor instance
     // this class helps us manage background threads. ShoppingListAutomator basically does one long background task!
     private final Executor executor;
+    private Button automateBtn;
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView shoppingListView;
@@ -313,8 +314,19 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
         // somehow, android:onClick doesn't work in fragments, so I have to setOnClickLIstener here
         // https://stackoverflow.com/a/4153842
-        Button automateBtn = a.findViewById(R.id.automateShoppingListBtn);
-        automateBtn.setOnClickListener(v -> runAutomation());
+        automateBtn = a.findViewById(R.id.automateShoppingListBtn);
+        try {
+            // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
+            // so we have to pass in listeners instead of adding addSuccessListeners
+            shoppingListAutomator.automateShoppingList(
+                    shopIngredients -> {
+                        Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
+                        automateBtn.setText("Check " + shopIngredients.size() + " recommendations");
+                    },
+                    e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
+        } catch (Exception e) {
+            Log.i(TAG, "Error running shoppingListAutomator!", e);
+        }
 
         /**
          * DEFINE ACTIVITY LAUNCHERS
@@ -414,29 +426,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
             addShoppingListItemLauncher.launch(intent);
         });
-    }
-
-    /**
-     * Runs the shopping list automation.
-     *
-     * This runs when the "Automate" button is clicked
-     */
-    public void runAutomation() {
-        if (shoppingListAutomator == null) {
-            Log.i(TAG + ":runAutomation", "Error: Shopping list has not been initialized!");
-            return;
-        }
-        try {
-            // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
-            // so we have to pass in listeners instead of adding addSuccessListeners
-            shoppingListAutomator.automateShoppingList(
-                    shopIngredients -> {
-                        Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
-                    },
-                    e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
-        } catch (Exception e) {
-            Log.i(TAG, "Error running shoppingListAutomator!", e);
-        }
     }
 
     /**
