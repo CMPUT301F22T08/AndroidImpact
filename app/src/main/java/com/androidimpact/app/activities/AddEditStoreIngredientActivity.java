@@ -212,7 +212,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // a bit of a hack to get the spinner to show the correct element
             if (selectedElem.get() != null) {
                 int idx = data.indexOf(selectedElem.get());
-                // add 1 to the spinner - this allows us to select the "null" element
+                // adding one so we can compensate for the "null" value at position 0
                 spinner.setSelection(idx + 1);
                 if (idx == -1) {
                     generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
@@ -236,7 +236,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedElem.set((T) parentView.getItemAtPosition(position - 1));
+                selectedElem.set((T) parentView.getItemAtPosition(position));
                 if (selectedElem.get() != null) {
                     Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
 

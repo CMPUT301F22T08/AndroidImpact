@@ -6,45 +6,52 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn;
+import static com.google.android.gms.common.internal.Asserts.checkNotNull;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.GeneralLocation;
-import androidx.test.espresso.action.GeneralSwipeAction;
-import androidx.test.espresso.action.Press;
-import androidx.test.espresso.action.Swipe;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.androidimpact.app.activities.LoginActivity;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+
+import java.util.UUID;
 
 /**
  * This tests the ingredient storage fragment, adding, and editing an ingredient
@@ -52,7 +59,6 @@ import org.junit.runners.MethodSorters;
  * @version 1.0
  * @author Curtis Kan, Joshua Ji
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class IngredientStorageFragmentTest {
@@ -83,7 +89,7 @@ public class IngredientStorageFragmentTest {
      * Make sure on the right fragment
      */
     @Test
-    public void A_rightFragmentTest() {
+    public void testFragmentTitle() {
 
         // Make sure on IngredientStorage fragment
         ViewInteraction textView = onView(
@@ -95,11 +101,20 @@ public class IngredientStorageFragmentTest {
     }
 
     /**
-     * Test add ingredient
+     * Test add, edit and delete
      */
     @Test
-    public void B_addIngredientTest() throws InterruptedException {
+    public void addEditDeleteTest() throws InterruptedException {
+        String ingredientDescription = UUID.randomUUID().toString().substring(0, 25);
+        String newIngredientDescription = UUID.randomUUID().toString().substring(0, 25);
 
+        addItem(ingredientDescription);
+        editItem(ingredientDescription, newIngredientDescription);
+        deleteItem(newIngredientDescription);
+
+    }
+
+    private void addItem(String ingredientDescription) throws InterruptedException {
         // Click on global fab
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.navbarFAB), withContentDescription("Multipurpose FAB in Navbar"),
@@ -129,7 +144,7 @@ public class IngredientStorageFragmentTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Abalone"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText(ingredientDescription), closeSoftKeyboard());
 
         // Set amount to 2
         ViewInteraction appCompatEditText2 = onView(
@@ -237,12 +252,118 @@ public class IngredientStorageFragmentTest {
 
         Thread.sleep(1000);
 
-        // Check if Cheese is in the list
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.store_ingredient_description), withText("Abalone"),
-                        withParent(withParent(withId(R.id.linearLayout))),
+        // Check if the ingredient is in the list
+        onView(withId(R.id.ingredient_listview))
+                .perform(RecyclerViewActions.actionOnHolderItem(
+                        storeIngredientVHMatcher(equalTo(ingredientDescription)),
+                        scrollTo()
+                )).check(matches(hasDescendant(withText(ingredientDescription))));
+    }
+
+    private void editItem(String ingredientDescription, String newIngredientDescription) throws InterruptedException {
+        // Click on the "name" in the IngredientStorage
+        // https://developer.android.com/reference/android/support/test/espresso/contrib/RecyclerViewActions.html
+        onView(withId(R.id.ingredient_listview))
+                .perform(RecyclerViewActions.actionOnHolderItem(
+                        storeIngredientVHMatcher(equalTo(ingredientDescription)),
+                        MyViewAction.clickChildViewWithId(R.id.edit_store_ingredient)
+                ));
+
+        Thread.sleep(1000);
+
+        // Change description to something new
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.ingredientStoreAdd_description),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.ingredient_store_description_layout),
+                                        0),
+                                0),
                         isDisplayed()));
-        textView3.check(matches(withText("Abalone")));
+        appCompatEditText6.perform(replaceText(newIngredientDescription));
+
+
+        // Confirm the edit
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.ingredientStoreAdd_confirmBtn), withText("Confirm"),
+                        childAtPosition(
+                                allOf(withId(R.id.content),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                9),
+                        isDisplayed()));
+        materialButton4.perform(click());
+
+        Thread.sleep(1000);
+
+        // See if the new ingredientDescription is in the list
+        // Check if the ingredient is in the list
+        onView(withId(R.id.ingredient_listview))
+                .perform(RecyclerViewActions.actionOnHolderItem(
+                        storeIngredientVHMatcher(equalTo(newIngredientDescription)),
+                        scrollTo()
+                )).check(matches(hasDescendant(withText(newIngredientDescription))));
+    }
+
+    @Test
+    public void pp() throws InterruptedException {
+        Thread.sleep(1000);
+
+        ViewInteraction recyclerView = onView(withId(R.id.ingredient_listview));
+
+        String newIngredientDescription = "Water bottle";
+        Matcher<View> hasIngredient = hasIngredientDescription(equalTo(newIngredientDescription));
+        recyclerView.check(matches(hasIngredient));
+
+        recyclerView.perform(RecyclerViewActions.scrollTo(
+                hasDescendant(withText(newIngredientDescription))
+        ));
+
+        onView(withText(newIngredientDescription)).check(matches(isDisplayed()));
+
+//        recyclerView.perform(RecyclerViewActions.actionOnHolderItem(
+//                storeIngredientVHMatcher(equalTo(newIngredientDescription)),
+//                swipeRight()
+//        )).check(matches(not(hasIngredient)));
+
+        recyclerView.perform(swipeRight());
+
+        Thread.sleep(1000);
+//
+//        onView(withId(R.id.ingredient_listview)).check(matches(not(hasIngredient)));
+    }
+
+    private void deleteItem(String newIngredientDescription) throws InterruptedException {
+        // https://stackoverflow.com/questions/56578699/espressotest-swipe-to-delete-item-of-recyclerview-inside-viewpager
+        // ricocarpe Oct 19, 2019
+
+        onView(withId(R.id.ingredient_listview))
+                .perform(RecyclerViewActions.actionOnHolderItem(
+                        storeIngredientVHMatcher(equalTo(newIngredientDescription)),
+                        swipeRight()
+                ));
+
+        Matcher<View> hasNoIngredient = not(hasIngredientDescription(equalTo(newIngredientDescription)));
+        onView(withId(R.id.ingredient_listview)).check(matches(hasNoIngredient));
+    }
+
+    // this is a helper function that matches an item in the RecyclerView by its description.
+    public static Matcher<StoreIngredientViewAdapter.StoreIngredientViewHolder> storeIngredientVHMatcher(Matcher<String> descriptionMatcher){
+        return new TypeSafeMatcher<>(){
+            @Override
+            public boolean matchesSafely(StoreIngredientViewAdapter.StoreIngredientViewHolder ingredientViewHolder) {
+                Log.i("storeIngredientVHMatcher", ingredientViewHolder.getDescriptionValue() + " = " + descriptionMatcher.toString());
+                return descriptionMatcher.matches(ingredientViewHolder.getDescriptionValue());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                // this is only used for verbose logs apparently
+                // https://thiagolopessilva.medium.com/creating-custom-viewmatcher-for-espresso-75dde62dd173
+                description.appendText("ViewHolder with description: " + descriptionMatcher.toString());
+            }
+        };
     }
 
     // Access edit item from recycler view item
@@ -259,7 +380,7 @@ public class IngredientStorageFragmentTest {
 
                 @Override
                 public String getDescription() {
-                    return "Click on a child view with specified id.";
+                    return null;
                 }
 
                 @Override
@@ -272,71 +393,40 @@ public class IngredientStorageFragmentTest {
 
     }
 
-    /**
-     * Test editing an ingredient
-     */
-    @Test
-    public void C_editIngredientTest() throws InterruptedException {
+    // matches an item in RecyclerView
+    // https://stackoverflow.com/a/53289078
+    public static Matcher<View> hasIngredientDescription(Matcher<String> matcher) {
+        return new TypeSafeMatcher<>(){
+            @Override
+            public boolean matchesSafely(View recyclerView) {
+                // bruh this code is so scuffed
+                if (!(recyclerView instanceof RecyclerView)) {
+                    return false;
+                }
+                RecyclerView recyclerView1 = (RecyclerView) recyclerView;
+                StoreIngredientViewAdapter adapter = (StoreIngredientViewAdapter) recyclerView1.getAdapter();
+                if (adapter == null) {
+                    return false;
+                }
+                for (int position = 0; position < adapter.getItemCount(); position++) {
+                    StoreIngredient ingredient = adapter.getItem(position);
+                    if (matcher.matches(ingredient.getDescription())) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
-        Thread.sleep(1000);
-        // Click on first ingredient in list, should be the item just added
-
-
-        ViewInteraction clickItem = onView(withId(R.id.ingredient_listview));
-        clickItem.perform(RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.edit_store_ingredient)));
-
-        Thread.sleep(1000);
-
-        // Change description to Apples
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.ingredientStoreAdd_description),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.ingredient_store_description_layout),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText6.perform(replaceText("Apples"));
-
-
-        // Confirm the edit
-        ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.ingredientStoreAdd_confirmBtn), withText("Confirm"),
-                        childAtPosition(
-                                allOf(withId(R.id.content),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                9),
-                        isDisplayed()));
-        materialButton4.perform(click());
-
-        // See if Apples is in the list
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.store_ingredient_description), withText("Apples"),
-                        withParent(withParent(withId(R.id.linearLayout))),
-                        isDisplayed()));
-        textView4.check(matches(withText("Apples")));
-
+            @Override
+            public void describeTo(Description description) {
+                // this is only used for verbose logs apparently
+                // https://thiagolopessilva.medium.com/creating-custom-viewmatcher-for-espresso-75dde62dd173
+                description.appendText("Has description: ");
+                matcher.describeTo(description);
+            }
+        };
     }
-    /**
-     * Test deleting an ingredient
-     */
-    @Test
-    public void D_deleteIngredientTest() {
 
-        // https://stackoverflow.com/questions/56578699/espressotest-swipe-to-delete-item-of-recyclerview-inside-viewpager
-        // ricocarpe Oct 19, 2019
-        signup();
-
-        onView(withId(R.id.ingredient_listview)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, new GeneralSwipeAction(
-                        Swipe.SLOW, GeneralLocation.BOTTOM_RIGHT, GeneralLocation.BOTTOM_LEFT,
-                        Press.FINGER)));
-
-        //TODO: Finish delete testing
-        //onView(withId(R.id.ingredient_listview)).check(matches(not(hasItem(hasDescendant(withText("Product"))))));
-    }
     /**
      * A bunch of generated code from the espresso screen recorder
      */
