@@ -53,7 +53,6 @@
         android:backgroundTint="@color/background"
         android:clickable="true"
         android:contentDescription="@string/add"
-        android:elevation="0dp"
         android:focusable="true"
         app:backgroundTint="@color/black"
         android:elevation="0dp"
