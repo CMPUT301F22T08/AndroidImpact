@@ -55,6 +55,7 @@
         android:contentDescription="@string/add"
         android:focusable="true"
         app:backgroundTint="@color/black"
+        app:borderWidth="0dp"
         android:elevation="0dp"
         app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
