@@ -104,7 +104,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      *
      * @return A new instance of fragment ShoppingList.
      */
-    // TODO: Rename and change types and number of parameters
     public static ShoppingListFragment newInstance(Executor executor) {
         ShoppingListFragment fragment = new ShoppingListFragment(executor);
         return fragment;
