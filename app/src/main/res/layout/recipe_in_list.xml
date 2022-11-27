@@ -35,9 +35,8 @@
         android:backgroundTint="@color/background"
         android:clickable="true"
         app:backgroundTint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recipe_name"
         app:srcCompat="@android:drawable/ic_menu_edit"
         app:tint="@color/white" />
 
