@@ -42,6 +42,7 @@
         android:layout_marginEnd="10dp"
         android:ems="10"
         android:hint="@string/add_location"
+        android:maxLength="20"
         android:inputType="textPersonName"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_200"
