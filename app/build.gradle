@@ -68,7 +68,6 @@ dependencies {
 
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
-    androidTestImplementation('com.adevinta.android:barista:4.2.0')
 
     // Jetpack Compose Integration
 //    implementation "androidx.navigation:navigation-compose:$nav_version"

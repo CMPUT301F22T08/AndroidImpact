@@ -23,6 +23,12 @@ import android.view.ViewParent;
 
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.GeneralLocation;
+import androidx.test.espresso.action.GeneralSwipeAction;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.action.Swipe;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -293,7 +299,10 @@ public class RecipesFragmentTest {
      */
     @Test
     public void D_deleteRecipeTest() {
-
+        onView(ViewMatchers.withId(R.id.recipe_listview)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, new GeneralSwipeAction(
+                        Swipe.SLOW, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT,
+                        Press.THUMB)));
     }
 
 

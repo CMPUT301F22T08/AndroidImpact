@@ -15,7 +15,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn;
 import static com.google.android.gms.common.internal.Asserts.checkNotNull;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
@@ -47,9 +46,11 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import java.util.UUID;
 
@@ -59,6 +60,7 @@ import java.util.UUID;
  * @version 1.0
  * @author Curtis Kan, Joshua Ji
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class IngredientStorageFragmentTest {
@@ -69,6 +71,7 @@ public class IngredientStorageFragmentTest {
 
     /**
      * Signup in the app beforehand
+     * Result: goes to the ingredient storage fragment
      */
     @Before
     public void signup() {
@@ -87,9 +90,10 @@ public class IngredientStorageFragmentTest {
 
     /**
      * Make sure on the right fragment
+     * Result: ensures ensuing tests are on the right fragment
      */
     @Test
-    public void testFragmentTitle() {
+    public void A_testFragmentTitle() {
 
         // Make sure on IngredientStorage fragment
         ViewInteraction textView = onView(
@@ -102,9 +106,12 @@ public class IngredientStorageFragmentTest {
 
     /**
      * Test add, edit and delete
+     * Result: adds a new ingredient, edits that ingredient, and deletes it, so no changes are made
+     * overall after the test is done
      */
     @Test
-    public void addEditDeleteTest() throws InterruptedException {
+    public void B_addEditDeleteTest() throws InterruptedException {
+
         String ingredientDescription = UUID.randomUUID().toString().substring(0, 25);
         String newIngredientDescription = UUID.randomUUID().toString().substring(0, 25);
 
@@ -114,6 +121,11 @@ public class IngredientStorageFragmentTest {
 
     }
 
+    /**
+     * Method to test adding an ingredient to the storage
+     * @param ingredientDescription
+     *      Name of the ingredient to put in
+     */
     private void addItem(String ingredientDescription) throws InterruptedException {
         // Click on global fab
         ViewInteraction floatingActionButton = onView(
@@ -260,6 +272,13 @@ public class IngredientStorageFragmentTest {
                 )).check(matches(hasDescendant(withText(ingredientDescription))));
     }
 
+    /**
+     * Method to test editing an ingredient
+     * @param ingredientDescription
+     *      The name of the current ingredient to edit
+     * @param newIngredientDescription
+     *      The name of the new description of the ingredient
+     */
     private void editItem(String ingredientDescription, String newIngredientDescription) throws InterruptedException {
         // Click on the "name" in the IngredientStorage
         // https://developer.android.com/reference/android/support/test/espresso/contrib/RecyclerViewActions.html
@@ -306,6 +325,9 @@ public class IngredientStorageFragmentTest {
                 )).check(matches(hasDescendant(withText(newIngredientDescription))));
     }
 
+    /**
+     * TODO: What is this josh
+     */
     @Test
     public void pp() throws InterruptedException {
         Thread.sleep(1000);
@@ -334,7 +356,12 @@ public class IngredientStorageFragmentTest {
 //        onView(withId(R.id.ingredient_listview)).check(matches(not(hasIngredient)));
     }
 
-    private void deleteItem(String newIngredientDescription) throws InterruptedException {
+    /**
+     * Method to test deleting an ingredient
+     * @param newIngredientDescription
+     *      Name of the ingredient to delete
+     */
+    private void deleteItem(String newIngredientDescription) {
         // https://stackoverflow.com/questions/56578699/espressotest-swipe-to-delete-item-of-recyclerview-inside-viewpager
         // ricocarpe Oct 19, 2019
 
