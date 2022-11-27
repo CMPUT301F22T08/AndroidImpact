@@ -214,4 +214,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
 }
