@@ -23,6 +23,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_dining_24" />
@@ -31,14 +32,14 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/background"
         android:clickable="true"
         app:backgroundTint="@color/black"
-        app:borderWidth="2dp"
-        android:backgroundTint="#2E6578"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit"
-        app:tint="@color/white"/>
+        app:tint="@color/white" />
 
     <HorizontalScrollView
         android:layout_width="0dp"
@@ -58,9 +59,9 @@
                 android:id="@+id/recipe_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 app:chipMinHeight="30dp"
-                app:chipSurfaceColor="#FFFFFF"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/purple_700"
                 tools:text="@string/recipe_category_in_list"
                 tools:textSize="16sp" />
 
@@ -68,9 +69,9 @@
                 android:id="@+id/recipe_prep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 app:chipMinHeight="30dp"
-                app:chipSurfaceColor="#8739EE"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/purple_500"
                 tools:text="@string/recipe_prep_time_in_list"
                 tools:textSize="16sp" />
 
@@ -78,11 +79,11 @@
                 android:id="@+id/recipe_servings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 app:chipIcon="@drawable/recipe_serving_vector"
                 app:chipIconTint="@color/white"
                 app:chipMinHeight="30dp"
-                app:chipSurfaceColor="#7286FC"
+                android:textColor="@color/white"
+                app:chipSurfaceColor="@color/purple_200"
                 tools:text="@string/recipe_servings_in_list"
                 tools:textSize="16sp" />
         </com.google.android.material.chip.ChipGroup>
