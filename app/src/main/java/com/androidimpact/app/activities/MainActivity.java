@@ -31,6 +31,7 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -63,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     final RecipeController recipeController = new RecipeController(this);
     private MealPlanController mealPlanController;
 
+    // Shopping LIst Automator is stored in the MainActivity as it needs access to some controllers
+    ShoppingListAutomator shoppingListAutomator;
+
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
 
@@ -93,7 +97,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         weakActivity = new WeakReference<>(MainActivity.this);
 
+        // initialize mealPlanController, as it needs access to other controllers
         mealPlanController = new MealPlanController(this, this.recipeController, this.ingredientStorageController);
+
+        // initialize ShoppingListAutomator, as it needs access to some controllers
+        shoppingListAutomator = new ShoppingListAutomator(this.recipeController, this.mealPlanController, executorService);
+        shoppingListFragment.addAutomator(shoppingListAutomator);
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();

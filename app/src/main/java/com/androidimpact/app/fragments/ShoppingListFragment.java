@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -33,8 +34,6 @@ import com.androidimpact.app.shopping_list.AddEditShoppingItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -108,6 +107,17 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     }
 
     /**
+     * Adds an instance of the {@link ShoppingListAutomator ShoppingListAutomator} class.
+     * <br /><br />
+     * Note: we cannot initialize a ShoppingListAutomator inside the fragment, since it needs
+     * access to {@link com.androidimpact.app.recipes.RecipeController RecipeController} and
+     * {@link com.androidimpact.app.meal_plan.MealPlanController MealPlanController}
+     */
+    public void addAutomator(ShoppingListAutomator shoppingListAutomator) {
+        this.shoppingListAutomator = shoppingListAutomator;
+    }
+
+    /**
      * Runs on creation of the fragment
      * @param savedInstanceState
      */
@@ -117,9 +127,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
         shoppingCollection = db.collection(COLLECTION_NAME);
-
-        // initialize shopping list
-        shoppingListAutomator = new ShoppingListAutomator(db, executor);
     }
 
     /**
@@ -203,9 +210,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 android.R.layout.simple_spinner_dropdown_item
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
-
-
-
 
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -307,18 +311,10 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             editShoppingListItemLauncher.launch(intent);
         });
 
-        try {
-            // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
-            // so we have to pass in listeners instead of adding addSuccessListeners
-            shoppingListAutomator.automateShoppingList(
-                    shopIngredients -> {
-                        Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
-                    },
-                    e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
-        } catch (Exception e) {
-            Log.i(TAG, "Error running shoppingListAutomator!", e);
-        }
-
+        // somehow, android:onClick doesn't work in fragments, so I have to setOnClickLIstener here
+        // https://stackoverflow.com/a/4153842
+        Button automateBtn = a.findViewById(R.id.automateShoppingListBtn);
+        automateBtn.setOnClickListener(v -> runAutomation());
 
         /**
          * DEFINE ACTIVITY LAUNCHERS
@@ -420,6 +416,28 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         });
     }
 
+    /**
+     * Runs the shopping list automation.
+     *
+     * This runs when the "Automate" button is clicked
+     */
+    public void runAutomation() {
+        if (shoppingListAutomator == null) {
+            Log.i(TAG + ":runAutomation", "Error: Shopping list has not been initialized!");
+            return;
+        }
+        try {
+            // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
+            // so we have to pass in listeners instead of adding addSuccessListeners
+            shoppingListAutomator.automateShoppingList(
+                    shopIngredients -> {
+                        Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
+                    },
+                    e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
+        } catch (Exception e) {
+            Log.i(TAG, "Error running shoppingListAutomator!", e);
+        }
+    }
 
     /**
      *

@@ -47,12 +47,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutShop">
 
+        <Button
+            android:id="@+id/automateShoppingListBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Automate"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shopping_listview"
-            android:layout_width="424dp"
-            android:layout_height="599dp"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
             android:background="@color/background"
-            android:padding="7dp" />
+            android:padding="0dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/move_fab"

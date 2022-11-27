@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.meal_plan.MealPlan;
+import com.androidimpact.app.meal_plan.MealPlanController;
 import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.shopping_list.ShoppingList;
@@ -42,11 +44,12 @@ public class ShoppingListAutomator {
     // this lets us run automateShoppingList() in a background thread
     private final Executor executor;
 
-    // Firestore
+    // Firebase
     FirebaseFirestore db;
-    CollectionReference mealPlanCollection;
-    CollectionReference recipesCollection;
-    CollectionReference ingredientStorageCollection;
+
+    // Controllers
+    MealPlanController mealPlanController;
+    RecipeController recipeController;
 
     // Actual Data
     ArrayList<MealPlan> mealPlan;
@@ -57,24 +60,19 @@ public class ShoppingListAutomator {
 
     /**
      * Constructor for ShoppingListAutomate
-     *
-     * using dependency injection (?) lol
-     * @param db Firebase Firestore database instance
+     * @param mealPlanController Meal Plan Controller
+     * @param recipeController RecipeController
+     * @param executor Executor class for us to execute background tasks
      */
     public ShoppingListAutomator(
-            FirebaseFirestore db,
+            RecipeController recipeController,
+            MealPlanController mealPlanController,
             Executor executor
     ) {
-        this.db = db;
-        this.mealPlanCollection = db.collection("meal-plan");
-        this.recipesCollection = db.collection("recipes");
-        this.ingredientStorageCollection = db.collection("ingredientStorage");
+        this.db = FirebaseFirestore.getInstance();
+        this.mealPlanController = mealPlanController;
+        this.recipeController = recipeController;
         this.executor = executor;
-
-        this.mealPlan = new ArrayList<>();
-        this.recipe = new ArrayList<>();
-        this.storeIngredients = new ArrayList<>();
-        this.recommendations = new ArrayList<>();
     }
 
     /**
@@ -108,7 +106,6 @@ public class ShoppingListAutomator {
      */
     public Task<ArrayList<ShopIngredient>> synchronousAutomateShoppingList() throws Exception {
         Log.i(TAG + ":automateShoppingList", "Start automation");
-        Tasks.await(fetchTopLevelData());
 
         // this is what we return
         ArrayList<ShopIngredient> res = new ArrayList<>();
@@ -123,29 +120,6 @@ public class ShoppingListAutomator {
         }
 
         return liftToTask(res);
-    }
-
-
-
-    /**
-     * Retrieves all the top-level data we need (recipes, mealPLan) and store them inside the class.
-     * Top level meaning we don't fetch the ingredients inside recipes.
-     *
-     * Note: we return a boolean task only because Tasks.await() needs a non-null variable
-     * and Tasks.await() is how we call this
-     *
-     * @return true (arbitrarily)
-     */
-    private Task<Boolean> fetchTopLevelData() throws Exception {
-        try {
-            mealPlan = Tasks.await(fetchCollection(MealPlan.class, mealPlanCollection));
-            recipe = Tasks.await(fetchCollection(Recipe.class, recipesCollection));
-            storeIngredients = Tasks.await(fetchCollection(StoreIngredient.class, ingredientStorageCollection));
-            return liftToTask(true);
-        } catch (Exception e) {
-            Log.i(TAG, "Error fetching top level data!", e);
-            throw e;
-        }
     }
 
     /**
