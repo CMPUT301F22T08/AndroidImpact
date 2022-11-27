@@ -44,7 +44,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Activity class for  Adding/Edit/Store Ingredient Activity
  * @version 1.0
- * @author Vedant Vyas
+ * @author Vedant Vyas, Joshua Ji, Kailash Seshadri
  */
 public class AddEditStoreIngredientActivity extends AppCompatActivity {
     // TAG: useful for logging

@@ -27,7 +27,8 @@ import java.util.ArrayList;
 
 
 /**
- *
+ * This class creates a view adapter for Shop Ingredient
+ * @version 1.0
  * @author vedantvyas
  */
 
@@ -75,41 +76,37 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         float amt = currentIngredient.getAmountPicked();
         holder.amountPicked.setText(String.valueOf(amt));
 
+        // if amountPicked is zero, then change switch to false
         if (amt == 0)
             holder.pickupButton.setChecked(false);
-        else
+        else    // else change switch to true
             holder.pickupButton.setChecked(true);
 
 
-
-
-
-
-
+        //Adds listener for switch button for every item
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
                 {
-                    //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
-
-
-                    //calling new instance method since we also want to pass food object
-                    //maybe remove position from here coz android is crying
+                    //if amount picked is zero and state is changed from false to true then only show the dialog box
                     if (currentIngredient.getAmountPicked() == 0) {
                         ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
 
                         MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
                     }
+                    // if amount picked is non-zero, then item  is already picked
 
                 }
                 else
                 {
-                    //This means that user accidentaly picked it up so change amount picked up to 0
+                    //if amount picked is non-zero and state is changed from true to false, then change amount Picked up to be zero
                     if (currentIngredient.getAmountPicked() != 0)
                     {
                         currentIngredient.setAmountPicked(0);
                         MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
                     }
+
+                    // if amount is zero and state is changed from true to false, no need to change amount picked up
                 }
             }
         });
@@ -120,6 +117,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("String", unitStr);
         holder.amount.setText(unitStr);
 
+
+        //Adding Listeners for list items
         holder.root.setOnClickListener(v -> {
             for (ShopIngredientClickListener l : clickListeners) {
                 l.shopIngredientClicked(currentIngredient, position);
@@ -128,8 +127,9 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     }
 
 
-
-
+    /**
+     * @return Size of ingredient List
+     */
     @Override
     public int getItemCount() {
 
