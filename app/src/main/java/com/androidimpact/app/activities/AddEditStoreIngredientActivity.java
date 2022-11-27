@@ -127,8 +127,10 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             // set initial values
             descriptionEditText.setText(currentIngredient.getDescription());
             amountEditText.setText(String.valueOf(currentIngredient.getAmount()));
-            bestBeforeCalendar.setTime(currentIngredient.getBestBeforeDate());
-            updateDateLabel();
+            if (currentIngredient.getBestBeforeDate() != null){
+                bestBeforeCalendar.setTime(currentIngredient.getBestBeforeDate());
+                updateDateLabel();
+            }
 
             // set initial unit, category and locations
             // note that we store the unit as a string, not a document path

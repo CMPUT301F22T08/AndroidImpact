@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
@@ -9,12 +10,26 @@
     android:layout_height="wrap_content"
     android:backgroundTint="#00FFFFFF"
     android:orientation="vertical"
-    android:paddingHorizontal="15dp"
+    android:paddingEnd="10dp"
+    android:paddingStart="5dp"
     android:paddingVertical="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/description_constraint_layout"
+        app:layout_constraintRight_toLeftOf="@id/linearLayout">
+
+        <ImageView
+            android:id="@+id/has_null_marker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/circle"
+            app:layout_constraintTop_toTopOf="@id/store_ingredient_description"
+            app:layout_constraintBottom_toBottomOf="@id/store_ingredient_description"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="5dp"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/store_ingredient_description"
@@ -26,7 +41,7 @@
             android:text="@string/description"
             android:textColor="@color/white"
             android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/has_null_marker"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -66,7 +81,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             app:chipBackgroundColor="@color/purple_700"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/has_null_marker"
             app:layout_constraintTop_toBottomOf="@+id/store_ingredient_description" />
 
         <com.google.android.material.chip.Chip
@@ -85,7 +100,8 @@
         android:id="@+id/store_ingredient_expandable_section"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/description_constraint_layout">
 
 
         <TextView

@@ -70,6 +70,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     private final Executor executor;
     private Button automateBtn;
 
+    private static ShoppingListFragment instance;
+
+
     // Declare the variables so that you will be able to reference it later.
     RecyclerView shoppingListView;
     ShopIngredientAdapter shopIngredientViewAdapter;
@@ -105,8 +108,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      * @return A new instance of fragment ShoppingList.
      */
     public static ShoppingListFragment newInstance(Executor executor) {
-        ShoppingListFragment fragment = new ShoppingListFragment(executor);
-        return fragment;
+        if (instance == null) {
+            ShoppingListFragment fragment = new ShoppingListFragment(executor);
+            instance = fragment;
+        }
+        return instance;
     }
 
     /**
