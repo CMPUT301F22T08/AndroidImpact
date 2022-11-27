@@ -46,14 +46,14 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
      * @param context
      * @param mealPlans
      */
-    public MealPlanListAdapter(Context context, ArrayList<MealPlan> mealPlans) {
+    public MealPlanListAdapter(Context context, String dataPath, ArrayList<MealPlan> mealPlans) {
         this.mealPlans = mealPlans;
         this.mealPlanList = new MealPlanList(this.mealPlans/*, recipeList, ingredients*/);
         this.context = context;
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        mealPlanCollection = db.collection("meal-plan");
+        mealPlanCollection = db.document(dataPath).collection("meal-plan");
 
         this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override

@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("username", user.getDisplayName());
         intent.putExtra("uid", user.getUid());
-        intent.putExtra("user-path-firebase", "userData" + user.getUid());
+        intent.putExtra("user-path-firebase", "userData/" + user.getUid());
         // Clear fields
         username.setText("");
         password.setText("");

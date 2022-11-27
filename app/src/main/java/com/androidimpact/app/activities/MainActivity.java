@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         weakActivity = new WeakReference<>(MainActivity.this);
 
-        mealPlanController = new MealPlanController(this, this.recipeController, this.ingredientStorageController);
+        mealPlanController = new MealPlanController(this, this.userPath, this.recipeController, this.ingredientStorageController);
 
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
