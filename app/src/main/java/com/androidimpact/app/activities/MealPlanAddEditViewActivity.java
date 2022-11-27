@@ -169,19 +169,19 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         RecyclerView[] recyclerViews = new RecyclerView[]{breakfastListView, lunchListView, dinnerListView, snacksListView};
 
         for(int i = 0; i < keys.length; i++) {
-            ArrayList<String> recipeIds = this.recipeIdMap.get(keys[i] + "Recipes");
-            ArrayList<String> ingredientIds = this.ingredientIdMap.get(keys[i] + "Ingredients");
-            ArrayList<String> recipeTitles = this.recipeTitleMap.get(keys[i] + "Recipes");
-            ArrayList<String> ingredientTitles = this.ingredientDescriptionMap.get(keys[i] + "Ingredients");
-            ArrayList<Double> recipeServings = this.recipeServingsMap.get(keys[i] + "RecipesServings");
-            ArrayList<Double> ingredientServings = this.ingredientServingsMap.get(keys[i] + "IngredientsServings");
+            ArrayList<String> recipeIds = getOrDefaultString(keys[i] + "Recipes", recipeIdMap);
+            ArrayList<String> ingredientIds = getOrDefaultString(keys[i] + "Ingredients", ingredientIdMap);
+            ArrayList<String> recipeTitles = getOrDefaultString(keys[i] + "Recipes", recipeTitleMap);
+            ArrayList<String> ingredientTitles = getOrDefaultString(keys[i] + "Ingredients", ingredientDescriptionMap);
+            ArrayList<Double> recipeServings = getOrDefaultDouble(keys[i] + "RecipesServings", recipeServingsMap);
+            ArrayList<Double> ingredientServings = getOrDefaultDouble(keys[i] + "IngredientsServings", ingredientServingsMap);
+
             MealAdapterAddEdit mealAdapter = new MealAdapterAddEdit(
                     this,
                     recipeTitles,
                     ingredientTitles,
                     recipeServings,
                     ingredientServings
-
             );
 
             // below line is to set layout manager for our recycler view.
@@ -191,6 +191,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
 
             // drag to delete
+            ArrayList<String> finalRecipeIds = recipeIds;
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 /**
                  * This method is called when the item is moved
@@ -216,14 +217,14 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                     // below line is to get the position
                     // of the item at that position.
                     int position = viewHolder.getAdapterPosition();
-                    if (position < recipeIds.size()) {
-                        recipeIds.remove(position);
+                    if (position < finalRecipeIds.size()) {
+                        finalRecipeIds.remove(position);
                         recipeTitles.remove(position);
                         recipeServings.remove(position);
                     } else {
-                        ingredientIds.remove(position - recipeIds.size());
-                        ingredientTitles.remove(position - recipeIds.size());
-                        ingredientServings.remove(position - recipeIds.size());
+                        ingredientIds.remove(position - finalRecipeIds.size());
+                        ingredientTitles.remove(position - finalRecipeIds.size());
+                        ingredientServings.remove(position - finalRecipeIds.size());
                     }
 
                     mealAdapter.notifyDataSetChanged();
@@ -334,5 +335,21 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     public RecipeController getRecipeController(){
         return recipeController;
+    }
+
+    private ArrayList<String> getOrDefaultString(String key, HashMap<String, ArrayList<String>> map) {
+        ArrayList<String> entry = map.get(key);
+        if(entry == null) {
+            map.put(key, new ArrayList<>());
+        }
+        return map.get(key);
+    }
+
+    private ArrayList<Double> getOrDefaultDouble(String key, HashMap<String, ArrayList<Double>> map) {
+        ArrayList<Double> entry = map.get(key);
+        if(entry == null) {
+            map.put(key, new ArrayList<>());
+        }
+        return map.get(key);
     }
 }
