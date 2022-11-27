@@ -43,7 +43,7 @@ public class RecipeAddFragment extends DialogFragment {
     String[] sortingOptions;
     Spinner sortSpinner;
     OnSelectInterface onSelectInterface;
-    String selectedRecipeId;
+    String selectedRecipeId, selectedRecipeTitle;
 
     // adding recipes to firebase
     FirebaseFirestore db;
@@ -65,7 +65,8 @@ public class RecipeAddFragment extends DialogFragment {
 
         onSelectInterface = i -> {
             selectedRecipeId = recipeDataList.get(i).getId();
-            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedRecipeId, true);
+            selectedRecipeTitle = recipeDataList.get(i).getTitle();
+            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedRecipeId, selectedRecipeTitle, true);
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             servingsAddFragment.show(transaction, "Add Servings");
 

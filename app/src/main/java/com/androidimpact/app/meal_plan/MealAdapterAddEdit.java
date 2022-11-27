@@ -19,13 +19,11 @@ import java.util.ArrayList;
  * MealAdapter class
  * This class defines an adapter for MealPlan
  * @version 1.0
- * @author Aneeljyot Alagh
+ * @author Clare Chen
  */
 public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.AddEditMealViewHolder> {
     final String TAG = "AddEditMealPlanAdapter";
-    private MealPlan mealPlan;
-    ArrayList<Recipe> recipeArrayList;
-    ArrayList<StoreIngredient> ingredientArrayList;
+    ArrayList<String> recipeArrayList, ingredientArrayList;
     ArrayList<Double> recipeServingsArrayList, ingredientServingsArrayList;
 
 
@@ -35,15 +33,14 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
      * Constructor for adapter for MealPlan
      * @param mealPlan
      */
-    MealAdapterAddEdit(MealPlan mealPlan, String key)
+    public MealAdapterAddEdit(ArrayList<String> recipeArrayList, ArrayList<String> ingredientArrayList, ArrayList<Double> recipeServingsArrayList, ArrayList<Double> ingredientServingsArrayList, String key)
     {
-        this.mealPlan = mealPlan;
         this.key = key;
-        this.recipeArrayList = mealPlan.getRecipes(key);
-        this.ingredientArrayList = mealPlan.getIngredients(key);
+        this.recipeArrayList = recipeArrayList;
+        this.ingredientArrayList = ingredientArrayList;
 
-        this.recipeServingsArrayList = mealPlan.getRecipeServings(key);
-        this.ingredientServingsArrayList = mealPlan.getIngredientServings(key);
+        this.recipeServingsArrayList = recipeServingsArrayList;
+        this.ingredientServingsArrayList = ingredientServingsArrayList;
 
     }
 
@@ -68,21 +65,11 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
     @Override
     public void onBindViewHolder(@NonNull MealAdapterAddEdit.AddEditMealViewHolder holder, int position) {
         if(this.getItemCount() > 0) {
-            if(position == 0) {
-                String keyDisplay = key.substring(0,1).toUpperCase().concat(key.substring(1));
-                String header = keyDisplay + " Meals";
-                holder.type.setText(header);
-            } else {
-                holder.type.setText("\t");
-            }
-        }
-
-        if(this.getItemCount() > 0) {
             if(position < this.recipeArrayList.size()) {
-                holder.item.setText(this.recipeArrayList.get(position).getTitle());
+                holder.item.setText(this.recipeArrayList.get(position));
                 holder.servings.setText(String.valueOf(this.recipeServingsArrayList.get(position)));
             } else {
-                holder.item.setText(this.ingredientArrayList.get(position - this.recipeArrayList.size()).getDescription());
+                holder.item.setText(this.ingredientArrayList.get(position - this.recipeArrayList.size()));
                 holder.servings.setText(String.valueOf(this.ingredientServingsArrayList.get(position - this.recipeArrayList.size())));
             }
 
@@ -105,7 +92,7 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
     public class AddEditMealViewHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view and button
-        private TextView type, item, servings;
+        private TextView item, servings;
 
         /**
          * Initializing our text views
@@ -113,7 +100,6 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
          */
         public AddEditMealViewHolder(@NonNull View itemView) {
             super(itemView);
-            type = itemView.findViewById(R.id.add_edit_meal_name);
             item = itemView.findViewById(R.id.add_edit_meal_item);
             servings = itemView.findViewById(R.id.add_edit_meal_serving);
         }

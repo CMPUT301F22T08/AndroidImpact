@@ -27,10 +27,10 @@ import java.util.ArrayList;
  * MealPlanListAddEditAdapter class
  * This class defines an adapter for MealPlanList
  * @version 1.0
- * @author Aneeljyot Alagh
+ * @author Clare Chen
  */
 
-public class MealPlanListAddEditAdapter extends RecyclerView.Adapter<MealPlanListAddEditAdapter.MealPlanHolder>  {
+public class MealPlanListAddEditAdapter /*extends RecyclerView.Adapter<MealPlanListAddEditAdapter.MealPlanHolder>*/  {
     final String TAG = "MealPlanListAddEditAdapter";
 
     private ArrayList<MealPlan> mealPlans;
@@ -47,8 +47,8 @@ public class MealPlanListAddEditAdapter extends RecyclerView.Adapter<MealPlanLis
      * @param mealPlans
      */
     public MealPlanListAddEditAdapter(Context context, ArrayList<MealPlan> mealPlans) {
-        this.mealPlans = mealPlans;
-        this.mealPlanList = new MealPlanList(this.mealPlans/*, recipeList, ingredients*/);
+        /*this.mealPlans = mealPlans;
+        this.mealPlanList = new MealPlanList(this.mealPlans*//*, recipeList, ingredients*//*);
         this.context = context;
 
         // initialize Firestore
@@ -61,7 +61,7 @@ public class MealPlanListAddEditAdapter extends RecyclerView.Adapter<MealPlanLis
                 super.onChanged();
                 sortByChoice();
             }
-        });
+        });*/
     }
 
     /**
@@ -70,19 +70,19 @@ public class MealPlanListAddEditAdapter extends RecyclerView.Adapter<MealPlanLis
      * @param viewType
      * @return
      */
-    @NonNull
+    /*@NonNull
     @Override
     public MealPlanListAddEditAdapter.MealPlanHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_meal_plan_add_edit_view, parent, false);
         return new MealPlanListAddEditAdapter.MealPlanHolder(view);
-    }
+    }*/
 
     /**
      * Set the data to textview from our modal class
      * @param holder
      * @param position
      */
-    @Override
+    /*@Override
     public void onBindViewHolder(@NonNull MealPlanListAddEditAdapter.MealPlanHolder holder, int position) {
         MealPlan recyclerData = mealPlans.get(position);
 
@@ -99,37 +99,37 @@ public class MealPlanListAddEditAdapter extends RecyclerView.Adapter<MealPlanLis
 
 
 
-    }
+    }*/
 
     /**
      * this method returns the size of recyclerview
      * @return
      */
-    @Override
+    /*@Override
     public int getItemCount() {
         return mealPlans.size();
-    }
+    }*/
 
     /**
      * This function allows us to sort the meal plan list by date
      */
-    public void sortByChoice() {
+    /*public void sortByChoice() {
         this.mealPlanList.sortByChoice();
-    }
+    }*/
 
 
     /**
      * View Holder Class to handle Recycler View.
      */
-    public class MealPlanHolder extends RecyclerView.ViewHolder {
+    /*public class MealPlanHolder extends RecyclerView.ViewHolder {
 
         // creating a variable for our text view and button
         private RecyclerView mealsListBreakfast, mealsListLunch, mealsListDinner, mealsListSnacks;
 
-        /**
+        *//**
          * Initializing our text views
          * @param itemView
-         */
+         *//*
         public MealPlanHolder(@NonNull View itemView) {
             super(itemView);
             mealsListBreakfast = itemView.findViewById(R.id.breakfast_meals);
@@ -137,6 +137,6 @@ public class MealPlanListAddEditAdapter extends RecyclerView.Adapter<MealPlanLis
             mealsListDinner = itemView.findViewById(R.id.dinner_meals);
             mealsListSnacks = itemView.findViewById(R.id.snack_meals);
         }
-    }
+    }*/
 
 }

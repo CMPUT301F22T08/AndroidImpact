@@ -1,6 +1,10 @@
 package com.androidimpact.app.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,9 +16,11 @@ import android.widget.TextView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.meal_plan.MealAdapterAddEdit;
 import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.fragments.IngredientAddFragment;
 import com.androidimpact.app.fragments.RecipeAddFragment;
+import com.androidimpact.app.meal_plan.MealPlanListAdapter;
 import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeController;
 import com.google.firebase.firestore.CollectionReference;
@@ -31,7 +37,7 @@ import java.util.Map;
  */
 public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
-    private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap;
+    private HashMap<String, ArrayList<String>> recipeIdMap, ingredientIdMap, recipeTitleMap, ingredientDescriptionMap;
     private HashMap<String, ArrayList<Double>> recipeServingsMap, ingredientServingsMap;
     private Boolean isEditing;
     private RecipeController recipeController;
@@ -41,6 +47,8 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             dinnerRecipeAdd, dinnerIngredientAdd, snackRecipeAdd, snackIngredientAdd;
     EditText editText;
     String initialDocName;
+    RecyclerView breakfastListView, lunchListView, dinnerListView, snacksListView;
+    MealAdapterAddEdit breakfastAdapter, lunchAdapter, dinnerAdapter, snacksAdapter;
 
     // adding recipes to firebase
     FirebaseFirestore db;
@@ -55,6 +63,8 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
         this.recipeIdMap = new HashMap<>();
         this.ingredientIdMap = new HashMap<>();
+        this.recipeTitleMap = new HashMap<>();
+        this.ingredientDescriptionMap = new HashMap<>();
         this.recipeServingsMap = new HashMap<>();
         this.ingredientServingsMap = new HashMap<>();
 
@@ -75,6 +85,12 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         dinnerIngredientAdd = findViewById(R.id.add_dinner_ingredient);
         snackIngredientAdd = findViewById(R.id.add_snack_ingredient);
 
+        // find recyclerviews
+        breakfastListView = findViewById(R.id.breakfast_meals);
+        lunchListView = findViewById(R.id.lunch_meals);
+        dinnerListView = findViewById(R.id.dinner_meals);
+        snacksListView = findViewById(R.id.snack_meals);
+
         editText = findViewById(R.id.editTextMealPlanTitle);
 
         //!!! Add link to xml here once it exists !!!///
@@ -94,19 +110,10 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                 // load data from currentMealPlan into activity set
                 String[] mealTypes = {"breakfast", "lunch", "dinner", "snacks"};
                 for(String type: mealTypes) {
-                    ArrayList<Recipe> recipesInMealPlan = currentMealPlan.getRecipes(type);
-                    ArrayList<String> recipeIdsInMealPlan = new ArrayList<>();
-                    for(int i = 0; i < recipesInMealPlan.size(); i++) {
-                        recipeIdsInMealPlan.add(recipesInMealPlan.get(i).getId());
-                    }
-                    this.recipeIdMap.put(type + "Recipes", recipeIdsInMealPlan);
-
-                    ArrayList<StoreIngredient> ingredientsInMealPlan = currentMealPlan.getIngredients(type);
-                    ArrayList<String> ingredientIdsInMealPlan = new ArrayList<>();
-                    for(int i = 0; i < ingredientsInMealPlan.size(); i++) {
-                        ingredientIdsInMealPlan.add(ingredientsInMealPlan.get(i).getId());
-                    }
-                    this.ingredientIdMap.put(type + "Ingredients", ingredientIdsInMealPlan);
+                    this.recipeIdMap.put(type + "Recipes", currentMealPlan.getRecipeIds(type));
+                    this.ingredientIdMap.put(type + "Ingredients", currentMealPlan.getIngredientIds(type));
+                    this.recipeTitleMap.put(type + "Recipes", currentMealPlan.getRecipeTitles(type));
+                    this.ingredientDescriptionMap.put(type + "Ingredients", currentMealPlan.getIngredientTitles(type));
 
                     this.recipeServingsMap.put(type + "RecipesServings", currentMealPlan.getRecipeServings(type));
                     this.ingredientServingsMap.put(type + "IngredientsServings", currentMealPlan.getIngredientServings(type));
@@ -156,25 +163,92 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             );
         });
 
+        String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
+        RecyclerView[] adapters = new RecyclerView[]{breakfastListView, lunchListView, dinnerListView, snacksListView};
+
+        ArrayList<String> recipeIds = this.recipeTitleMap.getOrDefault("breakfast" + "Recipes", new ArrayList<>());
+        ArrayList<String> ingredientIds = this.ingredientDescriptionMap.getOrDefault("breakfast" + "Ingredients", new ArrayList<>());
+        ArrayList<Double> recipeServings = this.recipeServingsMap.getOrDefault("breakfast" + "RecipesServings", new ArrayList<>());
+        ArrayList<Double> ingredientServings = this.ingredientServingsMap.getOrDefault("breakfast" + "IngredientsServings", new ArrayList<>());
+        MealAdapterAddEdit mealAdapter = new MealAdapterAddEdit(
+                recipeIds,
+                ingredientIds,
+                recipeServings,
+                ingredientServings,
+                "breakfast"
+                );
+
+        // below line is to set layout manager for our recycler view.
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        breakfastListView.setLayoutManager(manager);
+        breakfastListView.setAdapter(mealAdapter);
+
+
+        /*// drag to delete
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            *//**
+             * This method is called when the item is moved
+             * @param recyclerView
+             * @param viewHolder
+             * @param target
+             * @return
+             *//*
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            *//**
+             * Creates swipe to delete functionality
+             * @param viewHolder
+             * @param direction
+             *//*
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // below line is to get the position
+                // of the item at that position.
+                int position = viewHolder.getAdapterPosition();
+                if(position < recipeIds.size()) {
+                    recipeIds.remove(position);
+                    ingredientIds.remove(position);
+                } else {
+                    recipeServings.remove(position - recipeIds.size());
+                    ingredientServings.remove(position - recipeIds.size());
+                }
+
+
+            }
+            // at last we are adding this
+            // to our recycler view.
+        }).attachToRecyclerView(breakfastListView);*/
+        mealAdapter.notifyDataSetChanged();
 
     }
 
-    public void addRecipe(String mealType, String recipeId, double f) {
+    public void addRecipe(String mealType, String recipeId, String recipeTitle, double f) {
         Log.i("data got", mealType + recipeId);
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(recipeId);
         this.recipeIdMap.put(mealType, entry);
+
+        ArrayList<String> entry2 = this.recipeTitleMap.getOrDefault(mealType, new ArrayList<>());
+        entry.add(recipeTitle);
+        this.recipeIdMap.put(mealType, entry2);
 
         ArrayList<Double> servings = this.recipeServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
         servings.add(f);
         this.recipeServingsMap.put(mealType + "Servings", servings);
     }
 
-    public void addIngredient(String mealType, String ingredientId, double f) {
+    public void addIngredient(String mealType, String ingredientId, String ingredientTitle, double f) {
         Log.i("data got", mealType + ingredientId);
         ArrayList<String> entry = this.ingredientIdMap.getOrDefault(mealType, new ArrayList<>());
         entry.add(ingredientId);
         this.ingredientIdMap.put(mealType, entry);
+
+        ArrayList<String> entry2 = this.ingredientDescriptionMap.getOrDefault(mealType, new ArrayList<>());
+        entry.add(ingredientTitle);
+        this.ingredientIdMap.put(mealType, entry2);
 
         ArrayList<Double> servings = this.ingredientServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
         servings.add(f);
