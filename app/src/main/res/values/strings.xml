@@ -40,7 +40,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navbar_fab">Multipurpose FAB in Navbar</string>
     <string name="add_location">Add Location</string>
-    <string name="go_back">Go Back</string>
+    <string name="go_back">Back</string>
     <string name="add_units">Add Unit</string>
     <string name="loading">loading...</string>
     <string name="add_category">Add Category</string>
