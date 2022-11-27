@@ -48,10 +48,12 @@ public class RecipeAddFragment extends DialogFragment {
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference recipeCollection;
+    String dataPath;
 
-    public RecipeAddFragment(String meal) {
+    public RecipeAddFragment(String meal, String dataPath) {
         super(R.layout.fragment_recipe_list);
         this.mealType = meal;
+        this.dataPath = dataPath;
     }
 
     /**
@@ -75,7 +77,7 @@ public class RecipeAddFragment extends DialogFragment {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes");
+        recipeCollection = db.document(this.dataPath).collection("recipes");
     }
 
     /**

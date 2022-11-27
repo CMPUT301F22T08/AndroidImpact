@@ -42,6 +42,7 @@ public class EditCategoriesActivity extends AppCompatActivity {
     // Firestore
     FirebaseFirestore db;
     CollectionReference categoryCollection;
+    String userPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +51,14 @@ public class EditCategoriesActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Edit Categories");
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            userPath = extras.getString("data-path");
+        }
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        categoryCollection = db.collection(COLLECTION_NAME);
+        categoryCollection = db.document(userPath).collection(COLLECTION_NAME);
 
         // initialize views
         newCategoryInput = findViewById(R.id.category_editText);

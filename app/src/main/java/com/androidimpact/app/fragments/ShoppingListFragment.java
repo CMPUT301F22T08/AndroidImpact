@@ -56,7 +56,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     final String TAG = "ShoppingListFragment";
 
     //Assume collection name is shopping list
-    final String COLLECTION_NAME = "shoppingList";
+//    final String COLLECTION_NAME = "shoppingList";
 
 
     private static ShoppingListFragment instance;
@@ -68,8 +68,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     ShoppingListController shoppingListController;
 
     // adding cities to firebase
-    FirebaseFirestore db;
-    CollectionReference shoppingCollection;
+//    FirebaseFirestore db;
+//    CollectionReference shoppingCollection;
+    String userPath;
     Spinner sortIngredientSpinner;
     String[] sortingChoices;
     TextView sortText;
@@ -111,8 +112,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        shoppingCollection = db.collection(COLLECTION_NAME);
+//        db = FirebaseFirestore.getInstance();
+//        shoppingCollection = db.collection(COLLECTION_NAME);
     }
 
     /**
@@ -150,6 +151,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             return;
         }
 
+        userPath = ((MainActivity) a).getUserDataPath();
 
         // initialize adapters and customList
         shoppingListView = a.findViewById(R.id.shopping_listview);
@@ -300,6 +302,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
             intent.putExtra("ingredient", food);
+            intent.putExtra("adding", false);
             editShoppingListItemLauncher.launch(intent);
         });
 
@@ -400,6 +403,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         navigationFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
+            intent.putExtra("data-path", userPath);
+            intent.putExtra("adding", true);
             addShoppingListItemLauncher.launch(intent);
         });
     }
@@ -412,13 +417,15 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     public void editShopIngredientFB(ShopIngredient ingredient)
     {
         Log.i("check ", "DONEDONEDONE");
-        String id = ingredient.getId();
+        /*String id = ingredient.getId();
         if (id == null){
             UUID uuid = UUID.randomUUID();
             id = uuid.toString();
             ingredient.setID(id);
         }
-        shoppingCollection.document(id).set(ingredient);
+        shoppingCollection.document(id).set(ingredient);*/
+        shoppingListController.addEdit(ingredient);
+
         shopIngredientViewAdapter.notifyDataSetChanged();
     }
 

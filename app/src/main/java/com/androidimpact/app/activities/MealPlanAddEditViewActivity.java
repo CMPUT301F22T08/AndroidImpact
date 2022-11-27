@@ -122,46 +122,46 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         recipeCollection = db.document(dataPath).collection("recipes");
         ingredientCollection = db.document(dataPath).collection("ingredientStorage");
 
-        this.recipeController = new RecipeController(this);
+        this.recipeController = new RecipeController(this, this.dataPath);
 
         breakfastRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("breakfastRecipes").show(
+            new RecipeAddFragment("breakfastRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add breakfast recipe to meal plan"
             );
         });
         lunchRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("lunchRecipes").show(
+            new RecipeAddFragment("lunchRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add lunch recipe to meal plan"
             );
         });
         dinnerRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("dinnerRecipes").show(
+            new RecipeAddFragment("dinnerRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add dinner recipe to meal plan"
             );
         });
         snackRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("snacksRecipes").show(
+            new RecipeAddFragment("snacksRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add snack recipe to meal plan"
             );
         });
 
         breakfastIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("breakfastIngredients").show(
+            new IngredientAddFragment("breakfastIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add breakfast ingredient to meal plan"
             );
         });
         lunchIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("lunchIngredients").show(
+            new IngredientAddFragment("lunchIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add lunch ingredient to meal plan"
             );
         });
         dinnerIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("dinnerIngredients").show(
+            new IngredientAddFragment("dinnerIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add dinner ingredient to meal plan"
             );
         });
         snackIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("snacksIngredients").show(
+            new IngredientAddFragment("snacksIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add snack ingredient to meal plan"
             );
         });

@@ -47,6 +47,7 @@ public class EditUnitsActivity extends AppCompatActivity {
     // Firestore
     FirebaseFirestore db;
     CollectionReference unitCollection;
+    String userPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +56,14 @@ public class EditUnitsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Edit Units");
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            userPath = extras.getString("data-path");
+        }
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        unitCollection = db.collection(COLLECTION_NAME);
+        unitCollection = db.document(userPath).collection(COLLECTION_NAME);
 
         // initialize views
         newUnitInput = findViewById(R.id.edit_units_editText);

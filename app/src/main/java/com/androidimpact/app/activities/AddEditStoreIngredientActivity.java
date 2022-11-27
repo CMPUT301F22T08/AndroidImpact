@@ -74,6 +74,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     CollectionReference locationCollection;
     CollectionReference unitCollection;
     CollectionReference categoryCollection;
+    String userPath;
 
     // Other "global" variables
     // used to track which ingredient we're editing, null if we're creating a new ingredient
@@ -88,11 +89,16 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_ingredient_storage);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            this.userPath = extras.getString("data-path");
+        }
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        locationCollection = db.collection("locations");
-        unitCollection = db.collection("units");
-        categoryCollection = db.collection("categories");
+        locationCollection = db.document(userPath).collection("locations");
+        unitCollection = db.document(userPath).collection("units");
+        categoryCollection = db.document(userPath).collection("categories");
 
         // Init EditText views
         descriptionEditText = findViewById(R.id.ingredientStoreAdd_description);
@@ -119,30 +125,34 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
 
         // Check Bundle - determine if we're editing or adding!
         // Init activity title
-        Bundle extras = getIntent().getExtras();
+        //Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            currentIngredient = (StoreIngredient) extras.getSerializable("storeIngredient");
-            getSupportActionBar().setTitle("Edit Ingredient");
+            boolean isAdding = extras.getBoolean("adding");
 
-            // set initial values
-            descriptionEditText.setText(currentIngredient.getDescription());
-            amountEditText.setText(String.valueOf(currentIngredient.getAmount()));
-            if (currentIngredient.getBestBeforeDate() != null){
-                bestBeforeCalendar.setTime(currentIngredient.getBestBeforeDate());
-                updateDateLabel();
+            if (!isAdding) {
+                currentIngredient = (StoreIngredient) extras.getSerializable("storeIngredient");
+                getSupportActionBar().setTitle("Edit Ingredient");
+
+                // set initial values
+                descriptionEditText.setText(currentIngredient.getDescription());
+                amountEditText.setText(String.valueOf(currentIngredient.getAmount()));
+                if (currentIngredient.getBestBeforeDate() != null) {
+                    bestBeforeCalendar.setTime(currentIngredient.getBestBeforeDate());
+                    updateDateLabel();
+                }
+
+                // set initial unit, category and locations
+                // note that we store the unit as a string, not a document path
+                selectedUnit.set(new Unit(currentIngredient.getUnit()));
+                Log.i(TAG, "Set unit: " + selectedUnit.get());
+                selectedCategory.set(new Category(currentIngredient.getCategory()));
+                Log.i(TAG, "Set category: " + selectedCategory.get());
+                selectedLocation.set(new Location(currentIngredient.getLocation()));
+                Log.i(TAG, "Set location: " + selectedLocation.get());
+            } else {
+                currentIngredient = null;
+                getSupportActionBar().setTitle("Add Ingredient");
             }
-
-            // set initial unit, category and locations
-            // note that we store the unit as a string, not a document path
-            selectedUnit.set(new Unit(currentIngredient.getUnit()));
-            Log.i(TAG, "Set unit: " + selectedUnit.get());
-            selectedCategory.set(new Category(currentIngredient.getCategory()));
-            Log.i(TAG, "Set category: " + selectedCategory.get());
-            selectedLocation.set(new Location(currentIngredient.getLocation()));
-            Log.i(TAG, "Set location: " + selectedLocation.get());
-        } else {
-            currentIngredient = null;
-            getSupportActionBar().setTitle("Add Ingredient");
         }
 
         // EVENT LISTENERS

@@ -52,6 +52,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
     RecyclerView ingredientListView;
     StoreIngredientViewAdapter storeIngredientViewAdapter;
     IngredientStorageController ingredientStorageController;
+    String userPath;
 
     Spinner sortIngredientSpinner;
     String[] sortingChoices;
@@ -133,6 +134,8 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             return;
         }
 
+        userPath = ((MainActivity) a).getUserDataPath();
+
         // initialize adapters and customList
         ingredientStorageController = ((MainActivity) a).getIngredientStorageController();
         ingredientListView = a.findViewById(R.id.ingredient_listview);
@@ -149,6 +152,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             Log.i(TAG + ":setEditClickListener", "Editing ingredient at position " + position);
             Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
             intent.putExtra("storeIngredient", storeIngredient);
+            intent.putExtra("adding", false);
             editStoreIngredientLauncher.launch(intent);
         });
 
@@ -312,6 +316,8 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
         navigationFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addStoreIngredient", "Adding ingredient!");
             Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
+            intent.putExtra("data-path", userPath);
+            intent.putExtra("adding", true);
             addStoreIngredientLauncher.launch(intent);
         });
     }

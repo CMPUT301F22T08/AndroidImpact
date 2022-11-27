@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
 
-    final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
-    final ShoppingListController shoppingListController = new ShoppingListController(this);
-    final RecipeController recipeController = new RecipeController(this);
+    IngredientStorageController ingredientStorageController;
+    ShoppingListController shoppingListController;
+    RecipeController recipeController;
     private MealPlanController mealPlanController;
 
     FloatingActionButton navbarFAB;
@@ -96,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         weakActivity = new WeakReference<>(MainActivity.this);
 
+        ingredientStorageController = new IngredientStorageController(this, this.userPath);
+        shoppingListController = new ShoppingListController(this, this.userPath);
+        recipeController = new RecipeController(this, this.userPath);
         mealPlanController = new MealPlanController(this, this.userPath, this.recipeController, this.ingredientStorageController);
 
 

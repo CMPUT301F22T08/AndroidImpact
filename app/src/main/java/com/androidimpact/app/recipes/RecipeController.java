@@ -29,12 +29,14 @@ public class RecipeController {
     private FirebaseFirestore db;
     private CollectionReference recipeCollection;
     private StorageReference photoStorage;
+    private String dataPath;
     private RecipeList recipeList;
 
-    public RecipeController(Context context) {
+    public RecipeController(Context context, String dataPath) {
         this.context = context;
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection(firestorePath);
+        this.dataPath = dataPath;
+        recipeCollection = db.document(dataPath).collection(firestorePath);
         recipeList = new RecipeList();
         photoStorage = FirebaseStorage.getInstance().getReference();
     }
@@ -85,7 +87,7 @@ public class RecipeController {
         List<Task<?>> futures = new ArrayList<>();
 
         // Delete all the ingredients associated with the Recipe
-        CollectionReference ingredients = db.collection(deletedRecipe.getCollectionPath());
+        CollectionReference ingredients = db.document(this.dataPath + "/" + this.firestorePath).collection(deletedRecipe.getCollectionPath());
         ingredients.get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                 futures.add(ingredients.document(doc.getId()).delete());
