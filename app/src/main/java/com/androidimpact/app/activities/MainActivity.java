@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
+    String userId;
 
     BottomNavigationView bottomnav;
 
@@ -75,10 +78,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         Bundle extras = getIntent().getExtras();
         String username = extras.getString("username");
+        userId = extras.getString("uid");
 
         View parentLayout = findViewById(R.id.main_activity_layout);
 
-        Toast.makeText(this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Welcome " + (username == null ? "" : username) + "!", Toast.LENGTH_SHORT).show();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        FirebaseAuth.getInstance().signOut();
         finish();
         return true;
     }
@@ -211,6 +216,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         updateActiveFragment(storageFragment);
         //Delete all the items from Shopping List that were moved
 
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
 }
