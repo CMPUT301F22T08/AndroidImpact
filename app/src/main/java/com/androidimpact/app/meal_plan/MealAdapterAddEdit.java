@@ -3,6 +3,7 @@ package com.androidimpact.app.meal_plan;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,17 +26,19 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
     final String TAG = "AddEditMealPlanAdapter";
     ArrayList<String> recipeArrayList, ingredientArrayList;
     ArrayList<Double> recipeServingsArrayList, ingredientServingsArrayList;
+    Context context;
 
 
-    String key;
+    //String key;
 
     /**
      * Constructor for adapter for MealPlan
      * @param mealPlan
      */
-    public MealAdapterAddEdit(ArrayList<String> recipeArrayList, ArrayList<String> ingredientArrayList, ArrayList<Double> recipeServingsArrayList, ArrayList<Double> ingredientServingsArrayList, String key)
+    public MealAdapterAddEdit(Context context, ArrayList<String> recipeArrayList, ArrayList<String> ingredientArrayList, ArrayList<Double> recipeServingsArrayList, ArrayList<Double> ingredientServingsArrayList/*, String key*/)
     {
-        this.key = key;
+        //this.key = key;
+        this.context = context;
         this.recipeArrayList = recipeArrayList;
         this.ingredientArrayList = ingredientArrayList;
 
@@ -64,7 +67,7 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
      */
     @Override
     public void onBindViewHolder(@NonNull MealAdapterAddEdit.AddEditMealViewHolder holder, int position) {
-        if(this.getItemCount() > 0) {
+        //if(this.getItemCount() > 0) {
             if(position < this.recipeArrayList.size()) {
                 holder.item.setText(this.recipeArrayList.get(position));
                 holder.servings.setText(String.valueOf(this.recipeServingsArrayList.get(position)));
@@ -73,7 +76,7 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
                 holder.servings.setText(String.valueOf(this.ingredientServingsArrayList.get(position - this.recipeArrayList.size())));
             }
 
-        }
+        //}
 
     }
 

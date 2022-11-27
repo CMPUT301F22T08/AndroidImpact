@@ -168,22 +168,23 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         String[] keys = {"breakfast", "lunch", "dinner", "snacks"};
         RecyclerView[] recyclerViews = new RecyclerView[]{breakfastListView, lunchListView, dinnerListView, snacksListView};
 
-        ArrayList<String> recipeIds = this.recipeIdMap.getOrDefault("breakfast" + "Recipes", new ArrayList<>());
-        ArrayList<String> ingredientIds = this.ingredientIdMap.getOrDefault("breakfast" + "Ingredients", new ArrayList<>());
-        ArrayList<String> recipeTitles = this.recipeTitleMap.getOrDefault("breakfast" + "Recipes", new ArrayList<>());
-        ArrayList<String> ingredientTitles = this.ingredientDescriptionMap.getOrDefault("breakfast" + "Ingredients", new ArrayList<>());
-        ArrayList<Double> recipeServings = this.recipeServingsMap.getOrDefault("breakfast" + "RecipesServings", new ArrayList<>());
-        ArrayList<Double> ingredientServings = this.ingredientServingsMap.getOrDefault("breakfast" + "IngredientsServings", new ArrayList<>());
+        ArrayList<String> recipeIds = this.recipeIdMap.get("breakfast" + "Recipes");
+        ArrayList<String> ingredientIds = this.ingredientIdMap.get("breakfast" + "Ingredients");
+        ArrayList<String> recipeTitles = this.recipeTitleMap.get("breakfast" + "Recipes");
+        ArrayList<String> ingredientTitles = this.ingredientDescriptionMap.get("breakfast" + "Ingredients");
+        ArrayList<Double> recipeServings = this.recipeServingsMap.get("breakfast" + "RecipesServings");
+        ArrayList<Double> ingredientServings = this.ingredientServingsMap.get("breakfast" + "IngredientsServings");
         MealAdapterAddEdit mealAdapter = new MealAdapterAddEdit(
+                this,
                 recipeTitles,
                 ingredientTitles,
                 recipeServings,
-                ingredientServings,
-                "breakfast"
+                ingredientServings/*,
+                "breakfast"*/
                 );
 
         // below line is to set layout manager for our recycler view.
-        LinearLayoutManager manager = new LinearLayoutManager(this);
+        LinearLayoutManager manager = new LinearLayoutManager(MealPlanAddEditViewActivity.this);
         breakfastListView.setLayoutManager(manager);
         breakfastListView.setAdapter(mealAdapter);
 
@@ -222,6 +223,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                     ingredientServings.remove(position - recipeIds.size());
                 }
 
+                mealAdapter.notifyDataSetChanged();
 
             }
             // at last we are adding this
@@ -250,6 +252,15 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.adapterAddEditHashMap.values().forEach(
                 adapter -> adapter.notifyDataSetChanged()
         );
+        this.recipeIdMap.forEach((key, arr) -> {
+            Log.i("data woo1" + key, arr.toString());
+        });
+        this.recipeTitleMap.forEach((key, arr) -> {
+            Log.i("data woo2" + key, arr.toString());
+        });
+        this.recipeServingsMap.forEach((key, arr) -> {
+            Log.i("data woo3" + key, arr.toString());
+        });
     }
 
     public void addIngredient(String mealType, String ingredientId, String ingredientTitle, double f) {
