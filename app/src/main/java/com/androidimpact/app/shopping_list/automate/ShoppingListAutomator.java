@@ -3,6 +3,7 @@ package com.androidimpact.app.shopping_list.automate;
 
 import android.util.Log;
 
+import com.androidimpact.app.ingredients.IngredientStorageController;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.meal_plan.MealPlanController;
@@ -11,6 +12,7 @@ import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.shopping_list.ShoppingList;
+import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,29 +51,30 @@ public class ShoppingListAutomator {
 
     // Controllers
     MealPlanController mealPlanController;
-    RecipeController recipeController;
+    IngredientStorageController ingredientStorageController;
+    ShoppingListController shoppingListController;
 
     // Actual Data
-    ArrayList<MealPlan> mealPlan;
-    ArrayList<Recipe> recipe;
-    ArrayList<StoreIngredient> storeIngredients;
     ArrayList<ShopIngredient> recommendations;
 
 
     /**
      * Constructor for ShoppingListAutomate
-     * @param mealPlanController Meal Plan Controller
-     * @param recipeController RecipeController
-     * @param executor Executor class for us to execute background tasks
+     * @param ingredientStorageController {@link RecipeController RecipeController}
+     * @param mealPlanController {@link MealPlanController MealPlanController}
+     * @param shoppingListController {@link ShoppingListController ShoppingListController}
+     * @param executor {@link Executor Executor} class for us to execute background tasks
      */
     public ShoppingListAutomator(
-            RecipeController recipeController,
+            IngredientStorageController ingredientStorageController,
             MealPlanController mealPlanController,
+            ShoppingListController shoppingListController,
             Executor executor
     ) {
         this.db = FirebaseFirestore.getInstance();
         this.mealPlanController = mealPlanController;
-        this.recipeController = recipeController;
+        this.ingredientStorageController = ingredientStorageController;
+        this.shoppingListController = shoppingListController;
         this.executor = executor;
     }
 
@@ -111,8 +114,9 @@ public class ShoppingListAutomator {
         ArrayList<ShopIngredient> res = new ArrayList<>();
 
         // now, the mealPlan and recipe should be populated
-        for (MealPlan mp : mealPlan) {
-            ArrayList<Recipe> recipes = getRecipes(mp);
+        ArrayList<MealPlan> mealPlans = this.mealPlanController.getData();
+        for (MealPlan mealPlan : mealPlans) {
+            ArrayList<Recipe> recipes = getRecipes(mealPlan);
             for (Recipe recipe : recipes) {
                 ArrayList<ShopIngredient> recipeRecs = Tasks.await(getRecipeRecommendations(recipe));
                 res.addAll(recipeRecs);
@@ -142,7 +146,9 @@ public class ShoppingListAutomator {
     private Task<ArrayList<ShopIngredient>> getRecipeRecommendations(Recipe recipe) throws Exception {
         ArrayList<ShopIngredient> ret = new ArrayList<>();
         CollectionReference recipeIngredientsCollection = db.collection(recipe.getCollectionPath());
+
         ArrayList<RecipeIngredient> recipeIngredients = Tasks.await(fetchCollection(RecipeIngredient.class, recipeIngredientsCollection));
+        ArrayList<StoreIngredient> storeIngredients = this.ingredientStorageController.getData();
 
         for (RecipeIngredient recipeIngredient : recipeIngredients) {
             // check if this recipe ingredient exists inside the ingredientStorage by looping through

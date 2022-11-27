@@ -101,7 +101,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mealPlanController = new MealPlanController(this, this.recipeController, this.ingredientStorageController);
 
         // initialize ShoppingListAutomator, as it needs access to some controllers
-        shoppingListAutomator = new ShoppingListAutomator(this.recipeController, this.mealPlanController, executorService);
+        shoppingListAutomator = new ShoppingListAutomator(
+                this.ingredientStorageController,
+                this.mealPlanController,
+                this.shoppingListController,
+                executorService
+        );
         shoppingListFragment.addAutomator(shoppingListAutomator);
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
