@@ -54,8 +54,8 @@ public class StoreIngredient extends Ingredient implements Serializable {
     {
         super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmount(), ingredient.getUnit(), ingredient.getCategory());
         //To be changed to null
-        this.bestBeforeDate = null;
-        this.location = null;
+        this.bestBeforeDate = new Date(0);
+        this.location = "";
     }
 
     /**
@@ -65,28 +65,6 @@ public class StoreIngredient extends Ingredient implements Serializable {
     public Date getBestBeforeDate() {
         return bestBeforeDate;
     }
-
-    /**
-     * Get the best-before date of the stored ingredient as a Calendar object
-     * @return (Calendar) The best before date for the stored ingredient
-     */
-    @Exclude
-    public Calendar getBestBeforeCalendar(){
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, bestBeforeDate.getYear());
-        cal.set(Calendar.MONTH, bestBeforeDate.getMonth());
-        cal.set(Calendar.DAY_OF_MONTH, bestBeforeDate.getDate());
-        return cal;
-    }
-
-    /**
-     * Change the best-before date of the stored ingredient
-     * @param bestBeforeDate (Date) - The new best-before date of the stored ingredient
-     */
-    public void setBestBeforeDate(Date bestBeforeDate) {
-        this.bestBeforeDate = bestBeforeDate;
-    }
-
 
     /**
      * gets the location document path
@@ -102,6 +80,6 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * @return boolean
      */
     public boolean hasNull(){
-        return (bestBeforeDate==null || location==null);
+        return (bestBeforeDate.getTime()==0 || location=="");
     }
 }

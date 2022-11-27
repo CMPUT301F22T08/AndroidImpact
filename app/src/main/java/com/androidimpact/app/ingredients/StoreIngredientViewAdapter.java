@@ -18,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.androidimpact.app.meal_plan.OnSelectInterface;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -132,15 +131,15 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             holder.has_null_marker.setVisibility(View.INVISIBLE);
         }
 
-        if (currentIngredient.getLocation() == null){
+        if (currentIngredient.getLocation() == ""){
             holder.location.setVisibility(View.INVISIBLE);
         } else {
             holder.location.setVisibility(View.VISIBLE);
             holder.location.setText(currentIngredient.getLocation());
         }
 
-        if (currentIngredient.getBestBeforeDate() == null){
-            holder.date.setText("");
+        if (currentIngredient.getBestBeforeDate().getTime()==0){
+            holder.date.setText("To be added");
         } else {
             // setting formatted date
             String myFormat="MMM dd yyyy";
