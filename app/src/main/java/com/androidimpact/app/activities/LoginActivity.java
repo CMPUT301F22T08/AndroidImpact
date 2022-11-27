@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 /**
  * This is the activity for the login page
+ *
+ * Reference: https://firebase.google.com/docs/auth/android/start
  * @version 2.0
  * @author Curtis Kan
  */
@@ -144,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("username", user.getDisplayName());
+        intent.putExtra("uid", user.getUid());
         // Clear fields
         username.setText("");
         password.setText("");
