@@ -129,6 +129,7 @@ public class ServingsAddFragment extends DialogFragment {
             catch (Exception e) {
                 TextView errorText = view.findViewById(R.id.errorMsg);
                 errorText.setVisibility(View.VISIBLE);
+                Log.e("bad", "badbad", e);
             }
 
         });
