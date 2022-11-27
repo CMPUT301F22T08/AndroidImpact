@@ -159,7 +159,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
         android:text="@string/recipe_ingredients"
-        android:textColor="@color/white"
+        android:textColor="@color/purple_200"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipe_category_spinner" />
@@ -216,7 +216,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/category"
-        android:textColor="@color/white"
+        android:textColor="@color/purple_200"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_category_spinner"
         app:layout_constraintEnd_toStartOf="@+id/recipe_category_spinner"
         app:layout_constraintStart_toStartOf="parent"
@@ -234,14 +234,15 @@
 
     <ImageButton
         android:id="@+id/recipe_category_editbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,1:1"
         android:layout_marginEnd="32dp"
         android:onClick="editCategories"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_category_spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recipe_category_spinner"
-        app:srcCompat="@drawable/icon_edit"
+        app:srcCompat="@android:drawable/ic_menu_edit"
         android:background="@android:color/transparent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

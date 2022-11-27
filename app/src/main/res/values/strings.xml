@@ -22,7 +22,7 @@
     <string name="recipe_comments">Comments</string>
     <string name="recipe_ingredients">Ingredients</string>
     <string name="recipe_prep_time">Prep Time (min)</string>
-    <string name="recipe_servings"># Servings</string>
+    <string name="recipe_servings">Servings</string>
     <string name="recipe_category">Category</string>
 
     <string name="activity_title">Activity Title</string>
