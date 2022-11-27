@@ -282,6 +282,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     public void editLocations(View view) {
         Log.i(TAG + ":editLocations", "Going to Edit Locations");
         Intent intent = new Intent(this, EditLocationsActivity.class);
+        intent.putExtra("data-path", userPath);
         discardResultLauncher.launch(intent);
     }
 
@@ -294,6 +295,8 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     public void editUnits(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditUnitsActivity.class);
+        intent.putExtra("data-path", userPath);
+        Log.i("data path", userPath);
         discardResultLauncher.launch(intent);
     }
 
@@ -306,6 +309,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
     public void editCategories(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditCategoriesActivity.class);
+        intent.putExtra("data-path", userPath);
         discardResultLauncher.launch(intent);
     }
 

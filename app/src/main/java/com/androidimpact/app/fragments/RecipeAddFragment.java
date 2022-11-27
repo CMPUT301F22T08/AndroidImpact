@@ -123,7 +123,7 @@ public class RecipeAddFragment extends DialogFragment {
 
         this.recipeController = ((MealPlanAddEditViewActivity) getActivity()).getRecipeController();
         this.recipeDataList = this.recipeController.getData();
-        recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface);
+        recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface, dataPath);
         this.recipeController.addDataUpdateSnapshotListener(recipeViewAdapter);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(

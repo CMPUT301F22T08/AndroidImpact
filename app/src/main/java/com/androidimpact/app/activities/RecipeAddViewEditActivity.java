@@ -197,7 +197,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 }
 
                 // add listener to the ingredients collection
-                ingredientsCollection = db.document("data-path").collection(currentRecipe.getCollectionPath());
+                ingredientsCollection = db.document(userPath).collection(currentRecipe.getCollectionPath());
 
                 // sets selectedCategory for us to set initial spinner values
                 // although, this is only seen when

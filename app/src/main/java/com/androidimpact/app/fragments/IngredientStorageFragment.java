@@ -153,6 +153,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
             Intent intent = new Intent(getContext(), AddEditStoreIngredientActivity.class);
             intent.putExtra("storeIngredient", storeIngredient);
             intent.putExtra("adding", false);
+            intent.putExtra("data-path", userPath);
             editStoreIngredientLauncher.launch(intent);
         });
 

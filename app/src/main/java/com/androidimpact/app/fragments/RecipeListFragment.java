@@ -148,7 +148,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
         // initialize adapters and customList, connect to DB
         recipeListView = a.findViewById(R.id.recipe_listview);
 
-        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeController);
+        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeController, userPath);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
