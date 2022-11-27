@@ -110,7 +110,7 @@ public class ShoppingListAutomator {
     public Task<ArrayList<ShopIngredient>> synchronousAutomateShoppingList() throws Exception {
         Log.i(TAG + ":automateShoppingList", "Start automation");
 
-        // this is what we return
+        // this is what we return (result)
         ArrayList<ShopIngredient> res = new ArrayList<>();
 
         // now, the mealPlan and recipe should be populated
@@ -119,7 +119,10 @@ public class ShoppingListAutomator {
             ArrayList<Recipe> recipes = getRecipes(mealPlan);
             for (Recipe recipe : recipes) {
                 ArrayList<ShopIngredient> recipeRecs = Tasks.await(getRecipeRecommendations(recipe));
-                res.addAll(recipeRecs);
+                // add unique shopIngredients to result
+                for (ShopIngredient rec : recipeRecs) {
+                    if (!res.contains(rec)) res.add(rec);
+                }
             }
         }
 

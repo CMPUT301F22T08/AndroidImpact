@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
@@ -33,6 +34,7 @@ import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.shopping_list.AddEditShoppingItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.androidimpact.app.shopping_list.ShoppingListController;
+import com.androidimpact.app.shopping_list.automate.ReviewRecommendations;
 import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -87,6 +89,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     // this is defined in onViewCreated, see the comment where we initialize it
     private ActivityResultLauncher<Intent> addShoppingListItemLauncher;
     private ActivityResultLauncher<Intent> editShoppingListItemLauncher;
+    private ActivityResultLauncher<Intent> reviewAutomatedRecommendations;
 
     /**
      * public constructor. This is nonempty because it helps us initialize the Executor
@@ -245,32 +248,29 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
 
 
-        moveFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<ShopIngredient> moveIngredientList = new ArrayList<>();
+        moveFAB.setOnClickListener(v -> {
+            ArrayList<ShopIngredient> moveIngredientList = new ArrayList<>();
 
 
-                ArrayList<ShopIngredient> tempList = shoppingListController.getData();
+            ArrayList<ShopIngredient> tempList = shoppingListController.getData();
 
 
-                for (int i = 0; i < tempList.size(); ++i)
+            for (int i = 0; i < tempList.size(); ++i)
+            {
+                ShopIngredient moveIngredient = tempList.get(i);
+
+                if (moveIngredient.getAmountPicked() != 0)
                 {
-                    ShopIngredient moveIngredient = tempList.get(i);
-
-                    if (moveIngredient.getAmountPicked() != 0)
-                    {
-                        moveIngredientList.add(moveIngredient);
-                        Log.i("Adding item to be moved", moveIngredient.getDescription());
-                    }
+                    moveIngredientList.add(moveIngredient);
+                    Log.i("Adding item to be moved", moveIngredient.getDescription());
                 }
-
-                //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
-                //add the ingredients from List to the the Ingredient Storage
-
-                ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
-
             }
+
+            //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
+            //add the ingredients from List to the the Ingredient Storage
+
+            ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
+
         });
 
 
@@ -315,23 +315,28 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         // somehow, android:onClick doesn't work in fragments, so I have to setOnClickLIstener here
         // https://stackoverflow.com/a/4153842
         automateBtn = a.findViewById(R.id.automateShoppingListBtn);
-        try {
-            // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
-            // so we have to pass in listeners instead of adding addSuccessListeners
-            shoppingListAutomator.automateShoppingList(
-                    shopIngredients -> {
-                        Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
-                        automateBtn.setText("Check " + shopIngredients.size() + " recommendations");
-                        if (shopIngredients.size() > 0) {
-                            automateBtn.setVisibility(View.VISIBLE);
-                        } else {
-                            automateBtn.setVisibility(View.GONE);
-                        }
-                    },
-                    e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
-        } catch (Exception e) {
-            Log.i(TAG, "Error running shoppingListAutomator!", e);
-        }
+        automateBtn.setOnClickListener(v -> {
+            try {
+                // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
+                // so we have to pass in listeners instead of adding addSuccessListeners
+                shoppingListAutomator.automateShoppingList(
+                        shopIngredients -> {
+                            Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
+                            automateBtn.setText("Check " + shopIngredients.size() + " recommendations");
+                            if (shopIngredients.size() > 0) {
+                                // go to reviewRecommendations activity
+                                Intent intent = new Intent(getContext(), ReviewRecommendations.class);
+                                intent.putExtra("ingredients", shopIngredients);
+                                reviewAutomatedRecommendations.launch(intent);
+                            } else {
+                                Toast.makeText(getActivity(), "Ingredient Storage is sufficient for the Meal Plan!", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
+            } catch (Exception e) {
+                Log.i(TAG, "Error running shoppingListAutomator!", e);
+            }
+        });
 
         /**
          * DEFINE ACTIVITY LAUNCHERS
@@ -339,6 +344,30 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
          * It is strongly recommended to register our activity result launchers in onCreate
          * https://stackoverflow.com/a/70215498
          */
+        reviewAutomatedRecommendations = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (isNull(result.getData())) {
+                        return;
+                    }
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        int size = shoppingListAutomator.getRecommendations().size();
+                        // it's good! add all the ingredients in the automator to shoppingListContrller
+                        shoppingListController.addArray(shoppingListAutomator.getRecommendations())
+                                .addOnSuccessListener(unused -> {
+                                    makeSnackbar("Added " + size + " recommendations!");
+                                })
+                                .addOnFailureListener(error -> {
+                                    makeSnackbar("Error: Failed to add recommendations!");
+                                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                                });
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                    }
+                });
+
         editShoppingListItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
