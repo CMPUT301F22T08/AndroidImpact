@@ -32,12 +32,15 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class is the activity Main Activity
@@ -46,19 +49,25 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     final String TAG = "MainActivity";
+
+    // define ExecutorService (thread pool) so things can run in the background
+    // e.g. ShoppingListAutomator
+    final ExecutorService executorService = Executors.newFixedThreadPool(2);
+
     public static WeakReference<MainActivity> weakActivity;
+    private final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
+    private final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance(executorService);
+    private final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
+    private final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
-    // adding cities to firebase
-    final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
-    final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
-    final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
-
-
+    // store controllers in MainActivity so they can access the context
     final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
     final ShoppingListController shoppingListController = new ShoppingListController(this);
     final RecipeController recipeController = new RecipeController(this);
     private MealPlanController mealPlanController;
+
+    // Shopping LIst Automator is stored in the MainActivity as it needs access to some controllers
+    ShoppingListAutomator shoppingListAutomator;
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
@@ -89,14 +98,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         bottomnav = findViewById(R.id.bottom_navigation_view);
         bottomnav.setBackground(null);
-
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         weakActivity = new WeakReference<>(MainActivity.this);
 
+        // initialize mealPlanController, as it needs access to other controllers
         mealPlanController = new MealPlanController(this, this.recipeController, this.ingredientStorageController);
 
+        // initialize ShoppingListAutomator, as it needs access to some controllers
+        shoppingListAutomator = new ShoppingListAutomator(
+                this.ingredientStorageController,
+                this.mealPlanController,
+                this.shoppingListController,
+                executorService
+        );
+        shoppingListFragment.addAutomator(shoppingListAutomator);
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();

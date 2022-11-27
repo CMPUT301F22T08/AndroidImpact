@@ -326,7 +326,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
             intent.putExtra("ingredient", newStoreIngredient);
             setResult(Activity.RESULT_OK, intent);
 
-            Log.i(TAG + ":cancel", "Returning to MainActivity");
+            Log.i(TAG + ":confirm", "Returning to MainActivity");
             finish();
         } catch (Exception e){
             // Error - add a snackBar

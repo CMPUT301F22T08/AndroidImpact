@@ -26,6 +26,13 @@
         android:theme="@style/Theme.AndroidImpact"
         tools:targetApi="31">
         <activity
+            android:name=".shopping_list.automate.ReviewRecommendations"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".shopping_list.AddEditShoppingItemActivity"
             android:exported="false">
             <meta-data
@@ -126,4 +133,5 @@
                 android:value="" />
         </activity>
     </application>
+
 </manifest>

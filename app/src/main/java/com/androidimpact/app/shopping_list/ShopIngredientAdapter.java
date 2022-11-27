@@ -49,6 +49,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         this.mContext = mContext;
     }
 
+    public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> data) {
+        this.ingredientArrayList = data;
+        this.mContext = mContext;
+    }
+
     @NonNull
     @Override
     public ShopIngredientAdapter.IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
