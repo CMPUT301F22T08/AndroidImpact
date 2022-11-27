@@ -118,10 +118,10 @@
             android:id="@+id/store_ingredient_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
             android:text="Amount"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:layout_marginEnd="25dp"
             app:layout_constraintBottom_toBottomOf="@+id/store_ingredient_expiry"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/store_ingredient_expiry" />
