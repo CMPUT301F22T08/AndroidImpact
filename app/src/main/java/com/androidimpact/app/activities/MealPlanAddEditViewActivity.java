@@ -215,8 +215,10 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                 if(position < recipeIds.size()) {
                     recipeIds.remove(position);
                     recipeTitles.remove(position);
+                    recipeServings.remove(position);
                 } else {
                     ingredientIds.remove(position - recipeIds.size());
+                    ingredientTitles.remove(position - recipeIds.size());
                     ingredientServings.remove(position - recipeIds.size());
                 }
 
