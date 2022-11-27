@@ -9,43 +9,41 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayoutShop"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/sort_shopping_info"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="Sort by:"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
-
-        <Spinner
-            android:id="@+id/sort_shopping_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:minHeight="32dp"/>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
         android:id="@+id/shop_ingredient_input"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="64dp"
         android:background="@color/background"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutShop">
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutShop"
+            android:layout_width="411dp"
+            android:layout_height="wrap_content"
+            android:background="@color/background">
+
+            <TextView
+                android:id="@+id/sort_shopping_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="Sort by:"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <Spinner
+                android:id="@+id/sort_shopping_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/white"
+                android:minHeight="32dp" />
+
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/automateShoppingListBtn"
@@ -53,25 +51,33 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Check Recommendations"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shopping_listview"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:background="@color/background"
-            android:padding="0dp" />
+            android:layout_height="match_parent"
+            android:paddingLeft="12dp"
+            android:paddingEnd="12dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/move_fab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:paddingLeft="10dp"
-            android:layout_marginLeft="7dp"
-            android:paddingBottom="10dp"
-            android:layout_marginBottom="20dp"
-            android:src="?attr/actionModeCloseDrawable" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shopping_listview"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:padding="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/move_fab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:src="?attr/actionModeCloseDrawable" />
+
+        </FrameLayout>
 
     </LinearLayout>
 

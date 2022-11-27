@@ -322,6 +322,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                     shopIngredients -> {
                         Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
                         automateBtn.setText("Check " + shopIngredients.size() + " recommendations");
+                        if (shopIngredients.size() > 0) {
+                            automateBtn.setVisibility(View.VISIBLE);
+                        } else {
+                            automateBtn.setVisibility(View.GONE);
+                        }
                     },
                     e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
         } catch (Exception e) {
