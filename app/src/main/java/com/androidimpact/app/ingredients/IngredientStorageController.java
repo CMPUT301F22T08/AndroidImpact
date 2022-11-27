@@ -158,6 +158,8 @@ public class IngredientStorageController {
             id = uuid.toString();
             storeIngredient.setID(id);
         }
+        //Does this necessarily work when Id doesn't exist in ingredient storage collection
+        //StoreIngredient ingredient = .toObject(StoreIngredient.class);
         ingredientStorageCollection.document(id).set(storeIngredient);
     }
 

@@ -50,6 +50,10 @@ public class StoreIngredient extends Ingredient implements Serializable {
     }
 
 
+    /**
+     * This constructor creates a store ingredient object from ShopIngredient
+     * @param ingredient - instance of ShopIngredient class
+     */
     public StoreIngredient(ShopIngredient ingredient)
     {
         super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmount(), ingredient.getUnit(), ingredient.getCategory());
