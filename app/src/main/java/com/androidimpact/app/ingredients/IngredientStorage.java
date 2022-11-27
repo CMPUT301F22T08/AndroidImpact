@@ -28,12 +28,14 @@ public class IngredientStorage extends SortableItemList<StoreIngredient> {
                 new String[]{
                         "Description",
                         "Best Before Date",
-                        "Ingredient Category"
+                        "Ingredient Category",
+                        "Location"
                 },
                 (Comparator<StoreIngredient>[]) Arrays.asList(
                         Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER),
-                        Comparator.comparing(StoreIngredient::getBestBeforeCalendar),
-                        Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER)
+                        Comparator.comparing(StoreIngredient::getBestBeforeDate),
+                        Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER),
+                        Comparator.comparing(StoreIngredient::getLocation, String.CASE_INSENSITIVE_ORDER)
                 ).toArray()
         );
         //this.ingredientStorageList = new ArrayList<>();
@@ -41,7 +43,8 @@ public class IngredientStorage extends SortableItemList<StoreIngredient> {
         sortChoices = new String[]{
                 "Description",
                 "Best Before Date",
-                "Ingredient Category"
+                "Ingredient Category",
+                "Location"
         };
     }
 
