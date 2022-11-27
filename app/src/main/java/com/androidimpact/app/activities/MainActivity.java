@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
-    String userId;
+    String userId, userPath;
 
     BottomNavigationView bottomnav;
 
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Bundle extras = getIntent().getExtras();
         String username = extras.getString("username");
         userId = extras.getString("uid");
+        userPath = extras.getString("user-path-firebase");
 
         View parentLayout = findViewById(R.id.main_activity_layout);
 
@@ -220,6 +221,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getUserDataPath() {
+        return userPath;
     }
 
 }
