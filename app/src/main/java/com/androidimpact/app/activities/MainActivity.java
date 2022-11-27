@@ -203,8 +203,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         {
             StoreIngredient ingredient = new StoreIngredient(item);
             ingredientStorageController.addEdit(ingredient);
+            shoppingListController.delete(item);
         }
 
+        //Maybe move the fragment to storage immediately
+        getSupportActionBar().setTitle("Ingredient Storage");
+        updateActiveFragment(storageFragment);
         //Delete all the items from Shopping List that were moved
 
     }

@@ -59,6 +59,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     final String COLLECTION_NAME = "shoppingList";
 
 
+    private static ShoppingListFragment instance;
+
+
     // Declare the variables so that you will be able to reference it later.
     RecyclerView shoppingListView;
     ShopIngredientAdapter shopIngredientViewAdapter;
@@ -93,8 +96,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      */
     // TODO: Rename and change types and number of parameters
     public static ShoppingListFragment newInstance() {
-        ShoppingListFragment fragment = new ShoppingListFragment();
-        return fragment;
+        if (instance == null) {
+            ShoppingListFragment fragment = new ShoppingListFragment();
+            instance = fragment;
+        }
+        return instance;
     }
 
     /**
@@ -221,7 +227,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                //ShoppingListController.delete(position);
+               // ShoppingListController.delete(position);
             }
             // finally, we add this to our recycler view.
         }).attachToRecyclerView(shoppingListView);
