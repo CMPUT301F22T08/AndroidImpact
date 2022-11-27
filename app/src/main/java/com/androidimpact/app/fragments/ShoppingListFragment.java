@@ -239,7 +239,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                //ShoppingListController.delete(position);
+                shoppingListController.delete(position);
             }
             // finally, we add this to our recycler view.
         }).attachToRecyclerView(shoppingListView);
@@ -322,7 +322,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                 shoppingListAutomator.automateShoppingList(
                         shopIngredients -> {
                             Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
-                            automateBtn.setText("Check " + shopIngredients.size() + " recommendations");
                             if (shopIngredients.size() > 0) {
                                 // go to reviewRecommendations activity
                                 Intent intent = new Intent(getContext(), ReviewRecommendations.class);
@@ -468,7 +467,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      */
     public void editShopIngredientFB(ShopIngredient ingredient)
     {
-        Log.i("check ", "DONEDONEDONE");
         String id = ingredient.getId();
         if (id == null){
             UUID uuid = UUID.randomUUID();
