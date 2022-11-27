@@ -45,6 +45,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     // functions that subscribe for edit callbacks
     private ArrayList<ShopIngredientClickListener> clickListeners = new ArrayList<>();
 
+    /**
+     * Constructor for ShopIngredientAdapter
+     * @param mContext
+     * @param shoppingListController  Controller Class for Shopping List
+     */
     public ShopIngredientAdapter(Context mContext, ShoppingListController shoppingListController) {
         this.ingredientArrayList = shoppingListController.getData();
         this.mContext = mContext;
@@ -59,6 +64,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     }
 
 
+    /**
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ShopIngredientAdapter.IngredientViewHolder holder, int position){
 
@@ -161,6 +171,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         private TextView description;
 
         // creating a variable for category
+        // creating variables for other items in Shop_ingredient_item (XML)
         private Chip category;
         private ImageButton dropdownToggle;
         private ConstraintLayout root;
@@ -180,7 +191,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             super(itemView);
             res = itemView.getResources();
 
-            //Need to be changed for now
+            //finding the items in the XML and assigning them to variables
             description = itemView.findViewById(R.id.shop_ingredient_description);
             category = itemView.findViewById(R.id.shop_ingredient_category);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);

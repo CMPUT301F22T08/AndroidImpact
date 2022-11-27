@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-
-//Need to implement compare to in ingredient storage
 /**
  * IngredientStorage class
  * ingredientStorageList (ArrayList<StoreIngredient>)
