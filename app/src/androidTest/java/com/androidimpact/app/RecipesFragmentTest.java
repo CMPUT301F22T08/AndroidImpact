@@ -34,9 +34,11 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 /**
  * This tests the recipes fragment functionality, like add/edit recipe, add/edit ingredient to recipe
@@ -44,6 +46,7 @@ import org.junit.runner.RunWith;
  * @version 1.0
  * @author Curtis Kan
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class RecipesFragmentTest {
@@ -52,6 +55,9 @@ public class RecipesFragmentTest {
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
 
+    /**
+     * Signup beforehand, move to recipe fragment
+     */
     @Before
     public void signup() {
         // Click on the signup button
@@ -65,14 +71,6 @@ public class RecipesFragmentTest {
                                 4),
                         isDisplayed()));
         materialButton2.perform(click());
-    }
-
-
-    /**
-     * Make sure on the right fragment
-     */
-    @Test
-    public void A_rightFragmentTest() {
 
         // Click on bottom navbar button
         ViewInteraction bottomNavigationItemView = onView(
@@ -84,6 +82,14 @@ public class RecipesFragmentTest {
                                 1),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
+    }
+
+    /**
+     * Make sure on the right fragment
+     */
+    @Test
+    public void A_rightFragmentTest() {
+
 
         // Make sure on IngredientStorage fragment
         ViewInteraction textView = onView(
@@ -94,9 +100,13 @@ public class RecipesFragmentTest {
         textView.check(matches(withText("Recipe List")));
     }
 
+    /**
+     * Tests adding a recipe with basic attributes
+     */
     @Test
-    public void B_recipesFragmentTest() {
+    public void B_addRecipeTest() throws InterruptedException {
 
+        // Click on add recipe fab
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.navbarFAB), withContentDescription("Multipurpose FAB in Navbar"),
                         childAtPosition(
@@ -108,6 +118,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         floatingActionButton.perform(click());
 
+        // Change recipe title to Aadvark soup
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.recipe_title),
                         childAtPosition(
@@ -118,6 +129,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         appCompatEditText.perform(replaceText("Aadvark soup"), closeSoftKeyboard());
 
+        // Change prep_time to 3
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.recipe_prep),
                         childAtPosition(
@@ -129,6 +141,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("3"), closeSoftKeyboard());
 
+        // Change servings to 4
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.recipe_servings),
                         childAtPosition(
@@ -140,6 +153,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         appCompatEditText3.perform(replaceText("4"), closeSoftKeyboard());
 
+        // Click on add ingredient fab
         ViewInteraction floatingActionButton2 = onView(
                 allOf(withId(R.id.add_ingredient), withContentDescription("Title"),
                         childAtPosition(
@@ -151,6 +165,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         floatingActionButton2.perform(click());
 
+        // Change ingredient description to water
         ViewInteraction materialAutoCompleteTextView = onView(
                 allOf(withId(R.id.ingredient_description),
                         childAtPosition(
@@ -161,6 +176,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         materialAutoCompleteTextView.perform(replaceText("Water"), closeSoftKeyboard());
 
+        // Change ingredient amount to 2
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.ingredient_amount),
                         childAtPosition(
@@ -172,6 +188,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         appCompatEditText4.perform(replaceText("2"), closeSoftKeyboard());
 
+        // Change unit to unit
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.recipe_ingredient_unit),
                         childAtPosition(
@@ -190,6 +207,7 @@ public class RecipesFragmentTest {
                 .atPosition(6);
         appCompatCheckedTextView.perform(click());
 
+        // Change category to sweet
         ViewInteraction appCompatSpinner2 = onView(
                 allOf(withId(R.id.recipe_ingredient_category),
                         childAtPosition(
@@ -201,24 +219,15 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         appCompatSpinner2.perform(click());
 
-        ViewInteraction appCompatSpinner3 = onView(
-                allOf(withId(R.id.recipe_ingredient_category),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner3.perform(click());
-
         DataInteraction appCompatCheckedTextView2 = onData(anything())
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(1);
+                .atPosition(2);
         appCompatCheckedTextView2.perform(click());
 
+        Thread.sleep(1000);
+        // Confirm adding ingredient
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.confirm_button), withText("Confirm"),
                         childAtPosition(
@@ -230,6 +239,8 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
+        Thread.sleep(1000);
+        // Change recipe category
         ViewInteraction appCompatSpinner4 = onView(
                 allOf(withId(R.id.recipe_category_spinner),
                         childAtPosition(
@@ -245,9 +256,10 @@ public class RecipesFragmentTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(1);
+                .atPosition(3);
         appCompatCheckedTextView3.perform(click());
 
+        // Confirm adding recipe
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.confirm_button), withText("Confirm"),
                         childAtPosition(
@@ -257,7 +269,34 @@ public class RecipesFragmentTest {
                                 1),
                         isDisplayed()));
         materialButton3.perform(click());
+
+        // Check if recipe exists in list
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.recipe_name), withText("Aadvark soup"),
+                        withParent(allOf(withId(R.id.recipe_container),
+                                withParent(withId(R.id.recipe_listview)))),
+                        isDisplayed()));
+        textView.check(matches(withText("Aadvark soup")));
     }
+
+    /**
+     * Tests editing a recipe, including editing an ingredient inside that recipe
+     */
+    @Test
+    public void C_editRecipeTest() throws InterruptedException {
+
+
+
+    }
+
+    /**
+     * Tests deleting an ingredient from a recipe, then the recipe itself
+     */
+    @Test
+    public void D_deleteRecipeTest() {
+
+    }
+
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {

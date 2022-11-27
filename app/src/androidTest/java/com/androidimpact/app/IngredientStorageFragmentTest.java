@@ -50,7 +50,7 @@ import org.junit.runners.MethodSorters;
  * This tests the ingredient storage fragment, adding, and editing an ingredient
  * Written using the built in espresso test recorder
  * @version 1.0
- * @author Curtis Kan
+ * @author Curtis Kan, Joshua Ji
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
@@ -61,6 +61,9 @@ public class IngredientStorageFragmentTest {
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
 
+    /**
+     * Signup in the app beforehand
+     */
     @Before
     public void signup() {
         // Click on the signup button
