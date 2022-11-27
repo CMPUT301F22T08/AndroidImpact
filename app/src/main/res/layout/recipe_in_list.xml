@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:paddingEnd="10dp"
+    android:paddingStart="15dp"
+    android:paddingVertical="5dp">
 
     <TextView
         android:id="@+id/recipe_name"
@@ -14,7 +16,7 @@
         android:layout_marginStart="16dp"
         android:text="@string/recipe_title_in_list"
         android:textColor="@color/white"
-        android:textSize="34sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/recipe_image_view"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,8 +37,9 @@
         android:backgroundTint="@color/background"
         android:clickable="true"
         app:backgroundTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recipe_name"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit"
         app:tint="@color/white" />
 
@@ -44,23 +47,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
         android:scrollbars="none"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
         app:layout_constraintStart_toEndOf="@id/recipe_image_view"
         app:layout_constraintTop_toBottomOf="@id/recipe_name">
 
         <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="10dp">
+            android:layout_height="match_parent">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/recipe_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipMinHeight="30dp"
                 android:textColor="@color/white"
                 app:chipBackgroundColor="@color/purple_700"
+                app:chipMinHeight="30dp"
                 tools:text="@string/recipe_category_in_list"
                 tools:textSize="16sp" />
 
@@ -68,9 +71,9 @@
                 android:id="@+id/recipe_prep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipMinHeight="30dp"
                 android:textColor="@color/white"
                 app:chipBackgroundColor="@color/purple_500"
+                app:chipMinHeight="30dp"
                 tools:text="@string/recipe_prep_time_in_list"
                 tools:textSize="16sp" />
 
@@ -78,10 +81,10 @@
                 android:id="@+id/recipe_servings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 app:chipIcon="@drawable/recipe_serving_vector"
                 app:chipIconTint="@color/white"
                 app:chipMinHeight="30dp"
-                android:textColor="@color/white"
                 app:chipSurfaceColor="@color/purple_200"
                 tools:text="@string/recipe_servings_in_list"
                 tools:textSize="16sp" />
