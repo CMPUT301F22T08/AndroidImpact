@@ -99,7 +99,7 @@ public class ShoppingListAutomator {
 
 
     /**
-     * Actually calculates all the shopIngredients needed (synchronously)
+     * Actually calculates all the shopIngredients needed (synchronously), then stores the result inside `recommendations`
      *
      * we name it `synchronousAutomateShoppingList` because we want to make sure that
      * people know it is synchronous and blocking! in fact, if we try to run it on the MainThread,
@@ -125,7 +125,7 @@ public class ShoppingListAutomator {
                 }
             }
         }
-
+        recommendations = res;
         return liftToTask(res);
     }
 
