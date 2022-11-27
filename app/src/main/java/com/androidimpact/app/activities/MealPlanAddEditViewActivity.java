@@ -11,9 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.fragments.IngredientAddFragment;
 import com.androidimpact.app.fragments.RecipeAddFragment;
+import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeController;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,6 +39,8 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     private Button breakfastRecipeAdd,breakfastIngredientAdd, lunchRecipeAdd, lunchIngredientAdd,
             dinnerRecipeAdd, dinnerIngredientAdd, snackRecipeAdd, snackIngredientAdd;
+    EditText editText;
+    String initialDocName;
 
     // adding recipes to firebase
     FirebaseFirestore db;
@@ -71,6 +75,8 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         dinnerIngredientAdd = findViewById(R.id.add_dinner_ingredient);
         snackIngredientAdd = findViewById(R.id.add_snack_ingredient);
 
+        editText = findViewById(R.id.editTextMealPlanTitle);
+
         //!!! Add link to xml here once it exists !!!///
 
         // extract extras
@@ -82,16 +88,30 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(extras.getString("activity_name"));
 
             if (isEditing) {
+                editText.setText(currentMealPlan.getDate());
+                initialDocName = currentMealPlan.getDate();
 
+                // load data from currentMealPlan into activity set
+                String[] mealTypes = {"breakfast", "lunch", "dinner", "snacks"};
+                for(String type: mealTypes) {
+                    ArrayList<Recipe> recipesInMealPlan = currentMealPlan.getRecipes(type);
+                    ArrayList<String> recipeIdsInMealPlan = new ArrayList<>();
+                    for(int i = 0; i < recipesInMealPlan.size(); i++) {
+                        recipeIdsInMealPlan.add(recipesInMealPlan.get(i).getId());
+                    }
+                    this.recipeIdMap.put(type + "Recipes", recipeIdsInMealPlan);
 
+                    ArrayList<StoreIngredient> ingredientsInMealPlan = currentMealPlan.getIngredients(type);
+                    ArrayList<String> ingredientIdsInMealPlan = new ArrayList<>();
+                    for(int i = 0; i < ingredientsInMealPlan.size(); i++) {
+                        ingredientIdsInMealPlan.add(ingredientsInMealPlan.get(i).getId());
+                    }
+                    this.ingredientIdMap.put(type + "Ingredients", ingredientIdsInMealPlan);
 
-            } else {
-                // when non editing, make a new collection
-                //getSupportActionBar().setTitle("Add Meal Plan");
-                // initialize defaults
+                    this.recipeServingsMap.put(type + "RecipesServings", currentMealPlan.getRecipeServings(type));
+                    this.ingredientServingsMap.put(type + "IngredientsServings", currentMealPlan.getIngredientServings(type));
+                }
             }
-
-
         }
 
         breakfastRecipeAdd.setOnClickListener(view -> {
@@ -190,9 +210,16 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.ingredientServingsMap.keySet().forEach(key -> {
             data.put(key, this.ingredientServingsMap.get(key));
         });
-        EditText editText = findViewById(R.id.editTextMealPlanTitle);
+
         String temp = editText.getText().toString();
         String docName = (temp.equals("")) ? "Day x" : temp;
+
+        if(isEditing) {
+            mealPlanCollection
+                    .document(initialDocName)
+                    .delete();
+        }
+
         mealPlanCollection
                 .document(docName)
                 .set(data);
