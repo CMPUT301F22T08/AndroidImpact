@@ -100,7 +100,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
                 {
                     //if amount picked is zero and state is changed from false to true then only show the dialog box
                     if (currentIngredient.getAmountPicked() == 0) {
-                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
+                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient);
 
                         MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
                     }

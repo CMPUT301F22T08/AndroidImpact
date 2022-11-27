@@ -48,11 +48,10 @@ public class ShopPickUpFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static ShopPickUpFragment newInstance(ShopIngredient ingredient, int pos) {
+    public static ShopPickUpFragment newInstance(ShopIngredient ingredient) {
         Bundle args = new Bundle();
         //putting all the arguments to bundle so that we can retrieve them later
-        Log.i("tt1", String.valueOf(pos));
-        args.putInt("itemPos", pos);
+      //  args.putInt("itemPos", pos);
         args.putFloat("CurrentAmount", ingredient.getAmountPicked());
         args.putSerializable("ingredient", ingredient);
 
@@ -80,7 +79,7 @@ public class ShopPickUpFragment extends DialogFragment {
 
             //initializing dialog box with existing object values
         if (getArguments() != null) {
-            pos = getArguments().getInt("itemPos");
+           // pos = getArguments().getInt("itemPos");
             ingredient = (ShopIngredient) getArguments().getSerializable("ingredient");
             editAmountPickUp.setText(String.valueOf(ingredient.getAmount()));
         }
@@ -109,8 +108,8 @@ public class ShopPickUpFragment extends DialogFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             String cost = editAmountPickUp.getText().toString();
 
-                            //To be Removed
-                            Log.i("Empty", cost);
+
+                            Log.i("CostOfItem", cost);
 
                             float costF;
                             try
