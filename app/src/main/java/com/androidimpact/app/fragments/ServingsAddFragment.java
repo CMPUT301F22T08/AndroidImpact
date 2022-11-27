@@ -55,14 +55,15 @@ public class ServingsAddFragment extends DialogFragment {
     final String TAG = "ServingsAddFragment";
 
     // Declare the variables so that you will be able to reference it later.
-    private String mealType, hash;
+    private String mealType, hash, title;
     private boolean isRecipe;
     Button cancelBtn, confirmBtn;
 
-    public ServingsAddFragment(String meal, String hash, boolean isRecipe) {
+    public ServingsAddFragment(String meal, String hash, String title, boolean isRecipe) {
         super(R.layout.fragment_servings_add);
         this.mealType = meal;
         this.hash = hash;
+        this.title = title;
         this.isRecipe = isRecipe;
     }
 
@@ -119,15 +120,16 @@ public class ServingsAddFragment extends DialogFragment {
                     throw new Exception("invalid entry");
                 }
                 if(this.isRecipe) {
-                    mealPlanAddEditViewActivity.addRecipe(this.mealType, this.hash, floatingPoint);
+                    mealPlanAddEditViewActivity.addRecipe(this.mealType, this.hash, this.title, floatingPoint);
                 } else {
-                    mealPlanAddEditViewActivity.addIngredient(this.mealType, this.hash, floatingPoint);
+                    mealPlanAddEditViewActivity.addIngredient(this.mealType, this.hash, this.title, floatingPoint);
                 }
                 dismiss();
             }
             catch (Exception e) {
                 TextView errorText = view.findViewById(R.id.errorMsg);
                 errorText.setVisibility(View.VISIBLE);
+                Log.e("bad", "badbad", e);
             }
 
         });

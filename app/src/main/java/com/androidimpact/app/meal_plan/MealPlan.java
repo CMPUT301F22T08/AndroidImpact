@@ -131,7 +131,43 @@ public class MealPlan implements Serializable {
 
     public ArrayList<Recipe> getRecipes(String key) {return this.mealRecipeMap.get(key);}
 
+    public ArrayList<String> getRecipeIds(String key) {
+        ArrayList<Recipe> recipesInMealPlan = this.getRecipes(key);
+        ArrayList<String> recipeIdsInMealPlan = new ArrayList<>();
+        for(int i = 0; i < recipesInMealPlan.size(); i++) {
+            recipeIdsInMealPlan.add(recipesInMealPlan.get(i).getId());
+        }
+        return recipeIdsInMealPlan;
+    }
+
+    public ArrayList<String> getRecipeTitles(String key) {
+        ArrayList<Recipe> recipesInMealPlan = this.getRecipes(key);
+        ArrayList<String> recipeIdsInMealPlan = new ArrayList<>();
+        for(int i = 0; i < recipesInMealPlan.size(); i++) {
+            recipeIdsInMealPlan.add(recipesInMealPlan.get(i).getTitle());
+        }
+        return recipeIdsInMealPlan;
+    }
+
     public ArrayList<StoreIngredient> getIngredients(String key) {return this.mealIngredientMap.get(key);}
+
+    public ArrayList<String> getIngredientIds(String key) {
+        ArrayList<StoreIngredient> ingredientsInMealPlan = this.getIngredients(key);
+        ArrayList<String> ingredientIdsInMealPlan = new ArrayList<>();
+        for(int i = 0; i < ingredientsInMealPlan.size(); i++) {
+            ingredientIdsInMealPlan.add(ingredientsInMealPlan.get(i).getId());
+        }
+        return ingredientIdsInMealPlan;
+    }
+
+    public ArrayList<String> getIngredientTitles(String key) {
+        ArrayList<StoreIngredient> ingredientsInMealPlan = this.getIngredients(key);
+        ArrayList<String> ingredientIdsInMealPlan = new ArrayList<>();
+        for(int i = 0; i < ingredientsInMealPlan.size(); i++) {
+            ingredientIdsInMealPlan.add(ingredientsInMealPlan.get(i).getDescription());
+        }
+        return ingredientIdsInMealPlan;
+    }
 
     public ArrayList<Double> getRecipeServings(String key) {return this.mealRecipeServingsMap.get(key);}
 

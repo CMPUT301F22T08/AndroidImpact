@@ -26,6 +26,7 @@ import com.androidimpact.app.meal_plan.MealPlan;
 import com.androidimpact.app.meal_plan.MealPlanController;
 import com.androidimpact.app.meal_plan.MealPlanListAdapter;
 import com.androidimpact.app.R;
+import com.androidimpact.app.meal_plan.MealPlanListAddEditAdapter;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
@@ -134,6 +135,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         mealPlanListView.setLayoutManager(manager);
         mealPlanListView.setAdapter(mealPlanAdapter);
 
+
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             /**
@@ -217,7 +219,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         navigationFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addMealPlan", "Adding meal plan!");
             Intent intent = new Intent(getContext(), MealPlanAddEditViewActivity.class);
-            intent.putExtra("activity_name", "Add meal plan");
+            intent.putExtra("activity_name", "Add Meal Plan");
             refreshMealItems();
             addMealPlanLauncher.launch(intent);
         });

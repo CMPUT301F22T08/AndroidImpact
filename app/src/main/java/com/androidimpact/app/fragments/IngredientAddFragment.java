@@ -40,7 +40,7 @@ public class IngredientAddFragment extends DialogFragment {
     TextView sortText;
 
     OnSelectInterface onSelectInterface;
-    String selectedIngredientId;
+    String selectedIngredientId, selectedIngredientTitle;
     IngredientStorage ingredientStorage;
     ArrayList<StoreIngredient> ingredientDataList;
 
@@ -69,9 +69,10 @@ public class IngredientAddFragment extends DialogFragment {
 
         onSelectInterface = i -> {
             selectedIngredientId = ingredientDataList.get(i).getId();
+            selectedIngredientTitle = ingredientDataList.get(i).getDescription();
             //MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
             //mealPlanAddEditViewActivity.addIngredient(this.mealType, selectedIngredientId);
-            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedIngredientId, false);
+            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedIngredientId, selectedIngredientTitle, false);
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             servingsAddFragment.show(transaction, "Add Servings");
 
