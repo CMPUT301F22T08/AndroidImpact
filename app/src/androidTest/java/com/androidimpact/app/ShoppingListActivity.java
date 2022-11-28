@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
@@ -39,9 +40,17 @@ import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import org.hamcrest.Description;
@@ -57,6 +66,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * INtent testing for Shopping List Activity
+ *
+ * Note: these test were generated using Espresso Test Recorder
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -258,114 +275,133 @@ public class ShoppingListActivity {
 
     @Test
     public void C_addShoppingListIngredient() {
+        // delete shopping list items
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        CollectionReference shoppingListRef = db.collection("userData")
+                .document(user.getUid()).collection("shoppingList");
 
-        ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.cart_icon), withContentDescription("Shopping List"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.bottom_navigation_view),
-                                        0),
-                                3),
-                        isDisplayed()));
-        bottomNavigationItemView.perform(click());
-
-        ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.navbarFAB), withContentDescription("Multipurpose FAB in Navbar"),
-                        childAtPosition(
-                                allOf(withId(R.id.combined_bottom),
+        shoppingListRef.whereEqualTo("description",  "Shopping List Item 1").get()
+                .addOnCompleteListener(task -> {
+                    List<Task<?>> futures = new ArrayList<>();
+                    QuerySnapshot docs = task.getResult();
+                    for (QueryDocumentSnapshot doc : docs) {
+                        futures.add(shoppingListRef.document(doc.getId()).delete());
+                    }
+                    Log.i("addShoppingListIngredient", "Deleting " + futures.size() + " elements");
+                    Tasks.whenAll(futures).addOnSuccessListener(aVoid -> {
+                        ViewInteraction bottomNavigationItemView = onView(
+                                allOf(withId(R.id.cart_icon), withContentDescription("Shopping List"),
                                         childAtPosition(
-                                                withId(R.id.main_activity_layout),
-                                                2)),
-                                1),
-                        isDisplayed()));
-        floatingActionButton.perform(click());
+                                                childAtPosition(
+                                                        withId(R.id.bottom_navigation_view),
+                                                        0),
+                                                3),
+                                        isDisplayed()));
+                        bottomNavigationItemView.perform(click());
 
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.shopping_item_addEdit_description),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.ingredient_store_description_layout),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText("Shopping List Item 1"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.shopping_item_addEdit_amount),
-                        childAtPosition(
-                                allOf(withId(R.id.content),
+                        ViewInteraction floatingActionButton = onView(
+                                allOf(withId(R.id.navbarFAB), withContentDescription("Multipurpose FAB in Navbar"),
                                         childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText5.perform(replaceText("1"), closeSoftKeyboard());
+                                                allOf(withId(R.id.combined_bottom),
+                                                        childAtPosition(
+                                                                withId(R.id.main_activity_layout),
+                                                                2)),
+                                                1),
+                                        isDisplayed()));
+                        floatingActionButton.perform(click());
 
-        ViewInteraction appCompatSpinner = onView(
-                allOf(withId(R.id.shopping_item_addEdit_unit),
-                        childAtPosition(
-                                allOf(withId(R.id.content),
+                        ViewInteraction appCompatEditText4 = onView(
+                                allOf(withId(R.id.shopping_item_addEdit_description),
                                         childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                9),
-                        isDisplayed()));
-        appCompatSpinner.perform(click());
+                                                childAtPosition(
+                                                        withId(R.id.ingredient_store_description_layout),
+                                                        0),
+                                                0),
+                                        isDisplayed()));
+                        appCompatEditText4.perform(replaceText("Shopping List Item 1"), closeSoftKeyboard());
 
-        DataInteraction appCompatCheckedTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        appCompatCheckedTextView.perform(click());
-
-        ViewInteraction appCompatSpinner2 = onView(
-                allOf(withId(R.id.shopping_item_addEdit_category),
-                        childAtPosition(
-                                allOf(withId(R.id.content),
+                        ViewInteraction appCompatEditText5 = onView(
+                                allOf(withId(R.id.shopping_item_addEdit_amount),
                                         childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        appCompatSpinner2.perform(click());
+                                                allOf(withId(R.id.content),
+                                                        childAtPosition(
+                                                                withId(android.R.id.content),
+                                                                0)),
+                                                4),
+                                        isDisplayed()));
+                        appCompatEditText5.perform(replaceText("1"), closeSoftKeyboard());
 
-        DataInteraction appCompatCheckedTextView2 = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        appCompatCheckedTextView2.perform(click());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.shopping_item_addEdit_amount), withText("1"),
-                        childAtPosition(
-                                allOf(withId(R.id.content),
+                        ViewInteraction appCompatSpinner = onView(
+                                allOf(withId(R.id.shopping_item_addEdit_unit),
                                         childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText6.perform(pressImeActionButton());
+                                                allOf(withId(R.id.content),
+                                                        childAtPosition(
+                                                                withId(android.R.id.content),
+                                                                0)),
+                                                9),
+                                        isDisplayed()));
+                        appCompatSpinner.perform(click());
 
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.shopping_item_addEdit_confirmBtn), withText("Confirm"),
-                        childAtPosition(
-                                allOf(withId(R.id.content),
+                        DataInteraction appCompatCheckedTextView = onData(anything())
+                                .inAdapterView(childAtPosition(
+                                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                                        0))
+                                .atPosition(1);
+                        appCompatCheckedTextView.perform(click());
+
+                        ViewInteraction appCompatSpinner2 = onView(
+                                allOf(withId(R.id.shopping_item_addEdit_category),
                                         childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                6),
-                        isDisplayed()));
-        materialButton2.perform(click());
+                                                allOf(withId(R.id.content),
+                                                        childAtPosition(
+                                                                withId(android.R.id.content),
+                                                                0)),
+                                                0),
+                                        isDisplayed()));
+                        appCompatSpinner2.perform(click());
 
-        // See if the new ingredientDescription is in the list
-        // Check if the ingredient is in the list
-        onView(withId(R.id.shop_ingredient_description))
-                .perform(RecyclerViewActions.actionOnHolderItem(
-                        shopIngredientVHMatcher(equalTo("Shopping List Item 1")),
-                        scrollTo()
-                )).check(matches(hasDescendant(withText("Shopping List Item 1"))));
+                        DataInteraction appCompatCheckedTextView2 = onData(anything())
+                                .inAdapterView(childAtPosition(
+                                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                                        0))
+                                .atPosition(1);
+                        appCompatCheckedTextView2.perform(click());
+
+                        ViewInteraction appCompatEditText6 = onView(
+                                allOf(withId(R.id.shopping_item_addEdit_amount), withText("1"),
+                                        childAtPosition(
+                                                allOf(withId(R.id.content),
+                                                        childAtPosition(
+                                                                withId(android.R.id.content),
+                                                                0)),
+                                                4),
+                                        isDisplayed()));
+                        appCompatEditText6.perform(pressImeActionButton());
+
+                        ViewInteraction materialButton2 = onView(
+                                allOf(withId(R.id.shopping_item_addEdit_confirmBtn), withText("Confirm"),
+                                        childAtPosition(
+                                                allOf(withId(R.id.content),
+                                                        childAtPosition(
+                                                                withId(android.R.id.content),
+                                                                0)),
+                                                6),
+                                        isDisplayed()));
+                        materialButton2.perform(click());
+
+                        // See if the new ingredientDescription is in the list
+                        // Check if the ingredient is in the list
+                        onView(withId(R.id.shop_ingredient_description))
+                                .perform(RecyclerViewActions.actionOnHolderItem(
+                                        shopIngredientVHMatcher(equalTo("Shopping List Item 1")),
+                                        scrollTo()
+                                )).check(matches(hasDescendant(withText("Shopping List Item 1"))));
+                    });
+
+                });
+
     }
 
     // this is a helper function that matches an item in the RecyclerView by its description.
@@ -389,8 +425,6 @@ public class ShoppingListActivity {
 
     @Test
     public void D_getFromMealPlan() {
-
-
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.recipe_icon), withContentDescription("Recipe"),
                         childAtPosition(
@@ -412,245 +446,15 @@ public class ShoppingListActivity {
                         isDisplayed()));
         floatingActionButton.perform(click());
 
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.recipe_title),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.recipe_title_layout),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText("Soup 5000"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.recipe_prep),
-                        childAtPosition(
-                                allOf(withId(R.id.recipe_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText5.perform(replaceText("1"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.recipe_servings),
-                        childAtPosition(
-                                allOf(withId(R.id.recipe_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                3),
-                        isDisplayed()));
-        appCompatEditText6.perform(replaceText("1"), closeSoftKeyboard());
-
-        ViewInteraction appCompatSpinner = onView(
-                allOf(withId(R.id.recipe_category_spinner),
-                        childAtPosition(
-                                allOf(withId(R.id.recipe_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                10),
-                        isDisplayed()));
-        appCompatSpinner.perform(click());
-
-        DataInteraction appCompatCheckedTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        appCompatCheckedTextView.perform(click());
-
-        ViewInteraction floatingActionButton2 = onView(
-                allOf(withId(R.id.add_ingredient), withContentDescription("Title"),
-                        childAtPosition(
-                                allOf(withId(R.id.recipe_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                7),
-                        isDisplayed()));
-        floatingActionButton2.perform(click());
-
-        ViewInteraction materialAutoCompleteTextView = onView(
-                allOf(withId(R.id.ingredient_description),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.ingredient_description_layout),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialAutoCompleteTextView.perform(replaceText("Soup Base"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.ingredient_amount),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText7.perform(replaceText("300"), closeSoftKeyboard());
-
-        ViewInteraction appCompatSpinner2 = onView(
-                allOf(withId(R.id.recipe_ingredient_unit),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                9),
-                        isDisplayed()));
-        appCompatSpinner2.perform(click());
-
-        DataInteraction appCompatCheckedTextView2 = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(3);
-        appCompatCheckedTextView2.perform(click());
-
-        ViewInteraction appCompatSpinner3 = onView(
-                allOf(withId(R.id.recipe_ingredient_category),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner3.perform(click());
-
-        DataInteraction appCompatCheckedTextView3 = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        appCompatCheckedTextView3.perform(click());
-
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.ingredient_amount), withText("300"),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText8.perform(pressImeActionButton());
-
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.confirm_button), withText("Confirm"),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                6),
-                        isDisplayed()));
-        materialButton2.perform(click());
-
-        ViewInteraction floatingActionButton3 = onView(
-                allOf(withId(R.id.add_ingredient), withContentDescription("Title"),
-                        childAtPosition(
-                                allOf(withId(R.id.recipe_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                7),
-                        isDisplayed()));
-        floatingActionButton3.perform(click());
-
-        ViewInteraction materialAutoCompleteTextView2 = onView(
-                allOf(withId(R.id.ingredient_description),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.ingredient_description_layout),
-                                        0),
-                                0),
-                        isDisplayed()));
-        materialAutoCompleteTextView2.perform(replaceText("Chicken"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText9 = onView(
-                allOf(withId(R.id.ingredient_amount),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText9.perform(replaceText("2"), closeSoftKeyboard());
-
-        ViewInteraction appCompatSpinner4 = onView(
-                allOf(withId(R.id.recipe_ingredient_unit),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                9),
-                        isDisplayed()));
-        appCompatSpinner4.perform(click());
-
-        DataInteraction appCompatCheckedTextView4 = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        appCompatCheckedTextView4.perform(click());
-
-        ViewInteraction appCompatSpinner5 = onView(
-                allOf(withId(R.id.recipe_ingredient_category),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner5.perform(click());
-
-        DataInteraction appCompatCheckedTextView5 = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(2);
-        appCompatCheckedTextView5.perform(click());
-
-        ViewInteraction appCompatEditText10 = onView(
-                allOf(withId(R.id.ingredient_amount), withText("2"),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText10.perform(pressImeActionButton());
-
-        ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.confirm_button), withText("Confirm"),
-                        childAtPosition(
-                                allOf(withId(R.id.ingredient_layout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                6),
-                        isDisplayed()));
-        materialButton3.perform(click());
-
-        ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.confirm_button), withText("Confirm"),
+                allOf(withId(R.id.cancel_button), withText("Cancel"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.recipe_layout),
                                         8),
-                                1),
+                                0),
                         isDisplayed()));
-        materialButton4.perform(click());
+        materialButton2.perform(click());
 
         ViewInteraction bottomNavigationItemView2 = onView(
                 allOf(withId(R.id.cart_icon), withContentDescription("Shopping List"),
@@ -662,6 +466,28 @@ public class ShoppingListActivity {
                         isDisplayed()));
         bottomNavigationItemView2.perform(click());
 
+        ViewInteraction floatingActionButton2 = onView(
+                allOf(withId(R.id.navbarFAB), withContentDescription("Multipurpose FAB in Navbar"),
+                        childAtPosition(
+                                allOf(withId(R.id.combined_bottom),
+                                        childAtPosition(
+                                                withId(R.id.main_activity_layout),
+                                                2)),
+                                1),
+                        isDisplayed()));
+        floatingActionButton2.perform(click());
+
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.shopping_item_addEdit_cancelBtn), withText("Cancel"),
+                        childAtPosition(
+                                allOf(withId(R.id.content),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        materialButton3.perform(click());
+
         ViewInteraction bottomNavigationItemView3 = onView(
                 allOf(withId(R.id.meal_icon), withContentDescription("Meal Plan"),
                         childAtPosition(
@@ -671,6 +497,37 @@ public class ShoppingListActivity {
                                 4),
                         isDisplayed()));
         bottomNavigationItemView3.perform(click());
+
+        ViewInteraction floatingActionButton3 = onView(
+                allOf(withId(R.id.navbarFAB), withContentDescription("Multipurpose FAB in Navbar"),
+                        childAtPosition(
+                                allOf(withId(R.id.combined_bottom),
+                                        childAtPosition(
+                                                withId(R.id.main_activity_layout),
+                                                2)),
+                                1),
+                        isDisplayed()));
+        floatingActionButton3.perform(click());
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.cancel_button), withText("Cancel"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        materialButton4.perform(click());
+
+        ViewInteraction bottomNavigationItemView4 = onView(
+                allOf(withId(R.id.cart_icon), withContentDescription("Shopping List"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.bottom_navigation_view),
+                                        0),
+                                3),
+                        isDisplayed()));
+        bottomNavigationItemView4.perform(click());
 
         ViewInteraction floatingActionButton4 = onView(
                 allOf(withId(R.id.navbarFAB), withContentDescription("Multipurpose FAB in Navbar"),
@@ -682,27 +539,6 @@ public class ShoppingListActivity {
                                 1),
                         isDisplayed()));
         floatingActionButton4.perform(click());
-
-        ViewInteraction appCompatEditText11 = onView(
-                allOf(withId(R.id.editTextMealPlanTitle),
-                        childAtPosition(
-                                allOf(withId(R.id.mealPlanTitleLayout),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatEditText11.perform(replaceText("test 2"), closeSoftKeyboard());
-
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.add_breakfast_recipe), withText("Add Recipe"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        materialButton5.perform(click());
     }
 
 

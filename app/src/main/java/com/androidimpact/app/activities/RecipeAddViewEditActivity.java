@@ -424,7 +424,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 spinner.setSelection(idx + 1);
                 String classStr = selectedElem.get() == null ? "null" : selectedElem.get().getClass().toString();
                 Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + classStr + " - (" + data.indexOf(selectedElem.get()) + ")");
-                if (idx == -1) {
+                if (idx == -1 && selectedElem.get() != null) {
                     generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
                     selectedElem.set(null);
                 }
