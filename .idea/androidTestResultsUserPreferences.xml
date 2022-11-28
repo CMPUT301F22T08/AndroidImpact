@@ -16,6 +16,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1889624843">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1889353114">
           <value>
             <AndroidTestResultsTableState>
@@ -65,6 +78,7 @@
                   <entry key="Duration" value="90" />
                   <entry key="LGE&#10; LM-G710" value="120" />
                   <entry key="LMG710AWM778d3893" value="120" />
+                  <entry key="Pixel_6_API_33" value="120" />
                   <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
@@ -73,6 +87,32 @@
           </value>
         </entry>
         <entry key="-1325370625">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1048898556">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-782226817">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
@@ -267,6 +307,32 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="836464176">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_4a_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="846085450">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="1280933957">
           <value>
             <AndroidTestResultsTableState>
@@ -276,9 +342,9 @@
                   <entry key="LGE&#10; LM-G710" value="120" />
                   <entry key="LMG710AWM778d3893" value="120" />
                   <entry key="Pixel_4a_API_33" value="120" />
+                  <entry key="Pixel_6_API_33" value="120" />
                   <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Pixel_XL_API_33" value="120" />
-                  <entry key="Pixel_6_API_33" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>
