@@ -155,9 +155,9 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
 
         // Listen for events in collections
         unitCollection.addSnapshotListener(abstractSnapshotListener(
-                Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Unit"));
+                Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Units"));
         categoriesCollection.addSnapshotListener(abstractSnapshotListener(
-                Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Category"));
+                Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Categories"));
     }
 
     /**
@@ -272,7 +272,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
                 spinner.setSelection(idx + 1);
                 Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
                 if (idx == -1) {
-                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                    generateSnackbar("Warning: '" + selectedElem.get() + "' was not found in '" + debugName + "'!");
                     selectedElem.set(null);
                 }
             }
