@@ -20,11 +20,23 @@ public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
     private ArrayList<T> mObjects;
 
 
+    /**
+     * Constructor for NullableSpinnerAdapter
+     * @param context
+     * @param items
+     */
     public NullableSpinnerAdapter(Context context, ArrayList<T> items) {
         super(context, R.layout.spinner_item, items);
         mObjects = items;
     }
 
+    /**
+     * getter method for drop down view
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
         if (position == 0) {
@@ -33,6 +45,13 @@ public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
         return getCustomView(position, convertView, parent);
     }
 
+    /**
+     * getter method for view
+     * @param position (integer)
+     * @param convertView (view)
+     * @param parent (view group)
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -43,11 +62,20 @@ public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
     }
 
 
+    /**
+     * getter method for count
+     * @return (integer)
+     */
     @Override
     public int getCount() {
         return super.getCount() + 1; // Adjust for initial selection item
     }
 
+    /**
+     * sets the initial selection for the dropdown menu
+     * @param dropdown
+     * @return View
+     */
     private View initialSelection(boolean dropdown) {
         // Just an example using a simple TextView. Create whatever default view
         // to suit your needs, inflating a separate layout if it's cleaner.
@@ -61,6 +89,11 @@ public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
         return view;
     }
 
+    /**
+     *  getter method for item
+     * @param position (integer)
+     * @return
+     */
     @Override
     public T getItem(int position) {
         if (position == 0) {
@@ -69,6 +102,13 @@ public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
         return mObjects.get(position - 1);
     }
 
+    /**
+     * getter method for custom view
+     * @param position (integer)
+     * @param convertView (view)
+     * @param parent (view group)
+     * @return View
+     */
     private View getCustomView(int position, View convertView, ViewGroup parent) {
         int layout = R.layout.spinner_item;
         int layout_title_id = R.id.spinner_item_text;

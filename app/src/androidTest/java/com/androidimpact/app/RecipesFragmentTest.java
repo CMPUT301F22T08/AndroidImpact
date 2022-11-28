@@ -47,6 +47,7 @@ import com.androidimpact.app.recipes.RecipeIngredientAdapter;
 import com.androidimpact.app.recipes.RecipeListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -69,6 +70,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -486,31 +489,30 @@ public class RecipesFragmentTest {
         db = FirebaseFirestore.getInstance();
         db.document("userData/" + uid).collection("recipes")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (Objects.equals(document.getData().get("title"), "Aardvark soup")) {
-                                    String id = document.getId();
-                                    db.document("userData/" + uid).collection("recipes").document(id).delete();
-                                }
+                .addOnCompleteListener(task -> {
+                    List<Task<?>> futures = new ArrayList<>();
+                    Log.i("deleteRecipeTest", "got documents");
 
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (Objects.equals(document.getData().get("title"), "Aardvark soup")) {
+                                String id = document.getId();
+                                futures.add(db.document("userData/" + uid).collection("recipes").document(id).delete());
                             }
                         }
+
+                        Tasks.whenAll(futures).addOnSuccessListener(aVoid -> {
+                            Log.i("deleteRecipeTest", "deleted all recipe docs");
+                            // Check to make sure recipe not in list
+                            ViewInteraction textView = onView(
+                                    allOf(withId(R.id.recipe_name), withText("Aardvark soup"),
+                                            withParent(allOf(withId(R.id.recipe_container),
+                                                    withParent(withId(R.id.recipe_listview)))),
+                                            isDisplayed()));
+                            textView.check(doesNotExist());
+                        });
                     }
-
                 });
-
-        Thread.sleep(2000);
-
-        // Check to make sure recipe not in list
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.recipe_name), withText("Aardvark soup"),
-                        withParent(allOf(withId(R.id.recipe_container),
-                                withParent(withId(R.id.recipe_listview)))),
-                        isDisplayed()));
-        textView.check(doesNotExist());
     }
 
     /**

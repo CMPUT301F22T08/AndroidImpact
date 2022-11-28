@@ -158,10 +158,10 @@ public class ShoppingListController {
      */
     public void delete(ShopIngredient deletedIngredient){
         // Get the swiped item at a particular position.
-       // ShopIngredient deletedIngredient = shoppingList.get(position);
         String description = deletedIngredient.getDescription();
         String id = deletedIngredient.getId();
 
+        Log.i("id", "deleted" + description);
         Log.d(TAG, "Swiped " + description);
 
         // delete item from firebase

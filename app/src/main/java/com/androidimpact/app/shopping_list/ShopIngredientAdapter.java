@@ -50,6 +50,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     // functions that subscribe for edit callbacks
     private ArrayList<ShopIngredientToggleListener> toggleListeners = new ArrayList<>();
 
+    ShopIngredientToggleListener toggleListener;
+
     /**
      * Constructor for ShopIngredientAdapter
      * @param mContext
@@ -60,10 +62,16 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         this.mContext = mContext;
     }
 
+    /**
+     *  Adapter for ShopIngredient
+     * @param mContext
+     * @param data (ArrayList<ShopIngredient>)
+     */
     public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> data) {
         this.ingredientArrayList = data;
         this.mContext = mContext;
     }
+
 
     @NonNull
     @Override
@@ -73,12 +81,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         return new ShopIngredientAdapter.IngredientViewHolder(view);
     }
 
-
-    /**
-     *
-     * @param holder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(@NonNull ShopIngredientAdapter.IngredientViewHolder holder, int position){
 
@@ -114,33 +116,12 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         //Adds listener for switch button for every item
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (ShopIngredientToggleListener listener: toggleListeners)
-                {
-                    Log.i("Listener Listener", String.valueOf(isChecked));
-                    listener.shopIngredientToggled(currentIngredient, isChecked);
-                }
-//                if (isChecked)
-//                {
-//                    //if amount picked is zero and state is changed from false to true then only show the dialog box
-////                    if (currentIngredient.getAmountPicked() == 0) {
-////                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient);
-////
-////                        MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
-////                    }
-//                    // if amount picked is non-zero, then item  is already picked
-//
-//                }
-//                else
-//                {
-////                    //if amount picked is non-zero and state is changed from true to false, then change amount Picked up to be zero
-////                    if (currentIngredient.getAmountPicked() != 0)
-////                    {
-////                        currentIngredient.setAmountPicked(0);
-////                        MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
-////                    }
-//
-//                    // if amount is zero and state is changed from true to false, no need to change amount picked up
-//                }
+
+
+               toggleListener.shopIngredientToggled(currentIngredient, isChecked);
+               Log.i("pickup toggle", currentIngredient.getDescription());
+
+
             }
         });
 
@@ -205,6 +186,14 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         private FloatingActionButton moveFAB;
 
+        /**
+         * used only in tests
+         * @return the description
+         */
+        public String getDescription() {
+            return this.description.getText().toString();
+        }
+
 
         /**
          * initializing our text views
@@ -235,18 +224,18 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     }
 
     /**
-     *
+     * interface for shopIngredientToggleListener
      */
     public interface ShopIngredientToggleListener {
         void shopIngredientToggled(ShopIngredient food, boolean is_checked);
     }
 
     /**
-     *
+     *  this function sets edit toggle listener
      */
     public void setEditToggleListener(ShopIngredientToggleListener toAdd)
     {
-        toggleListeners.add(toAdd);
+        toggleListener = toAdd;
     }
 
     /**
