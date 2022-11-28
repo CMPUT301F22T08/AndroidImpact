@@ -55,6 +55,7 @@ public class StoreIngredientTest {
     public void testMethods() {
         StoreIngredient ingredient = mockStoreIngredient();
         StoreIngredient ingredient2 = mockStoreIngredient2();
+        StoreIngredient ingredient5 = mockStoreIngredient2();
 
         // test getBestBeforeDate()
         assertEquals(date, ingredient2.getBestBeforeDate());
@@ -64,7 +65,7 @@ public class StoreIngredientTest {
         cal.set(Calendar.YEAR, date.getYear());
         cal.set(Calendar.MONTH, date.getMonth());
         cal.set(Calendar.DAY_OF_MONTH, date.getDate());
-        assertEquals(cal, ingredient2.getBestBeforeCalendar());
+        assertTrue(ingredient5.compareCalendar(ingredient2));
 
         // test getLocation()
         assertEquals("freezer", ingredient2.getLocation());
@@ -75,7 +76,7 @@ public class StoreIngredientTest {
                 "",
                 4F,
                 "",
-                new Date(0),
+                new Date(122, 8, 30),
                 "not blank",
                 ""
         );

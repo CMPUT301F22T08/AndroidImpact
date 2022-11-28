@@ -16,6 +16,9 @@ public abstract class SortableItemList<T> {
     private OrderedHashMap<String, Comparator<T>> sortingHashMap;
     private int sortChoice;
 
+    //`
+    private String[] sortChoices;
+
     /**
      * Constructor for SortableItemList class
      * @param objectArrayList
@@ -25,6 +28,7 @@ public abstract class SortableItemList<T> {
         this.objectArrayList = objectArrayList;
         this.sortChoice = 0;
         this.comparators = comparators;
+        this.sortChoices = sortChoices;
         this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
     }
 
@@ -99,6 +103,24 @@ public abstract class SortableItemList<T> {
     public void setSortChoice(int i) {
         this.sortChoice = i;
     }
+
+
+    /**
+     * Get the sorting choice for the item list
+     */
+    public String getSortChoice() throws ArrayIndexOutOfBoundsException {
+        String choice;
+        try {
+            choice = sortChoices[this.sortChoice];
+        }
+        catch (Exception e)
+        {
+           throw  new ArrayIndexOutOfBoundsException("Trying to set a illegal sort choice");
+        }
+        return choice;
+    }
+
+
 
     /**
      * This function allows us to sort the item list by the user's choice

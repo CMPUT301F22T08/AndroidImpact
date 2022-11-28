@@ -33,9 +33,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
 
     private String userPath;
 
-    // adding recipes to firebase
-    //FirebaseFirestore db;
-    //CollectionReference mealPlanCollection;
+
 
     /**
      * Constructor for adapter for MealPlanList
@@ -49,9 +47,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
         this.context = context;
         this.userPath = dataPath;
 
-        // initialize Firestore
-        //db = FirebaseFirestore.getInstance();
-        //mealPlanCollection = db.document(dataPath).collection("meal-plan");
+
 
         this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -102,7 +98,6 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
             Intent intent = new Intent(context, MealPlanAddEditViewActivity.class);
             intent.putExtra("activity_name", "Edit Meal Plan");
             intent.putExtra("meal plan", recyclerData);
-            //intent.putExtra("recipe", currentRecipe);
             intent.putExtra("isEditing", true);
             intent.putExtra("data-path", userPath);
             context.startActivity(intent);
@@ -149,6 +144,15 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
             mealsListDinner = itemView.findViewById(R.id.meals_list_dinner);
             mealsListSnacks = itemView.findViewById(R.id.meals_list_snacks);
             mealPlanEditButton = itemView.findViewById(R.id.edit_button);
+        }
+
+        /**
+         * returns the value of the date
+         * used in tests lmao
+         * @return date.getText().toString()
+         */
+        public String getDescriptionValue() {
+            return date.getText().toString();
         }
     }
 

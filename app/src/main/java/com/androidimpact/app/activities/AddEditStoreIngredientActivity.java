@@ -176,9 +176,9 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
         unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
         categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
 
-        locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation, "Location"));
-        unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Unit"));
-        categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Category"));
+        locationCollection.addSnapshotListener(abstractSnapshotListener(Location.class, locationAdapter, locations, locationSpinner, selectedLocation, "Locations"));
+        unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Units"));
+        categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Categories"));
     }
 
     /**
@@ -227,7 +227,7 @@ public class AddEditStoreIngredientActivity extends AppCompatActivity {
                 // adding one so we can compensate for the "null" value at position 0
                 spinner.setSelection(idx + 1);
                 if (idx == -1) {
-                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                    generateSnackbar("Warning: '" + selectedElem.get() + "' was not found in '" + debugName + "'!");
                     Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
                     selectedElem.set(null);
                 } else {

@@ -110,7 +110,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        return inflater.inflate(R.layout.fragment_recipe_list_mealplan, container, false);
     }
 
 

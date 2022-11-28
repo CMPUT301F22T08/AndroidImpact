@@ -49,14 +49,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -69,6 +72,8 @@ import java.util.UUID;
 /**
  * This tests the ingredient storage fragment, adding, and editing an ingredient
  * Written using the built in espresso test recorder
+ * Note: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
+ * sometimes doesn't. Try re running if it doesn't work.
  * @version 1.0
  * @author Curtis Kan, Joshua Ji
  */
@@ -410,6 +415,34 @@ public class IngredientStorageFragmentTest {
         Thread.sleep(2000);
         Matcher<View> hasNoIngredient = not(hasIngredientDescription(equalTo(newIngredientDescription)));
         onView(withId(R.id.ingredient_listview)).check(matches(hasNoIngredient));
+    }
+
+    /**
+     * Test if the sorting button works
+     * Result: items will be sorted by best before date
+     */
+    @Test
+    public void C_sortTest() {
+
+        // Click on sorting spinner
+        ViewInteraction appCompatSpinner = onView(
+                allOf(withId(R.id.sort_ingredient_spinner),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withId(R.id.ingredient_input),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatSpinner.perform(click());
+
+        // Select second item
+        DataInteraction appCompatCheckedTextView = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(1);
+        appCompatCheckedTextView.perform(click());
     }
 
     /**

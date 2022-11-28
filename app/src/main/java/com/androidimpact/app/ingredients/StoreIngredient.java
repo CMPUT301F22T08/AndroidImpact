@@ -4,6 +4,10 @@ import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
+import android.icu.text.SimpleDateFormat;
+import android.util.Log;
+
+import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.google.firebase.firestore.Exclude;
@@ -12,6 +16,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * StoreIngredient object that is stored in IngredientStorage
@@ -62,7 +67,8 @@ public class StoreIngredient extends Ingredient implements Serializable {
     {
         super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmountPicked(), ingredient.getUnit(), ingredient.getCategory());
         //To be changed to null
-        this.bestBeforeDate = new Date(0);
+
+        this.bestBeforeDate = new Date(122, 8, 30);
         this.location = "";
     }
 
@@ -86,7 +92,7 @@ public class StoreIngredient extends Ingredient implements Serializable {
         Calendar cal2 = ingredient.getBestBeforeCalendar();
         return cal.get(DAY_OF_MONTH) == cal2.get(DAY_OF_MONTH) && cal.get(YEAR) == cal2.get(YEAR) && cal.get(MONTH) == cal2.get(MONTH);
     }
-    
+
 
     /**
      * Get the best-before date of the stored ingredient
@@ -110,6 +116,8 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * @return boolean
      */
     public boolean hasNull(){
-        return (bestBeforeDate.getTime()==0 || location=="");
+
+        Date nullDate = new Date(122, 8, 30);
+        return (bestBeforeDate.equals(nullDate) || location=="");
     }
 }

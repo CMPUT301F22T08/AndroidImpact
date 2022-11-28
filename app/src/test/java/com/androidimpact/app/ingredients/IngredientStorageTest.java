@@ -90,12 +90,12 @@ public class IngredientStorageTest {
         IngredientStorage ingredientList = mockIngredientList();
         ingredientList.add(ingredient);
         assertEquals(2, ingredientList.size());
-        ingredientList.remove(ingredient);
+        ingredientList.remove(1);
         assertEquals(1, ingredientList.size());
 
         // test deleting invalid store ingredient
-        assertThrows( IllegalArgumentException.class, () -> {
-            ingredientList.remove(new StoreIngredient("0101", "egg1", 10, "", new Date(), "plt", "counter")); });
+        assertThrows( ArrayIndexOutOfBoundsException.class, () -> {
+            ingredientList.remove(4); });
 
         assertEquals(1, ingredientList.size());
     }

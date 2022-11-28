@@ -30,6 +30,9 @@ import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -118,10 +121,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         );
         shoppingListFragment.addAutomator(shoppingListAutomator);
 
-//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
-//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
-//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
-//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
     }
 
     /**
@@ -244,7 +243,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
      */
     public void updateShopIngredient(ShopIngredient ingredient)
     {
-        shoppingListController.addEdit(ingredient);
+        if (ingredient.getAmountPicked() == 0)
+            shoppingListFragment.cancelToggleDialog(ingredient);  //if picked up item is zero, then toggle is cancelled
+        else
+            shoppingListController.addEdit(ingredient);            //otherwise add item to firebase through shopping list controller
     }
 
     /**
@@ -254,9 +256,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
     {
          Log.i("check check", String.valueOf(ingredient.getAmountPicked()));
-         //For some reason the array doesn't update when cancelling the dialog
         shoppingListFragment.cancelToggleDialog(ingredient);
-
     }
 
     /**

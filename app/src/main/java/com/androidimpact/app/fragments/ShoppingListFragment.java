@@ -482,6 +482,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         shoppingListController.addEdit(ingredient);
 
         shopIngredientViewAdapter.notifyDataSetChanged();
+
     }
 
 

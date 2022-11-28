@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingEnd="10dp"
+    android:focusable="true"
     android:paddingStart="15dp"
     android:paddingVertical="5dp">
 
@@ -50,12 +51,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
         android:scrollbars="none"
+        android:focusable="false"
+        android:clickable="false"
         app:layout_constraintEnd_toStartOf="@+id/edit_recipe_fab"
         app:layout_constraintStart_toEndOf="@id/recipe_image_view"
         app:layout_constraintTop_toBottomOf="@id/recipe_name">
 
         <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"
+            android:focusable="false"
+            android:clickable="false"
             android:layout_height="match_parent">
 
             <com.google.android.material.chip.Chip
@@ -65,6 +70,7 @@
                 android:textColor="@color/white"
                 app:chipBackgroundColor="@color/purple_700"
                 app:chipMinHeight="30dp"
+                android:clickable="false"
                 tools:text="@string/recipe_category_in_list"
                 tools:textSize="16sp" />
 
@@ -73,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:clickable="false"
                 app:chipBackgroundColor="@color/purple_500"
                 app:chipMinHeight="30dp"
                 tools:text="@string/recipe_prep_time_in_list"
@@ -85,6 +92,7 @@
                 android:textColor="@color/white"
                 app:chipIcon="@drawable/recipe_serving_vector"
                 app:chipIconTint="@color/white"
+                android:clickable="false"
                 app:chipMinHeight="30dp"
                 app:chipSurfaceColor="@color/purple_200"
                 tools:text="@string/recipe_servings_in_list"

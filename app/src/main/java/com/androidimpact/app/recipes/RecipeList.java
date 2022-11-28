@@ -14,7 +14,6 @@ import java.util.Comparator;
 public class RecipeList extends SortableItemList<Recipe> {
 
     // creating a variable for our array list
-    //private ArrayList<Recipe> recipeArrayList;
     private static String[] sortChoices;
 
 

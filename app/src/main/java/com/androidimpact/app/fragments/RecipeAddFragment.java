@@ -51,7 +51,7 @@ public class RecipeAddFragment extends DialogFragment {
     String dataPath;
 
     public RecipeAddFragment(String meal, String dataPath) {
-        super(R.layout.fragment_recipe_list);
+        super(R.layout.fragment_recipe_list_mealplan);
         this.mealType = meal;
         this.dataPath = dataPath;
     }
@@ -93,7 +93,7 @@ public class RecipeAddFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        return inflater.inflate(R.layout.fragment_recipe_list_mealplan, container, false);
     }
 
 

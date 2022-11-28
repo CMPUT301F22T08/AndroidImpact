@@ -218,7 +218,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             ingredientsCollection.addSnapshotListener(abstractSnapshotListener(
                     RecipeIngredient.class, recipeIngredients, "RecipeIngredient", null, ingredientAdapter, null, null));
             categoriesCollection.addSnapshotListener(abstractSnapshotListener(
-                    Category.class, categories, "Category", categoryAdapter, null, categorySpinner, selectedCategory));
+                    Category.class, categories, "Categories", categoryAdapter, null, categorySpinner, selectedCategory));
         }
 
 
@@ -424,8 +424,8 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 spinner.setSelection(idx + 1);
                 String classStr = selectedElem.get() == null ? "null" : selectedElem.get().getClass().toString();
                 Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + classStr + " - (" + data.indexOf(selectedElem.get()) + ")");
-                if (idx == -1) {
-                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                if (idx == -1 && selectedElem.get() != null) {
+                    generateSnackbar("Warning: '" + selectedElem.get() + "' was not found in '" + debugName + "'!");
                     selectedElem.set(null);
                 }
             }
@@ -520,7 +520,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      *    Button that activates the function
      */
     public void addIngredient(View v) {
-        Log.i(TAG + ":addPhoto", "Adding ingredient!");
+        Log.i(TAG + ":addIngredient", "Adding ingredient!");
         Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
         intent.putExtra("data-path", userPath);
         addIngredientLauncher.launch(intent);
