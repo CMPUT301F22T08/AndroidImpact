@@ -15,7 +15,7 @@ import com.androidimpact.app.R;
 import java.util.ArrayList;
 
 /**
- * LocationAdapter
+ * CategoryAdapter
  *
  * Provides the adapter for managing the recycler view when editing locations
  */
