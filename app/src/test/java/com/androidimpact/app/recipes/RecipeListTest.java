@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.recipes;
 
 import org.junit.Rule;
 import org.junit.Test;

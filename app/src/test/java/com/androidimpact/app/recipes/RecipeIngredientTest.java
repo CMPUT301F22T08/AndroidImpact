@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.recipes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
