@@ -38,12 +38,17 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
     // creating a variable for our array list and context.
     private ArrayList<ShopIngredient> ingredientArrayList;
+
+
     private Context mContext;
 
     private int selected = -1; // initialize no ingredients selected
 
     // functions that subscribe for edit callbacks
     private ArrayList<ShopIngredientClickListener> clickListeners = new ArrayList<>();
+
+    // functions that subscribe for edit callbacks
+    private ArrayList<ShopIngredientToggleListener> toggleListeners = new ArrayList<>();
 
     /**
      * Constructor for ShopIngredientAdapter
@@ -93,36 +98,49 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         // if amountPicked is zero, then change switch to false
         if (amt == 0)
+        {
             holder.pickupButton.setChecked(false);
+            Log.i("pickFalse", "False");
+        }
         else    // else change switch to true
+        {
             holder.pickupButton.setChecked(true);
+            Log.i("pickTrue", "True");
+        }
+
+
 
 
         //Adds listener for switch button for every item
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
+                for (ShopIngredientToggleListener listener: toggleListeners)
                 {
-                    //if amount picked is zero and state is changed from false to true then only show the dialog box
-                    if (currentIngredient.getAmountPicked() == 0) {
-                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient);
-
-                        MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
-                    }
-                    // if amount picked is non-zero, then item  is already picked
-
+                    Log.i("Listener Listener", String.valueOf(isChecked));
+                    listener.shopIngredientToggled(currentIngredient, isChecked);
                 }
-                else
-                {
-                    //if amount picked is non-zero and state is changed from true to false, then change amount Picked up to be zero
-                    if (currentIngredient.getAmountPicked() != 0)
-                    {
-                        currentIngredient.setAmountPicked(0);
-                        MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
-                    }
-
-                    // if amount is zero and state is changed from true to false, no need to change amount picked up
-                }
+//                if (isChecked)
+//                {
+//                    //if amount picked is zero and state is changed from false to true then only show the dialog box
+////                    if (currentIngredient.getAmountPicked() == 0) {
+////                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient);
+////
+////                        MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
+////                    }
+//                    // if amount picked is non-zero, then item  is already picked
+//
+//                }
+//                else
+//                {
+////                    //if amount picked is non-zero and state is changed from true to false, then change amount Picked up to be zero
+////                    if (currentIngredient.getAmountPicked() != 0)
+////                    {
+////                        currentIngredient.setAmountPicked(0);
+////                        MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
+////                    }
+//
+//                    // if amount is zero and state is changed from true to false, no need to change amount picked up
+//                }
             }
         });
 
@@ -214,6 +232,21 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
      */
     public interface ShopIngredientClickListener {
         void shopIngredientClicked(ShopIngredient food, int position);
+    }
+
+    /**
+     *
+     */
+    public interface ShopIngredientToggleListener {
+        void shopIngredientToggled(ShopIngredient food, boolean is_checked);
+    }
+
+    /**
+     *
+     */
+    public void setEditToggleListener(ShopIngredientToggleListener toAdd)
+    {
+        toggleListeners.add(toAdd);
     }
 
     /**

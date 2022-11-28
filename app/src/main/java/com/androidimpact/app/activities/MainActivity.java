@@ -45,7 +45,7 @@ import java.util.concurrent.Executors;
 /**
  * This class is the activity Main Activity
  * @version 1.0
- * @author Vedant Vyas
+ * @author Joshua Ji, Vedant Vyas, Aneeljyot Alagh, Curtis Kan
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     final String TAG = "MainActivity";
@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav = findViewById(R.id.bottom_navigation_view);
         bottomnav.setBackground(null);
         bottomnav.setOnNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
+
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         weakActivity = new WeakReference<>(MainActivity.this);
@@ -118,17 +124,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         );
         shoppingListFragment.addAutomator(shoppingListAutomator);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
     }
+
+    /**
+     * this method inflates the logout menu
+     * @param menu
+     * @return (boolean)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logout, menu);
         return true;
     }
 
+    /**
+     * This function defines the control flow for logout button selection
+     * @param item
+     * @return (boolean)
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         FirebaseAuth.getInstance().signOut();
@@ -138,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     /**
      * Sets switching in nav bar
      * @param item
-     * @return
+     * @return (boolean) true if item is a valid item of the menu
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -178,42 +195,72 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         newFragment.setFabListener(navbarFAB);
     }
 
+    /**
+     * getter method for ingredientStorageController
+     * @return ingredientStorageController
+     */
     public IngredientStorageController getIngredientStorageController(){
         return ingredientStorageController;
     }
 
+    /**
+     * getter method for ShoppingListController
+     * @return ShoppingListController
+     */
     public ShoppingListController getShoppingListController(){
         return shoppingListController;
     }
 
+    /**
+     * getter method for recipeController
+     * @return recipeController
+     */
     public RecipeController getRecipeController(){
         return recipeController;
     }
 
+    /**
+     * getter method for mealPLanController
+     * @return mealPlanController
+     */
     public MealPlanController getMealPlanController() {
         return this.mealPlanController;
     }
 
+    /**
+     * this method returns a weakinstance of mainactivity
+     * @return weakActivity<MainActivity>
+     */
     public static MainActivity getmInstanceActivity() {
         return weakActivity.get();
     }
 
+    /**
+     * this function shows dialog pickup fragment
+     * @param ff (ShopPickUpFragment)
+     */
     public void showShopPickUpFragment(ShopPickUpFragment ff)
     {
         ff.show(getSupportFragmentManager(), "ADD_FOOD");
     }
 
+    /**
+     * This function updates shopIngredient
+     * @param ingredient (ShopIngredient)
+     */
     public void updateShopIngredient(ShopIngredient ingredient)
     {
-        getSupportActionBar().setTitle("Shopping List");
-        updateActiveFragment(shoppingListFragment);
-        //call a function in shoppingListFragment which does the data updation
-//        if (ingredient.getAmountPicked() != 0)
+//        getSupportActionBar().setTitle("Shopping List");
+//        updateActiveFragment(shoppingListFragment);
+
         shoppingListFragment.editShopIngredientFB(ingredient);
-//        else
-//            cancelUpdateShopIngredient(ingredient);
+
     }
 
+    /**
+     * this function treats the case when cancel is pressed in dialog fragment
+     * @param ingredient
+     */
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
     {
         getSupportActionBar().setTitle("Shopping List");
@@ -222,26 +269,51 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    /**
+     * This method takes in a arraylist of shop ingredient and add those ingredients to ingredient storage
+     * @param data ArrayList<ShopIngredient>
+     */
     public void AddShopListToShopIngredient(ArrayList<ShopIngredient> data)
     {
+
         for (ShopIngredient item: data)
         {
             StoreIngredient ingredient = new StoreIngredient(item);
+            //Add items to ingredient storage
             ingredientStorageController.addEdit(ingredient);
+
+            //Delete all the items from Shopping List that were moved
             shoppingListController.delete(item);
         }
 
         //Maybe move the fragment to storage immediately
-        getSupportActionBar().setTitle("Ingredient Storage");
-        updateActiveFragment(storageFragment);
-        //Delete all the items from Shopping List that were moved
+        if (data.size() != 0)
+        {
+
+            String errorMessage = "Some items moved to Ingredient Storage";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            String errorMessage = "No Item Picked Up";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
+    /**
+     *  getter method for id
+     * @return user id
+     */
     public String getUserId() {
         return userId;
     }
 
+    /**
+     *  getter method for user path
+     * @return userPath
+     */
     public String getUserDataPath() {
         return userPath;
     }
