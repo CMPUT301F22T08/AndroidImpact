@@ -5,6 +5,9 @@
 //import static org.junit.Assert.assertThrows;
 //import static org.junit.Assert.assertTrue;
 //
+//import com.androidimpact.app.ingredients.IngredientStorage;
+//import com.androidimpact.app.ingredients.StoreIngredient;
+//
 //import org.junit.Test;
 //
 //import java.util.ArrayList;
@@ -12,7 +15,7 @@
 //import java.util.Calendar;
 //import java.util.Date;
 //
-//public class IngredientStorageFragmentTest {
+//public class IngredientStorageTest {
 //
 //    /**
 //     * This function creates a ingredientList with a single ingredient and returns
