@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.testbatch2;
 
 
 import static androidx.test.espresso.Espresso.onData;
@@ -30,10 +30,12 @@ import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.google.android.gms.tasks.Task;
@@ -47,6 +49,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
@@ -91,7 +94,7 @@ public class F_ShoppingListFragmentTest {
 
         // Click on username edit text and change name
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.username),
+                Matchers.allOf(ViewMatchers.withId(R.id.username),
                         childAtPosition(
                                 allOf(withId(R.id.login_layout),
                                         childAtPosition(

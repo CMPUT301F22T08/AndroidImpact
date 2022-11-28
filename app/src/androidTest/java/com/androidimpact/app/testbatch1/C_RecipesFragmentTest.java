@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.testbatch1;
 
 
 import static androidx.test.espresso.Espresso.onData;
@@ -34,10 +34,12 @@ import androidx.test.espresso.action.GeneralSwipeAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Swipe;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
 import com.androidimpact.app.recipes.RecipeIngredientAdapter;
 import com.androidimpact.app.recipes.RecipeListAdapter;
@@ -50,6 +52,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
@@ -93,7 +96,7 @@ public class C_RecipesFragmentTest {
 
         // Click on username edit text and change name
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.username),
+                Matchers.allOf(ViewMatchers.withId(R.id.username),
                         childAtPosition(
                                 allOf(withId(R.id.login_layout),
                                         childAtPosition(

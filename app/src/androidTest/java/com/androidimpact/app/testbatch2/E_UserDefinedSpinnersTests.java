@@ -1,4 +1,4 @@
-package com.androidimpact.app;
+package com.androidimpact.app.testbatch2;
 
 
 import static androidx.test.espresso.Espresso.onView;
@@ -21,14 +21,17 @@ import android.view.ViewParent;
 
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
@@ -66,7 +69,7 @@ public class E_UserDefinedSpinnersTests {
 
         // Fill out username
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.username),
+                Matchers.allOf(ViewMatchers.withId(R.id.username),
                         childAtPosition(
                                 allOf(withId(R.id.login_layout),
                                         childAtPosition(
