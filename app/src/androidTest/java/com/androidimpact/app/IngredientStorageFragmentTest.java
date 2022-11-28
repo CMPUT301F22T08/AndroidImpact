@@ -49,14 +49,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -80,6 +83,22 @@ public class IngredientStorageFragmentTest {
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
+
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        // init emulator stuff
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        // https://stackoverflow.com/a/69437851
+        try {
+            firestore.useEmulator("10.0.2.2", 8080);
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setPersistenceEnabled(false)
+                    .build();
+            firestore.setFirestoreSettings(settings);
+        } catch (IllegalStateException e) {}
+        FirebaseStorage.getInstance().useEmulator("10.0.2.2", 9199);
+        FirebaseAuth.getInstance().useEmulator("10.0.2.2", 9099);
+    }
 
     /**
      * Login beforehand with test account, move to ingredient fragment
