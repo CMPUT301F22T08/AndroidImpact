@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -244,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void updateShopIngredient(ShopIngredient ingredient)
     {
         shoppingListController.addEdit(ingredient);
-
     }
 
     /**
@@ -253,9 +253,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
      */
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
     {
-        getSupportActionBar().setTitle("Shopping List");
-        updateActiveFragment(shoppingListFragment);
-        shoppingListController.addEdit(ingredient);
+         Log.i("check check", String.valueOf(ingredient.getAmountPicked()));
+         //For some reason the array doesn't update when cancelling the dialog
+        shoppingListFragment.cancelToggleDialog(ingredient);
+
     }
 
     /**

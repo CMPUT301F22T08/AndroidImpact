@@ -258,7 +258,7 @@ public class LoginActivityTest {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     if (document.getId().equals(user.getUid())) {
-                                        db.collection("ingredientStorage").document(document.getId()).delete();
+                                        db.collection("userData").document(document.getId()).delete();
                                     }
 
                                 }
