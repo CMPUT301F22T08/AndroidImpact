@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This is the RecipeController class
+ * @author Kailash
+ */
 public class RecipeController {
     final String TAG = "RecipeController";
     final String firestorePath = "recipes";
@@ -34,6 +38,11 @@ public class RecipeController {
     private String dataPath;
     private RecipeList recipeList;
 
+    /**
+     * Constructor for recipe controller
+     * @param context
+     * @param dataPath
+     */
     public RecipeController(Context context, String dataPath) {
         this.context = context;
         db = FirebaseFirestore.getInstance();
@@ -43,11 +52,19 @@ public class RecipeController {
         photoStorage = FirebaseStorage.getInstance().getReference();
     }
 
+    /**
+     * Navbar functionality
+     * @param s
+     */
     private void pushSnackBarToContext(String s) {
         Snackbar.make(((MainActivity)context).findViewById(R.id.nav_fragment), s, Snackbar.LENGTH_LONG)
                 .setAction("OK", (v)->{}).show();
     }
 
+    /**
+     * This class will add and update the snapshot listener
+     * @param recipeListAdapter
+     */
     public void addDataUpdateSnapshotListener(RecipeListAdapter recipeListAdapter){
         recipeCollection.addSnapshotListener((queryDocumentSnapshots, error) -> {
             // Clear the old list
@@ -66,6 +83,10 @@ public class RecipeController {
         });
     }
 
+    /**
+     * This gets the firebase id when editing
+     * @param recipe
+     */
     public void addEdit(Recipe recipe){
         // Adds if id is null else edits
         String id = recipe.getId();
@@ -77,7 +98,13 @@ public class RecipeController {
         recipeCollection.document(id).set(recipe);
     }
 
-
+    /**
+     * This implements the delete recipe tasks
+     * Implements error handling
+     * @param position
+     * @return
+     * @throws Exception
+     */
     public Task<Boolean> delete(int position) throws Exception {
 
         // Get the swiped item at a particular position.
@@ -122,7 +149,12 @@ public class RecipeController {
         return liftToTask(true);
     }
 
-
+    /**
+     * Sets functionality to get position in recipeList and error handling for out of bounds
+     * @param position
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
     public Recipe get(int position) throws IndexOutOfBoundsException {
         if (position < recipeList.size() && position>=0){
             return recipeList.get(position);
@@ -130,28 +162,52 @@ public class RecipeController {
         throw new IndexOutOfBoundsException("Please enter an invalid index");
     }
 
+    /**
+     * get the array of the sorting choices in recipeList
+     * @return
+     */
     public String[] getSortingChoices() {
         return recipeList.getSortChoices();
     }
 
+    /**
+     * sort data in recipeList
+     */
     public void sortData(){
         recipeList.sortByChoice();
     }
 
+    /**
+     * sort data in recipeList without index
+     * @param sortChoice
+     */
     public void sortData(int sortChoice){
         recipeList.setSortChoice(sortChoice);
         recipeList.sortByChoice();
     }
 
+    /**
+     * getter function for Data
+     * @return
+     */
     public ArrayList<Recipe> getData(){
         return recipeList.getData();
     }
 
-    // TODO: Get rid of this ASAP
+    /**
+     * getter function for recipeList
+     * @return
+     */
     public RecipeList getRecipeList(){
         return recipeList;
     }
 
+    /**
+     * This class processes and stores the photo reference for recipes
+     * @param photoURI
+     * @param sl
+     * @param fl
+     */
     public void processPhoto(String photoURI, OnSuccessListener sl, OnFailureListener fl){
         StorageReference photoRef = photoStorage.child("images/" + photoURI);
         photoRef.getDownloadUrl()
@@ -159,6 +215,10 @@ public class RecipeController {
                 .addOnFailureListener(fl);
     }
 
+    /**
+     * this gets the size of the recipe list
+     * @return size of the recipeList
+     */
     public int size(){
         return recipeList.size();
     }

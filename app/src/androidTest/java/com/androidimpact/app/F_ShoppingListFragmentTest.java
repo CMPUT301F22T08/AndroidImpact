@@ -410,9 +410,18 @@ public class F_ShoppingListFragmentTest {
 
     }
 
-    // this is a helper function that matches an item in the RecyclerView by its description.
+
+    /**
+     * this is a helper function that matches an item in the RecyclerView by its description.
+     * @param descriptionMatcher
+     * @return
+     */
     public static Matcher<ShopIngredientAdapter.IngredientViewHolder> shopIngredientVHMatcher(Matcher<String> descriptionMatcher){
         return new TypeSafeMatcher<>(){
+            /**
+             * @param ingredientViewHolder
+             * @return
+             */
             @Override
             public boolean matchesSafely(ShopIngredientAdapter.IngredientViewHolder ingredientViewHolder) {
                 Log.i("shopIngredientVHMatcher", ingredientViewHolder.getDescription() + " = " + descriptionMatcher.toString());
@@ -577,16 +586,27 @@ public class F_ShoppingListFragmentTest {
     }
 
 
+    /**
+     * javadocs_final
+     * @param parentMatcher
+     * @param position
+     * @return
+     */
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
+
             @Override
             public void describeTo(Description description) {
                 description.appendText("Child at position " + position + " in parent ");
                 parentMatcher.describeTo(description);
             }
 
+            /**
+             * @param view
+             * @return
+             */
             @Override
             public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();

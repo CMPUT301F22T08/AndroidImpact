@@ -29,6 +29,7 @@ public class RecipeList extends SortableItemList<Recipe> {
                         "Number of Servings",
                         "Recipe Category"
                 },
+                // sort functionality
                 new Comparator[]{
                         Comparator.comparingInt(a -> (int) ((Recipe) a).getDate().getTime()),
                         Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER),
@@ -46,6 +47,10 @@ public class RecipeList extends SortableItemList<Recipe> {
         };
     }
 
+    /**
+     * This creates the array for sorting recipes
+     * @param recipeList
+     */
     public RecipeList(ArrayList<Recipe> recipeList) {
         super(recipeList,
                 new String[]{

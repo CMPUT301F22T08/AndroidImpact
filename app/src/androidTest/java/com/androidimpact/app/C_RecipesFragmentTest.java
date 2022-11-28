@@ -564,11 +564,17 @@ public class C_RecipesFragmentTest {
         }
     }
 
-    // Access edit item from recycler view item
-    // https://stackoverflow.com/questions/28476507/using-espresso-to-click-view-inside-recyclerview-item
-    // blade May 20, 2015
+
+    /**
+     * Access edit item from recycler view item
+     */
     public static class MyViewAction {
 
+        /**
+         *
+         * @param id
+         * @return
+         */
         public static ViewAction clickChildViewWithId(final int id) {
             return new ViewAction() {
                 @Override

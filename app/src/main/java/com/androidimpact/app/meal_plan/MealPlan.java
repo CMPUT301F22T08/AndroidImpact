@@ -15,7 +15,7 @@ import java.util.HashMap;
  * <br>
  * This class defines a meal plan for a given day.
  * @version 1.0
- * @author Aneeljyot Alagh
+ * @author Aneeljyot Alagh, Clare Chen
  */
 public class MealPlan implements Serializable {
     private String date;

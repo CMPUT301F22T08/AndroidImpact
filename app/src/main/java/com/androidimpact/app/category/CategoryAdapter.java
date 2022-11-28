@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 /**
  * LocationAdapter
- *
  * Provides the adapter for managing the recycler view when editing locations
  */
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
@@ -67,8 +66,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
      */
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
         private Resources res;
-
         private TextView title;
+
         /**
          * initializing our text views
          * @param itemView

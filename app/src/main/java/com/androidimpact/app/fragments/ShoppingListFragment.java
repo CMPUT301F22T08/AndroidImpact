@@ -486,8 +486,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     }
 
     /**
-     *
-     *
+     * This creates the cancel toggle dialog in Shopping List
      */
     public void cancelToggleDialog(ShopIngredient ingredient)
     {

@@ -86,6 +86,11 @@ public class StoreIngredient extends Ingredient implements Serializable {
         return cal;
     }
 
+    /**
+     * This class implements the calendar function to compare whether the date has passed
+     * @param ingredient
+     * @return
+     */
     public boolean compareCalendar(StoreIngredient ingredient)
     {
         Calendar cal = this.getBestBeforeCalendar();

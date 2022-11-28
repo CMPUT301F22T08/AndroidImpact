@@ -51,13 +51,18 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class A_SignupAndLoginActivityTest {
 
+    /**
+     * creates rule for activity scenario
+     */
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
 
+    /**
+     * Login implementation
+     */
     @BeforeClass
     public static void setUpBeforeClass() {
-        // do login stuff here
     }
 
     /**
@@ -111,7 +116,9 @@ public class A_SignupAndLoginActivityTest {
     }
 
     /**
-     * Method testing signup and then logging in
+     * Sets test for sign up and login
+     * @throws InterruptedException
+     *     for thread sleep
      */
     @Test
     public void signupAndLoginActivityTest() throws InterruptedException {
@@ -275,9 +282,18 @@ public class A_SignupAndLoginActivityTest {
                 });
     }
 
+    /**
+     * This takes the position of the child
+     * @param parentMatcher
+     * @param position
+     * @return
+     */
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
+        /**
+         * Sets the description of the child and parent position
+         */
         return new TypeSafeMatcher<View>() {
             @Override
             public void describeTo(Description description) {
@@ -285,6 +301,11 @@ public class A_SignupAndLoginActivityTest {
                 parentMatcher.describeTo(description);
             }
 
+            /**
+             * Boolean if matched
+             * @param view
+             * @return
+             */
             @Override
             public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();

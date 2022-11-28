@@ -40,6 +40,11 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * This Activity implement adding and editing shopping list
+ * @author Vedant Vyas
+ * @version 1.0
+ */
 public class AddEditShoppingItemActivity extends AppCompatActivity {
 
     // TAG: useful for logging
@@ -70,7 +75,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
     ShopIngredient currentIngredient;
 
     /**
-     * Initalizes button data
+     * Initializes button data
      * @param savedInstanceState
      */
     @Override
@@ -203,6 +208,13 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
             AtomicReference<T> selectedElem
     ) {
         return new AdapterView.OnItemSelectedListener() {
+            /**
+             * sets position for the item that is selected
+             * @param parentView
+             * @param selectedItemView
+             * @param position
+             * @param id
+             */
             @Override
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -215,6 +227,10 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
                 }
             }
 
+            /**
+             * Sets class is nothing is selected
+             * @param parentView
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 Log.i(TAG, "Nothing selected");
@@ -315,7 +331,6 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
      * @throws Exception if the data is invalid or if the Ingredient could not be created
      * @see StoreIngredient
      */
-    // Should we throw an exception or have a snack-bar that says fields can't be empty?
     private ShopIngredient createIngredient(@Nullable ShopIngredient editing) throws Exception {
         String description = descriptionEditText.getText().toString();
         String amountRaw = amountEditText.getText().toString();

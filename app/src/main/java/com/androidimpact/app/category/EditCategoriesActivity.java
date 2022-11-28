@@ -27,6 +27,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class EditCategoriesActivity extends AppCompatActivity {
 
     final String TAG = "EditIngredientCategories";
@@ -44,6 +47,10 @@ public class EditCategoriesActivity extends AppCompatActivity {
     CollectionReference categoryCollection;
     String userPath;
 
+    /**
+     * This Activity implements edit category functionality
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

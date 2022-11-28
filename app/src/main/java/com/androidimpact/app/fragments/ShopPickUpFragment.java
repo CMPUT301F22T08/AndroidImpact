@@ -37,9 +37,10 @@ public class ShopPickUpFragment extends DialogFragment {
     private String unit;
     private EditText editAmountPickUp;
 
-
+    /**
+     * Required empty public constructor
+     */
     public ShopPickUpFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -60,6 +61,10 @@ public class ShopPickUpFragment extends DialogFragment {
 
     }
 
+    /**
+     * OnCreate is called after onAttach
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -96,14 +101,15 @@ public class ShopPickUpFragment extends DialogFragment {
                     .create();
         }
 
-
-
-
-
             return builder
                     .setView(view)
                     .setTitle("Add quantity of picked up ingredient")
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        /**
+                         * This creates an onClick class
+                         * @param dialog
+                         * @param which
+                         */
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -112,15 +118,17 @@ public class ShopPickUpFragment extends DialogFragment {
                             MainActivity main = (MainActivity)getActivity();
                             main.cancelUpdateShopIngredient(ingredient);
 
-                            //MainActivity.getmInstanceActivity().cancelUpdateShopIngredient(ingredient);
                         }
                     })
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        /**
+                         * This is an onClick class implements error handling
+                         * @param dialog
+                         * @param which
+                         */
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String cost = editAmountPickUp.getText().toString();
-
-
                             Log.i("CostOfItem", cost);
 
                             float costF;
