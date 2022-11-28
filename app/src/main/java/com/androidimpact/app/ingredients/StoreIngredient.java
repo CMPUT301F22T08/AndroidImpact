@@ -50,21 +50,18 @@ public class StoreIngredient extends Ingredient implements Serializable {
     }
 
 
+    /**
+     * This constructor creates a store ingredient object from ShopIngredient
+     * @param ingredient - instance of ShopIngredient class
+     */
     public StoreIngredient(ShopIngredient ingredient)
     {
-        super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmount(), ingredient.getUnit(), ingredient.getCategory());
+        super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmountPicked(), ingredient.getUnit(), ingredient.getCategory());
         //To be changed to null
-        this.bestBeforeDate = null;
-        this.location = null;
+        this.bestBeforeDate = new Date(0);
+        this.location = "";
     }
 
-    /**
-     * Get the best-before date of the stored ingredient
-     * @return (Date) The best before date for the stored ingredient
-     */
-    public Date getBestBeforeDate() {
-        return bestBeforeDate;
-    }
 
     /**
      * Get the best-before date of the stored ingredient as a Calendar object
@@ -79,14 +76,32 @@ public class StoreIngredient extends Ingredient implements Serializable {
         return cal;
     }
 
-    /**
-     * Change the best-before date of the stored ingredient
-     * @param bestBeforeDate (Date) - The new best-before date of the stored ingredient
-     */
-    public void setBestBeforeDate(Date bestBeforeDate) {
-        this.bestBeforeDate = bestBeforeDate;
+    public boolean compareCalendar(StoreIngredient ingredient)
+    {
+        Calendar cal = this.getBestBeforeCalendar();
+        Calendar cal2 = ingredient.getBestBeforeCalendar();
+        return cal.DAY_OF_MONTH == cal2.DAY_OF_MONTH && cal.YEAR == cal2.YEAR && cal.MONTH == cal2.MONTH;
     }
 
+//    public boolean compareDate(StoreIngredient ingredient)
+//    {
+//
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.YEAR, bestBeforeDate.getYear());
+//        cal.set(Calendar.MONTH, bestBeforeDate.getMonth());
+//        cal.set(Calendar.DAY_OF_MONTH, bestBeforeDate.getDate());
+//
+//    }
+//
+//    }
+
+    /**
+     * Get the best-before date of the stored ingredient
+     * @return (Date) The best before date for the stored ingredient
+     */
+    public Date getBestBeforeDate() {
+        return bestBeforeDate;
+    }
 
     /**
      * gets the location document path
@@ -102,6 +117,6 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * @return boolean
      */
     public boolean hasNull(){
-        return (bestBeforeDate==null || location==null);
+        return (bestBeforeDate.getTime()==0 || location=="");
     }
 }

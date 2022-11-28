@@ -1,5 +1,6 @@
 package com.androidimpact.app.shopping_list;
 
+
 import android.content.Context;
 import android.util.Log;
 
@@ -16,6 +17,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
+/**
+ * This class serves as the controller class for shopping list
+ * @version 1.0
+ * @author Joshua Ji, Kailash Seshadri
+ */
 public class ShoppingListController {
     final String TAG = "ShoppingListController";
 

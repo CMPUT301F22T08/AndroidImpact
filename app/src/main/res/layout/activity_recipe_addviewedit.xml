@@ -77,7 +77,6 @@
         android:id="@+id/recipe_prep"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/recipe_prep_time"
@@ -87,14 +86,13 @@
         android:textColorHint="@color/purple_200"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/recipe_image_card"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/recipe_image_card"
         app:layout_constraintTop_toBottomOf="@+id/recipe_image_card" />
 
     <EditText
         android:id="@+id/recipe_servings"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/recipe_servings"
@@ -104,7 +102,7 @@
         android:textColorHint="@color/purple_200"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/recipe_image_card"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/recipe_image_card"
         app:layout_constraintTop_toBottomOf="@+id/recipe_prep" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -156,31 +154,30 @@
         android:id="@+id/recipe_ingredients_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
         android:text="@string/recipe_ingredients"
-        android:textColor="@color/white"
+        android:textColor="@color/purple_200"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/recipe_image_card"
         app:layout_constraintTop_toBottomOf="@+id/recipe_category_spinner" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_ingredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:backgroundTint="@color/purple_500"
+        android:layout_marginStart="24dp"
+        android:backgroundTint="@color/background"
         android:clickable="true"
         android:contentDescription="@string/recipe_title"
+        android:elevation="0dp"
         android:focusable="true"
         android:onClick="addIngredient"
-        app:borderWidth="2dp"
-        app:tint="@color/white"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_ingredients_text"
         app:layout_constraintStart_toEndOf="@+id/recipe_ingredients_text"
         app:layout_constraintTop_toTopOf="@+id/recipe_ingredients_text"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/white" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -216,7 +213,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/category"
-        android:textColor="@color/white"
+        android:textColor="@color/purple_200"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_category_spinner"
         app:layout_constraintEnd_toStartOf="@+id/recipe_category_spinner"
         app:layout_constraintStart_toStartOf="parent"
@@ -234,14 +231,15 @@
 
     <ImageButton
         android:id="@+id/recipe_category_editbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,1:1"
         android:layout_marginEnd="32dp"
         android:onClick="editCategories"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_category_spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recipe_category_spinner"
-        app:srcCompat="@drawable/icon_edit"
+        app:srcCompat="@android:drawable/ic_menu_edit"
         android:background="@android:color/transparent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
