@@ -1,4 +1,5 @@
 # AndroidImpact
+![homepage](https://user-images.githubusercontent.com/68800077/204200560-fd0f216b-b511-4e0b-841b-79bf246f4973.png)
 
 Team 8's 301 Project: AndroidImpact
 ## Overview
@@ -11,6 +12,14 @@ forget another grocery item, lose a recipe, or have trouble deciding what to eat
 
 ## Features
 ### Ingredient storage
+![ingredient_storage](https://user-images.githubusercontent.com/68800077/204200982-4f1bb0fc-b9c9-442e-90d1-858ed1938186.png)
+![ingredient_add](https://user-images.githubusercontent.com/68800077/204201053-8aca22e1-8306-46f3-b29d-3417fdd2fe61.png)
 ### Recipes
+![recipe_add](https://user-images.githubusercontent.com/68800077/204201128-2f918ddf-d1ae-42a1-a266-d6df867c0f94.png)
+![recipe_ingredient_add](https://user-images.githubusercontent.com/68800077/204201406-1ddd3b1c-4391-4ced-9cd6-2354e6ff9ccb.png)
+![recipe_ingredient](https://user-images.githubusercontent.com/68800077/204201660-19e76cf3-6858-473f-83bf-24b3b9b1b289.png)
+
 ### Meal Plan
+
+
 ### Shopping List
