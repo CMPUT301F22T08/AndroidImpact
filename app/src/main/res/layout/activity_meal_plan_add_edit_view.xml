@@ -15,6 +15,7 @@
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         android:background="@color/white"
+        android:backgroundTint="@color/background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,7 +23,8 @@
             android:id="@+id/mealPlanTitleInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Meal Plan Day:" />
+            android:text="Meal Plan Day:"
+            android:textColor="@color/purple_200"/>
 
         <EditText
             android:id="@+id/editTextMealPlanTitle"
@@ -30,7 +32,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <ScrollView
@@ -40,7 +43,8 @@
         app:layout_constraintBottom_toTopOf="@id/cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mealPlanTitleLayout">
+        app:layout_constraintTop_toBottomOf="@id/mealPlanTitleLayout"
+        android:backgroundTint="@color/background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,7 +58,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,7 +78,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingEnd="16dp"
-                            android:text="Breakfast" />
+                            android:text="Breakfast"
+                            android:textColor="@color/purple_200"/>
 
                         <Button
                             android:id="@+id/add_breakfast_recipe"
@@ -98,7 +104,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/breakfast_meals"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/background"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -110,7 +117,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,14 +130,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:backgroundTint="@color/background">
 
                         <TextView
                             android:id="@+id/lunch_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingEnd="16dp"
-                            android:text="Lunch" />
+                            android:text="Lunch"
+                            android:textColor="@color/purple_200"/>
 
                         <Button
                             android:id="@+id/add_lunch_recipe"
@@ -154,7 +164,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/lunch_meals"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/background"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -166,13 +177,15 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="8dp"
+                    android:backgroundTint="@color/background">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -185,7 +198,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingEnd="16dp"
-                            android:text="Dinner" />
+                            android:text="Dinner"
+                            android:textColor="@color/purple_200"/>
 
                         <Button
                             android:id="@+id/add_dinner_recipe"
@@ -194,7 +208,7 @@
                             android:layout_weight="1"
                             android:clickable="true"
                             android:text="Add Recipe"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"/>
 
                         <Button
                             android:id="@+id/add_dinner_ingredient"
@@ -210,7 +224,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/dinner_meals"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/background"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -226,13 +241,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dinner_card"
-                tools:layout_editor_absoluteX="16dp">
+                tools:layout_editor_absoluteX="16dp"
+                android:backgroundTint="@color/background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="8dp"
+                    android:backgroundTint="@color/background">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -245,7 +262,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingEnd="16dp"
-                            android:text="Snacks" />
+                            android:text="Snacks"
+                            android:textColor="@color/purple_200"/>
 
                         <Button
                             android:id="@+id/add_snack_recipe"
@@ -270,7 +288,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/snack_meals"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/background"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
