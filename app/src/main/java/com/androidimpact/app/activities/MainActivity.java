@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomnav = findViewById(R.id.bottom_navigation_view);
         bottomnav.setBackground(null);
         bottomnav.setOnNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
+
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         weakActivity = new WeakReference<>(MainActivity.this);
@@ -118,10 +124,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         );
         shoppingListFragment.addAutomator(shoppingListAutomator);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, mealPlannerFragment, "4").hide(mealPlannerFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, storageFragment, "1").commit();
     }
 
     /**
@@ -244,8 +250,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
      */
     public void updateShopIngredient(ShopIngredient ingredient)
     {
-        getSupportActionBar().setTitle("Shopping List");
-        updateActiveFragment(shoppingListFragment);
+//        getSupportActionBar().setTitle("Shopping List");
+//        updateActiveFragment(shoppingListFragment);
 
         shoppingListFragment.editShopIngredientFB(ingredient);
 
