@@ -28,12 +28,12 @@ public class IngredientStorage extends SortableItemList<StoreIngredient> {
                         "Ingredient Category",
                         "Location"
                 },
-                (Comparator<StoreIngredient>[]) Arrays.asList(
+                new Comparator[]{
                         Comparator.comparing(StoreIngredient::getDescription, String.CASE_INSENSITIVE_ORDER),
                         Comparator.comparing(StoreIngredient::getBestBeforeDate),
                         Comparator.comparing(StoreIngredient::getCategory, String.CASE_INSENSITIVE_ORDER),
                         Comparator.comparing(StoreIngredient::getLocation, String.CASE_INSENSITIVE_ORDER)
-                ).toArray()
+                }
         );
 
         sortChoices = new String[]{

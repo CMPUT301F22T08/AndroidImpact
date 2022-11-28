@@ -26,10 +26,10 @@ public class ShoppingList extends SortableItemList<ShopIngredient> {
                         "Description",
                         "ShopIngredient Category"
                 },
-                (Comparator<ShopIngredient>[]) Arrays.asList(
+                new Comparator[]{
                         Comparator.comparing(ShopIngredient::getDescription, String.CASE_INSENSITIVE_ORDER),
                         Comparator.comparing(ShopIngredient::getCategory, String.CASE_INSENSITIVE_ORDER)
-                ).toArray()
+                }
         );
 
         sortChoices = new String[]{

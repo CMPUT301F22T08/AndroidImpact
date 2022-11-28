@@ -56,36 +56,6 @@ public class MealPlan implements Serializable {
         this.putInHashMaps();
     }
 
-    /*public MealPlan(String date,
-                    ArrayList<Recipe> breakfastRecipes, ArrayList<Recipe> lunchRecipes, ArrayList<Recipe> dinnerRecipes, ArrayList<Recipe> snackRecipes,
-                    ArrayList<StoreIngredient> breakfastIngredients, ArrayList<StoreIngredient> lunchIngredients, ArrayList<StoreIngredient> dinnerIngredients, ArrayList<StoreIngredient> snackIngredients,
-                    ArrayList<Float> breakfastRecipes_Servings, ArrayList<Float> lunchRecipes_Servings, ArrayList<Float> dinnerRecipes_Servings, ArrayList<Float> snackRecipes_Servings,
-                    ArrayList<Float> breakfastIngredients_Servings, ArrayList<Float> lunchIngredients_Servings, ArrayList<Float> dinnerIngredients_Servings, ArrayList<Float> snackIngredients_Servings
-
-    ) {
-        this.date = date;
-        this.breakfastRecipes = breakfastRecipes;
-        this.lunchRecipes = lunchRecipes;
-        this.dinnerRecipes = dinnerRecipes;
-        this.breakfastIngredients = breakfastIngredients;
-        this.lunchIngredients = lunchIngredients;
-        this.dinnerIngredients = dinnerIngredients;
-        this.snackRecipes = snackRecipes;
-        this.snackIngredients = snackIngredients;
-
-        this.breakfastRecipes_Servings = breakfastRecipes_Servings;
-        this.lunchRecipes_Servings = lunchRecipes_Servings;
-        this.dinnerRecipes_Servings = dinnerRecipes_Servings;
-        this.snackRecipes_Servings = snackRecipes_Servings;
-        this.breakfastIngredients_Servings = breakfastIngredients_Servings;
-        this.lunchIngredients_Servings = lunchIngredients_Servings;
-        this.dinnerIngredients_Servings = dinnerIngredients_Servings;
-        this.snackIngredients_Servings = snackIngredients_Servings;
-
-
-        this.putInHashMaps();
-    }*/
-
     private void putInHashMaps() {
         this.mealRecipeMap = new HashMap<>();
         this.mealIngredientMap = new HashMap<>();
@@ -172,38 +142,6 @@ public class MealPlan implements Serializable {
     public ArrayList<Double> getRecipeServings(String key) {return this.mealRecipeServingsMap.get(key);}
 
     public ArrayList<Double> getIngredientServings(String key) {return this.mealIngredientServingsMap.get(key);}
-
-    public void setBreakfastRecipes(ArrayList<Recipe> breakfastRecipes) {
-        this.breakfastRecipes = breakfastRecipes;
-    }
-
-    public void setLunchRecipes(ArrayList<Recipe> lunchRecipes) {
-        this.lunchRecipes = lunchRecipes;
-    }
-
-    public void setDinnerRecipes(ArrayList<Recipe> dinnerRecipes) {
-        this.dinnerRecipes = dinnerRecipes;
-    }
-
-    public void setBreakfastIngredients(ArrayList<StoreIngredient> breakfastIngredients) {
-        this.breakfastIngredients = breakfastIngredients;
-    }
-
-    public void setLunchIngredients(ArrayList<StoreIngredient> lunchIngredients) {
-        this.lunchIngredients = lunchIngredients;
-    }
-
-    public void setDinnerIngredients(ArrayList<StoreIngredient> dinnerIngredients) {
-        this.dinnerIngredients = dinnerIngredients;
-    }
-
-    public void setSnackRecipes(ArrayList<Recipe> snackRecipes) {
-        this.snackRecipes = snackRecipes;
-    }
-
-    public void setSnackIngredients(ArrayList<StoreIngredient> snackIngredients) {
-        this.snackIngredients = snackIngredients;
-    }
 
     public void addMealItemRecipe(String key, String recipeKey, double recipeServings, RecipeList recipeList1) {
         ArrayList<Recipe> currentRecipes = this.mealRecipeMap.get(key);

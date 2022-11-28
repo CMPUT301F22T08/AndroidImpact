@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class creates the functionality to have lists with sorting ability
@@ -12,7 +13,6 @@ import java.util.HashMap;
  */
 public abstract class SortableItemList<T> {
     protected ArrayList<T> objectArrayList;
-    //protected static String[] sortChoices;
     private Comparator<T>[] comparators;
     private OrderedHashMap<String, Comparator<T>> sortingHashMap;
     private int sortChoice;
@@ -25,7 +25,6 @@ public abstract class SortableItemList<T> {
     public SortableItemList(ArrayList<T> objectArrayList, String[] sortChoices, Comparator<T>[] comparators) {
         this.objectArrayList = objectArrayList;
         this.sortChoice = 0;
-        //this.sortChoices = sortChoices;
         this.comparators = comparators;
         this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
     }
@@ -164,6 +163,5 @@ public abstract class SortableItemList<T> {
         public V getValue(int i) {
             return super.get(keys[i]);
         }
-
     }
 }
