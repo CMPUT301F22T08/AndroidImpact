@@ -519,31 +519,31 @@ public class RecipesFragmentTest {
                 });
     }
 
-    /**
-     * Test if sorting recipes works
-     */
-    @Test
-    public void E_sortTest() {
-
-        // Click on the sorting recipe button
-        ViewInteraction appCompatSpinner = onView(
-                allOf(withId(R.id.sort_recipe_spinner),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner.perform(click());
-
-        // Click on the first item
-        DataInteraction materialTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        materialTextView.perform(click());
-    }
+//    /**
+//     * Test if sorting recipes works
+//     */
+//    @Test
+//    public void E_sortTest() {
+//
+//        // Click on the sorting recipe button
+//        ViewInteraction appCompatSpinner = onView(
+//                allOf(withId(R.id.sort_recipe_spinner),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withClassName(is("android.widget.LinearLayout")),
+//                                        0),
+//                                1),
+//                        isDisplayed()));
+//        appCompatSpinner.perform(click());
+//
+//        // Click on the first item
+//        DataInteraction materialTextView = onData(anything())
+//                .inAdapterView(childAtPosition(
+//                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+//                        0))
+//                .atPosition(1);
+//        materialTextView.perform(click());
+//    }
 
     /**
      * Logout after each test

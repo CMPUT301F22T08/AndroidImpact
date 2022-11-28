@@ -137,8 +137,8 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
         unitSpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedUnit));
         categorySpinner.setOnItemSelectedListener(abstractOnItemSelectedListener(selectedCategory));
 
-        unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Unit"));
-        categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Category"));
+        unitCollection.addSnapshotListener(abstractSnapshotListener(Unit.class, unitAdapter, units, unitSpinner, selectedUnit, "Units"));
+        categoryCollection.addSnapshotListener(abstractSnapshotListener(Category.class, categoryAdapter, categories, categorySpinner, selectedCategory, "Categories"));
     }
 
     /**
@@ -188,7 +188,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
                 spinner.setSelection(idx + 1);
                 Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + selectedElem.get().getClass() + " - (" + data.indexOf(selectedElem.get()) + ")");
                 if (idx == -1) {
-                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                    generateSnackbar("Warning: '" + selectedElem.get() + "' was not found in '" + debugName + "'!");
                     selectedElem.set(null);
                 }
             }
