@@ -62,19 +62,6 @@ public class SignupAndLoginActivityTest {
      */
     @Before
     public void setup() {
-        // init emulator stuff
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        // https://stackoverflow.com/a/69437851
-        try {
-            firestore.useEmulator("10.0.2.2", 8080);
-            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                    .setPersistenceEnabled(false)
-                    .build();
-            firestore.setFirestoreSettings(settings);
-        } catch (IllegalStateException e) {}
-        FirebaseStorage.getInstance().useEmulator("10.0.2.2", 9199);
-        FirebaseAuth.getInstance().useEmulator("10.0.2.2", 9099);
-
         // logout if we haven't done that already
         logout();
     }
