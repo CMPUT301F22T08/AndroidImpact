@@ -311,6 +311,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
 
         // EVENT LISTENERS
+        userPath = ((MainActivity) a).getUserDataPath();
         shopIngredientViewAdapter.setEditClickListener((food, position) -> {
             // when a shop ingredient is clicked, we edit
             // yeah, it's a bit different than ingredient and recipe
@@ -318,6 +319,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
             intent.putExtra("ingredient", food);
             intent.putExtra("adding", false);
+            intent.putExtra("data-path", userPath);
             editShoppingListItemLauncher.launch(intent);
         });
 
