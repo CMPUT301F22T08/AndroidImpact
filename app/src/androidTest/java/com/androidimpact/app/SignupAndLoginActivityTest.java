@@ -238,13 +238,14 @@ public class SignupAndLoginActivityTest {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         assert user != null;
+        String uid =  user.getUid();
         user.delete()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d("Signup and Login Task", "User account deleted.");
                     }
                     // now, delete user document
-                    db.document("userData/" + user.getUid()).delete().addOnSuccessListener(aVoid -> {
+                    db.document("userData/" + uid).delete().addOnSuccessListener(aVoid -> {
                         Log.i("Signup test", "deleted user doc");
                     });
                 });
