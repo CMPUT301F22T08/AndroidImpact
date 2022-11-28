@@ -177,18 +177,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         shoppingListView = a.findViewById(R.id.shopping_listview);
         pickupSwitch = a.findViewById(R.id.shop_ingredient_switch);
 
-//        pickupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked)
-//                {
-//                    //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
-//                }
-//                else
-//                {
-//                    //This means that user accidentaly picked it up so change amount picked up to 0
-//                }
-//            }
-//        });
 
         shoppingListController = ((MainActivity) a).getShoppingListController();
         moveFAB  = a.findViewById(R.id.move_fab);

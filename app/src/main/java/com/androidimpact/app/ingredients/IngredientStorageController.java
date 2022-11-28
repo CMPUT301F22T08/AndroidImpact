@@ -197,17 +197,20 @@ public class IngredientStorageController {
                                             }
                                             storeIngredient.setAmount(newAmount);
                                             ingredientStorageCollection.document(finalId).set(storeIngredient);
-                                            ingredientStorageCollection.document(ingredientFB.getId())
-                                                    .delete()
-                                                    .addOnSuccessListener(aVoid -> {
-                                                        Log.i(TAG,  ingredientFB.getDescription() + " has been deleted successfully!");
-                                                        //pushSnackBarToContext("Updated " + description);
-                                                    })
-                                                    .addOnFailureListener(e -> {
-                                                        pushSnackBarToContext("Could not delete " + ingredientFB.getDescription() + "!");
-                                                        Log.i(TAG, ingredientFB.getDescription() + " could not be deleted: " + e);
-                                                    });;
-                                            found = true;
+                                            if (finalId != ingredientFB.getId()) {
+                                                ingredientStorageCollection.document(ingredientFB.getId())
+                                                        .delete()
+                                                        .addOnSuccessListener(aVoid -> {
+                                                            Log.i(TAG, ingredientFB.getDescription() + " has been deleted successfully!");
+                                                            //pushSnackBarToContext("Updated " + description);
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            pushSnackBarToContext("Could not delete " + ingredientFB.getDescription() + "!");
+                                                            Log.i(TAG, ingredientFB.getDescription() + " could not be deleted: " + e);
+                                                        });
+                                                ;
+                                                found = true;
+                                            }
                                         }
                                     }
                                     if (!found)

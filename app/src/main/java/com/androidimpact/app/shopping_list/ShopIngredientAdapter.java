@@ -62,10 +62,16 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         this.mContext = mContext;
     }
 
+    /**
+     *  Adapter for ShopIngredient
+     * @param mContext
+     * @param data (ArrayList<ShopIngredient>)
+     */
     public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> data) {
         this.ingredientArrayList = data;
         this.mContext = mContext;
     }
+
 
     @NonNull
     @Override
@@ -75,12 +81,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         return new ShopIngredientAdapter.IngredientViewHolder(view);
     }
 
-
-    /**
-     *
-     * @param holder
-     * @param position
-     */
     @Override
     public void onBindViewHolder(@NonNull ShopIngredientAdapter.IngredientViewHolder holder, int position){
 
@@ -216,18 +216,18 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     }
 
     /**
-     *
+     * interface for shopIngredientToggleListener
      */
     public interface ShopIngredientToggleListener {
         void shopIngredientToggled(ShopIngredient food, boolean is_checked);
     }
 
     /**
-     *
+     *  this function sets edit toggle listener
      */
     public void setEditToggleListener(ShopIngredientToggleListener toAdd)
     {
-        toggleListeners.add(toAdd);
+      //  toggleListeners.add(toAdd);
         toggleListener = toAdd;
     }
 

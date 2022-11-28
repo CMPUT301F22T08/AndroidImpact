@@ -162,6 +162,7 @@ public class ShoppingListController {
         String description = deletedIngredient.getDescription();
         String id = deletedIngredient.getId();
 
+        Log.i("id", "deleted" + description);
         Log.d(TAG, "Swiped " + description);
 
         // delete item from firebase
