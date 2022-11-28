@@ -57,9 +57,6 @@ import nl.dionsegijn.konfetti.models.Size;
 public class ShoppingListFragment extends Fragment implements NavbarFragment {
     final String TAG = "ShoppingListFragment";
 
-    //Assume collection name is shopping list
-//    final String COLLECTION_NAME = "shoppingList";
-
     // This class lets us automate the shopping list fragment, pulling it from Firebase
     ShoppingListAutomator shoppingListAutomator;
     // for ShoppingListAutomator to work, we need an Executor instance
@@ -69,15 +66,10 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
     private static ShoppingListFragment instance;
 
-
-    // Declare the variables so that you will be able to reference it later.
     RecyclerView shoppingListView;
     ShopIngredientAdapter shopIngredientViewAdapter;
     ShoppingListController shoppingListController;
 
-    // adding cities to firebase
-//    FirebaseFirestore db;
-//    CollectionReference shoppingCollection;
     String userPath;
     Spinner sortIngredientSpinner;
     String[] sortingChoices;
@@ -131,9 +123,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // initialize Firestore
-//        db = FirebaseFirestore.getInstance();
-//        shoppingCollection = db.collection(COLLECTION_NAME);
     }
 
     /**
@@ -176,19 +165,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         // initialize adapters and customList
         shoppingListView = a.findViewById(R.id.shopping_listview);
         pickupSwitch = a.findViewById(R.id.shop_ingredient_switch);
-
-//        pickupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked)
-//                {
-//                    //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
-//                }
-//                else
-//                {
-//                    //This means that user accidentaly picked it up so change amount picked up to 0
-//                }
-//            }
-//        });
 
         shoppingListController = ((MainActivity) a).getShoppingListController();
         moveFAB  = a.findViewById(R.id.move_fab);
@@ -273,7 +249,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
             //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
             //add the ingredients from List to the the Ingredient Storage
-
             ((MainActivity) a).addShopListToShopIngredient(moveIngredientList);
 
         });
