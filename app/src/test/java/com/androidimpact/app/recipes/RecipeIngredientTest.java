@@ -25,6 +25,11 @@ public class RecipeIngredientTest {
 
     private Date current;
 
+    /**
+     * Create test recipe ingredient object
+     * @param date
+     * @return
+     */
     private RecipeIngredient mockRecipeIngredient(Date date) {
         return new RecipeIngredient(
                 "1234",

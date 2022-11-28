@@ -40,7 +40,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private String userPath;
 
 
-
     /**
      * Constructor for RecipeList
      * @param context         the context for the parent view
@@ -170,14 +169,26 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         }
     }
 
+    /**
+     * This gets the number of items by returning the size of the recipe controller
+     * @return
+     */
     @Override
     public int getItemCount() {
         return this.recipeController.size();
     }
 
+    /**
+     * Sorts the data through index
+     * @param i
+     */
     public void sortData(int i) {
         recipeController.sortData(i);
     }
+
+    /**
+     * Sorts the data without index
+     */
     public void sortData() {
         recipeController.sortData();
     }
@@ -192,7 +203,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         private ImageView recipeImage;
         private FloatingActionButton editRecipeFAB;
         private ConstraintLayout container;
-        //private FloatingActionButton editRecipeFAB;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);

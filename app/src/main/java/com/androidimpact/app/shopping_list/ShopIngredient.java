@@ -1,15 +1,5 @@
 package com.androidimpact.app.shopping_list;
 
-/**
- * StoreIngredient object that is stored in IngredientStorage
- * Extended from Ingredient
- * Extra attributes:
- *  - (float) amountPicked - this attribute specifies the amount user picked up for shopping list
- *  Need to add some unit testing
- * @author Vedant Vyas
- * @version 1.0
- * @see Ingredient
- */
 
 import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.location.Location;
@@ -17,6 +7,15 @@ import com.androidimpact.app.location.Location;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * StoreIngredient object that is stored in IngredientStorage
+ * Extended from Ingredient
+ * Extra attributes:
+ *  - (float) amountPicked - this attribute specifies the amount user picked up for shopping list
+ * @author Vedant Vyas
+ * @version 1.0
+ * @see Ingredient
+ */
 public class ShopIngredient extends Ingredient implements Serializable {
 
     private float amountPicked = 0;
@@ -26,7 +25,6 @@ public class ShopIngredient extends Ingredient implements Serializable {
      * Empty constructor for firebase
      */
     public ShopIngredient() {}
-
 
 
     /**

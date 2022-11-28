@@ -49,6 +49,10 @@ public class EditUnitsActivity extends AppCompatActivity {
     CollectionReference unitCollection;
     String userPath;
 
+    /**
+     * onCreate function that initializes our views and firebase linkage
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -178,6 +178,10 @@ public class IngredientStorageController {
         ingredientStorageCollection.whereEqualTo("description", description).whereEqualTo("location", storeIngredient.getLocation()).whereEqualTo("unit", storeIngredient.getUnit()).whereEqualTo("category", storeIngredient.getCategory())
                 .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            /**
+                             * This implements firebase connection to ingredient storage
+                             * @param task
+                             */
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -286,7 +290,10 @@ public class IngredientStorageController {
         return ingredientStorage.getData();
     }
 
-    //getter method for ingredient storage
+    /**
+     * Getter method for ingredient storage
+     * @return
+     */
     public IngredientStorage getIngredientStorage() {
         return ingredientStorage;
     }

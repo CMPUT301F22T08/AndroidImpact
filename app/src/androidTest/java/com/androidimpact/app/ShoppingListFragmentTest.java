@@ -68,8 +68,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * INtent testing for Shopping List Activity
- *
+ * Intent testing for Shopping List Activity
  * Note: these test were generated using Espresso Test Recorder
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -150,6 +149,9 @@ public class ShoppingListFragmentTest {
         textView.check(matches(withText("Shopping List")));
     }
 
+    /**
+     * adds to ingredient storage test
+     */
     @Test
     public void B_addToIngredientStorage() {
         ViewInteraction bottomNavigationItemView = onView(
@@ -402,9 +404,18 @@ public class ShoppingListFragmentTest {
 
     }
 
-    // this is a helper function that matches an item in the RecyclerView by its description.
+
+    /**
+     * this is a helper function that matches an item in the RecyclerView by its description.
+     * @param descriptionMatcher
+     * @return
+     */
     public static Matcher<ShopIngredientAdapter.IngredientViewHolder> shopIngredientVHMatcher(Matcher<String> descriptionMatcher){
         return new TypeSafeMatcher<>(){
+            /**
+             * @param ingredientViewHolder
+             * @return
+             */
             @Override
             public boolean matchesSafely(ShopIngredientAdapter.IngredientViewHolder ingredientViewHolder) {
                 Log.i("shopIngredientVHMatcher", ingredientViewHolder.getDescription() + " = " + descriptionMatcher.toString());
@@ -539,17 +550,26 @@ public class ShoppingListFragmentTest {
         floatingActionButton4.perform(click());
     }
 
-
+    /**
+     * @param parentMatcher
+     * @param position
+     * @return
+     */
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
+
             @Override
             public void describeTo(Description description) {
                 description.appendText("Child at position " + position + " in parent ");
                 parentMatcher.describeTo(description);
             }
 
+            /**
+             * @param view
+             * @return
+             */
             @Override
             public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();

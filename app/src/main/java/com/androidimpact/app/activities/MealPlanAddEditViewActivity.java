@@ -242,6 +242,13 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param mealType
+     * @param recipeId
+     * @param recipeTitle
+     * @param f
+     */
     public void addRecipe(String mealType, String recipeId, String recipeTitle, double f) {
         Log.i("data got", mealType + recipeId);
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
@@ -265,6 +272,13 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @param mealType
+     * @param ingredientId
+     * @param ingredientTitle
+     * @param f
+     */
     public void addIngredient(String mealType, String ingredientId, String ingredientTitle, double f) {
         Log.i("data got", mealType + ingredientId);
         ArrayList<String> entry = this.ingredientIdMap.getOrDefault(mealType, new ArrayList<>());
@@ -335,10 +349,20 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     *
+     * @return
+     */
     public RecipeController getRecipeController(){
         return recipeController;
     }
 
+    /**
+     *
+     * @param key
+     * @param map
+     * @return
+     */
     private ArrayList<String> getOrDefaultString(String key, HashMap<String, ArrayList<String>> map) {
 
         ArrayList<String> entry = map.get(key);
@@ -348,6 +372,12 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         return map.get(key);
     }
 
+    /**
+     *
+     * @param key
+     * @param map
+     * @return
+     */
     private ArrayList<Double> getOrDefaultDouble(String key, HashMap<String, ArrayList<Double>> map) {
         ArrayList<Double> entry = map.get(key);
         if(entry == null) {

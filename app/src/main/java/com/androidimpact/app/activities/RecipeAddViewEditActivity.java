@@ -309,6 +309,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This class parses recipe when
+     * @return
+     * @throws Exception
+     */
     private Task<Recipe> parseRecipe() throws Exception {
          // Make sure inputs are valid
         ArrayList<String> exceptionString = new ArrayList<>();
@@ -384,7 +389,6 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     /**
      * A generic snapshot listener for simple user-defined collections (units, locations, categories)
      * Also sorts the data based on the timestamp data
-     *
      * This abstracts the snapshot listener
      */
     private <T extends Timestamped, U extends RecyclerView.Adapter<?>> EventListener<QuerySnapshot> abstractSnapshotListener(
@@ -443,17 +447,29 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             String recipeTitle // for debug purposes
     ) {
         return new DocumentRetrievalListener<T>() {
+            /**
+             * Success on document retrieval
+             * @param data
+             */
             @Override
             public void onSuccess(T data) {
                 selectedItem.set(data);
                 spinner.setSelection(datas.indexOf(data));
                 Log.i(TAG, "DocumentRetrieval: " + data.toString() + " " + data.getClass() + " - (" + datas.indexOf(data) + ")" + datas.size());
             }
+
+            /**
+             * happens if the user deletes a document by themselves. We should not allow it!
+             */
             @Override
             public void onNullDocument() {
-                // happens if the user deletes a document by themselves. We should not allow it!
                 Log.i(TAG, "Bruh moment: ingredient " + recipeTitle + " cannot retrieve unit - Document does not exist");
             }
+
+            /**
+             * Error handling
+             * @param e
+             */
             @Override
             public void onError(Exception e) {
                 Log.d(TAG, "Bruh moment: ingredient cannot retrieve unit: failed ", e);

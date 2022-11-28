@@ -30,6 +30,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+
 public class RecipeAddFragment extends DialogFragment {
     private String mealType;
 

@@ -40,18 +40,34 @@ public class Unit implements Serializable, Timestamped {
         this.dateAdded = new Date();
     }
 
+    /**
+     * getter function for Unit
+     * @return unit
+     */
     public String getUnit() {
         return unit;
     }
 
+    /**
+     * setter function for unit
+     * @param unit
+     */
     public void setUnit(String unit) {
         this.unit = unit;
     }
 
+    /**
+     * getter function for DateAdded
+     * @return dateAdded
+     */
     public Date getDateAdded() {
         return dateAdded;
     }
 
+    /**
+     * setter function for DateAdded
+     * @param dateAdded
+     */
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
     }

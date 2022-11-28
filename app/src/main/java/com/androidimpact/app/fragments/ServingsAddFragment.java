@@ -16,6 +16,10 @@ import androidx.fragment.app.DialogFragment;
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
 
+/**
+ * This defines a Fragment that implements the add servings fragment
+ * @version 1.0
+ */
 public class ServingsAddFragment extends DialogFragment {
 
     final String TAG = "ServingsAddFragment";
@@ -25,6 +29,13 @@ public class ServingsAddFragment extends DialogFragment {
     private boolean isRecipe;
     Button cancelBtn, confirmBtn;
 
+    /**
+     * Constructor class
+     * @param meal
+     * @param hash
+     * @param title
+     * @param isRecipe
+     */
     public ServingsAddFragment(String meal, String hash, String title, boolean isRecipe) {
         super(R.layout.fragment_servings_add_mealplan);
         this.mealType = meal;

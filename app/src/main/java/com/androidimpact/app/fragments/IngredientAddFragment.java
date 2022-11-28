@@ -28,6 +28,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This defines a Fragment that implements the add ingredient fragment
+ * @version 1.0
+ *
+ */
 public class IngredientAddFragment extends DialogFragment {
     final String TAG = "IngredientAddFragment";
     private static IngredientAddFragment instance;
@@ -206,10 +211,6 @@ public class IngredientAddFragment extends DialogFragment {
                 }
             }
 
-            //if (errorCount>0)
-            //    Snackbar.make("Error reading " + errorCount + " documents!");
-            //Snackbar.make(getContext().findViewById(R.id.nav_fragment), s, Snackbar.LENGTH_LONG)
-            //        .setAction("OK", (v)->{}).show();
             Log.i(TAG, "Snapshot listener: Added " + ingredientStorage.size() + " ingredients");
 
             ingredientStorage.sortByChoice();

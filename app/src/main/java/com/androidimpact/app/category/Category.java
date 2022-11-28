@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * This class implements Category functionality
+ */
 public class Category implements Serializable, Timestamped {
     @DocumentId
     String category;
@@ -16,7 +19,9 @@ public class Category implements Serializable, Timestamped {
     @ServerTimestamp
     Date dateAdded;
 
-    // default empty constructor for Firebase auto deserialization
+    /**
+     * default empty constructor for Firebase auto deserialization
+     */
     public Category() {}
 
     /**
@@ -34,18 +39,34 @@ public class Category implements Serializable, Timestamped {
         this.dateAdded = new Date();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCategory() {
         return category;
     }
 
+    /**
+     *
+     * @param category
+     */
     public void setCategory(String category) {
         this.category = category;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getDateAdded() {
         return dateAdded;
     }
 
+    /**
+     *
+     * @param dateAdded
+     */
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
     }

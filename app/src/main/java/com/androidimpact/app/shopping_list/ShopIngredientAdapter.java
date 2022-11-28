@@ -31,7 +31,6 @@ import java.util.ArrayList;
  * @version 1.0
  * @author vedantvyas
  */
-
 public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAdapter.IngredientViewHolder>{
 
     private final String TAG = "ShopIngredientViewAdapter";
@@ -72,15 +71,24 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         this.mContext = mContext;
     }
 
-
+    /**
+     * Inflate Layout from shopping list item
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ShopIngredientAdapter.IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate Layout
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_list_item, parent, false);
         return new ShopIngredientAdapter.IngredientViewHolder(view);
     }
 
+    /**
+     * Holds button and swipe functionality
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ShopIngredientAdapter.IngredientViewHolder holder, int position){
 
@@ -115,6 +123,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         //Adds listener for switch button for every item
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            /**
+             * This checks if the toggle is flipped
+             * @param buttonView
+             * @param isChecked
+             */
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 

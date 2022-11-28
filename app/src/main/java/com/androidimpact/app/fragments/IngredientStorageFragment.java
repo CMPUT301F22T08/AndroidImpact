@@ -64,6 +64,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
      */
     private ActivityResultLauncher<Intent> editStoreIngredientLauncher;
     private ActivityResultLauncher<Intent> addStoreIngredientLauncher;
+
     /**
      * Required empty public constructor
      */

@@ -120,6 +120,9 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
         }
     }
 
+    /**
+     * creates an interface to store ingredient in recipe edit
+     */
     public interface StoreRecipeIngredientEdit {
         void storeRecipeIngredientEdit(Ingredient ingredient, int position);
     }

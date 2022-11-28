@@ -31,6 +31,10 @@ public class RecipeIngredient extends Ingredient implements Serializable, Timest
         this.dateAdded = dateAdded;
     }
 
+    /**\
+     * getter for DateAdded
+     * @return
+     */
     public Date getDateAdded() {
         return dateAdded;
     }

@@ -49,23 +49,43 @@ public class Location implements Serializable, Timestamped {
         this.dateAdded = date;
     }
 
+    /**
+     * turns location to String
+     * @return
+     */
     @NonNull
     public String toString() {
         return getLocation();
     }
 
+    /**
+     * getter for Location
+     * @return
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * setter for Location
+     * @param location
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * getter for DateAdded
+     * @return
+     */
     public Date getDateAdded() {
         return dateAdded;
     }
 
+    /**
+     * setter for DateAdded
+     * @param dateAdded
+     */
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
     }

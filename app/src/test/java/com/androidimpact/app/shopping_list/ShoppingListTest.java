@@ -13,9 +13,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+/**
+ * This class tests the functions in ShoppingList.java
+ * @version 1.0
+ */
 public class ShoppingListTest
 {
 
+    /**
+     * Constructor for mockShoppingList
+     * @return
+     */
     public ShoppingList mockShoppingList()
     {
         ArrayList<ShopIngredient> list = new ArrayList<>();
@@ -24,11 +32,20 @@ public class ShoppingListTest
         return ingredientList;
     }
 
+    /**
+     * create test shopping object
+     * @return
+     */
     public ShopIngredient mockShopIngredient()
     {
         return new ShopIngredient("01", "test food", 0, "","");
     }
 
+    /**
+     * create test shopping object
+     * @param description
+     * @return
+     */
     public ShopIngredient mockShopIngredient(String description)
     {
         return new ShopIngredient("01", description, 0, "","");
