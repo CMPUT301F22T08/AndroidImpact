@@ -516,6 +516,32 @@ public class RecipesFragmentTest {
     }
 
     /**
+     * Test if sorting recipes works
+     */
+    @Test
+    public void sortTest() {
+
+        // Click on sort recipe spinner
+        ViewInteraction appCompatSpinner2 = onView(
+                allOf(withId(R.id.sort_recipe_spinner),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatSpinner2.perform(click());
+
+        // Select second item
+        DataInteraction materialTextView = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(1);
+        materialTextView.perform(click());
+    }
+
+    /**
      * Logout after each test
      */
     @After

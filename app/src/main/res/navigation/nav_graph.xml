@@ -15,7 +15,7 @@
         android:id="@+id/recipeList"
         android:name="com.androidimpact.app.fragments.RecipeListFragment"
         android:label="fragment_recipe_list"
-        tools:layout="@layout/fragment_recipe_list" />
+        tools:layout="@layout/fragment_recipe_list_mealplan" />
     <fragment
         android:id="@+id/shoppingList"
         android:name="com.androidimpact.app.fragments.ShoppingListFragment"
