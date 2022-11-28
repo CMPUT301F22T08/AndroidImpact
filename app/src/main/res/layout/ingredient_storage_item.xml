@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="@id/store_ingredient_description"
             app:layout_constraintBottom_toBottomOf="@id/store_ingredient_description"
             app:layout_constraintStart_toStartOf="parent"
-            android:padding="5dp"
+            android:padding="7dp"
             android:visibility="invisible"/>
 
         <TextView
