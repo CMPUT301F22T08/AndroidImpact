@@ -28,12 +28,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.androidimpact.app.activities.LoginActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.storage.FirebaseStorage;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -47,10 +44,12 @@ import org.junit.runner.RunWith;
 
 /**
  * Signs up, and checks that the user is correctly logged in
+ * NOTE: for some reason when running all the tests at once, this test takes forever to run.
+ * it should work when run individually
  */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SignupAndLoginActivityTest {
+public class A_SignupAndLoginActivityTest {
 
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
@@ -111,8 +110,33 @@ public class SignupAndLoginActivityTest {
         textView.check(matches(withText("Android Impact")));
     }
 
+    /**
+     * Method testing signup and then logging in
+     */
     @Test
     public void signupAndLoginActivityTest() throws InterruptedException {
+        try {
+            // If for some reason this account already exists, delete first
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            if (user == null) {
+                throw new Exception("not logged in");
+            }
+            String uid = user.getUid();
+            user.delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("Signup and Login Task", "User account deleted.");
+                        }
+                        // now, delete user document
+                        db.document("userData/" + uid).delete().addOnSuccessListener(aVoid -> {
+                            Log.i("Signup test", "deleted user doc");
+                        });
+                    });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.signup), withText("Signup"),
                         childAtPosition(
