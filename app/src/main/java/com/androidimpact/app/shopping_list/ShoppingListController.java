@@ -6,11 +6,13 @@ import android.util.Log;
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -81,6 +83,20 @@ public class ShoppingListController {
             storeIngredient.setID(id);
         }
         return shoppingListCollection.document(storeIngredient.getId()).set(storeIngredient);
+    }
+
+    /**
+     * Adds a list of ingredients, and returns a task when they will all be added
+     * @param ingredients the list of ingredients to add
+     * @return a task that succeeds when all ingredients are added
+     */
+    public Task<Void> addArray(ArrayList<ShopIngredient> ingredients) {
+        Log.i(TAG + ":addArray","AddArray called on " + ingredients.size() + " elements");
+        ArrayList<Task<Void>> futures = new ArrayList<>();
+        for (ShopIngredient i : ingredients) {
+            futures.add(shoppingListCollection.document(i.getId()).set(i));
+        }
+        return Tasks.whenAll(futures);
     }
 
     public void delete(int position) throws ArrayIndexOutOfBoundsException{
