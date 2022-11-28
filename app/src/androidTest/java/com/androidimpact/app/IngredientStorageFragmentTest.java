@@ -416,6 +416,34 @@ public class IngredientStorageFragmentTest {
     }
 
     /**
+     * Test if the sorting button works
+     * Result: items will be sorted by best before date
+     */
+    @Test
+    public void C_sortTest() {
+
+        // Click on sorting spinner
+        ViewInteraction appCompatSpinner = onView(
+                allOf(withId(R.id.sort_ingredient_spinner),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withId(R.id.ingredient_input),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatSpinner.perform(click());
+
+        // Select second item
+        DataInteraction appCompatCheckedTextView = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(1);
+        appCompatCheckedTextView.perform(click());
+    }
+
+    /**
      * Logout after each test
      */
     @After
