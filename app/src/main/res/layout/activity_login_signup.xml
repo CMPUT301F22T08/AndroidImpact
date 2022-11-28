@@ -64,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:backgroundTint="@color/cancel"
             android:layout_margin="10dp"
             android:text="@string/cancel" />
@@ -72,6 +73,7 @@
             android:id="@+id/signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:layout_margin="10dp"
             android:backgroundTint="@color/confirm"

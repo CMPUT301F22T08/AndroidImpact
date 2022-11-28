@@ -64,10 +64,6 @@ public class LoginActivity extends AppCompatActivity {
         signup.startAnimation(fadeIn);
         login.startAnimation(fadeIn);
 
-        // TODO: Remove this, its for convenience
-        username.setText("test@gmail.com");
-        password.setText("qwerty");
-
     }
 
     /**
@@ -77,6 +73,13 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void login(View view) {
         try {
+            if (username.getText().toString().isBlank()) {
+                throw new Exception("Email can't be empty!");
+            }
+            if (password.getText().toString().isBlank()) {
+                throw new Exception("Password can't be empty!");
+            }
+
             firebaseAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText().toString())
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
@@ -85,17 +88,12 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            Snackbar snackbar = Snackbar.make(findViewById(R.id.login_layout), "Invalid login!", Snackbar.LENGTH_SHORT);
-                            View snackbarView = snackbar.getView();
-                            TextView snackbarTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
-                            snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                            snackbar.setAction("Ok", view1 -> {
-                            }).show();
+                            Toast.makeText(this, "Invalid credentials!", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
         catch(Exception e) {
-            Toast.makeText(this, "Please enter correct credentials", Toast.LENGTH_SHORT);
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
