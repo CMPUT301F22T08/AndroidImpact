@@ -72,6 +72,8 @@ import java.util.UUID;
 /**
  * This tests the ingredient storage fragment, adding, and editing an ingredient
  * Written using the built in espresso test recorder
+ * Note: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
+ * sometimes doesn't. Try re running if it doesn't work.
  * @version 1.0
  * @author Curtis Kan, Joshua Ji
  */
