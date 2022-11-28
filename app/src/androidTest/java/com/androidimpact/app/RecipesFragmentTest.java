@@ -132,7 +132,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         materialButton.perform(click());
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         // Click on bottom navbar button for recipes
         ViewInteraction bottomNavigationItemView = onView(
@@ -470,7 +470,7 @@ public class RecipesFragmentTest {
      * Result: Aardvark soup is deleted from the recipe list
      */
     @Test
-    public void D_deleteRecipeTest() throws InterruptedException {
+    public void D_deleteRecipeTest() {
 
         // This is supposed to simulate a swipe to delete action on the first list view item
         // But for some reason it was not working. There is no documentation from espresso on
