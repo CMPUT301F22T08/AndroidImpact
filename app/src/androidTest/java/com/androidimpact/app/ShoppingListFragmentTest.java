@@ -68,9 +68,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * INtent testing for Shopping List Activity
+ * Intent testing for Shopping List Activity
+ * NOTE: these test were generated using Espresso Test Recorder
  *
- * Note: these test were generated using Espresso Test Recorder
+ * NOTE: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
+ * sometimes doesn't. Try re running if it doesn't work.
+ *
+ * NOTE: for some reason when running all the tests at once, this test takes forever to run.
+ * it should work when run individually
+ * @version 1.0
+ * @author Curtis Kan
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest

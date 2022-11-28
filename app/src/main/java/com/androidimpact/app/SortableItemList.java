@@ -108,8 +108,16 @@ public abstract class SortableItemList<T> {
     /**
      * Get the sorting choice for the item list
      */
-    public String getSortChoice() {
-        return sortChoices[this.sortChoice];
+    public String getSortChoice() throws ArrayIndexOutOfBoundsException {
+        String choice;
+        try {
+            choice = sortChoices[this.sortChoice];
+        }
+        catch (Exception e)
+        {
+           throw  new ArrayIndexOutOfBoundsException("Trying to set a illegal sort choice");
+        }
+        return choice;
     }
 
 

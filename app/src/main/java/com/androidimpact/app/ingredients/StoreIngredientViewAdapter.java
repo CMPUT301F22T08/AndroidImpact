@@ -140,16 +140,16 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         }
 
 
-        Date testDate = new Date(122, 8, 30);
+        Date nullDate = new Date(122, 8, 30);
 
         String myFormat="MMM dd yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         String formattedDate = dateFormat.format(currentIngredient.getBestBeforeDate().getTime());
         String date = holder.res.getString(R.string.store_ingredient_date_display, formattedDate);
 
-        String testDateString = dateFormat.format(testDate.getTime());
-        Log.i("testDate", testDateString);
-        if (date.equals(testDateString)){
+        String nullDateString = dateFormat.format(nullDate.getTime());
+        Log.i("testDate", nullDateString);
+        if (formattedDate.equals(nullDateString)){
             holder.date.setText("To be added");
         } else {
             holder.date.setText(date);
