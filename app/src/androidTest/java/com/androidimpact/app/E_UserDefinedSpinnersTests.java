@@ -7,7 +7,6 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
@@ -41,12 +40,15 @@ import org.junit.runner.RunWith;
  * Tests adding user defined spinners
  * Note: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
  * sometimes doesn't. Try re running if it doesn't work.
+ *
+ * NOTE: for some reason when running all the tests at once, this test takes forever to run.
+ * it should work when run individually
  * @version 1.0
  * @author Curtis Kan
  */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UserDefinedSpinnersTests {
+public class E_UserDefinedSpinnersTests {
 
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =

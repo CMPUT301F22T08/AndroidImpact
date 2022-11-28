@@ -47,19 +47,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -74,13 +70,16 @@ import java.util.UUID;
  * Written using the built in espresso test recorder
  * Note: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
  * sometimes doesn't. Try re running if it doesn't work.
+ *
+ * NOTE: for some reason when running all the tests at once, this test takes forever to run.
+ * it should work when run individually
  * @version 1.0
  * @author Curtis Kan, Joshua Ji
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class IngredientStorageFragmentTest {
+public class B_IngredientStorageFragmentTest {
 
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
