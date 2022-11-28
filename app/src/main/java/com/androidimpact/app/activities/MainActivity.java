@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
     private final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance(executorService);
     private final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
-    private final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
+    private final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance(executorService);
 
     // adding cities to firebase
     IngredientStorageController ingredientStorageController;
