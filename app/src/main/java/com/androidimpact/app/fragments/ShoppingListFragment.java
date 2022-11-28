@@ -501,28 +501,13 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      *
      *
      */
-    public void editShopIngredientFB(ShopIngredient ingredient)
+    public void cancelToggleDialog(ShopIngredient ingredient)
     {
-        Log.i("check ", "DONEDONEDONE");
-        /*String id = ingredient.getId();
-        if (id == null){
-            UUID uuid = UUID.randomUUID();
-            id = uuid.toString();
-            ingredient.setID(id);
-        }
-        shoppingCollection.document(id).set(ingredient);*/
+        Log.i("check ", "Editing Shop Ingredient to zero");
         shoppingListController.addEdit(ingredient);
 
         shopIngredientViewAdapter.notifyDataSetChanged();
     }
 
-
-
-//    public void cancelPickUp(int pos)
-//    {
-//        pickupSwitch.setChecked(false);
-//        shopIngredientViewAdapter.notifyDataSetChanged();
-//
-//    }
 
 }
