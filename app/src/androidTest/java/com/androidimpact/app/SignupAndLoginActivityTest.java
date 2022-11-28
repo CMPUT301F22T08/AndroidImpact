@@ -14,10 +14,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -32,7 +34,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +52,11 @@ public class SignupAndLoginActivityTest {
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
 
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        // do login stuff here
+    }
+
     /**
      * Ensure we are using firebase emulators
      */
@@ -58,13 +67,16 @@ public class SignupAndLoginActivityTest {
         // https://stackoverflow.com/a/69437851
         try {
             firestore.useEmulator("10.0.2.2", 8080);
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setPersistenceEnabled(false)
+                    .build();
+            firestore.setFirestoreSettings(settings);
         } catch (IllegalStateException e) {}
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(false)
-                .build();
-        firestore.setFirestoreSettings(settings);
         FirebaseStorage.getInstance().useEmulator("10.0.2.2", 9199);
         FirebaseAuth.getInstance().useEmulator("10.0.2.2", 9099);
+
+        // logout if we haven't done that already
+        logout();
     }
 
     /**
@@ -250,4 +262,31 @@ public class SignupAndLoginActivityTest {
             }
         };
     }
+
+    /**
+     * Logout after each test
+     */
+    @After
+    public void logout() {
+
+        // If we aren't on apage with a login screen, handle the exception
+        try {
+            ViewInteraction actionMenuItemView = onView(
+                    allOf(withId(R.id.logout),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(androidx.constraintlayout.widget.R.id.action_bar),
+                                            1),
+                                    0),
+                            isDisplayed()));
+            actionMenuItemView.perform(click());
+        }
+        catch (NoMatchingViewException nmve) {
+            Log.d("e", "no logout button");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
