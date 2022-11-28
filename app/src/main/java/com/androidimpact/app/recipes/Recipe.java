@@ -1,15 +1,9 @@
 package com.androidimpact.app.recipes;
 
-import com.androidimpact.app.DocumentRetrievalListener;
-import com.androidimpact.app.category.Category;
 import com.google.firebase.firestore.DocumentId;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
-import java.security.InvalidParameterException;
 import java.util.Date;
 
 import javax.annotation.Nullable;
@@ -38,7 +32,7 @@ public class Recipe implements Serializable  {
     /**
      * Necessary empty constructor for firebase automatic serialization
      */
-    public Recipe() {};
+    public Recipe() {}
 
     /**
      * Constructor for recipe
@@ -190,28 +184,6 @@ public class Recipe implements Serializable  {
 
     public String getCollectionPath() {
         return collectionPath;
-    }
-
-    /**
-     * A fully-featured function to retrieve the location from firestore
-     *
-     * this architecture lets us reduce the callback hell somewhat using listeners, i think...
-     */
-    @Exclude
-    public void getCategoryAsync(DocumentRetrievalListener<Category> listener) {
-        FirebaseFirestore.getInstance().document(category).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Category u = document.toObject(Category.class);
-                    listener.onSuccess(u);
-                } else {
-                    listener.onNullDocument();
-                }
-            } else {
-                listener.onError(task.getException());
-            }
-        });
     }
 
     /**
