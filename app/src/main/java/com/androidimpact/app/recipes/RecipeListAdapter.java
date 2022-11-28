@@ -15,7 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.androidimpact.app.meal_plan.OnSelectInterface;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,7 +32,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     final String TAG = "RecipeList";
 
     private RecipeController recipeController;
-    private RecipeList recipeList;
     private Context context;
     private boolean isSelection;
     private OnSelectInterface onSelectInterface;
