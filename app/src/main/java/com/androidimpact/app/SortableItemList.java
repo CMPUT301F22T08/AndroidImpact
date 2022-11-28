@@ -96,7 +96,7 @@ public abstract class SortableItemList<T> {
 
     /**
      * Set the sorting choice for the item list
-     * @param index the index of the sorting choices for the user
+     * @param i the index of the sorting choices for the user
      */
     public void setSortChoice(int i) {
         this.sortChoice = i;
@@ -128,7 +128,7 @@ public abstract class SortableItemList<T> {
          * Initialize a hashmap that contains a natural ordering.
          * <br>
          * <strong>NB:</strong> This structure requires that the length of keys given and values
-         * given are equal, and the i'th key corresponds to the i'th value in the list.
+         * given are equal, and the ith key corresponds to the ith value in the list.
          * <strong>NB:</strong> If two keys are given that are equal, the hashmap will only consider
          * the latter of these in the keys array, i.e. the key with the maximal i-value.
          * @param keys an array of keys to be added
@@ -148,18 +148,18 @@ public abstract class SortableItemList<T> {
         }
 
         /**
-         * Returns the i'th key in the hashmap.
+         * Returns the ith key in the hashmap.
          * @param i the index of the key in the hashmap
-         * @return the i'th key in the hashmap (K)
+         * @return the ith key in the hashmap (K)
          */
         public K getKey(int i) {
             return keys[i];
         }
 
         /**
-         * Returns the i'th value in the hashmap.
+         * Returns the ith value in the hashmap.
          * @param i the index of the value in the hashmap
-         * @return the value of the i'th key in the hashmap (V)
+         * @return the value of the ith key in the hashmap (V)
          */
         public V getValue(int i) {
             return super.get(keys[i]);
