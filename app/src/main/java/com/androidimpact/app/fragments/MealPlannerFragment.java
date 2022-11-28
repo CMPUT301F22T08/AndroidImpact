@@ -133,7 +133,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
 
         // initialize adapters and customList
         mealPlanListView = a.findViewById(R.id.meal_plan_list);
-        mealPlanAdapter = new MealPlanListAdapter(getContext()/*, dataPath*/, mealPlanController.getData());
+        mealPlanAdapter = new MealPlanListAdapter(getContext(), dataPath, mealPlanController.getData());
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());

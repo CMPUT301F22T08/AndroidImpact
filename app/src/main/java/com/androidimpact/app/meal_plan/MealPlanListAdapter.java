@@ -13,13 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
-import com.androidimpact.app.ingredients.StoreIngredient;
-import com.androidimpact.app.recipes.RecipeList;
-import com.androidimpact.app.ingredients.IngredientStorage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -37,6 +31,8 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
     private Context context;
     private MealPlanList mealPlanList;
 
+    private String userPath;
+
     // adding recipes to firebase
     //FirebaseFirestore db;
     //CollectionReference mealPlanCollection;
@@ -44,12 +40,14 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
     /**
      * Constructor for adapter for MealPlanList
      * @param context
+     * @param dataPath
      * @param mealPlans
      */
-    public MealPlanListAdapter(Context context/*, String dataPath*/, ArrayList<MealPlan> mealPlans) {
+    public MealPlanListAdapter(Context context, String dataPath, ArrayList<MealPlan> mealPlans) {
         this.mealPlans = mealPlans;
         this.mealPlanList = new MealPlanList(this.mealPlans/*, recipeList, ingredients*/);
         this.context = context;
+        this.userPath = dataPath;
 
         // initialize Firestore
         //db = FirebaseFirestore.getInstance();
@@ -106,6 +104,7 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
             intent.putExtra("meal plan", recyclerData);
             //intent.putExtra("recipe", currentRecipe);
             intent.putExtra("isEditing", true);
+            intent.putExtra("data-path", userPath);
             context.startActivity(intent);
             notifyItemChanged(position);
         });
