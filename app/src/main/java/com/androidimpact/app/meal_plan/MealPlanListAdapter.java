@@ -145,6 +145,15 @@ public class MealPlanListAdapter extends RecyclerView.Adapter<MealPlanListAdapte
             mealsListSnacks = itemView.findViewById(R.id.meals_list_snacks);
             mealPlanEditButton = itemView.findViewById(R.id.edit_button);
         }
+
+        /**
+         * returns the value of the date
+         * used in tests lmao
+         * @return date.getText().toString()
+         */
+        public String getDescriptionValue() {
+            return date.getText().toString();
+        }
     }
 
 }

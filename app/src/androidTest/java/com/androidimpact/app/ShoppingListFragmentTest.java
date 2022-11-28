@@ -36,7 +36,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
@@ -59,7 +58,6 @@ import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -77,7 +75,7 @@ import java.util.List;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ShoppingListActivity {
+public class ShoppingListFragmentTest {
 
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =

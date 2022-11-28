@@ -520,7 +520,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      *    Button that activates the function
      */
     public void addIngredient(View v) {
-        Log.i(TAG + ":addPhoto", "Adding ingredient!");
+        Log.i(TAG + ":addIngredient", "Adding ingredient!");
         Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
         intent.putExtra("data-path", userPath);
         addIngredientLauncher.launch(intent);
