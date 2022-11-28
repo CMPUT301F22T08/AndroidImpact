@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:animateLayoutChanges="true"
+    android:id="@+id/fragment_ingredient_storage_layout"
     tools:context=".activities.MainActivity">
 
 
@@ -57,6 +58,7 @@
             android:id="@+id/ingredient_listview"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
+            android:visibility="visible"
             android:layout_marginBottom="64dp"
             android:background="@color/background" />
 

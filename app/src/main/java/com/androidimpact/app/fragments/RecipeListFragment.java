@@ -24,20 +24,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.recipes.RecipeListAdapter;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 
@@ -126,7 +120,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        return inflater.inflate(R.layout.fragment_recipe_list_mealplan, container, false);
     }
 
 
