@@ -1,8 +1,7 @@
 # AndroidImpact
-![homepage](https://user-images.githubusercontent.com/68800077/204200560-fd0f216b-b511-4e0b-841b-79bf246f4973.png)
-
 Team 8's 301 Project: AndroidImpact
 ## Overview
+![homepage](https://user-images.githubusercontent.com/68800077/204200560-fd0f216b-b511-4e0b-841b-79bf246f4973.png)
 Impacting lives. One food item at a time. AndroidImpact enables users to be on top of all their foodstuffs,
 whether it's what's in the back of their pantry, what recipe to cook for the family, a plan of all the meals 
 they'll eat throughout the week, or a virtual shopping list. Users are sure to never miss another expiry date,
