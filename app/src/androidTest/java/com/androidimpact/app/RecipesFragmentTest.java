@@ -450,6 +450,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         materialButton3.perform(click());
 
+        Thread.sleep(1000);
         // Check if recipe edited in list by checking prep_time and servings
         ViewInteraction button = onView(
                 allOf(withId(R.id.recipe_prep_time), withText("8 min"),
@@ -520,10 +521,10 @@ public class RecipesFragmentTest {
      * Test if sorting recipes works
      */
     @Test
-    public void sortTest() {
+    public void E_sortTest() {
 
-        // Click on sort recipe spinner
-        ViewInteraction appCompatSpinner2 = onView(
+        // Click on the sorting recipe button
+        ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.sort_recipe_spinner),
                         childAtPosition(
                                 childAtPosition(
@@ -531,9 +532,9 @@ public class RecipesFragmentTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatSpinner2.perform(click());
+        appCompatSpinner.perform(click());
 
-        // Select second item
+        // Click on the first item
         DataInteraction materialTextView = onData(anything())
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),

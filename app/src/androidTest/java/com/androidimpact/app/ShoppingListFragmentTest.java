@@ -129,6 +129,9 @@ public class ShoppingListFragmentTest {
         Thread.sleep(1000);
     }
 
+    /**
+     * Tests to make sure we're on the right fragment
+     */
     @Test
     public void A_checkFragmentTitle() {
 
@@ -150,6 +153,9 @@ public class ShoppingListFragmentTest {
         textView.check(matches(withText("Shopping List")));
     }
 
+    /**
+     * Tests adding an item to the ingredient storage
+     */
     @Test
     public void B_addToIngredientStorage() {
         ViewInteraction bottomNavigationItemView = onView(
@@ -271,6 +277,9 @@ public class ShoppingListFragmentTest {
         materialButton2.perform(click());
     }
 
+    /**
+     * Tests adding a shopping list ingredient
+     */
     @Test
     public void C_addShoppingListIngredient() {
         // delete shopping list items
@@ -420,7 +429,9 @@ public class ShoppingListFragmentTest {
         };
     }
 
-
+    /**
+     * Tests getting an item from meal plan
+     */
     @Test
     public void D_getFromMealPlan() {
         ViewInteraction bottomNavigationItemView = onView(
@@ -537,6 +548,33 @@ public class ShoppingListFragmentTest {
                                 1),
                         isDisplayed()));
         floatingActionButton4.perform(click());
+    }
+
+    /**
+     * Test sorting meal plan
+     */
+    @Test
+    public void E_testSort() {
+
+        // Click on spinner
+        ViewInteraction appCompatSpinner3 = onView(
+                allOf(withId(R.id.sort_shopping_spinner),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayoutShop),
+                                        childAtPosition(
+                                                withId(R.id.shop_ingredient_input),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatSpinner3.perform(click());
+
+        // Select 2nd item in spinner
+        DataInteraction appCompatCheckedTextView2 = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(1);
+        appCompatCheckedTextView2.perform(click());
     }
 
 
