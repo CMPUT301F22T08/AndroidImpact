@@ -1,6 +1,7 @@
 package com.androidimpact.app;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,14 @@ import com.androidimpact.app.category.Category;
 import java.util.ArrayList;
 
 public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
-    private final String TAG = "CategorySpinnerAdapter";
+    private final String TAG = "NullableSpinnerAdapter";
+
+    private ArrayList<T> mObjects;
+
 
     public NullableSpinnerAdapter(Context context, ArrayList<T> items) {
         super(context, R.layout.spinner_item, items);
+        mObjects = items;
     }
 
     @Override
@@ -56,6 +61,14 @@ public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
         return view;
     }
 
+    @Override
+    public T getItem(int position) {
+        if (position == 0) {
+            return null;
+        }
+        return mObjects.get(position - 1);
+    }
+
     private View getCustomView(int position, View convertView, ViewGroup parent) {
         int layout = R.layout.spinner_item;
         int layout_title_id = R.id.spinner_item_text;
@@ -70,8 +83,8 @@ public class NullableSpinnerAdapter<T> extends ArrayAdapter<T> {
             return row;
         }
         // return item with text
-        position = position - 1; // compensate for hidden item at the beginning
         T item = getItem(position);
+        Log.i(TAG, "Getting custom view for item " + position + ":" + item.toString());
         TextView title = row.findViewById(layout_title_id);
         title.setText(item.toString());
         return row;

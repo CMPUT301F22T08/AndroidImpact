@@ -206,7 +206,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unchecked")
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedElem.set((T) parentView.getItemAtPosition(position - 1));
+                selectedElem.set((T) parentView.getItemAtPosition(position));
                 if (selectedElem.get() != null) {
                     Log.i(TAG, "onItemSelected: selected " + selectedElem.get().toString());
 

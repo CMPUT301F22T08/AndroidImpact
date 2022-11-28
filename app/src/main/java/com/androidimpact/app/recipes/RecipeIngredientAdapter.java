@@ -109,6 +109,15 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
             ingredientCategory = itemView.findViewById(R.id.ingredient_category);
             ingredientEditButton = itemView.findViewById(R.id.edit_button);
         }
+
+        /**
+         * returns the value of the title
+         * used in tests lmao
+         * @return title.getText().toString()
+         */
+        public String getDescriptionValue() {
+            return ingredientDescription.getText().toString();
+        }
     }
 
     public interface StoreRecipeIngredientEdit {

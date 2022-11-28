@@ -227,6 +227,7 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
              */
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Log.i(TAG, "itemTouchHelper called: onSwipe at position " + viewHolder.getAdapterPosition() + " with direction " + direction);
                 int position = viewHolder.getAdapterPosition();
                 ingredientStorageController.delete(position);
             }
