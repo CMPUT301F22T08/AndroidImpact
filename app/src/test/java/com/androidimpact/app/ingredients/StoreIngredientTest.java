@@ -75,7 +75,7 @@ public class StoreIngredientTest {
                 "",
                 4F,
                 "",
-                new Date(0),
+                new Date(122, 8, 30),
                 "not blank",
                 ""
         );
