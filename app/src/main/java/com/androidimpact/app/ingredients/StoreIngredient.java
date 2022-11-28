@@ -1,5 +1,9 @@
 package com.androidimpact.app.ingredients;
 
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
 import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.google.firebase.firestore.Exclude;
@@ -70,9 +74,9 @@ public class StoreIngredient extends Ingredient implements Serializable {
     @Exclude
     public Calendar getBestBeforeCalendar(){
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, bestBeforeDate.getYear());
-        cal.set(Calendar.MONTH, bestBeforeDate.getMonth());
-        cal.set(Calendar.DAY_OF_MONTH, bestBeforeDate.getDate());
+        cal.set(YEAR, bestBeforeDate.getYear());
+        cal.set(MONTH, bestBeforeDate.getMonth());
+        cal.set(DAY_OF_MONTH, bestBeforeDate.getDate());
         return cal;
     }
 
@@ -80,20 +84,9 @@ public class StoreIngredient extends Ingredient implements Serializable {
     {
         Calendar cal = this.getBestBeforeCalendar();
         Calendar cal2 = ingredient.getBestBeforeCalendar();
-        return cal.DAY_OF_MONTH == cal2.DAY_OF_MONTH && cal.YEAR == cal2.YEAR && cal.MONTH == cal2.MONTH;
+        return cal.get(DAY_OF_MONTH) == cal2.get(DAY_OF_MONTH) && cal.get(YEAR) == cal2.get(YEAR) && cal.get(MONTH) == cal2.get(MONTH);
     }
-
-//    public boolean compareDate(StoreIngredient ingredient)
-//    {
-//
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.YEAR, bestBeforeDate.getYear());
-//        cal.set(Calendar.MONTH, bestBeforeDate.getMonth());
-//        cal.set(Calendar.DAY_OF_MONTH, bestBeforeDate.getDate());
-//
-//    }
-//
-//    }
+    
 
     /**
      * Get the best-before date of the stored ingredient
