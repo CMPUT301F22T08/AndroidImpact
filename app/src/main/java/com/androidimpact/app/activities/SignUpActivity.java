@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidimpact.app.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,6 +26,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.model.Document;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is the activity for the login page
@@ -39,6 +46,8 @@ public class SignUpActivity extends AppCompatActivity {
     Button signup;
     Button cancel;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db;
+    private CollectionReference usersCollection;
     private Context context;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +82,14 @@ public class SignUpActivity extends AppCompatActivity {
                                     if (task1.isSuccessful()) {
                                         Log.d(TAG, "User profile updated.");
 
+                                        db = FirebaseFirestore.getInstance();
+                                        Map<String, Object> data = new HashMap<>();
+                                        db.collection("userData").document(user.getUid()).set(data);
+
                                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                         intent.putExtra("username", user.getDisplayName());
+                                        intent.putExtra("uid", user.getUid());
+                                        intent.putExtra("user-path-firebase", "userData/" + user.getUid());
                                         // Clear fields
                                         name.setText("");
                                         email.setText("");

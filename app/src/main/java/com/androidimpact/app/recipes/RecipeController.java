@@ -8,12 +8,14 @@ import com.androidimpact.app.activities.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -29,12 +31,14 @@ public class RecipeController {
     private FirebaseFirestore db;
     private CollectionReference recipeCollection;
     private StorageReference photoStorage;
+    private String dataPath;
     private RecipeList recipeList;
 
-    public RecipeController(Context context) {
+    public RecipeController(Context context, String dataPath) {
         this.context = context;
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection(firestorePath);
+        this.dataPath = dataPath;
+        recipeCollection = db.document(dataPath).collection(firestorePath);
         recipeList = new RecipeList();
         photoStorage = FirebaseStorage.getInstance().getReference();
     }
@@ -74,7 +78,7 @@ public class RecipeController {
     }
 
 
-    public void delete(int position) {
+    public Task<Boolean> delete(int position) throws Exception {
 
         // Get the swiped item at a particular position.
         Recipe deletedRecipe = recipeList.get(position);
@@ -86,11 +90,13 @@ public class RecipeController {
 
         // Delete all the ingredients associated with the Recipe
         CollectionReference ingredients = db.collection(deletedRecipe.getCollectionPath());
-        ingredients.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                futures.add(ingredients.document(doc.getId()).delete());
-            }
-        });
+        QuerySnapshot ingredientSnapshots = Tasks.await(ingredients.get());
+        int ingredientCount = 0;
+        for (DocumentSnapshot doc : ingredientSnapshots.getDocuments()) {
+            futures.add(ingredients.document(doc.getId()).delete());
+            ingredientCount++;
+        }
+        Log.i(TAG + ":delete", "Scheduled " + ingredientCount + " items to be deleted");
 
         // Delete the photo associated with the Recipe
         if (photo != null) {
@@ -112,6 +118,8 @@ public class RecipeController {
                     Log.d(TAG, title + " could not be deleted!" + e);
                     pushSnackBarToContext("Could not delete " + title);
                 });
+
+        return liftToTask(true);
     }
 
 
@@ -153,5 +161,19 @@ public class RecipeController {
 
     public int size(){
         return recipeList.size();
+    }
+
+    /**
+     * This is a helper function to "lift" a value to a task
+     *
+     * https://developers.google.com/android/reference/com/google/android/gms/tasks/TaskCompletionSource
+     * https://stackoverflow.com/q/69933562
+     *
+     * I don't know why this is so complicated!
+     */
+    private <T> Task<T> liftToTask(T val) {
+        TaskCompletionSource<T> taskCompletionSource = new TaskCompletionSource<>();
+        taskCompletionSource.setResult(val);
+        return taskCompletionSource.getTask();
     }
 }

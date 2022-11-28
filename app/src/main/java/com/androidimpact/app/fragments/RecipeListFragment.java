@@ -30,6 +30,7 @@ import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.recipes.RecipeListAdapter;
 import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.RecipeAddViewEditActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -38,6 +39,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.Executor;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -52,17 +54,20 @@ import nl.dionsegijn.konfetti.models.Size;
  */
 public class RecipeListFragment extends Fragment implements NavbarFragment{
     final String TAG = "RecipeListFragment";
+    private static RecipeListFragment instance;
+
+    // this lets us run background tasks
+    private final Executor executor;
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
     RecipeListAdapter recipeViewAdapter;
-
     RecipeController recipeController;
 
     // These must go
-    FirebaseFirestore db;
-    CollectionReference recipeCollection;
-
+    //FirebaseFirestore db;
+    //CollectionReference recipeCollection;
+    String userPath;
 
     String[] sortingOptions;
     Spinner sortSpinner;
@@ -75,7 +80,8 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     /**
      * Required empty public constructor
      */
-    public RecipeListFragment() {
+    public RecipeListFragment(Executor executor) {
+        this.executor = executor;
     }
 
     /**
@@ -85,9 +91,12 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
      * @return A new instance of fragment RecipeList.
      */
     // TODO: Rename and change types and number of parameters
-    public static RecipeListFragment newInstance() {
-        RecipeListFragment fragment = new RecipeListFragment();
-        return fragment;
+    public static RecipeListFragment newInstance(Executor executor) {
+        if (instance == null) {
+            RecipeListFragment fragment = new RecipeListFragment(executor);
+            return fragment;
+        }
+        return instance;
     }
 
     /**
@@ -100,8 +109,8 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
         super.onCreate(savedInstanceState);
 
         // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes");
+        //db = FirebaseFirestore.getInstance();
+        //recipeCollection = db.collection("recipes");
     }
 
     /**
@@ -140,6 +149,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
         }
 
         recipeController = ((MainActivity)a).getRecipeController();
+        userPath = ((MainActivity) a).getUserDataPath();
 
         // Initialize views
         sortSpinner = a.findViewById(R.id.sort_recipe_spinner);
@@ -147,7 +157,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
         // initialize adapters and customList, connect to DB
         recipeListView = a.findViewById(R.id.recipe_listview);
 
-        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeController);
+        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeController, userPath);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
@@ -214,7 +224,17 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
 
                 int position = viewHolder.getAdapterPosition();
                 Log.d(TAG, "Swiped " + recipeController.get(position).getTitle() + " at position " + position);
-                recipeController.delete(position);
+                // run in the background
+                executor.execute(() -> {
+                    try {
+                        recipeController.delete(position)
+                                .addOnSuccessListener(unused -> Log.i(TAG + ":swiped", "Successfully deleted element at position " + position))
+                                .addOnFailureListener(e -> Log.i(TAG + ":swiped", "Error when deleting recipe at position " + position, e));
+                    } catch (Exception e) {
+                        Log.i(TAG + ":swiped", "Error when deleting recipe at position " + position, e);
+                    }
+                });
+
             }
             // at last we are adding this
             // to our recycler view.
@@ -275,6 +295,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
             Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
             intent.putExtra("activity_name", "Add recipe");
+            intent.putExtra("data-path", userPath);
             addRecipeLauncher.launch(intent);
         });
     }

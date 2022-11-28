@@ -62,6 +62,8 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
     ArrayList<MealPlan> mealPlans;
     MealPlanController mealPlanController;
 
+    String dataPath;
+
     // using ActivityResultLaunchers
     private ActivityResultLauncher<Intent> addMealPlanLauncher;
 
@@ -126,9 +128,12 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
         // initialize controller
         mealPlanController = ((MainActivity) a).getMealPlanController();
 
+        // initialize data path
+        dataPath = ((MainActivity) a).getUserDataPath();
+
         // initialize adapters and customList
         mealPlanListView = a.findViewById(R.id.meal_plan_list);
-        mealPlanAdapter = new MealPlanListAdapter(getContext(), mealPlanController.getData());
+        mealPlanAdapter = new MealPlanListAdapter(getContext(), dataPath, mealPlanController.getData());
 
         // below line is to set layout manager for our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
@@ -220,6 +225,7 @@ public class MealPlannerFragment extends Fragment implements NavbarFragment {
             Log.i(TAG + ":addMealPlan", "Adding meal plan!");
             Intent intent = new Intent(getContext(), MealPlanAddEditViewActivity.class);
             intent.putExtra("activity_name", "Add Meal Plan");
+            intent.putExtra("data-path", ((MainActivity) getActivity()).getUserDataPath());
             refreshMealItems();
             addMealPlanLauncher.launch(intent);
         });

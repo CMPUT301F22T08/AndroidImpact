@@ -48,6 +48,7 @@ public class EditLocationsActivity extends AppCompatActivity {
     // Firestore
     FirebaseFirestore db;
     CollectionReference locationCollection;
+    String userPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,14 @@ public class EditLocationsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Edit Locations");
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            userPath = extras.getString("data-path");
+        }
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        locationCollection = db.collection(COLLECTION_NAME);
+        locationCollection = db.document(userPath).collection(COLLECTION_NAME);
 
         // initialize views
         newLocationInput = findViewById(R.id.location_editText);

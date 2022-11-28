@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    tools:context=".activities.MealPlanAddEditRecipeIngredientActivity">
+    android:padding="16dp">
 
 
 
@@ -40,5 +39,14 @@
         app:layout_constraintTop_toTopOf="@+id/add_edit_serving_name"
 
         />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/add_edit_meal_item"
+        app:layout_constraintTop_toBottomOf="@+id/add_edit_meal_serving" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.StoreIngredient;
@@ -46,7 +47,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
     private Button breakfastRecipeAdd,breakfastIngredientAdd, lunchRecipeAdd, lunchIngredientAdd,
             dinnerRecipeAdd, dinnerIngredientAdd, snackRecipeAdd, snackIngredientAdd;
     EditText editText;
-    String initialDocName;
+    String initialDocName, dataPath;
     RecyclerView breakfastListView, lunchListView, dinnerListView, snacksListView;
     MealAdapterAddEdit breakfastAdapter, lunchAdapter, dinnerAdapter, snacksAdapter;
     HashMap<String, MealAdapterAddEdit> adapterAddEditHashMap;
@@ -69,14 +70,6 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.recipeServingsMap = new HashMap<>();
         this.ingredientServingsMap = new HashMap<>();
         this.adapterAddEditHashMap = new HashMap<>();
-
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        mealPlanCollection = db.collection("meal-plan");
-        recipeCollection = db.collection("recipes");
-        ingredientCollection = db.collection("ingredientStorage");
-
-        this.recipeController = new RecipeController(this);
 
         breakfastRecipeAdd = findViewById(R.id.add_breakfast_recipe);
         lunchRecipeAdd = findViewById(R.id.add_lunch_recipe);
@@ -104,6 +97,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             isEditing = extras.getBoolean("isEditing", false);
             MealPlan currentMealPlan = (MealPlan) extras.getSerializable("meal plan");
             getSupportActionBar().setTitle(extras.getString("activity_name"));
+            this.dataPath = extras.getString("data-path");
 
             if (isEditing) {
                 editText.setText(currentMealPlan.getDate());
@@ -123,44 +117,52 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             }
         }
 
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        mealPlanCollection = db.document(dataPath).collection("meal-plan");
+        recipeCollection = db.document(dataPath).collection("recipes");
+        ingredientCollection = db.document(dataPath).collection("ingredientStorage");
+
+        this.recipeController = new RecipeController(this, this.dataPath);
+
         breakfastRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("breakfastRecipes").show(
+            new RecipeAddFragment("breakfastRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add breakfast recipe to meal plan"
             );
         });
         lunchRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("lunchRecipes").show(
+            new RecipeAddFragment("lunchRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add lunch recipe to meal plan"
             );
         });
         dinnerRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("dinnerRecipes").show(
+            new RecipeAddFragment("dinnerRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add dinner recipe to meal plan"
             );
         });
         snackRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("snacksRecipes").show(
+            new RecipeAddFragment("snacksRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add snack recipe to meal plan"
             );
         });
 
         breakfastIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("breakfastIngredients").show(
+            new IngredientAddFragment("breakfastIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add breakfast ingredient to meal plan"
             );
         });
         lunchIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("lunchIngredients").show(
+            new IngredientAddFragment("lunchIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add lunch ingredient to meal plan"
             );
         });
         dinnerIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("dinnerIngredients").show(
+            new IngredientAddFragment("dinnerIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add dinner ingredient to meal plan"
             );
         });
         snackIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("snacksIngredients").show(
+            new IngredientAddFragment("snacksIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add snack ingredient to meal plan"
             );
         });
@@ -169,19 +171,19 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         RecyclerView[] recyclerViews = new RecyclerView[]{breakfastListView, lunchListView, dinnerListView, snacksListView};
 
         for(int i = 0; i < keys.length; i++) {
-            ArrayList<String> recipeIds = this.recipeIdMap.get(keys[i] + "Recipes");
-            ArrayList<String> ingredientIds = this.ingredientIdMap.get(keys[i] + "Ingredients");
-            ArrayList<String> recipeTitles = this.recipeTitleMap.get(keys[i] + "Recipes");
-            ArrayList<String> ingredientTitles = this.ingredientDescriptionMap.get(keys[i] + "Ingredients");
-            ArrayList<Double> recipeServings = this.recipeServingsMap.get(keys[i] + "RecipesServings");
-            ArrayList<Double> ingredientServings = this.ingredientServingsMap.get(keys[i] + "IngredientsServings");
+            ArrayList<String> recipeIds = getOrDefaultString(keys[i] + "Recipes", recipeIdMap);
+            ArrayList<String> ingredientIds = getOrDefaultString(keys[i] + "Ingredients", ingredientIdMap);
+            ArrayList<String> recipeTitles = getOrDefaultString(keys[i] + "Recipes", recipeTitleMap);
+            ArrayList<String> ingredientTitles = getOrDefaultString(keys[i] + "Ingredients", ingredientDescriptionMap);
+            ArrayList<Double> recipeServings = getOrDefaultDouble(keys[i] + "RecipesServings", recipeServingsMap);
+            ArrayList<Double> ingredientServings = getOrDefaultDouble(keys[i] + "IngredientsServings", ingredientServingsMap);
+
             MealAdapterAddEdit mealAdapter = new MealAdapterAddEdit(
                     this,
                     recipeTitles,
                     ingredientTitles,
                     recipeServings,
                     ingredientServings
-
             );
 
             // below line is to set layout manager for our recycler view.
@@ -191,6 +193,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
 
             // drag to delete
+            ArrayList<String> finalRecipeIds = recipeIds;
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 /**
                  * This method is called when the item is moved
@@ -216,14 +219,14 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
                     // below line is to get the position
                     // of the item at that position.
                     int position = viewHolder.getAdapterPosition();
-                    if (position < recipeIds.size()) {
-                        recipeIds.remove(position);
+                    if (position < finalRecipeIds.size()) {
+                        finalRecipeIds.remove(position);
                         recipeTitles.remove(position);
                         recipeServings.remove(position);
                     } else {
-                        ingredientIds.remove(position - recipeIds.size());
-                        ingredientTitles.remove(position - recipeIds.size());
-                        ingredientServings.remove(position - recipeIds.size());
+                        ingredientIds.remove(position - finalRecipeIds.size());
+                        ingredientTitles.remove(position - finalRecipeIds.size());
+                        ingredientServings.remove(position - finalRecipeIds.size());
                     }
 
                     mealAdapter.notifyDataSetChanged();
@@ -242,48 +245,48 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
     public void addRecipe(String mealType, String recipeId, String recipeTitle, double f) {
         Log.i("data got", mealType + recipeId);
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
-        entry.add(recipeId);
-        this.recipeIdMap.put(mealType, entry);
+        if(!entry.contains(recipeId)) {
+            entry.add(recipeId);
+            this.recipeIdMap.put(mealType, entry);
 
-        ArrayList<String> entry2 = this.recipeTitleMap.getOrDefault(mealType, new ArrayList<>());
-        entry2.add(recipeTitle);
-        this.recipeTitleMap.put(mealType, entry2);
+            ArrayList<String> entry2 = this.recipeTitleMap.getOrDefault(mealType, new ArrayList<>());
+            entry2.add(recipeTitle);
+            this.recipeTitleMap.put(mealType, entry2);
 
-        ArrayList<Double> servings = this.recipeServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
-        servings.add(f);
-        this.recipeServingsMap.put(mealType + "Servings", servings);
+            ArrayList<Double> servings = this.recipeServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+            servings.add(f);
+            this.recipeServingsMap.put(mealType + "Servings", servings);
 
-        this.adapterAddEditHashMap.values().forEach(
-                adapter -> adapter.notifyDataSetChanged()
-        );
-        this.recipeIdMap.forEach((key, arr) -> {
-            Log.i("data woo1" + key, arr.toString());
-        });
-        this.recipeTitleMap.forEach((key, arr) -> {
-            Log.i("data woo2" + key, arr.toString());
-        });
-        this.recipeServingsMap.forEach((key, arr) -> {
-            Log.i("data woo3" + key, arr.toString());
-        });
+            this.adapterAddEditHashMap.values().forEach(
+                    adapter -> adapter.notifyDataSetChanged()
+            );
+        } else {
+            Toast.makeText(this, "Invalid request: Recipe already exists in meal plan", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void addIngredient(String mealType, String ingredientId, String ingredientTitle, double f) {
         Log.i("data got", mealType + ingredientId);
         ArrayList<String> entry = this.ingredientIdMap.getOrDefault(mealType, new ArrayList<>());
-        entry.add(ingredientId);
-        this.ingredientIdMap.put(mealType, entry);
+        if(!entry.contains(ingredientId)) {
+            entry.add(ingredientId);
+            this.ingredientIdMap.put(mealType, entry);
 
-        ArrayList<String> entry2 = this.ingredientDescriptionMap.getOrDefault(mealType, new ArrayList<>());
-        entry2.add(ingredientTitle);
-        this.ingredientDescriptionMap.put(mealType, entry2);
+            ArrayList<String> entry2 = this.ingredientDescriptionMap.getOrDefault(mealType, new ArrayList<>());
+            entry2.add(ingredientTitle);
+            this.ingredientDescriptionMap.put(mealType, entry2);
 
-        ArrayList<Double> servings = this.ingredientServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
-        servings.add(f);
-        this.ingredientServingsMap.put(mealType + "Servings", servings);
+            ArrayList<Double> servings = this.ingredientServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+            servings.add(f);
+            this.ingredientServingsMap.put(mealType + "Servings", servings);
 
-        this.adapterAddEditHashMap.values().forEach(
-                adapter -> adapter.notifyDataSetChanged()
-        );
+
+            this.adapterAddEditHashMap.values().forEach(
+                    adapter -> adapter.notifyDataSetChanged()
+            );
+        } else {
+            Toast.makeText(this, "Invalid request: Ingredient already exists in meal plan", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -334,5 +337,21 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
 
     public RecipeController getRecipeController(){
         return recipeController;
+    }
+
+    private ArrayList<String> getOrDefaultString(String key, HashMap<String, ArrayList<String>> map) {
+        ArrayList<String> entry = map.get(key);
+        if(entry == null) {
+            map.put(key, new ArrayList<>());
+        }
+        return map.get(key);
+    }
+
+    private ArrayList<Double> getOrDefaultDouble(String key, HashMap<String, ArrayList<Double>> map) {
+        ArrayList<Double> entry = map.get(key);
+        if(entry == null) {
+            map.put(key, new ArrayList<>());
+        }
+        return map.get(key);
     }
 }

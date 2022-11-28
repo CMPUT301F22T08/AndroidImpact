@@ -6,15 +6,16 @@ import android.util.Log;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
-import com.androidimpact.app.ingredients.StoreIngredient;
-import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
@@ -32,11 +33,11 @@ public class ShoppingListController {
     private CollectionReference shoppingListCollection;
     private ShoppingList shoppingList;
 
-    public ShoppingListController(Context context){
+    public ShoppingListController(Context context, String userPath){
         this.context = context;
         shoppingList = new ShoppingList(new ArrayList<>());
         db = FirebaseFirestore.getInstance();
-        shoppingListCollection = db.collection(collectionName);
+        shoppingListCollection = db.document(userPath).collection(collectionName);
     }
 
     private void pushSnackBarToContext(String s) {
@@ -82,7 +83,27 @@ public class ShoppingListController {
 
     public Task<Void> addEdit(ShopIngredient storeIngredient){
         Log.i(TAG + ":addEdit","AddEdit called on " + storeIngredient.getDescription());
+        String id = storeIngredient.getId();
+        if (id == null){
+            UUID uuid = UUID.randomUUID();
+            id = uuid.toString();
+            storeIngredient.setID(id);
+        }
         return shoppingListCollection.document(storeIngredient.getId()).set(storeIngredient);
+    }
+
+    /**
+     * Adds a list of ingredients, and returns a task when they will all be added
+     * @param ingredients the list of ingredients to add
+     * @return a task that succeeds when all ingredients are added
+     */
+    public Task<Void> addArray(ArrayList<ShopIngredient> ingredients) {
+        Log.i(TAG + ":addArray","AddArray called on " + ingredients.size() + " elements");
+        ArrayList<Task<Void>> futures = new ArrayList<>();
+        for (ShopIngredient i : ingredients) {
+            futures.add(shoppingListCollection.document(i.getId()).set(i));
+        }
+        return Tasks.whenAll(futures);
     }
 
     public void delete(int position) throws ArrayIndexOutOfBoundsException{

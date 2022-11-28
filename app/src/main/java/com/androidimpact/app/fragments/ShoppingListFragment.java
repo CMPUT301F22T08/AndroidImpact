@@ -22,9 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
@@ -32,6 +34,8 @@ import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.shopping_list.AddEditShoppingItemActivity;
 import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.androidimpact.app.shopping_list.ShoppingListController;
+import com.androidimpact.app.shopping_list.automate.ReviewRecommendations;
+import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
@@ -40,6 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Arrays;
+import java.util.concurrent.Executor;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -56,8 +61,14 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     final String TAG = "ShoppingListFragment";
 
     //Assume collection name is shopping list
-    final String COLLECTION_NAME = "shoppingList";
+//    final String COLLECTION_NAME = "shoppingList";
 
+    // This class lets us automate the shopping list fragment, pulling it from Firebase
+    ShoppingListAutomator shoppingListAutomator;
+    // for ShoppingListAutomator to work, we need an Executor instance
+    // this class helps us manage background threads. ShoppingListAutomator basically does one long background task!
+    private final Executor executor;
+    private Button automateBtn;
 
     private static ShoppingListFragment instance;
 
@@ -68,8 +79,9 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     ShoppingListController shoppingListController;
 
     // adding cities to firebase
-    FirebaseFirestore db;
-    CollectionReference shoppingCollection;
+//    FirebaseFirestore db;
+//    CollectionReference shoppingCollection;
+    String userPath;
     Spinner sortIngredientSpinner;
     String[] sortingChoices;
     TextView sortText;
@@ -81,11 +93,13 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     // this is defined in onViewCreated, see the comment where we initialize it
     private ActivityResultLauncher<Intent> addShoppingListItemLauncher;
     private ActivityResultLauncher<Intent> editShoppingListItemLauncher;
+    private ActivityResultLauncher<Intent> reviewAutomatedRecommendations;
 
     /**
-     * Required empty public constructor
+     * public constructor. This is nonempty because it helps us initialize the Executor
      */
-    public ShoppingListFragment() {
+    public ShoppingListFragment(Executor executor) {
+        this.executor = executor;
     }
 
     /**
@@ -94,13 +108,23 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
      *
      * @return A new instance of fragment ShoppingList.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ShoppingListFragment newInstance() {
+    public static ShoppingListFragment newInstance(Executor executor) {
         if (instance == null) {
-            ShoppingListFragment fragment = new ShoppingListFragment();
+            ShoppingListFragment fragment = new ShoppingListFragment(executor);
             instance = fragment;
         }
         return instance;
+    }
+
+    /**
+     * Adds an instance of the {@link ShoppingListAutomator ShoppingListAutomator} class.
+     * <br /><br />
+     * Note: we cannot initialize a ShoppingListAutomator inside the fragment, since it needs
+     * access to {@link com.androidimpact.app.recipes.RecipeController RecipeController} and
+     * {@link com.androidimpact.app.meal_plan.MealPlanController MealPlanController}
+     */
+    public void addAutomator(ShoppingListAutomator shoppingListAutomator) {
+        this.shoppingListAutomator = shoppingListAutomator;
     }
 
     /**
@@ -111,8 +135,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        shoppingCollection = db.collection(COLLECTION_NAME);
+//        db = FirebaseFirestore.getInstance();
+//        shoppingCollection = db.collection(COLLECTION_NAME);
     }
 
     /**
@@ -150,11 +174,10 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             return;
         }
 
+        userPath = ((MainActivity) a).getUserDataPath();
 
         // initialize adapters and customList
         shoppingListView = a.findViewById(R.id.shopping_listview);
-
-
         pickupSwitch = a.findViewById(R.id.shop_ingredient_switch);
 
 //        pickupSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -200,9 +223,6 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         );
         sortIngredientSpinner.setAdapter(sortingOptionsAdapter);
 
-
-
-
         // drag to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
@@ -227,7 +247,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-               // ShoppingListController.delete(position);
+                shoppingListController.delete(position);
             }
             // finally, we add this to our recycler view.
         }).attachToRecyclerView(shoppingListView);
@@ -236,32 +256,29 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         shoppingListController.addDataUpdateSnapshotListener(shopIngredientViewAdapter);
 
 
-        moveFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<ShopIngredient> moveIngredientList = new ArrayList<>();
+        moveFAB.setOnClickListener(v -> {
+            ArrayList<ShopIngredient> moveIngredientList = new ArrayList<>();
 
 
-                ArrayList<ShopIngredient> tempList = shoppingListController.getData();
+            ArrayList<ShopIngredient> tempList = shoppingListController.getData();
 
 
-                for (int i = 0; i < tempList.size(); ++i)
+            for (int i = 0; i < tempList.size(); ++i)
+            {
+                ShopIngredient moveIngredient = tempList.get(i);
+
+                if (moveIngredient.getAmountPicked() != 0)
                 {
-                    ShopIngredient moveIngredient = tempList.get(i);
-
-                    if (moveIngredient.getAmountPicked() != 0)
-                    {
-                        moveIngredientList.add(moveIngredient);
-                        Log.i("Adding item to be moved", moveIngredient.getDescription());
-                    }
+                    moveIngredientList.add(moveIngredient);
+                    Log.i("Adding item to be moved", moveIngredient.getDescription());
                 }
-
-                //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
-                //add the ingredients from List to the the Ingredient Storage
-
-                ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
-
             }
+
+            //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
+            //add the ingredients from List to the the Ingredient Storage
+
+            ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
+
         });
 
 
@@ -300,9 +317,34 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
             intent.putExtra("ingredient", food);
+            intent.putExtra("adding", false);
             editShoppingListItemLauncher.launch(intent);
         });
 
+        // somehow, android:onClick doesn't work in fragments, so I have to setOnClickLIstener here
+        // https://stackoverflow.com/a/4153842
+        automateBtn = a.findViewById(R.id.automateShoppingListBtn);
+        automateBtn.setOnClickListener(v -> {
+            try {
+                // tried to make this a task, but since it's not running on the current thread, I couldn't make it work
+                // so we have to pass in listeners instead of adding addSuccessListeners
+                shoppingListAutomator.automateShoppingList(
+                        shopIngredients -> {
+                            Log.i(TAG + ":automateShoppingList", "Automate Shopping List Success! Found " + shopIngredients.size() + " elements");
+                            if (shopIngredients.size() > 0) {
+                                // go to reviewRecommendations activity
+                                Intent intent = new Intent(getContext(), ReviewRecommendations.class);
+                                intent.putExtra("ingredients", shopIngredients);
+                                reviewAutomatedRecommendations.launch(intent);
+                            } else {
+                                Toast.makeText(getActivity(), "Ingredient Storage is sufficient for the Meal Plan!", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        e -> Log.i(TAG, "Error running shoppingListAutomator!", e));
+            } catch (Exception e) {
+                Log.i(TAG, "Error running shoppingListAutomator!", e);
+            }
+        });
 
         /**
          * DEFINE ACTIVITY LAUNCHERS
@@ -310,6 +352,30 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
          * It is strongly recommended to register our activity result launchers in onCreate
          * https://stackoverflow.com/a/70215498
          */
+        reviewAutomatedRecommendations = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (isNull(result.getData())) {
+                        return;
+                    }
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        int size = shoppingListAutomator.getRecommendations().size();
+                        // it's good! add all the ingredients in the automator to shoppingListContrller
+                        shoppingListController.addArray(shoppingListAutomator.getRecommendations())
+                                .addOnSuccessListener(unused -> {
+                                    makeSnackbar("Added " + size + " recommendations!");
+                                })
+                                .addOnFailureListener(error -> {
+                                    makeSnackbar("Error: Failed to add recommendations!");
+                                    Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                                });
+                    } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        // cancelled request - do nothing.
+                        Log.i(TAG + ":editStoreIngredientLauncher", "Received cancelled");
+                    }
+                });
+
         editShoppingListItemLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -400,10 +466,11 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
         navigationFAB.setOnClickListener(v -> {
             Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), AddEditShoppingItemActivity.class);
+            intent.putExtra("data-path", userPath);
+            intent.putExtra("adding", true);
             addShoppingListItemLauncher.launch(intent);
         });
     }
-
 
     /**
      *
@@ -412,13 +479,15 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
     public void editShopIngredientFB(ShopIngredient ingredient)
     {
         Log.i("check ", "DONEDONEDONE");
-        String id = ingredient.getId();
+        /*String id = ingredient.getId();
         if (id == null){
             UUID uuid = UUID.randomUUID();
             id = uuid.toString();
             ingredient.setID(id);
         }
-        shoppingCollection.document(id).set(ingredient);
+        shoppingCollection.document(id).set(ingredient);*/
+        shoppingListController.addEdit(ingredient);
+
         shopIngredientViewAdapter.notifyDataSetChanged();
     }
 

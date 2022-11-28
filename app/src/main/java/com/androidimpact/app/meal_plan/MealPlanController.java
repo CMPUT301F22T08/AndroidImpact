@@ -42,12 +42,12 @@ public class MealPlanController {
      * @param recipeController (RecipeController) The current controller handling recipes
      * @param ingredientStorageController (IngredientStorageController) The current controller handling recipes
      */
-    public MealPlanController(Context context, RecipeController recipeController, IngredientStorageController ingredientStorageController) {
+    public MealPlanController(Context context, String dataPath, RecipeController recipeController, IngredientStorageController ingredientStorageController) {
         this.context = context;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        mealPlanCollection = db.collection(firestorePath);
-        recipeCollection = db.collection("recipes");
-        ingredientCollection = db.collection("ingredientStorage");
+        mealPlanCollection = db.document(dataPath).collection(firestorePath);
+        recipeCollection = db.document(dataPath).collection("recipes");
+        ingredientCollection = db.document(dataPath).collection("ingredientStorage");
         mealPlanList = new MealPlanList(new ArrayList<>());
         this.recipeList = new RecipeList(recipeController.getData());
         this.ingredientStorageData = ingredientStorageController.getData();

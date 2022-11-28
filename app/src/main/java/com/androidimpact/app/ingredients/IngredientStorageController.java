@@ -39,11 +39,12 @@ public class IngredientStorageController {
      * Constructor: Creates an empty IngredientStorage class and populates it with data from FireStore
      * @param context
      *      (Context) The current context, used to push success/failure SnackBars to the screen.
+     * @param userPath
      */
-    public IngredientStorageController(Context context) {
+    public IngredientStorageController(Context context, String userPath) {
         this.context = context;
         db = FirebaseFirestore.getInstance();
-        ingredientStorageCollection = db.collection(firestorePath);
+        ingredientStorageCollection = db.document(userPath).collection(firestorePath);
         ingredientStorage = new IngredientStorage();
         snapshotAdded = false;
     }

@@ -37,6 +37,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private Context context;
     private boolean isSelection;
     private OnSelectInterface onSelectInterface;
+    private String userPath;
 
 
 
@@ -45,7 +46,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      * @param context         the context for the parent view
      * @param recipeController the recipes to consider in the RecipeListAdapter object
      */
-    public RecipeListAdapter(Context context, RecipeController recipeController) {
+    public RecipeListAdapter(Context context, RecipeController recipeController, String userPath) {
         this.context = context;
         this.recipeController = recipeController;
         this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -56,6 +57,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             }
         });
         isSelection = false;
+        this.userPath = userPath;
         this.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -70,8 +72,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
      * @param context         the context for the parent view
      * @param recipeController the recipes to consider in the RecipeListAdapter object
      */
-    public RecipeListAdapter(Context context, RecipeController recipeController, OnSelectInterface onSelectInterface) {
-        this(context, recipeController);
+    public RecipeListAdapter(Context context, RecipeController recipeController, OnSelectInterface onSelectInterface, String userPath) {
+        this(context, recipeController, userPath);
         this.isSelection = true;
         this.onSelectInterface = onSelectInterface;
     }
@@ -161,6 +163,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
                 intent.putExtra("activity_name", "Edit recipe");
                 intent.putExtra("recipe", recipe);
                 intent.putExtra("isEditing", true);
+                intent.putExtra("data-path", userPath);
                 context.startActivity(intent);
                 notifyItemChanged(position);
             });
