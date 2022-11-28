@@ -3,7 +3,6 @@ package com.androidimpact.app.ingredients;
 import com.androidimpact.app.SortableItemList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 /**
