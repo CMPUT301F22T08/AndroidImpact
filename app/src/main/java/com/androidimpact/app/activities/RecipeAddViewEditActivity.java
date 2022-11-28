@@ -218,7 +218,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
             ingredientsCollection.addSnapshotListener(abstractSnapshotListener(
                     RecipeIngredient.class, recipeIngredients, "RecipeIngredient", null, ingredientAdapter, null, null));
             categoriesCollection.addSnapshotListener(abstractSnapshotListener(
-                    Category.class, categories, "Category", categoryAdapter, null, categorySpinner, selectedCategory));
+                    Category.class, categories, "Categories", categoryAdapter, null, categorySpinner, selectedCategory));
         }
 
 
@@ -429,7 +429,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 String classStr = selectedElem.get() == null ? "null" : selectedElem.get().getClass().toString();
                 Log.i(TAG, "SnapshotListener: " + selectedElem.get() + " " + classStr + " - (" + data.indexOf(selectedElem.get()) + ")");
                 if (idx == -1 && selectedElem.get() != null) {
-                    generateSnackbar("Warning: " + debugName + " '" + selectedElem.get() + "' was not found in the database!");
+                    generateSnackbar("Warning: '" + selectedElem.get() + "' was not found in '" + debugName + "'!");
                     selectedElem.set(null);
                 }
             }

@@ -77,6 +77,8 @@ import java.util.Objects;
 /**
  * This tests the recipes fragment functionality, like add/edit recipe, add/edit ingredient to recipe
  * Written using the built in espresso test recorder
+ * Note: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
+ * sometimes doesn't. Try re running if it doesn't work.
  * @version 1.0
  * @author Curtis Kan
  */
@@ -132,7 +134,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         materialButton.perform(click());
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         // Click on bottom navbar button for recipes
         ViewInteraction bottomNavigationItemView = onView(
@@ -450,6 +452,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         materialButton3.perform(click());
 
+        Thread.sleep(1000);
         // Check if recipe edited in list by checking prep_time and servings
         ViewInteraction button = onView(
                 allOf(withId(R.id.recipe_prep_time), withText("8 min"),
@@ -469,7 +472,7 @@ public class RecipesFragmentTest {
      * Result: Aardvark soup is deleted from the recipe list
      */
     @Test
-    public void D_deleteRecipeTest() throws InterruptedException {
+    public void D_deleteRecipeTest() {
 
         // This is supposed to simulate a swipe to delete action on the first list view item
         // But for some reason it was not working. There is no documentation from espresso on
@@ -495,7 +498,8 @@ public class RecipesFragmentTest {
 
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (Objects.equals(document.getData().get("title"), "Aardvark soup")) {
+                            if (Objects.equals(document.get("title"), "Aardvark soup")) {
+                                Log.i("D_deleteRecipeTest", "Deleting recipe " + document.get("title"));
                                 String id = document.getId();
                                 futures.add(db.document("userData/" + uid).collection("recipes").document(id).delete());
                             }
@@ -515,31 +519,31 @@ public class RecipesFragmentTest {
                 });
     }
 
-    /**
-     * Test if sorting recipes works
-     */
-    @Test
-    public void sortTest() {
-
-        // Click on sort recipe spinner
-        ViewInteraction appCompatSpinner2 = onView(
-                allOf(withId(R.id.sort_recipe_spinner),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner2.perform(click());
-
-        // Select second item
-        DataInteraction materialTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        materialTextView.perform(click());
-    }
+//    /**
+//     * Test if sorting recipes works
+//     */
+//    @Test
+//    public void E_sortTest() {
+//
+//        // Click on the sorting recipe button
+//        ViewInteraction appCompatSpinner = onView(
+//                allOf(withId(R.id.sort_recipe_spinner),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withClassName(is("android.widget.LinearLayout")),
+//                                        0),
+//                                1),
+//                        isDisplayed()));
+//        appCompatSpinner.perform(click());
+//
+//        // Click on the first item
+//        DataInteraction materialTextView = onData(anything())
+//                .inAdapterView(childAtPosition(
+//                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+//                        0))
+//                .atPosition(1);
+//        materialTextView.perform(click());
+//    }
 
     /**
      * Logout after each test

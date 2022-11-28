@@ -79,6 +79,7 @@
         android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/amount"
+        android:maxLength="10"
         android:inputType="numberDecimal"
         android:minHeight="48dp"
         android:textColor="@color/white"

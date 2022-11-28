@@ -69,7 +69,15 @@ import java.util.List;
 
 /**
  * Intent testing for Shopping List Activity
- * Note: these test were generated using Espresso Test Recorder
+ * NOTE: these test were generated using Espresso Test Recorder
+ *
+ * NOTE: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
+ * sometimes doesn't. Try re running if it doesn't work.
+ *
+ * NOTE: for some reason when running all the tests at once, this test takes forever to run.
+ * it should work when run individually
+ * @version 1.0
+ * @author Curtis Kan
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
@@ -128,6 +136,9 @@ public class ShoppingListFragmentTest {
         Thread.sleep(1000);
     }
 
+    /**
+     * Tests to make sure we're on the right fragment
+     */
     @Test
     public void A_checkFragmentTitle() {
 
@@ -150,7 +161,7 @@ public class ShoppingListFragmentTest {
     }
 
     /**
-     * adds to ingredient storage test
+     * Tests adding an item to the ingredient storage
      */
     @Test
     public void B_addToIngredientStorage() {
@@ -273,6 +284,9 @@ public class ShoppingListFragmentTest {
         materialButton2.perform(click());
     }
 
+    /**
+     * Tests adding a shopping list ingredient
+     */
     @Test
     public void C_addShoppingListIngredient() {
         // delete shopping list items
@@ -431,7 +445,9 @@ public class ShoppingListFragmentTest {
         };
     }
 
-
+    /**
+     * Tests getting an item from meal plan
+     */
     @Test
     public void D_getFromMealPlan() {
         ViewInteraction bottomNavigationItemView = onView(
@@ -551,6 +567,35 @@ public class ShoppingListFragmentTest {
     }
 
     /**
+     * Test sorting meal plan
+     */
+    @Test
+    public void E_testSort() {
+
+        // Click on spinner
+        ViewInteraction appCompatSpinner3 = onView(
+                allOf(withId(R.id.sort_shopping_spinner),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayoutShop),
+                                        childAtPosition(
+                                                withId(R.id.shop_ingredient_input),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatSpinner3.perform(click());
+
+        // Select 2nd item in spinner
+        DataInteraction appCompatCheckedTextView2 = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(1);
+        appCompatCheckedTextView2.perform(click());
+    }
+
+
+    /**
+     * javadocs_final
      * @param parentMatcher
      * @param position
      * @return
