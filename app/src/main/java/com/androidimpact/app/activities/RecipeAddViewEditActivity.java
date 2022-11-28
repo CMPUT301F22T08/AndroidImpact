@@ -104,6 +104,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     File photoFile;
     Uri fileProvider;
     Bundle extras;
+    String userPath;
     boolean changedImage = false;
 
     /**
@@ -116,10 +117,15 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_addviewedit);
 
+        extras = getIntent().getExtras();
+        if(extras != null) {
+            userPath = extras.getString("data-path");
+        }
+
         // Initialize database
         db = FirebaseFirestore.getInstance();
-        recipesCollection = db.collection("recipes");
-        categoriesCollection = db.collection("categories");
+        recipesCollection = db.document(userPath).collection("recipes");
+        categoriesCollection = db.document(userPath).collection("categories");
 
         // Initialize storage for photos
         storage = FirebaseStorage.getInstance();
@@ -150,10 +156,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         categorySpinner.setAdapter(categoryAdapter);
 
         // extract extras
-        extras = getIntent().getExtras();
+
         if (extras != null) {
 
             isEditing = extras.getBoolean("isEditing", false);
+            userPath = extras.getString("data-path");
 
             if (isEditing) {
                 getSupportActionBar().setTitle("Edit Recipe");
@@ -190,7 +197,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 }
 
                 // add listener to the ingredients collection
-                ingredientsCollection = db.collection(currentRecipe.getCollectionPath());
+                ingredientsCollection = db.document(userPath).collection(currentRecipe.getCollectionPath());
 
                 // sets selectedCategory for us to set initial spinner values
                 // although, this is only seen when
@@ -261,6 +268,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
              Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
              intent.putExtra("isEditing",  true);
              intent.putExtra("ingredient", recipeIngredients.get(position));
+             intent.putExtra("data-path", userPath);
              editIngredientLauncher.launch(intent);
         });
 
@@ -514,6 +522,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     public void addIngredient(View v) {
         Log.i(TAG + ":addPhoto", "Adding ingredient!");
         Intent intent = new Intent(this, RecipeAddEditIngredientActivity.class);
+        intent.putExtra("data-path", userPath);
         addIngredientLauncher.launch(intent);
     }
 
@@ -554,6 +563,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     public void editCategories(View view) {
         Log.i(TAG + ":editCategories", "Going to Edit categories");
         Intent intent = new Intent(this, EditCategoriesActivity.class);
+        intent.putExtra("data-path", userPath);
         disregardResultLauncher.launch(intent);
     }
 
@@ -581,6 +591,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
         photoFile = getPhotoFileUri("photo.png");
         fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        intent.putExtra("data-path", userPath);
         addPhotoLauncher.launch(intent);
     }
 

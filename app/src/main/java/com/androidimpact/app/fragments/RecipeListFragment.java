@@ -60,9 +60,9 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
     RecipeController recipeController;
 
     // These must go
-    FirebaseFirestore db;
-    CollectionReference recipeCollection;
-
+    //FirebaseFirestore db;
+    //CollectionReference recipeCollection;
+    String userPath;
 
     String[] sortingOptions;
     Spinner sortSpinner;
@@ -100,8 +100,8 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
         super.onCreate(savedInstanceState);
 
         // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes");
+        //db = FirebaseFirestore.getInstance();
+        //recipeCollection = db.collection("recipes");
     }
 
     /**
@@ -140,6 +140,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
         }
 
         recipeController = ((MainActivity)a).getRecipeController();
+        userPath = ((MainActivity) a).getUserDataPath();
 
         // Initialize views
         sortSpinner = a.findViewById(R.id.sort_recipe_spinner);
@@ -147,7 +148,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
         // initialize adapters and customList, connect to DB
         recipeListView = a.findViewById(R.id.recipe_listview);
 
-        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeController);
+        recipeViewAdapter = new RecipeListAdapter(getContext(), recipeController, userPath);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(
                 getContext(),
@@ -275,6 +276,7 @@ public class RecipeListFragment extends Fragment implements NavbarFragment{
             Log.i(TAG + ":addRecipe", "Adding recipe!");
             Intent intent = new Intent(getContext(), RecipeAddViewEditActivity.class);
             intent.putExtra("activity_name", "Add recipe");
+            intent.putExtra("data-path", userPath);
             addRecipeLauncher.launch(intent);
         });
     }

@@ -48,10 +48,12 @@ public class RecipeAddFragment extends DialogFragment {
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference recipeCollection;
+    String dataPath;
 
-    public RecipeAddFragment(String meal) {
+    public RecipeAddFragment(String meal, String dataPath) {
         super(R.layout.fragment_recipe_list);
         this.mealType = meal;
+        this.dataPath = dataPath;
     }
 
     /**
@@ -75,7 +77,7 @@ public class RecipeAddFragment extends DialogFragment {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes");
+        recipeCollection = db.document(this.dataPath).collection("recipes");
     }
 
     /**
@@ -121,7 +123,7 @@ public class RecipeAddFragment extends DialogFragment {
 
         this.recipeController = ((MealPlanAddEditViewActivity) getActivity()).getRecipeController();
         this.recipeDataList = this.recipeController.getData();
-        recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface);
+        recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface, dataPath);
         this.recipeController.addDataUpdateSnapshotListener(recipeViewAdapter);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(

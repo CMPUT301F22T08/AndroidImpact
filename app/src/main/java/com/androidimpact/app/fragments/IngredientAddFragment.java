@@ -49,13 +49,15 @@ public class IngredientAddFragment extends DialogFragment {
     CollectionReference ingredientCollection;
 
     private String mealType;
+    private String userPath;
 
     /**
      * Required empty public constructor
      */
-    public IngredientAddFragment(String meal) {
+    public IngredientAddFragment(String meal, String userPath) {
         super(R.layout.fragment_ingredient_storage);
         this.mealType = meal;
+        this.userPath = userPath;
     }
 
     /**
@@ -81,7 +83,7 @@ public class IngredientAddFragment extends DialogFragment {
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        ingredientCollection = db.collection("ingredientStorage");
+        ingredientCollection = db.document(this.userPath).collection("ingredientStorage");
     }
 
 

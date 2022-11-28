@@ -65,8 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         signup.startAnimation(fadeIn);
         login.startAnimation(fadeIn);
 
-
-
         // TODO: Remove this, its for convenience
         username.setText("test@gmail.com");
         password.setText("qwerty");
@@ -100,34 +98,15 @@ public class LoginActivity extends AppCompatActivity {
         catch(Exception e) {
             Toast.makeText(this, "Please enter correct credentials", Toast.LENGTH_SHORT);
         }
-
-        /*if (username.getText().toString().equals("Curtis Kan") && password.getText().toString().equals("CMPUT 301")) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("username", username.getText().toString());
-            // Clear fields
-            username.setText("");
-            password.setText("");
-            startActivity(intent);
-        }
-        else {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.login_layout), "Invalid login!", Snackbar.LENGTH_SHORT);
-            View snackbarView = snackbar.getView();
-            TextView snackbarTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
-            snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            snackbar.setAction("Ok", view1 -> {}).show();
-        }*/
     }
 
     /**
-     * onClick method to start main activity on a signup
+     * onClick method to start sign up activity on a signup
      * @param view
      *    THe view that triggers this onClick
      */
     public void signup(View view) {
-        //TODO: create new user
-        //Intent intent = new Intent(this, MainActivity.class);
         Intent intent = new Intent(this, SignUpActivity.class);
-        intent.putExtra("username", username.getText().toString());
         // Clear fields
         username.setText("");
         password.setText("");
@@ -147,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("username", user.getDisplayName());
         intent.putExtra("uid", user.getUid());
+        intent.putExtra("user-path-firebase", "userData/" + user.getUid());
         // Clear fields
         username.setText("");
         password.setText("");

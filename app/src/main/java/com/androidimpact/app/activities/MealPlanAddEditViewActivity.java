@@ -46,7 +46,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
     private Button breakfastRecipeAdd,breakfastIngredientAdd, lunchRecipeAdd, lunchIngredientAdd,
             dinnerRecipeAdd, dinnerIngredientAdd, snackRecipeAdd, snackIngredientAdd;
     EditText editText;
-    String initialDocName;
+    String initialDocName, dataPath;
     RecyclerView breakfastListView, lunchListView, dinnerListView, snacksListView;
     MealAdapterAddEdit breakfastAdapter, lunchAdapter, dinnerAdapter, snacksAdapter;
     HashMap<String, MealAdapterAddEdit> adapterAddEditHashMap;
@@ -69,14 +69,6 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.recipeServingsMap = new HashMap<>();
         this.ingredientServingsMap = new HashMap<>();
         this.adapterAddEditHashMap = new HashMap<>();
-
-        // initialize Firestore
-        db = FirebaseFirestore.getInstance();
-        mealPlanCollection = db.collection("meal-plan");
-        recipeCollection = db.collection("recipes");
-        ingredientCollection = db.collection("ingredientStorage");
-
-        this.recipeController = new RecipeController(this);
 
         breakfastRecipeAdd = findViewById(R.id.add_breakfast_recipe);
         lunchRecipeAdd = findViewById(R.id.add_lunch_recipe);
@@ -104,6 +96,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             isEditing = extras.getBoolean("isEditing", false);
             MealPlan currentMealPlan = (MealPlan) extras.getSerializable("meal plan");
             getSupportActionBar().setTitle(extras.getString("activity_name"));
+            this.dataPath = extras.getString("data-path");
 
             if (isEditing) {
                 editText.setText(currentMealPlan.getDate());
@@ -123,44 +116,52 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
             }
         }
 
+        // initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        mealPlanCollection = db.document(dataPath).collection("meal-plan");
+        recipeCollection = db.document(dataPath).collection("recipes");
+        ingredientCollection = db.document(dataPath).collection("ingredientStorage");
+
+        this.recipeController = new RecipeController(this, this.dataPath);
+
         breakfastRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("breakfastRecipes").show(
+            new RecipeAddFragment("breakfastRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add breakfast recipe to meal plan"
             );
         });
         lunchRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("lunchRecipes").show(
+            new RecipeAddFragment("lunchRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add lunch recipe to meal plan"
             );
         });
         dinnerRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("dinnerRecipes").show(
+            new RecipeAddFragment("dinnerRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add dinner recipe to meal plan"
             );
         });
         snackRecipeAdd.setOnClickListener(view -> {
-            new RecipeAddFragment("snacksRecipes").show(
+            new RecipeAddFragment("snacksRecipes", this.dataPath).show(
                     getSupportFragmentManager(), "add snack recipe to meal plan"
             );
         });
 
         breakfastIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("breakfastIngredients").show(
+            new IngredientAddFragment("breakfastIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add breakfast ingredient to meal plan"
             );
         });
         lunchIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("lunchIngredients").show(
+            new IngredientAddFragment("lunchIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add lunch ingredient to meal plan"
             );
         });
         dinnerIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("dinnerIngredients").show(
+            new IngredientAddFragment("dinnerIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add dinner ingredient to meal plan"
             );
         });
         snackIngredientAdd.setOnClickListener(view -> {
-            new IngredientAddFragment("snacksIngredients").show(
+            new IngredientAddFragment("snacksIngredients", this.dataPath).show(
                     getSupportFragmentManager(), "add snack ingredient to meal plan"
             );
         });
@@ -257,15 +258,6 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
         this.adapterAddEditHashMap.values().forEach(
                 adapter -> adapter.notifyDataSetChanged()
         );
-        this.recipeIdMap.forEach((key, arr) -> {
-            Log.i("data woo1" + key, arr.toString());
-        });
-        this.recipeTitleMap.forEach((key, arr) -> {
-            Log.i("data woo2" + key, arr.toString());
-        });
-        this.recipeServingsMap.forEach((key, arr) -> {
-            Log.i("data woo3" + key, arr.toString());
-        });
     }
 
     public void addIngredient(String mealType, String ingredientId, String ingredientTitle, double f) {

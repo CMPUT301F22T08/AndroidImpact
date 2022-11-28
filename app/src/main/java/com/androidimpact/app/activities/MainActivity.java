@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
     private final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
 
-    // store controllers in MainActivity so they can access the context
-    final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
-    final ShoppingListController shoppingListController = new ShoppingListController(this);
-    final RecipeController recipeController = new RecipeController(this);
+    // adding cities to firebase
+    IngredientStorageController ingredientStorageController;
+    ShoppingListController shoppingListController;
+    RecipeController recipeController;
     private MealPlanController mealPlanController;
 
     // Shopping LIst Automator is stored in the MainActivity as it needs access to some controllers
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
-    String userId;
+    String userId, userPath;
 
     BottomNavigationView bottomnav;
 
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Bundle extras = getIntent().getExtras();
         String username = extras.getString("username");
         userId = extras.getString("uid");
+        userPath = extras.getString("user-path-firebase");
 
         View parentLayout = findViewById(R.id.main_activity_layout);
 
@@ -103,8 +104,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         weakActivity = new WeakReference<>(MainActivity.this);
 
-        // initialize mealPlanController, as it needs access to other controllers
-        mealPlanController = new MealPlanController(this, this.recipeController, this.ingredientStorageController);
+        ingredientStorageController = new IngredientStorageController(this, this.userPath);
+        shoppingListController = new ShoppingListController(this, this.userPath);
+        recipeController = new RecipeController(this, this.userPath);
+        mealPlanController = new MealPlanController(this, this.userPath, this.recipeController, this.ingredientStorageController);
 
         // initialize ShoppingListAutomator, as it needs access to some controllers
         shoppingListAutomator = new ShoppingListAutomator(
@@ -237,6 +240,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getUserDataPath() {
+        return userPath;
     }
 
 }
