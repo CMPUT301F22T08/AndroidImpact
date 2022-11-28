@@ -187,7 +187,7 @@ public class IngredientStorageController {
 
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         StoreIngredient ingredientFB = document.toObject(StoreIngredient.class);
-                                        if (ingredientFB.compareCalendar(storeIngredient)) {
+                                        if (ingredientFB.compareCalendar(storeIngredient) && ingredientFB.getLocation() != "") {
                                             Log.d("found", "Found a matching Ingredient in FB" + ingredientFB.getDescription());
                                             float newAmount;
                                             try {

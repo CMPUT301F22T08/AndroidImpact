@@ -38,11 +38,8 @@ import com.androidimpact.app.shopping_list.automate.ReviewRecommendations;
 import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 
@@ -277,7 +274,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             //call a function in main activity that switches the shoppingListFragment to IngredientStorageFragment and
             //add the ingredients from List to the the Ingredient Storage
 
-            ((MainActivity) a).AddShopListToShopIngredient(moveIngredientList);
+            ((MainActivity) a).addShopListToShopIngredient(moveIngredientList);
 
         });
 

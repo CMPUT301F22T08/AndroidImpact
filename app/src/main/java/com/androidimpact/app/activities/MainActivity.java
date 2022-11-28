@@ -4,25 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.androidimpact.app.fragments.ShopPickUpFragment;
-import com.androidimpact.app.ingredients.IngredientStorage;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.Switch;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.StoreIngredient;
-import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.androidimpact.app.meal_plan.MealPlanController;
 import com.androidimpact.app.shopping_list.ShopIngredient;
-import com.androidimpact.app.recipes.Recipe;
 
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.fragments.IngredientStorageFragment;
@@ -31,7 +25,6 @@ import com.androidimpact.app.fragments.NavbarFragment;
 import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.androidimpact.app.shopping_list.ShoppingListController;
-import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -250,10 +243,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
      */
     public void updateShopIngredient(ShopIngredient ingredient)
     {
-//        getSupportActionBar().setTitle("Shopping List");
-//        updateActiveFragment(shoppingListFragment);
-
-        shoppingListFragment.editShopIngredientFB(ingredient);
+        shoppingListController.addEdit(ingredient);
 
     }
 
@@ -265,15 +255,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         getSupportActionBar().setTitle("Shopping List");
         updateActiveFragment(shoppingListFragment);
-        shoppingListFragment.editShopIngredientFB(ingredient);
-
+        shoppingListController.addEdit(ingredient);
     }
 
     /**
      * This method takes in a arraylist of shop ingredient and add those ingredients to ingredient storage
      * @param data ArrayList<ShopIngredient>
      */
-    public void AddShopListToShopIngredient(ArrayList<ShopIngredient> data)
+    public void addShopListToShopIngredient(ArrayList<ShopIngredient> data)
     {
 
         for (ShopIngredient item: data)
