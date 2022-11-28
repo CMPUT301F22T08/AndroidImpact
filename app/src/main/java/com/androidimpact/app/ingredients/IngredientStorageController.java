@@ -2,6 +2,7 @@ package com.androidimpact.app.ingredients;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -187,18 +188,23 @@ public class IngredientStorageController {
 
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         StoreIngredient ingredientFB = document.toObject(StoreIngredient.class);
-                                        if (ingredientFB.compareCalendar(storeIngredient) && ingredientFB.getLocation() != "") {
-                                            Log.d("found", "Found a matching Ingredient in FB" + ingredientFB.getDescription());
+                                        if (ingredientFB.compareCalendar(storeIngredient) && ingredientFB.getLocation() != "" && finalId != ingredientFB.getId() ) {
+                                            boolean check = storeIngredient.getId() == ingredientFB.getId();
+                                            Log.d("found", "Found a matching Ingredient in FB " + ingredientFB.getDescription() + "comparison ID: " + String.valueOf(check));
                                             float newAmount;
                                             try {
                                                 newAmount = ingredientFB.getAmount() + storeIngredient.getAmount();
                                             } catch (Exception e) {
                                                 newAmount = Float.MAX_VALUE;
                                             }
+                                            String message = "Found a similar ingredient, will merge both ingredients";
+                                            pushSnackBarToContext(message);
+
+                                            Log.i("amount", String.valueOf(newAmount));
                                             storeIngredient.setAmount(newAmount);
                                             ingredientStorageCollection.document(finalId).set(storeIngredient);
-                                            if (finalId != ingredientFB.getId()) {
-                                                ingredientStorageCollection.document(ingredientFB.getId())
+
+                                            ingredientStorageCollection.document(ingredientFB.getId())
                                                         .delete()
                                                         .addOnSuccessListener(aVoid -> {
                                                             Log.i(TAG, ingredientFB.getDescription() + " has been deleted successfully!");
@@ -208,9 +214,8 @@ public class IngredientStorageController {
                                                             pushSnackBarToContext("Could not delete " + ingredientFB.getDescription() + "!");
                                                             Log.i(TAG, ingredientFB.getDescription() + " could not be deleted: " + e);
                                                         });
-                                                ;
-                                                found = true;
-                                            }
+
+                                            found = true;
                                         }
                                     }
                                     if (!found)

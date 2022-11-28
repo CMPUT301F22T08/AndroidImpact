@@ -340,6 +340,7 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
     }
 
     private ArrayList<String> getOrDefaultString(String key, HashMap<String, ArrayList<String>> map) {
+
         ArrayList<String> entry = map.get(key);
         if(entry == null) {
             map.put(key, new ArrayList<>());
