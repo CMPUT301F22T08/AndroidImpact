@@ -5,7 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.IngredientStorage;
+import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.recipes.Recipe;
+import com.androidimpact.app.recipes.RecipeList;
 
 import org.junit.Test;
 
@@ -27,6 +31,40 @@ public class MealPlanTest {
         return new MealPlan(
                 "June 1",
                 "1"
+        );
+    }
+
+    private String id = "MockRecipeId";
+    private String title = "Mac and Cheese";
+    private int prep_time = 2;
+    private int servings = 3;
+    private String category = "Lunch";
+    private String comments = "-Add milk";
+    private Date date = new Date();
+    private String photo = "MockPhotoAddress";
+    private String collectionPath = "MockCollectionPath";
+
+    /**
+     * Returns a mock recipe object
+     * @return (Recipe) a mock recipe to test the class functions
+     */
+    private Recipe mockRecipe() {
+        return new Recipe(id, title, prep_time, servings, category, comments, date, photo, collectionPath);
+    }
+
+    /**
+     * This function returns another type of mock store ingredient object, following the second constructor
+     * @return (StoreIngredient) a mock store ingredient object
+     */
+    public StoreIngredient mockStoreIngredient() {
+        return new StoreIngredient(
+                "1234",
+                "French fries",
+                4F,
+                "frozen",
+                date,
+                "freezer",
+                "bags"
         );
     }
 
@@ -56,10 +94,35 @@ public class MealPlanTest {
     }
 
     /**
-     * This function tests adding meal plan items
+     * This function tests adding meal plan items.
+     * We make mock recipe, ingredient, recipelist, ingredientstorage.
+     * We then add recipe/ingredient to respective list.
+     * We then add recipe/ingredient to the meal plan, and test the size increases.
+     * We then check the items appear with relevant attributes.
      */
     @Test
     public void testAddingMealPlanItems() {
-        assertTrue(true);
+        // make mock objects
+        MealPlan mealPlan = mockMealPlan();
+        RecipeList recipeList = new RecipeList();
+        IngredientStorage ingredientStorage = new IngredientStorage();
+        Recipe mockRecipe = mockRecipe();
+        StoreIngredient mockIngredient = mockStoreIngredient();
+
+        // add recipe/ingredient to storages
+        recipeList.add(mockRecipe);
+        ingredientStorage.add(mockIngredient);
+
+        // add recipe to meal plan
+        mealPlan.addMealItemRecipe("breakfast", mockRecipe.getId(), 4F, recipeList);
+        assertEquals(mealPlan.size(), 1);
+
+        // add ingredient to meal plan
+        mealPlan.addMealItemIngredient("lunch", mockIngredient.getId(), 8F, ingredientStorage.getData());
+        assertEquals(mealPlan.size(), 2);
+
+        // test items in meal plan
+        assertEquals(mealPlan.getRecipeTitles("breakfast").get(0), "Mac and Cheese");
+        assertEquals(mealPlan.getIngredientTitles("lunch").get(0), "French fries");
     }
 }
