@@ -45,14 +45,6 @@ public class IngredientStorage extends SortableItemList<StoreIngredient> {
     }
 
     /**
-     * this function returns the ingredientStorageList
-     * @return ingredientStorageList (ArrayList<StoreIngredient>)
-     */
-    public ArrayList<StoreIngredient> detData() {
-        return super.getData();
-    }
-
-    /**
      * Return the sorting choices for the recipe list
      * @return list of available sorting choices
      */
