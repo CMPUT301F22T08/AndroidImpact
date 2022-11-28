@@ -8,13 +8,10 @@ import androidx.annotation.NonNull;
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -224,10 +221,6 @@ public class IngredientStorageController {
                                 }
                             }
                         });
-
-        //StoreIngredient ingredient = .toObject(StoreIngredient.class);
-        //Will have to change
-      //  ingredientStorageCollection.document(id).set(storeIngredient);
     }
 
     /**
@@ -280,7 +273,10 @@ public class IngredientStorageController {
         return ingredientStorage.getData();
     }
 
-    // TODO: Get rid of this ASAP
+    /**
+     * Return the underlying IngredientStorage object
+     * @return IngredientStorage
+     */
     public IngredientStorage getIngredientStorage() {
         return ingredientStorage;
     }
