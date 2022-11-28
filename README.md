@@ -27,8 +27,6 @@ forget another grocery item, lose a recipe, or have trouble deciding what to eat
 ### Meal Plan
 ![meal_plan](https://user-images.githubusercontent.com/68800077/204400480-cb7b06de-e83e-49ee-91a5-ebeeca433bad.png)
 ![meal_plan_add](https://user-images.githubusercontent.com/68800077/204400594-e0c42040-0541-4906-aeee-665470447919.png)
-![shopping_list](https://user-images.githubusercontent.com/68800077/204400303-9fd86839-543a-4a84-bb42-de54ab144781.png)
-![shopping_list_add](https://user-images.githubusercontent.com/68800077/204400283-b8964065-ce3f-4c01-8b9a-ea870dd947ef.png)
 
 ### Shopping List
 ![shopping_list](https://user-images.githubusercontent.com/68800077/204400303-9fd86839-543a-4a84-bb42-de54ab144781.png)
