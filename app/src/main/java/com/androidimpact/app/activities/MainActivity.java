@@ -247,7 +247,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
      */
     public void updateShopIngredient(ShopIngredient ingredient)
     {
-        shoppingListController.addEdit(ingredient);
+        if (ingredient.getAmountPicked() == 0)
+            shoppingListFragment.cancelToggleDialog(ingredient);  //if picked up item is zero, then toggle is cancelled
+        else
+            shoppingListController.addEdit(ingredient);            //otherwise add item to firebase through shopping list controller
     }
 
     /**
@@ -257,9 +260,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
     {
          Log.i("check check", String.valueOf(ingredient.getAmountPicked()));
-         //For some reason the array doesn't update when cancelling the dialog
         shoppingListFragment.cancelToggleDialog(ingredient);
-
     }
 
     /**

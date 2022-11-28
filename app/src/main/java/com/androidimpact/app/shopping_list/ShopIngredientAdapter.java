@@ -50,6 +50,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     // functions that subscribe for edit callbacks
     private ArrayList<ShopIngredientToggleListener> toggleListeners = new ArrayList<>();
 
+    ShopIngredientToggleListener toggleListener;
+
     /**
      * Constructor for ShopIngredientAdapter
      * @param mContext
@@ -114,33 +116,12 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         //Adds listener for switch button for every item
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (ShopIngredientToggleListener listener: toggleListeners)
-                {
-                    Log.i("Listener Listener", String.valueOf(isChecked));
-                    listener.shopIngredientToggled(currentIngredient, isChecked);
-                }
-//                if (isChecked)
-//                {
-//                    //if amount picked is zero and state is changed from false to true then only show the dialog box
-////                    if (currentIngredient.getAmountPicked() == 0) {
-////                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient);
-////
-////                        MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
-////                    }
-//                    // if amount picked is non-zero, then item  is already picked
-//
-//                }
-//                else
-//                {
-////                    //if amount picked is non-zero and state is changed from true to false, then change amount Picked up to be zero
-////                    if (currentIngredient.getAmountPicked() != 0)
-////                    {
-////                        currentIngredient.setAmountPicked(0);
-////                        MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
-////                    }
-//
-//                    // if amount is zero and state is changed from true to false, no need to change amount picked up
-//                }
+
+
+               toggleListener.shopIngredientToggled(currentIngredient, isChecked);
+               Log.i("pickup toggle", currentIngredient.getDescription());
+
+
             }
         });
 
@@ -247,6 +228,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     public void setEditToggleListener(ShopIngredientToggleListener toAdd)
     {
         toggleListeners.add(toAdd);
+        toggleListener = toAdd;
     }
 
     /**
