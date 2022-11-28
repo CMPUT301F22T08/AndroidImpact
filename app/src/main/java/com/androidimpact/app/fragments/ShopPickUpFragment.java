@@ -24,19 +24,13 @@ import com.androidimpact.app.shopping_list.ShopIngredient;
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
- * Add a toggle listener to adapter class, which opens this dialog box. I guess that's good enough for now
+ * Add a toggle listener to adapter class, which opens this dialog box.
  * 
  * @author Vedant Vyas
  */
 public class ShopPickUpFragment extends DialogFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private int pos =-1;
+    //Class attributes
     private ShopIngredient ingredient;
 
     private float amountPickUp;
@@ -48,6 +42,11 @@ public class ShopPickUpFragment extends DialogFragment {
         // Required empty public constructor
     }
 
+    /**
+     * Creates a new ShopPickUpFragment object and passes in the arguments using bundle
+     * @param ingredient ShopIngredient in the list whose switch was clicked
+     * @return ShopPickUpFragment
+     */
     public static ShopPickUpFragment newInstance(ShopIngredient ingredient) {
         Bundle args = new Bundle();
         //putting all the arguments to bundle so that we can retrieve them later
@@ -67,6 +66,10 @@ public class ShopPickUpFragment extends DialogFragment {
 
     }
 
+    /**
+     * @param savedInstanceState
+     * @return DialogBuilder object with appropriate title and EditText that lets user decidee the amount they picked up
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

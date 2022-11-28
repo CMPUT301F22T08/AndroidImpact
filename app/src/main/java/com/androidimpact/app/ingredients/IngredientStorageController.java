@@ -3,12 +3,20 @@ package com.androidimpact.app.ingredients;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -153,14 +161,72 @@ public class IngredientStorageController {
     public void addEdit(StoreIngredient storeIngredient){
         // Adds if id is null else edits
         String id = storeIngredient.getId();
+        String description = storeIngredient.getDescription();
         if (id == null){
             UUID uuid = UUID.randomUUID();
             id = uuid.toString();
             storeIngredient.setID(id);
         }
+        final String finalId = id;
+
         //Does this necessarily work when Id doesn't exist in ingredient storage collection
+
+
+        ingredientStorageCollection.whereEqualTo("description", description).whereEqualTo("location", storeIngredient.getLocation()).whereEqualTo("unit", storeIngredient.getUnit()).whereEqualTo("category", storeIngredient.getCategory())
+                .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                if(task.isSuccessful()) {
+                                    boolean found = false;
+
+                                    int size = task.getResult().getDocuments().size();
+                                    Log.i("size", String.valueOf(size));
+
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        StoreIngredient ingredientFB = document.toObject(StoreIngredient.class);
+                                        if (ingredientFB.compareCalendar(storeIngredient)) {
+                                            Log.d("found", "Found a matching Ingredient in FB" + ingredientFB.getDescription());
+                                            float newAmount;
+                                            try {
+                                                newAmount = ingredientFB.getAmount() + storeIngredient.getAmount();
+                                            } catch (Exception e) {
+                                                newAmount = Float.MAX_VALUE;
+                                            }
+                                            storeIngredient.setAmount(newAmount);
+                                            ingredientStorageCollection.document(finalId).set(storeIngredient);
+                                            ingredientStorageCollection.document(ingredientFB.getId())
+                                                    .delete()
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        Log.i(TAG,  ingredientFB.getDescription() + " has been deleted successfully!");
+                                                        //pushSnackBarToContext("Updated " + description);
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        pushSnackBarToContext("Could not delete " + ingredientFB.getDescription() + "!");
+                                                        Log.i(TAG, ingredientFB.getDescription() + " could not be deleted: " + e);
+                                                    });;
+                                            found = true;
+                                        }
+                                    }
+                                    if (!found)
+                                    {
+                                        Log.d("not found", "Couldn't find the object in firebase");
+                                        ingredientStorageCollection.document(finalId).set(storeIngredient);
+                                    }
+                                }
+                                else
+                                {
+                                    Log.d("not found", "Couldn't find the object in firebase");
+                                    ingredientStorageCollection.document(finalId).set(storeIngredient);
+
+                                }
+                            }
+                        });
+
         //StoreIngredient ingredient = .toObject(StoreIngredient.class);
-        ingredientStorageCollection.document(id).set(storeIngredient);
+        //Will have to change
+      //  ingredientStorageCollection.document(id).set(storeIngredient);
     }
 
     /**
