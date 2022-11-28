@@ -11,12 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.category.Category;
-import com.androidimpact.app.ingredients.StoreIngredient;
-import com.androidimpact.app.location.Location;
 import com.androidimpact.app.shopping_list.ShopIngredient;
-import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
-import com.androidimpact.app.unit.Unit;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
