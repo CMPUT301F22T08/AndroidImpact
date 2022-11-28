@@ -323,6 +323,32 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
             editShoppingListItemLauncher.launch(intent);
         });
 
+        shopIngredientViewAdapter.setEditToggleListener((food, checked) -> {
+
+
+            Log.i("Adding Toggle listener", food.getDescription());
+            if (checked)
+            {
+                if (food.getAmountPicked() == 0)
+                {
+                    ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(food);
+                    MainActivity main = (MainActivity)getActivity();
+
+                    ff1.show(main.getSupportFragmentManager(), "ADD_FOOD");
+                }
+            }
+            else {
+                if (food.getAmountPicked() != 0)
+                    {
+                        food.setAmountPicked(0);
+                        shoppingListController.addEdit(food);
+                    }
+            }
+
+
+
+        });
+
         // somehow, android:onClick doesn't work in fragments, so I have to setOnClickLIstener here
         // https://stackoverflow.com/a/4153842
         automateBtn = a.findViewById(R.id.automateShoppingListBtn);
@@ -492,6 +518,8 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
 
         shopIngredientViewAdapter.notifyDataSetChanged();
     }
+
+
 
 //    public void cancelPickUp(int pos)
 //    {
