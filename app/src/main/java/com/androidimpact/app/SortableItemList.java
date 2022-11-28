@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * This class creates the functionality to have lists with sorting ability
@@ -16,7 +15,7 @@ public abstract class SortableItemList<T> {
     //protected static String[] sortChoices;
     private Comparator<T>[] comparators;
     private OrderedHashMap<String, Comparator<T>> sortingHashMap;
-    private int sortIndex;
+    private int sortChoice;
 
     /**
      * Constructor for SortableItemList class
@@ -25,7 +24,7 @@ public abstract class SortableItemList<T> {
      */
     public SortableItemList(ArrayList<T> objectArrayList, String[] sortChoices, Comparator<T>[] comparators) {
         this.objectArrayList = objectArrayList;
-        this.sortIndex = 0;
+        this.sortChoice = 0;
         //this.sortChoices = sortChoices;
         this.comparators = comparators;
         this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
@@ -87,18 +86,6 @@ public abstract class SortableItemList<T> {
     }
 
     /**
-     * This function removes the recipe from the sortedItemList
-     * @param object (Object)
-     */
-    public void remove(T object) throws IllegalArgumentException
-    {
-        if (this.objectArrayList.contains(object))
-            this.objectArrayList.remove(object);
-        else
-            throw new IllegalArgumentException("Trying to remove item not in list");
-    }
-
-    /**
      * this function returns the size of the list
      * @return (int) integer length of item list
      */
@@ -108,26 +95,18 @@ public abstract class SortableItemList<T> {
     }
 
     /**
-     * Return the current sorting choice for the item list
-     * @return the sorting choice at the index chosen by the user
-     */
-    public String getSortChoice() {
-        return this.sortingHashMap.getKey(this.sortIndex);
-    }
-
-    /**
      * Set the sorting choice for the item list
      * @param index the index of the sorting choices for the user
      */
-    public void setSortChoice(int index) {
-        this.sortIndex = index;
+    public void setSortChoice(int i) {
+        this.sortChoice = i;
     }
 
     /**
      * This function allows us to sort the item list by the user's choice
      */
     public void sortByChoice() {
-        Collections.sort(this.objectArrayList, this.sortingHashMap.getValue(this.sortIndex));
+        Collections.sort(this.objectArrayList, this.sortingHashMap.getValue(this.sortChoice));
     }
 
     /**
