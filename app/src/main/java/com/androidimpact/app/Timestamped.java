@@ -9,5 +9,5 @@ import java.util.Date;
  * need to guarantee that our classes can be sorted by date.
  */
 public interface Timestamped {
-    public Date getDateAdded();
+    Date getDateAdded();
 }
