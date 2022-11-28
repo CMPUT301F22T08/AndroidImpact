@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.androidimpact.app.AddStoreIngredientActivityTest" tests="13" failures="0" errors="0" skipped="0" time="55.942" timestamp="2022-11-02T03:27:22" hostname="localhost">
+  <properties>
+    <property name="device" value="Pixel_3a_API_30_x86(AVD) - 11" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="confirmBtnCheckInvalid1" classname="com.androidimpact.app.AddStoreIngredientActivityTest" time="9.155" />
+  <testcase name="confirmBtnCheckInvalid2" classname="com.androidimpact.app.AddStoreIngredientActivityTest" time="5.951" />
+  <testcase name="confirmBtnCheckFilled" classname="com.androidimpact.app.AddStoreIngredientActivityTest" time="5.939" />
+  <testcase name="btnChecks" classname="com.androidimpact.app.AddStoreIngredientActivityTest" time="3.33" />
+  <testcase name="confirmBtnCheckEmpty" classname="com.androidimpact.app.AddStoreIngredientActivityTest" time="3.285" />
+  <testcase name="useAppContext" classname="com.androidimpact.app.ExampleInstrumentedTest" time="0.003" />
+  <testcase name="addIngredientSuccess" classname="com.androidimpact.app.IngredientStorageActivityTest" time="11.008" />
+  <testcase name="testIngredientStorageLaunch" classname="com.androidimpact.app.IngredientStorageActivityTest" time="2.848" />
+  <testcase name="addIngredientAndCancel" classname="com.androidimpact.app.IngredientStorageActivityTest" time="5.521" />
+  <testcase name="useAppContext" classname="com.androidimpact.app.RecipeAddEditActivityTest" time="0.054" />
+  <testcase name="useAppContext" classname="com.androidimpact.app.RecipeAddEditIngredientActivityTest" time="0.016" />
+  <testcase name="deleteChecks" classname="com.androidimpact.app.RecipeListActivityTest" time="1.621" />
+  <testcase name="btnChecks" classname="com.androidimpact.app.RecipeListActivityTest" time="1.999" />
+</testsuite>

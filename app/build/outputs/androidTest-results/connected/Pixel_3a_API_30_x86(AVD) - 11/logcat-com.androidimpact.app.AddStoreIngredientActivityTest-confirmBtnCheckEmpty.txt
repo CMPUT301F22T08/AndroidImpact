@@ -1,0 +1,90 @@
+11-01 21:26:51.425 18772 18799 I TestRunner: started: confirmBtnCheckEmpty(com.androidimpact.app.AddStoreIngredientActivityTest)
+11-01 21:26:51.435 18772 18799 W ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)
+11-01 21:26:51.440   538   563 D EventSequenceValidator: inc AccIntentStartedEvents to 2
+11-01 21:26:51.455   403   403 I perfetto: ing_service_impl.cc:758 Configured tracing session 114, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-01 21:26:51.481   401   401 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=114)
+11-01 21:26:51.492   538  1926 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.492   538  1926 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.492   538  1926 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.493   538  1926 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.494   538  1926 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.494   538  1926 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.494   538  1926 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.494   538  1926 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:51.508   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f524c000 0x3f5b72000]
+11-01 21:26:51.531 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.AddStoreIngredientActivity@69dc54f in: PRE_ON_CREATE
+11-01 21:26:51.533 18772 18795 V FA      : onActivityCreated
+11-01 21:26:51.615 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.AddStoreIngredientActivity@69dc54f in: CREATED
+11-01 21:26:51.621 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.AddStoreIngredientActivity@69dc54f in: STARTED
+11-01 21:26:51.623 18772 18798 V FA      : Activity resumed, time: 224224467
+11-01 21:26:51.625 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.AddStoreIngredientActivity@69dc54f in: RESUMED
+11-01 21:26:51.697   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f8000000 0x3f8926000]
+11-01 21:26:51.739   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f8926000 0x3f924c000]
+11-01 21:26:51.741   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f924c000 0x3f9b72000]
+11-01 21:26:51.778 18772 18798 V FA      : Logging event: origin=auto,name=screen_view(_vs),params=Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=AddStoreIngredientActivity, ga_previous_id(_pi)=1902402333098183435, ga_screen_class(_sc)=AddStoreIngredientActivity, ga_screen_id(_si)=1902402333098183436}]
+11-01 21:26:51.782 18772 18798 D FA      : Unable to get advertising id: com.google.android.gms.common.GooglePlayServicesNotAvailableException: com.google.android.gms.measurement.internal.zzjo.zza(com.google.android.gms:play-services-measurement@@21.2.0:10)
+11-01 21:26:51.805 18772 18798 V FA      : Upload scheduled in approximately ms: 14820
+11-01 21:26:51.810 18772 18798 V FA      : Unscheduling upload
+11-01 21:26:51.814   538   570 D ArtManagerInternalImpl: /data/misc/iorapd/com.androidimpact.app/1/com.androidimpact.app.activities.AddStoreIngredientActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-01 21:26:51.820   538   563 D EventSequenceValidator: dec AccIntentStartedEvents to 1
+11-01 21:26:51.827   538   570 I ActivityTaskManager: Displayed com.androidimpact.app/.activities.AddStoreIngredientActivity: +374ms
+11-01 21:26:51.911 18772 18798 V FA      : Scheduling upload, millis: 14820
+11-01 21:26:51.947 18772 18798 V FA      : Background event processing time, ms: 170
+11-01 21:26:52.924   401   401 I perfetto: probes_producer.cc:329  Producer stop (id=113)
+11-01 21:26:52.925   403   403 I perfetto: ng_service_impl.cc:1948 Tracing session 113 ended, total sessions:1
+11-01 21:26:53.635   538  5268 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-01 21:26:53.635   538  5268 I chatty  : uid=1000(system) Binder:538_1A identical 1 line
+11-01 21:26:53.636   538  5268 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-01 21:26:53.772   538  1203 I system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+11-01 21:26:53.774   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f6498000 0x3f6dbe000]
+11-01 21:26:53.854 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.AddStoreIngredientActivity@69dc54f in: PAUSED
+11-01 21:26:53.858   538  1926 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.858   538  1926 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.858   538  1926 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.858   538  1926 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.858   538  1926 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.858   538  1926 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.859   538  1926 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:26:53.860 18772 18798 V FA      : Recording user engagement, ms: 2232
+11-01 21:26:53.916   538  5490 D HostConnection: HostConnection::get() New Host Connection established 0xb17c1cf0, tid 5490
+11-01 21:26:53.929   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f6dbe000 0x3f76e4000]
+11-01 21:26:53.930   538  5490 D HostConnection: HostComposition ext ANDROID_EMU_CHECKSUM_HELPER_v1 ANDROID_EMU_native_sync_v2 ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_vulkan ANDROID_EMU_deferred_vulkan_commands ANDROID_EMU_vulkan_null_optional_strings ANDROID_EMU_vulkan_create_resources_with_requirements ANDROID_EMU_YUV_Cache ANDROID_EMU_vulkan_ignored_handles ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_vulkan_free_memory_sync ANDROID_EMU_vulkan_shader_float16_int8 ANDROID_EMU_vulkan_async_queue_submit ANDROID_EMU_sync_buffer_data ANDROID_EMU_read_color_buffer_dma GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0
+11-01 21:26:53.938   538  5490 D EGL_emulation: eglCreateContext: 0xf4838b70: maj 3 min 0 rcv 3
+11-01 21:26:53.954   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f9b72000 0x3fa498000]
+11-01 21:26:53.957   538  5490 D EGL_emulation: eglMakeCurrent: 0xf4838b70: ver 3 0 (tinfo 0xb8f9ffb0) (first time)
+11-01 21:26:53.984   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3faff2000 0x3fb918000]
+11-01 21:26:54.123   735   757 I ndroid.systemu: NativeAlloc concurrent copying GC freed 1436(161KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 6289KB/12MB, paused 809us total 271.510ms
+11-01 21:26:54.141 18772 18798 V FA      : Logging event: origin=auto,name=user_engagement(_e),params=Bundle[{ga_event_origin(_o)=auto, engagement_time_msec(_et)=2232, ga_screen_class(_sc)=AddStoreIngredientActivity, ga_screen_id(_si)=1902402333098183436}]
+11-01 21:26:54.183 18772 18798 V FA      : Upload scheduled in approximately ms: 14678
+11-01 21:26:54.208 18772 18798 W droidimpact.ap: JNI critical lock held for 23.919ms on Thread[20,tid=18798,Runnable,Thread*=0xe6a91810,peer=0x13380790,"Measurement Worker"]
+11-01 21:26:54.211 18772 18798 V FA      : Unscheduling upload
+11-01 21:26:54.227 18772 18798 V FA      : Scheduling upload, millis: 14678
+11-01 21:26:54.361 18772 18798 V FA      : Background event processing time, ms: 221
+11-01 21:26:54.475 18772 18798 V FA      : Activity paused, time: 224226699
+11-01 21:26:54.726   538   641 W InputDispatcher: Permission denied: injecting event from pid 18772 uid 10121 to window Window{2a89c7d u0 com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher} owned by uid 10109
+11-01 21:26:54.731 18772 18799 I TestRunner: finished: confirmBtnCheckEmpty(com.androidimpact.app.AddStoreIngredientActivityTest)

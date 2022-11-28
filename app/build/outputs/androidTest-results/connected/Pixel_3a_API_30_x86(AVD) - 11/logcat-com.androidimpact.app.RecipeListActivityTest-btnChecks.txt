@@ -1,0 +1,208 @@
+11-01 21:27:18.025 18772 18799 I TestRunner: started: btnChecks(com.androidimpact.app.RecipeListActivityTest)
+11-01 21:27:18.037 18772 18799 W ActivityTestRule: getActivityIntent() returned null using default: Intent(Intent.ACTION_MAIN)
+11-01 21:27:18.041   538   563 D EventSequenceValidator: Transition from ACTIVITY_FINISHED to INTENT_STARTED
+11-01 21:27:18.073   403   403 I perfetto: ing_service_impl.cc:758 Configured tracing session 123, #sources:1, duration:5000 ms, #buffers:1, total buffer size:4096 KB, total sessions:2, uid:1071 session name: ""
+11-01 21:27:18.074   401   401 I perfetto: probes_producer.cc:230  Ftrace setup (target_buf=123)
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.078   538  5832 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.079   538  5832 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:18.126   538   563 D EventSequenceValidator: Transition from INTENT_STARTED to ACTIVITY_LAUNCHED
+11-01 21:27:18.137 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.RecipeListActivity@859b7bb in: PRE_ON_CREATE
+11-01 21:27:18.143 18772 18963 W droidimpact.ap: Accessing hidden method Lcom/android/org/conscrypt/OpenSSLSocketImpl;->getAlpnSelectedProtocol()[B (greylist-max-q,core-platform-api, reflection, denied)
+11-01 21:27:18.143 18772 18963 W droidimpact.ap: Accessing hidden method Lcom/android/org/conscrypt/AbstractConscryptSocket;->getAlpnSelectedProtocol()[B (greylist-max-q, reflection, denied)
+11-01 21:27:18.158 18772 18795 V FA      : onActivityCreated
+11-01 21:27:18.159   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f1b72000 0x3f2498000]
+11-01 21:27:18.246 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.RecipeListActivity@859b7bb in: CREATED
+11-01 21:27:18.252 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.RecipeListActivity@859b7bb in: STARTED
+11-01 21:27:18.254 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.RecipeListActivity@859b7bb in: RESUMED
+11-01 21:27:18.255 18772 18798 V FA      : Activity resumed, time: 224251098
+11-01 21:27:18.321   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f2498000 0x3f2dbe000]
+11-01 21:27:18.318   493   493 E netmgr  : qemu_pipe_open_ns:62: Could not connect to the 'pipe:qemud:network' service: Invalid argument
+11-01 21:27:18.336   493   493 E netmgr  : Failed to open QEMU pipe 'qemud:network': Invalid argument
+11-01 21:27:18.369   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f2dbe000 0x3f36e4000]
+11-01 21:27:18.371   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f4926000 0x3f524c000]
+11-01 21:27:18.475 18772 18772 D RecipeListActivity: fried rice
+11-01 21:27:18.475 18772 18772 D RecipeListActivity: {date=26/10/2022 16:31:49, servings=20, prep time=1, comments=, photo=, ingredients={foo={amount=2.0, unit=3, description=foo, category=fjdk}, djd={amount=1.0, unit=2, description=djd, category=fjdk}}, category=Heyo}
+11-01 21:27:18.477 18772 18772 D RecipeListActivity: g
+11-01 21:27:18.480 18772 18772 D RecipeListActivity: {date=31/10/2022 14:48:16, servings=1, comments=, prep time=2, ingredients={}, photo=, category=fggg}
+11-01 21:27:18.481 18772 18772 D RecipeListActivity: josh
+11-01 21:27:18.481 18772 18772 D RecipeListActivity: {date=01/11/2022 11:18:02, servings=8, comments=-hot, prep time=2, photo=content://media/external/images/media/66, ingredients={ingredient0={unit=jdfj, amount=2.0, description=oshuajay, category=trhe}}, category=snack }
+11-01 21:27:18.482 18772 18772 D RecipeListActivity: josh sleep
+11-01 21:27:18.482 18772 18772 D RecipeListActivity: {date=01/11/2022 13:16:06, servings=5, prep time=2, comments=, ingredients={}, photo=e3a4ba2c-eff4-4ce3-90f2-44ffefc8dc28, category=sleep}
+11-01 21:27:18.482 18772 18772 D RecipeListActivity: no photo
+11-01 21:27:18.482 18772 18772 D RecipeListActivity: {date=01/11/2022 12:15:14, servings=5, prep time=2, comments=, photo=null, ingredients={}, category=no photo }
+11-01 21:27:18.482 18772 18772 D RecipeListActivity: photo test
+11-01 21:27:18.482 18772 18772 D RecipeListActivity: {date=01/11/2022 00:26:49, servings=1, prep time=2, comments=, photo=content://com.google.android.apps.photos.contentprovider/-1/1/content%3A%2F%2Fmedia%2Fexternal%2Fimages%2Fmedia%2F1000000033/ORIGINAL/NONE/image%2Fjpeg/674976983, ingredients={}, category=fire}
+11-01 21:27:18.483 18772 18772 D RecipeListActivity: qsq
+11-01 21:27:18.483 18772 18772 D RecipeListActivity: {date=28/10/2022 23:34:36, servings=11, prep time=12, comments=sq, ingredients={}, photo=sq, category=22}
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added 7 elements
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added fried rice  to elements
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added g to elements
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added josh to elements
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added josh sleep  to elements
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added no photo to elements
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added photo test to elements
+11-01 21:27:18.483 18772 18772 I RecipeListActivity: Snapshot listener: Added qsq to elements
+11-01 21:27:18.485   538   570 D ArtManagerInternalImpl: /data/misc/iorapd/com.androidimpact.app/1/com.androidimpact.app.activities.RecipeListActivity/compiled_traces/compiled_trace.pb doesn't exist
+11-01 21:27:18.489   538   563 D EventSequenceValidator: Transition from ACTIVITY_LAUNCHED to ACTIVITY_FINISHED
+11-01 21:27:18.515   538   570 I ActivityTaskManager: Displayed com.androidimpact.app/.activities.RecipeListActivity: +432ms
+11-01 21:27:18.563 18772 18798 V FA      : Logging event: origin=auto,name=screen_view(_vs),params=Bundle[{ga_event_origin(_o)=auto, ga_previous_class(_pc)=RecipeListActivity, ga_previous_id(_pi)=1902402333098183445, ga_screen_class(_sc)=RecipeListActivity, ga_screen_id(_si)=1902402333098183446}]
+11-01 21:27:18.582 18772 18973 W StorageUtil: no auth token for request
+11-01 21:27:18.586 18772 18973 W NetworkRequest: no auth token for request
+11-01 21:27:18.633 18772 18973 W NetworkRequest: No App Check token for request.
+11-01 21:27:18.701 18772 18956 W StorageUtil: no auth token for request
+11-01 21:27:18.707 18772 18956 W NetworkRequest: no auth token for request
+11-01 21:27:18.707 18772 18956 W NetworkRequest: No App Check token for request.
+11-01 21:27:18.887 18772 18798 V FA      : Upload scheduled in approximately ms: 14372
+11-01 21:27:18.905 18772 18798 V FA      : Unscheduling upload
+11-01 21:27:18.953 18772 18973 E StorageException: StorageException has occurred.
+11-01 21:27:18.953 18772 18973 E StorageException: Object does not exist at location.
+11-01 21:27:18.953 18772 18973 E StorageException:  Code: -13010 HttpResult: 404
+11-01 21:27:18.955 18772 18973 E StorageException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:18.955 18772 18973 E StorageException: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:462)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:453)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:272)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:289)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:77)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-01 21:27:18.955 18772 18973 E StorageException: 	at java.lang.Thread.run(Thread.java:923)
+11-01 21:27:18.963 18772 18956 E StorageException: StorageException has occurred.
+11-01 21:27:18.963 18772 18956 E StorageException: Object does not exist at location.
+11-01 21:27:18.963 18772 18956 E StorageException:  Code: -13010 HttpResult: 404
+11-01 21:27:18.965 18772 18956 E StorageException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:18.965 18772 18956 E StorageException: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:462)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:453)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:272)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:289)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:77)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-01 21:27:18.965 18772 18956 E StorageException: 	at java.lang.Thread.run(Thread.java:923)
+11-01 21:27:18.989 18772 18798 V FA      : Scheduling upload, millis: 14372
+11-01 21:27:19.016 18772 18957 W StorageUtil: no auth token for request
+11-01 21:27:19.019 18772 18957 W NetworkRequest: no auth token for request
+11-01 21:27:19.019 18772 18957 W NetworkRequest: No App Check token for request.
+11-01 21:27:19.037 18772 18798 V FA      : Background event processing time, ms: 482
+11-01 21:27:19.076 18772 18955 W StorageUtil: no auth token for request
+11-01 21:27:19.077   496   496 E wifi_forwarder: qemu_pipe_open_ns:62: Could not connect to the 'pipe:qemud:wififorward' service: Invalid argument
+11-01 21:27:19.077   496   496 E wifi_forwarder: RemoteConnection failed to initialize: RemoteConnection failed to open pipe
+11-01 21:27:19.078 18772 18955 W NetworkRequest: no auth token for request
+11-01 21:27:19.078 18772 18955 W NetworkRequest: No App Check token for request.
+11-01 21:27:19.176 18772 18772 I Choreographer: Skipped 35 frames!  The application may be doing too much work on its main thread.
+11-01 21:27:19.223 18772 18811 I OpenGLRenderer: Davey! duration=847ms; Flags=0, IntendedVsync=224251218649804, Vsync=224251318649800, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=224251330431800, AnimationStart=224251330463500, PerformTraversalsStart=224251330503700, DrawStart=224251932366700, SyncQueued=224252014697200, SyncStart=224252016018400, IssueDrawCommandsStart=224252016762000, SwapBuffers=224252042357400, FrameCompleted=224252067088200, DequeueBufferDuration=191000, QueueBufferDuration=13890200, GpuCompleted=-72057589759737856,
+11-01 21:27:19.226 18772 18772 E Image Not Found: photo test
+11-01 21:27:19.226 18772 18772 E Image Not Found: com.google.firebase.storage.StorageException: Object does not exist at location.
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.completeTask(NetworkRequest.java:539)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:85)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at java.lang.Thread.run(Thread.java:923)
+11-01 21:27:19.226 18772 18772 E Image Not Found: Caused by: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:462)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:453)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:272)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:289)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:77)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	... 3 more
+11-01 21:27:19.226 18772 18772 E Image Not Found: josh
+11-01 21:27:19.226 18772 18772 E Image Not Found: com.google.firebase.storage.StorageException: Object does not exist at location.
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.completeTask(NetworkRequest.java:539)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:85)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at java.lang.Thread.run(Thread.java:923)
+11-01 21:27:19.226 18772 18772 E Image Not Found: Caused by: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:462)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:453)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:272)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:289)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:77)
+11-01 21:27:19.226 18772 18772 E Image Not Found: 	... 3 more
+11-01 21:27:19.342 18772 18955 E StorageException: StorageException has occurred.
+11-01 21:27:19.342 18772 18955 E StorageException: Object does not exist at location.
+11-01 21:27:19.342 18772 18955 E StorageException:  Code: -13010 HttpResult: 404
+11-01 21:27:19.350 18772 18955 E StorageException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:19.350 18772 18955 E StorageException: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:462)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:453)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:272)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:289)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:77)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-01 21:27:19.350 18772 18955 E StorageException: 	at java.lang.Thread.run(Thread.java:923)
+11-01 21:27:19.351 18772 18772 E Image Not Found: fried rice
+11-01 21:27:19.351 18772 18772 E Image Not Found: com.google.firebase.storage.StorageException: Object does not exist at location.
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.completeTask(NetworkRequest.java:539)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:85)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at java.lang.Thread.run(Thread.java:923)
+11-01 21:27:19.351 18772 18772 E Image Not Found: Caused by: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:445)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:462)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:453)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:272)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:289)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	at com.google.firebase.storage.GetDownloadUrlTask.run(GetDownloadUrlTask.java:77)
+11-01 21:27:19.351 18772 18772 E Image Not Found: 	... 3 more
+11-01 21:27:19.926   304   362 D goldfish-address-space: claimShared: Ask to claim region [0x3f0926000 0x3f124c000]
+11-01 21:27:19.967 18772 18772 D LifecycleMonitor: Lifecycle status change: com.androidimpact.app.activities.RecipeListActivity@859b7bb in: PAUSED
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_9 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_7 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_10 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_4 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.972   538  1203 W InputReader: Device virtio_input_multi_touch_6 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.973   538  1203 W InputReader: Device virtio_input_multi_touch_3 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.973   538  1203 W InputReader: Device virtio_input_multi_touch_11 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.973   538  1203 W InputReader: Device virtio_input_multi_touch_5 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.973   538  1203 W InputReader: Device virtio_input_multi_touch_2 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.973   538  1203 W InputReader: Device virtio_input_multi_touch_8 is associated with display ADISPLAY_ID_NONE.
+11-01 21:27:19.975 18772 18799 I TestRunner: finished: btnChecks(com.androidimpact.app.RecipeListActivityTest)
