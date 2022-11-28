@@ -495,7 +495,8 @@ public class RecipesFragmentTest {
 
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (Objects.equals(document.getData().get("title"), "Aardvark soup")) {
+                            if (Objects.equals(document.get("title"), "Aardvark soup")) {
+                                Log.i("D_deleteRecipeTest", "Deleting recipe " + document.get("title"));
                                 String id = document.getId();
                                 futures.add(db.document("userData/" + uid).collection("recipes").document(id).delete());
                             }
