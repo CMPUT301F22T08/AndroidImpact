@@ -4,6 +4,8 @@ import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
+import android.util.Log;
+
 import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.google.firebase.firestore.Exclude;
@@ -62,7 +64,8 @@ public class StoreIngredient extends Ingredient implements Serializable {
     {
         super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmountPicked(), ingredient.getUnit(), ingredient.getCategory());
         //To be changed to null
-        this.bestBeforeDate = new Date(0);
+
+        this.bestBeforeDate = new Date(122, 8, 30);
         this.location = "";
     }
 
@@ -110,6 +113,7 @@ public class StoreIngredient extends Ingredient implements Serializable {
      * @return boolean
      */
     public boolean hasNull(){
-        return (bestBeforeDate.getTime()==0 || location=="");
+        Date nullDate = new Date(52, 8, 30);
+        return (bestBeforeDate == nullDate || location=="");
     }
 }
