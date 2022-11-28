@@ -25,7 +25,7 @@ public class ReviewRecommendations extends AppCompatActivity {
     private final String TAG = "ReviewRecommendations";
 
     ArrayList<ShopIngredient> recommendations;
-    ShopIngredientAdapter shopIngredientViewAdapter;
+    ShopRecommendationAdapter shopRecommendationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +40,11 @@ public class ReviewRecommendations extends AppCompatActivity {
             getSupportActionBar().setTitle("Review Recommendations");
 
             // adapter
-            shopIngredientViewAdapter = new ShopIngredientAdapter(this, recommendations);
+            shopRecommendationAdapter = new ShopRecommendationAdapter(recommendations);
             // below line is to set layout manager for our recycler view.
             LinearLayoutManager manager = new LinearLayoutManager(this);
             recommendationsList.setLayoutManager(manager);
-            recommendationsList.setAdapter(shopIngredientViewAdapter);
+            recommendationsList.setAdapter(shopRecommendationAdapter);
         } else {
             Log.i(TAG, "Error: bundle extras is null!");
             Intent intent = new Intent();
