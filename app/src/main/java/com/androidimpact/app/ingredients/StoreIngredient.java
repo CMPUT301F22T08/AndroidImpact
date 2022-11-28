@@ -86,7 +86,7 @@ public class StoreIngredient extends Ingredient implements Serializable {
         Calendar cal2 = ingredient.getBestBeforeCalendar();
         return cal.get(DAY_OF_MONTH) == cal2.get(DAY_OF_MONTH) && cal.get(YEAR) == cal2.get(YEAR) && cal.get(MONTH) == cal2.get(MONTH);
     }
-    
+
 
     /**
      * Get the best-before date of the stored ingredient
