@@ -26,6 +26,7 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
@@ -46,6 +47,8 @@ import com.androidimpact.app.recipes.RecipeIngredientAdapter;
 import com.androidimpact.app.recipes.RecipeListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -55,6 +58,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -80,23 +84,52 @@ public class RecipesFragmentTest {
             new ActivityScenarioRule<>(LoginActivity.class);
 
     /**
-     * Signup beforehand, move to recipe fragment
+     * Login beforehand with test account, move to recipe fragment
      */
     @Before
-    public void signup() {
-        // Click on the signup button
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.signup),
+    public void login() throws InterruptedException {
+        // In case we aren't logout yet for some reason
+        logout();
+
+        // Click on username edit text and change name
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.username),
                         childAtPosition(
                                 allOf(withId(R.id.login_layout),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                4),
+                                2),
                         isDisplayed()));
-        materialButton2.perform(click());
+        appCompatEditText.perform(replaceText("test@gmail.com"));
 
-        // Click on bottom navbar button
+        // Click on password edit text and change password
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.password),
+                        childAtPosition(
+                                allOf(withId(R.id.login_layout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("qwerty"));
+
+        // Click on the login button
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.login), withText("Login"),
+                        childAtPosition(
+                                allOf(withId(R.id.login_layout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        materialButton.perform(click());
+
+        Thread.sleep(1000);
+
+        // Click on bottom navbar button for recipes
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.recipe_icon), withContentDescription("Recipe"),
                         childAtPosition(
@@ -110,6 +143,7 @@ public class RecipesFragmentTest {
 
     /**
      * Make sure on the right fragment
+     * Result: future tests are sure to be on the recipe list fragment
      */
     @Test
     public void A_rightFragmentTest() {
@@ -126,6 +160,7 @@ public class RecipesFragmentTest {
 
     /**
      * Tests adding a recipe with basic attributes
+     * Result: a recipe Aardvark soup is created with 1 ingredient inside of it
      */
     @Test
     public void B_addRecipeTest() throws InterruptedException {
@@ -212,7 +247,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         appCompatEditText4.perform(replaceText("2"), closeSoftKeyboard());
 
-        // Change unit to unit
+        // Change unit to first item in spinner
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.recipe_ingredient_unit),
                         childAtPosition(
@@ -228,10 +263,10 @@ public class RecipesFragmentTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(6);
+                .atPosition(1);
         appCompatCheckedTextView.perform(click());
 
-        // Change category to sweet
+        // Change category to first item in spinner
         ViewInteraction appCompatSpinner2 = onView(
                 allOf(withId(R.id.recipe_ingredient_category),
                         childAtPosition(
@@ -247,7 +282,7 @@ public class RecipesFragmentTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(2);
+                .atPosition(1);
         appCompatCheckedTextView2.perform(click());
 
         Thread.sleep(1000);
@@ -274,7 +309,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         textView.check(matches(withText("Water")));
 
-        // Change recipe category
+        // Change recipe category to first item in spinner
         ViewInteraction appCompatSpinner4 = onView(
                 allOf(withId(R.id.recipe_category_spinner),
                         childAtPosition(
@@ -290,7 +325,7 @@ public class RecipesFragmentTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(3);
+                .atPosition(1);
         appCompatCheckedTextView3.perform(click());
 
         // Confirm adding recipe
@@ -304,7 +339,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         materialButton3.perform(click());
 
-        // Check if recipe exists in list by checking description, prep_time and servings
+        // Check if recipe exists in list by checking description
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.recipe_name), withText("Aardvark soup"),
                         withParent(allOf(withId(R.id.recipe_container),
@@ -315,6 +350,7 @@ public class RecipesFragmentTest {
 
     /**
      * Tests editing a recipe, including editing an ingredient in that recipe
+     * Result: Aardvark soup changes prep_time and servings
      */
     @Test
     public void C_editRecipeTest() throws InterruptedException {
@@ -411,7 +447,7 @@ public class RecipesFragmentTest {
 
         // Check if recipe edited in list by checking prep_time and servings
         ViewInteraction button = onView(
-                allOf(withId(R.id.recipe_prep_time), withText("Prep: 8 m"),
+                allOf(withId(R.id.recipe_prep_time), withText("8 min"),
                         withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.HorizontalScrollView.class))),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
@@ -425,6 +461,7 @@ public class RecipesFragmentTest {
 
     /**
      * Tests deleting a recipe from the list
+     * Result: Aardvark soup is deleted from the recipe list
      */
     @Test
     public void D_deleteRecipeTest() throws InterruptedException {
@@ -440,9 +477,12 @@ public class RecipesFragmentTest {
 
         // Assume that we swiped to delete, delete the item from db
         FirebaseFirestore db;
-        CollectionReference recipesCollection;
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+
         db = FirebaseFirestore.getInstance();
-        db.collection("recipes")
+        db.document("userData/" + uid).collection("recipes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -451,7 +491,7 @@ public class RecipesFragmentTest {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (Objects.equals(document.getData().get("title"), "Aardvark soup")) {
                                     String id = document.getId();
-                                    db.collection("recipes").document(id).delete();
+                                    db.document("userData/" + uid).collection("recipes").document(id).delete();
                                 }
 
                             }
@@ -469,6 +509,32 @@ public class RecipesFragmentTest {
                                 withParent(withId(R.id.recipe_listview)))),
                         isDisplayed()));
         textView.check(doesNotExist());
+    }
+
+    /**
+     * Logout after each test
+     */
+    @After
+    public void logout() {
+
+        // If we aren't on apage with a login screen, handle the exception
+        try {
+            ViewInteraction actionMenuItemView = onView(
+                    allOf(withId(R.id.logout),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(androidx.constraintlayout.widget.R.id.action_bar),
+                                            1),
+                                    0),
+                            isDisplayed()));
+            actionMenuItemView.perform(click());
+        }
+        catch (NoMatchingViewException nmve) {
+            Log.d("e", "no logout button");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Access edit item from recycler view item

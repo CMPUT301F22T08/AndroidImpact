@@ -31,6 +31,7 @@ import android.view.ViewParent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
@@ -44,6 +45,8 @@ import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -52,6 +55,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -78,22 +82,50 @@ public class IngredientStorageFragmentTest {
             new ActivityScenarioRule<>(LoginActivity.class);
 
     /**
-     * Signup in the app beforehand
-     * Result: goes to the ingredient storage fragment
+     * Login beforehand with test account, move to ingredient fragment
      */
     @Before
-    public void signup() {
-        // Click on the signup button
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.signup),
+    public void login() throws InterruptedException {
+        // In case we aren't logout yet for some reason
+        logout();
+
+        // Click on username edit text and change name
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.username),
                         childAtPosition(
                                 allOf(withId(R.id.login_layout),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                4),
+                                2),
                         isDisplayed()));
-        materialButton2.perform(click());
+        appCompatEditText.perform(replaceText("test@gmail.com"));
+
+        // Click on password edit text and change password
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.password),
+                        childAtPosition(
+                                allOf(withId(R.id.login_layout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("qwerty"));
+
+        // Click on the login button
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.login), withText("Login"),
+                        childAtPosition(
+                                allOf(withId(R.id.login_layout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        materialButton.perform(click());
+
+        Thread.sleep(1000);
     }
 
     /**
@@ -170,15 +202,14 @@ public class IngredientStorageFragmentTest {
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.ingredientStoreAdd_amount),
                         childAtPosition(
-                                allOf(withId(R.id.content),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
+                                childAtPosition(
+                                        withId(R.id.ingredient_store_amount_layout),
+                                        0),
+                                0),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("2"), closeSoftKeyboard());
 
-        // Set location to Fridge
+        // Set location to first item in spinner
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.ingredientStoreAdd_location),
                         childAtPosition(
@@ -199,7 +230,7 @@ public class IngredientStorageFragmentTest {
                 .atPosition(1);
         appCompatCheckedTextView.perform(click());
 
-        // Set unit to ounce
+        // Set unit to first item in spinner
         ViewInteraction appCompatSpinner2 = onView(
                 allOf(withId(R.id.ingredientStoreAdd_unit),
                         childAtPosition(
@@ -215,10 +246,10 @@ public class IngredientStorageFragmentTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(6);
+                .atPosition(1);
         appCompatCheckedTextView2.perform(click());
 
-        // Set category to dairy
+        // Set category to dairy in spinner
         ViewInteraction appCompatSpinner3 = onView(
                 allOf(withId(R.id.ingredientStoreAdd_category),
                         childAtPosition(
@@ -234,18 +265,17 @@ public class IngredientStorageFragmentTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(9);
+                .atPosition(1);
         appCompatCheckedTextView3.perform(click());
 
         // Set date as current date
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.ingredientStoreAdd_bestBefore),
                         childAtPosition(
-                                allOf(withId(R.id.content),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                5),
+                                childAtPosition(
+                                        withId(R.id.ingredient_store_best_before_layout),
+                                        0),
+                                0),
                         isDisplayed()));
         appCompatEditText3.perform(click());
 
@@ -352,11 +382,15 @@ public class IngredientStorageFragmentTest {
                         storeIngredientVHMatcher(equalTo(newIngredientDescription)),
                         swipeRight()
                 ));
+
         // Assume that we swiped to delete, delete the item from db
         FirebaseFirestore db;
-        CollectionReference ingredientCollection;
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+
         db = FirebaseFirestore.getInstance();
-        db.collection("ingredientStorage")
+        db.document("userData/" + uid).collection("ingredientStorage")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -365,7 +399,7 @@ public class IngredientStorageFragmentTest {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (Objects.equals(document.getData().get("description"), newIngredientDescription)) {
                                     String id = document.getId();
-                                    db.collection("ingredientStorage").document(id).delete();
+                                    db.document("userData/" + uid).collection("ingredientStorage").document(id).delete();
                                 }
 
                             }
@@ -376,6 +410,32 @@ public class IngredientStorageFragmentTest {
         Thread.sleep(2000);
         Matcher<View> hasNoIngredient = not(hasIngredientDescription(equalTo(newIngredientDescription)));
         onView(withId(R.id.ingredient_listview)).check(matches(hasNoIngredient));
+    }
+
+    /**
+     * Logout after each test
+     */
+    @After
+    public void logout() {
+
+        // If we aren't on apage with a login screen, handle the exception
+        try {
+            ViewInteraction actionMenuItemView = onView(
+                    allOf(withId(R.id.logout),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(androidx.constraintlayout.widget.R.id.action_bar),
+                                            1),
+                                    0),
+                            isDisplayed()));
+            actionMenuItemView.perform(click());
+        }
+        catch (NoMatchingViewException nmve) {
+            Log.d("e", "no logout button");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // this is a helper function that matches an item in the RecyclerView by its description.
