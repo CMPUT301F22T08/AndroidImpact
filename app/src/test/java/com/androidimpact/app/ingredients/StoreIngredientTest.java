@@ -21,4 +21,12 @@ import java.util.Date;
  * @author Aneeljyot Alagh
  */
 public class StoreIngredientTest {
+
+    /**
+     * This function returns a mock store ingredient object
+     * @return (StoreIngredient) a mock store ingredient object
+     */
+    public StoreIngredient mockStoreIngredient() {
+        return new StoreIngredient();
+    }
 }

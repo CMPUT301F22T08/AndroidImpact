@@ -2,6 +2,7 @@ package com.androidimpact.app.ingredients;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -61,7 +62,18 @@ public class IngredientTest {
      */
     @Test
     public void testID() {
+        Ingredient ingredient = new Ingredient();
+        Ingredient ingredient2 = mockIngredient();
 
+        // test getId()
+        assertNull(ingredient.getId());
+
+        // test setId()
+        ingredient.setID("5678");
+        assertEquals("5678", ingredient.getId());
+
+        // test throwing exception
+        assertThrows(IllegalArgumentException.class, () -> ingredient2.setID("new id"));
     }
 
 }
