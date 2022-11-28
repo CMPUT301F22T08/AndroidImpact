@@ -13,7 +13,6 @@ import java.util.List;
  */
 public abstract class SortableItemList<T> {
     protected ArrayList<T> objectArrayList;
-    //protected static String[] sortChoices;
     private Comparator<T>[] comparators;
     private OrderedHashMap<String, Comparator<T>> sortingHashMap;
     private int sortIndex;
@@ -26,7 +25,6 @@ public abstract class SortableItemList<T> {
     public SortableItemList(ArrayList<T> objectArrayList, String[] sortChoices, Comparator<T>[] comparators) {
         this.objectArrayList = objectArrayList;
         this.sortIndex = 0;
-        //this.sortChoices = sortChoices;
         this.comparators = comparators;
         this.sortingHashMap = new OrderedHashMap<>(sortChoices, comparators);
     }
