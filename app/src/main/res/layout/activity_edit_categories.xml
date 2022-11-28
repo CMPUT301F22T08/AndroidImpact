@@ -12,10 +12,12 @@
         android:id="@+id/addCategoryBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
         android:onClick="addCategory"
         android:text="@string/add_category"
         android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/category_editText"
+        app:layout_constraintBottom_toBottomOf="@+id/category_editText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/category_editText" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -32,14 +34,18 @@
 
     <EditText
         android:id="@+id/category_editText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="@string/add_category"
+        android:maxLength="20"
+        android:inputType="textPersonName"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_200"
+        app:layout_constraintEnd_toStartOf="@+id/addCategoryBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

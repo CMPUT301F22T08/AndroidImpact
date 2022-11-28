@@ -63,6 +63,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
     CollectionReference shoppingListCollection;
     CollectionReference unitCollection;
     CollectionReference categoryCollection;
+    String userPath;
 
     // Other "global" variables
     // used to track which ingredient we're editing, null if we're creating a new ingredient
@@ -77,11 +78,16 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_shopping_list_item);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            userPath = extras.getString("data-path");
+        }
+
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        unitCollection = db.collection("units");
-        categoryCollection = db.collection("categories");
-        shoppingListCollection = db.collection("shoppingList");
+        unitCollection = db.document(userPath).collection("units");
+        categoryCollection = db.document(userPath).collection("categories");
+        shoppingListCollection = db.document(userPath).collection("shoppingList");
 
         // Init EditText views
         descriptionEditText = findViewById(R.id.shopping_item_addEdit_description);
@@ -103,24 +109,28 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
 
         // Check Bundle - determine if we're editing or adding!
         // Init activity title
-        Bundle extras = getIntent().getExtras();
+        //Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            currentIngredient = (ShopIngredient) extras.getSerializable("ingredient");
-            getSupportActionBar().setTitle("Edit Shopping List Item");
+            boolean isAdding = extras.getBoolean("adding");
 
-            // set initial values
-            descriptionEditText.setText(currentIngredient.getDescription());
-            amountEditText.setText(String.valueOf(currentIngredient.getAmount()));
+            if (!isAdding) {
+                currentIngredient = (ShopIngredient) extras.getSerializable("ingredient");
+                getSupportActionBar().setTitle("Edit Shopping List Item");
 
-            // set initial unit, category and locations
-            // note that we store the unit as a string, not a document path
-            selectedUnit.set(new Unit(currentIngredient.getUnit()));
-            Log.i(TAG, "Set unit: " + selectedUnit.get());
-            selectedCategory.set(new Category(currentIngredient.getCategory()));
-            Log.i(TAG, "Set category: " + selectedCategory.get());
-        } else {
-            currentIngredient = null;
-            getSupportActionBar().setTitle("Add Shopping List Item");
+                // set initial values
+                descriptionEditText.setText(currentIngredient.getDescription());
+                amountEditText.setText(String.valueOf(currentIngredient.getAmount()));
+
+                // set initial unit, category and locations
+                // note that we store the unit as a string, not a document path
+                selectedUnit.set(new Unit(currentIngredient.getUnit()));
+                Log.i(TAG, "Set unit: " + selectedUnit.get());
+                selectedCategory.set(new Category(currentIngredient.getCategory()));
+                Log.i(TAG, "Set category: " + selectedCategory.get());
+            } else {
+                currentIngredient = null;
+                getSupportActionBar().setTitle("Add Shopping List Item");
+            }
         }
 
         // EVENT LISTENERS

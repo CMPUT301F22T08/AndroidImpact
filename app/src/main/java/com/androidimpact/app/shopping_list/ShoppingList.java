@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
+ * Class for Shopping List
+ * @version 1.0
  * @author vedantvyas
  */
 public class ShoppingList extends SortableItemList<ShopIngredient> {

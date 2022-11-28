@@ -1,6 +1,7 @@
 package com.androidimpact.app.ingredients;
 
 import com.androidimpact.app.ingredients.Ingredient;
+import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  *  - bestBeforeDate (Calendar) - The best before date for the stored ingredient
  *  - location (String) - Where the ingredient is stored e.g. Pantry or Freezer
  *  - id (String) - id of the ingredient inside Firebase
+ *  Need to add some unit testing
  * @author Kailash Seshadri
  * @version 1.0
  * @see Ingredient
@@ -47,13 +49,19 @@ public class StoreIngredient extends Ingredient implements Serializable {
         this.location = location;
     }
 
+
     /**
-     * Get the best-before date of the stored ingredient
-     * @return (Date) The best before date for the stored ingredient
+     * This constructor creates a store ingredient object from ShopIngredient
+     * @param ingredient - instance of ShopIngredient class
      */
-    public Date getBestBeforeDate() {
-        return bestBeforeDate;
+    public StoreIngredient(ShopIngredient ingredient)
+    {
+        super(ingredient.getId(), ingredient.getDescription(), ingredient.getAmountPicked(), ingredient.getUnit(), ingredient.getCategory());
+        //To be changed to null
+        this.bestBeforeDate = new Date(0);
+        this.location = "";
     }
+
 
     /**
      * Get the best-before date of the stored ingredient as a Calendar object
@@ -68,21 +76,47 @@ public class StoreIngredient extends Ingredient implements Serializable {
         return cal;
     }
 
-    /**
-     * Change the best-before date of the stored ingredient
-     * @param bestBeforeDate (Date) - The new best-before date of the stored ingredient
-     */
-    public void setBestBeforeDate(Date bestBeforeDate) {
-        this.bestBeforeDate = bestBeforeDate;
+    public boolean compareCalendar(StoreIngredient ingredient)
+    {
+        Calendar cal = this.getBestBeforeCalendar();
+        Calendar cal2 = ingredient.getBestBeforeCalendar();
+        return cal.DAY_OF_MONTH == cal2.DAY_OF_MONTH && cal.YEAR == cal2.YEAR && cal.MONTH == cal2.MONTH;
     }
 
+//    public boolean compareDate(StoreIngredient ingredient)
+//    {
+//
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.YEAR, bestBeforeDate.getYear());
+//        cal.set(Calendar.MONTH, bestBeforeDate.getMonth());
+//        cal.set(Calendar.DAY_OF_MONTH, bestBeforeDate.getDate());
+//
+//    }
+//
+//    }
+
+    /**
+     * Get the best-before date of the stored ingredient
+     * @return (Date) The best before date for the stored ingredient
+     */
+    public Date getBestBeforeDate() {
+        return bestBeforeDate;
+    }
 
     /**
      * gets the location document path
      * not used by the user, but used by Firebase to know they need to serialize the locationDocumentPath
-     * @return
+     * @return location
      */
     public String getLocation() {
         return location;
+    }
+
+    /**
+     * Returns true if either the best before date is null or the location is null
+     * @return boolean
+     */
+    public boolean hasNull(){
+        return (bestBeforeDate.getTime()==0 || location=="");
     }
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/signupInfo"
+        android:layout_width="427dp"
+        android:layout_marginTop="140dp"
+       android:textSize="25sp"
+        android:gravity="center"
+        android:layout_height="60dp"
+        android:textColor="@color/white"
+        android:text="Enter Credentials" />
+
+    <EditText
+        android:id="@+id/person_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:ems="20"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_200"
+        android:layout_margin="7dp"
+        android:inputType="textPersonName"
+        android:text="" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email Address"
+        android:ems="10"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_200"
+        android:layout_margin="7dp"
+        android:inputType="textEmailAddress"
+        android:text="" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_margin="7dp"
+        android:ems="10"
+        android:textColor="@color/white"
+        android:textColorHint="@color/purple_200"
+        android:inputType="textPassword"
+        android:text="" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/cancel"
+            android:layout_margin="10dp"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/confirm"
+            android:text="Sign Up!" />
+    </LinearLayout>
+
+</LinearLayout>

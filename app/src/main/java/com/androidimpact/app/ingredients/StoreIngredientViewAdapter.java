@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
 import com.androidimpact.app.meal_plan.OnSelectInterface;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -124,14 +124,31 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         String amountUnit = holder.res.getString(R.string.shop_ingredient_amount_display, currentIngredient.getAmount(), currentIngredient.getUnit());
         holder.amount.setText(amountUnit);
         holder.category.setText(currentIngredient.getCategory());
-        holder.location.setText(currentIngredient.getLocation());
 
-        // setting formatted date
-        String myFormat="MMM dd yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        String formattedDate = dateFormat.format(currentIngredient.getBestBeforeDate().getTime());
-        String date = holder.res.getString(R.string.store_ingredient_date_display, formattedDate);
-        holder.date.setText(date);
+        if (currentIngredient.hasNull()){
+            holder.has_null_marker.setVisibility(View.VISIBLE);
+        } else {
+            holder.has_null_marker.setVisibility(View.INVISIBLE);
+        }
+
+        if (currentIngredient.getLocation() == ""){
+            holder.location.setVisibility(View.INVISIBLE);
+        } else {
+            holder.location.setVisibility(View.VISIBLE);
+            holder.location.setText(currentIngredient.getLocation());
+        }
+
+        if (currentIngredient.getBestBeforeDate().getTime()==0){
+            holder.date.setText("To be added");
+        } else {
+            // setting formatted date
+            String myFormat="MMM dd yyyy";
+            SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+            String formattedDate = dateFormat.format(currentIngredient.getBestBeforeDate().getTime());
+            String date = holder.res.getString(R.string.store_ingredient_date_display, formattedDate);
+            holder.date.setText(date);
+        }
+
 
         // OnClick Listener
         holder.dropdownToggle.setOnClickListener(v -> {
@@ -176,6 +193,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
 
         // creating a variable for our text view.
         private TextView description;
+        private ImageView has_null_marker;
 
         // creating a variable for category
         private Chip category;
@@ -212,6 +230,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
             dropdownToggle = itemView.findViewById(R.id.store_ingredient_dropdown_toggle);
             editIngredientFAB = itemView.findViewById(R.id.edit_store_ingredient);
 
+            has_null_marker = itemView.findViewById(R.id.has_null_marker);
             expandable = itemView.findViewById(R.id.store_ingredient_expandable_section);
             content = itemView.findViewById(R.id.linearLayout);
             date = itemView.findViewById(R.id.store_ingredient_expiry);

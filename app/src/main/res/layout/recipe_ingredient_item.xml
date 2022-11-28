@@ -10,11 +10,14 @@
         android:id="@+id/ingredient_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:text="@string/description"
         android:textColor="@color/white"
         android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,40 +25,44 @@
         android:id="@+id/ingredient_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_weight="1"
         android:text="@string/unit"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/ingredient_description"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient_description" />
+        app:layout_constraintBottom_toBottomOf="@+id/ingredient_category"
+        app:layout_constraintEnd_toStartOf="@+id/edit_button"
+        app:layout_constraintTop_toTopOf="@+id/ingredient_category" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/ingredient_category"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:text="@string/category"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ingredient_description"
-        app:layout_constraintStart_toEndOf="@+id/ingredient_description" />
+        android:textColor="@color/white"
+        app:chipBackgroundColor="@color/purple_700"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredient_description"
+        app:layout_constraintStart_toEndOf="@+id/ingredient_description"
+        app:layout_constraintTop_toTopOf="@+id/ingredient_description" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/background"
         android:clickable="true"
+        android:contentDescription="@string/add"
         android:focusable="true"
-        android:backgroundTint="#2E6578"
-        app:tint="@color/white"
-        app:borderWidth="2dp"
         app:backgroundTint="@color/black"
+        app:borderWidth="0dp"
+        android:elevation="0dp"
+        app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.461"
         app:srcCompat="@android:drawable/ic_menu_edit"
-        android:contentDescription="@string/add" />
+        app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

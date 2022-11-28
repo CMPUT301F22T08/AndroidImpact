@@ -27,7 +27,8 @@ import java.util.ArrayList;
 
 
 /**
- *
+ * This class creates a view adapter for Shop Ingredient
+ * @version 1.0
  * @author vedantvyas
  */
 
@@ -44,8 +45,18 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     // functions that subscribe for edit callbacks
     private ArrayList<ShopIngredientClickListener> clickListeners = new ArrayList<>();
 
+    /**
+     * Constructor for ShopIngredientAdapter
+     * @param mContext
+     * @param shoppingListController  Controller Class for Shopping List
+     */
     public ShopIngredientAdapter(Context mContext, ShoppingListController shoppingListController) {
         this.ingredientArrayList = shoppingListController.getData();
+        this.mContext = mContext;
+    }
+
+    public ShopIngredientAdapter(Context mContext, ArrayList<ShopIngredient> data) {
+        this.ingredientArrayList = data;
         this.mContext = mContext;
     }
 
@@ -58,6 +69,11 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     }
 
 
+    /**
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ShopIngredientAdapter.IngredientViewHolder holder, int position){
 
@@ -75,41 +91,37 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         float amt = currentIngredient.getAmountPicked();
         holder.amountPicked.setText(String.valueOf(amt));
 
+        // if amountPicked is zero, then change switch to false
         if (amt == 0)
             holder.pickupButton.setChecked(false);
-        else
+        else    // else change switch to true
             holder.pickupButton.setChecked(true);
 
 
-
-
-
-
-
+        //Adds listener for switch button for every item
         holder.pickupButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
                 {
-                    //throw a dialog fragment that asks for amount pickedUp and updates the ingredient accordingly
-
-
-                    //calling new instance method since we also want to pass food object
-                    //maybe remove position from here coz android is crying
+                    //if amount picked is zero and state is changed from false to true then only show the dialog box
                     if (currentIngredient.getAmountPicked() == 0) {
-                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient, position);
+                        ShopPickUpFragment ff1 = ShopPickUpFragment.newInstance(currentIngredient);
 
                         MainActivity.getmInstanceActivity().showShopPickUpFragment(ff1);
                     }
+                    // if amount picked is non-zero, then item  is already picked
 
                 }
                 else
                 {
-                    //This means that user accidentaly picked it up so change amount picked up to 0
+                    //if amount picked is non-zero and state is changed from true to false, then change amount Picked up to be zero
                     if (currentIngredient.getAmountPicked() != 0)
                     {
                         currentIngredient.setAmountPicked(0);
                         MainActivity.getmInstanceActivity().updateShopIngredient(currentIngredient);
                     }
+
+                    // if amount is zero and state is changed from true to false, no need to change amount picked up
                 }
             }
         });
@@ -120,6 +132,8 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         Log.i("String", unitStr);
         holder.amount.setText(unitStr);
 
+
+        //Adding Listeners for list items
         holder.root.setOnClickListener(v -> {
             for (ShopIngredientClickListener l : clickListeners) {
                 l.shopIngredientClicked(currentIngredient, position);
@@ -128,8 +142,9 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
     }
 
 
-
-
+    /**
+     * @return Size of ingredient List
+     */
     @Override
     public int getItemCount() {
 
@@ -161,6 +176,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
         private TextView description;
 
         // creating a variable for category
+        // creating variables for other items in Shop_ingredient_item (XML)
         private Chip category;
         private ImageButton dropdownToggle;
         private ConstraintLayout root;
@@ -180,7 +196,7 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
             super(itemView);
             res = itemView.getResources();
 
-            //Need to be changed for now
+            //finding the items in the XML and assigning them to variables
             description = itemView.findViewById(R.id.shop_ingredient_description);
             category = itemView.findViewById(R.id.shop_ingredient_category);
             pickupButton = itemView.findViewById(R.id.shop_ingredient_switch);

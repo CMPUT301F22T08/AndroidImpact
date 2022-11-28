@@ -1,10 +1,6 @@
-package com.androidimpact.app.meal_plan;
+package com.androidimpact.app.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,60 +10,50 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidimpact.app.R;
-import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.activities.MealPlanAddEditViewActivity;
-import com.androidimpact.app.activities.RecipeAddViewEditActivity;
-import com.androidimpact.app.fragments.RecipeListFragment;
+import com.androidimpact.app.meal_plan.OnSelectInterface;
 import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeController;
 import com.androidimpact.app.recipes.RecipeList;
 import com.androidimpact.app.recipes.RecipeListAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 public class RecipeAddFragment extends DialogFragment {
     private String mealType;
 
-    final String TAG = "RecipeListFragment";
+    final String TAG = "RecipeAddFragment";
 
     // Declare the variables so that you will be able to reference it later.
     RecyclerView recipeListView;
     RecipeListAdapter recipeViewAdapter;
-    RecipeList recipeList;
     RecipeController recipeController;
     ArrayList<Recipe> recipeDataList;
     String[] sortingOptions;
     Spinner sortSpinner;
     OnSelectInterface onSelectInterface;
-    String selectedRecipeId;
+    String selectedRecipeId, selectedRecipeTitle;
 
     // adding recipes to firebase
     FirebaseFirestore db;
     CollectionReference recipeCollection;
+    String dataPath;
 
-    public RecipeAddFragment(String meal) {
+    public RecipeAddFragment(String meal, String dataPath) {
         super(R.layout.fragment_recipe_list);
         this.mealType = meal;
+        this.dataPath = dataPath;
     }
 
     /**
@@ -81,14 +67,17 @@ public class RecipeAddFragment extends DialogFragment {
 
         onSelectInterface = i -> {
             selectedRecipeId = recipeDataList.get(i).getId();
-            MealPlanAddEditViewActivity mealPlanAddEditViewActivity = (MealPlanAddEditViewActivity) getActivity();
-            mealPlanAddEditViewActivity.addRecipe(this.mealType, selectedRecipeId);
+            selectedRecipeTitle = recipeDataList.get(i).getTitle();
+            ServingsAddFragment servingsAddFragment = new ServingsAddFragment(this.mealType, selectedRecipeId, selectedRecipeTitle, true);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            servingsAddFragment.show(transaction, "Add Servings");
+
             dismiss();
         };
 
         // initialize Firestore
         db = FirebaseFirestore.getInstance();
-        recipeCollection = db.collection("recipes");
+        recipeCollection = db.document(this.dataPath).collection("recipes");
     }
 
     /**
@@ -120,17 +109,21 @@ public class RecipeAddFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG + ":onViewCreated", "onViewCreated called!");
 
+        Activity a = getActivity();
+        if (a == null) {
+            Log.i(TAG + ":onViewCreated", "Fragment is not associated with an activity!");
+            return;
+        }
 
         // Initialize views
-        sortSpinner = getDialog().findViewById(R.id.sort_recipe_spinner);
+        sortSpinner = getView().findViewById(R.id.sort_recipe_spinner);
 
         // initialize adapters and customList, connect to DB
-        recipeListView = getDialog().findViewById(R.id.recipe_listview);
+        recipeListView = getView().findViewById(R.id.recipe_listview);
 
-        recipeDataList = new ArrayList<>();
-        recipeList = new RecipeList(recipeDataList);
         this.recipeController = ((MealPlanAddEditViewActivity) getActivity()).getRecipeController();
-        recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface);
+        this.recipeDataList = this.recipeController.getData();
+        recipeViewAdapter = new RecipeListAdapter(getContext(), this.recipeController, onSelectInterface, dataPath);
         this.recipeController.addDataUpdateSnapshotListener(recipeViewAdapter);
         sortingOptions = RecipeList.getSortChoices();
         ArrayAdapter<String> sortingOptionsAdapter = new ArrayAdapter<>(

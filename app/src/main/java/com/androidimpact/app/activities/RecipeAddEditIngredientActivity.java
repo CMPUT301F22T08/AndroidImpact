@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.androidimpact.app.NullableSpinnerAdapter;
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.IngredientStorageController;
-import com.androidimpact.app.location.Location;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.Timestamped;
 import com.androidimpact.app.category.Category;
@@ -73,6 +72,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     // other collections we use when editing an ingredient
     CollectionReference unitCollection;
     CollectionReference categoriesCollection;
+    String userPath;
 
     /**
      * This method runs when the activity is created
@@ -83,12 +83,16 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            this.userPath = extras.getString("data-path");
+        }
 
         // initialize Firestore
         // initialize ingredientsCollection later - after we know whether or not we are editing an ingredient or adding
         db = FirebaseFirestore.getInstance();
-        unitCollection = db.collection("units");
-        categoriesCollection = db.collection("categories");
+        unitCollection = db.document(this.userPath).collection("units");
+        categoriesCollection = db.document(this.userPath).collection("categories");
 
         setContentView(R.layout.activity_recipe_addedit_ingredient);
 
@@ -98,7 +102,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         categorySpinner = findViewById(R.id.recipe_ingredient_category);
 
         // AutoComplete from IngredientStorage
-        ingredientStorageController = new IngredientStorageController(this);
+        ingredientStorageController = new IngredientStorageController(this, this.userPath);
         autoCompleteSource = new ArrayList();
         ingredientStorageController.addSnapshotListenerAutocomplete(autoCompleteSource);
         autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, autoCompleteSource);
@@ -113,7 +117,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
         NullableSpinnerAdapter<Category> categoryAdapter = new NullableSpinnerAdapter<>(this, categories);
         categorySpinner.setAdapter(categoryAdapter);
 
-        Bundle extras = getIntent().getExtras();
+        //Bundle extras = getIntent().getExtras();
         if (extras != null) {
             isEditing = extras.getBoolean("isEditing", false);
             if (isEditing) {
@@ -346,6 +350,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     public void editUnits(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditUnitsActivity.class);
+        intent.putExtra("data-path", userPath);
         disregardResultLauncher.launch(intent);
     }
 
@@ -357,6 +362,7 @@ public class RecipeAddEditIngredientActivity extends AppCompatActivity {
     public void editCategories(View view) {
         Log.i(TAG + ":editCategories", "Going to Edit categories");
         Intent intent = new Intent(this, EditCategoriesActivity.class);
+        intent.putExtra("data-path", userPath);
         disregardResultLauncher.launch(intent);
     }
 

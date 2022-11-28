@@ -24,19 +24,13 @@ import com.androidimpact.app.shopping_list.ShopIngredient;
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
- * Add a toggle listener to adapter class, which opens this dialog box. I guess that's good enough for now
+ * Add a toggle listener to adapter class, which opens this dialog box.
  * 
  * @author Vedant Vyas
  */
 public class ShopPickUpFragment extends DialogFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private int pos =-1;
+    //Class attributes
     private ShopIngredient ingredient;
 
     private float amountPickUp;
@@ -48,11 +42,15 @@ public class ShopPickUpFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static ShopPickUpFragment newInstance(ShopIngredient ingredient, int pos) {
+    /**
+     * Creates a new ShopPickUpFragment object and passes in the arguments using bundle
+     * @param ingredient ShopIngredient in the list whose switch was clicked
+     * @return ShopPickUpFragment
+     */
+    public static ShopPickUpFragment newInstance(ShopIngredient ingredient) {
         Bundle args = new Bundle();
         //putting all the arguments to bundle so that we can retrieve them later
-        Log.i("tt1", String.valueOf(pos));
-        args.putInt("itemPos", pos);
+      //  args.putInt("itemPos", pos);
         args.putFloat("CurrentAmount", ingredient.getAmountPicked());
         args.putSerializable("ingredient", ingredient);
 
@@ -68,6 +66,10 @@ public class ShopPickUpFragment extends DialogFragment {
 
     }
 
+    /**
+     * @param savedInstanceState
+     * @return DialogBuilder object with appropriate title and EditText that lets user decidee the amount they picked up
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -78,17 +80,23 @@ public class ShopPickUpFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-            //initializing dialog box with existing object values
+        //initializing dialog box with existing object values
+
+        //We are indeed using arguments passed in to dialog fragment
         if (getArguments() != null) {
-            pos = getArguments().getInt("itemPos");
+           // pos = getArguments().getInt("itemPos");
             ingredient = (ShopIngredient) getArguments().getSerializable("ingredient");
             editAmountPickUp.setText(String.valueOf(ingredient.getAmount()));
         }
-        else
-        {
-            pos = -1;
-
+        else{
+            //This case is not possible as we never call the PickUpFragment class with out arguments, but here just for the sake of good practices
+            return builder
+                    .setView(view)
+                    .setTitle("Wrong Usage of PickUp Dialog Box")
+                    .create();
         }
+
+
 
 
 
@@ -101,7 +109,10 @@ public class ShopPickUpFragment extends DialogFragment {
 
                             //might be an issue if user is cancelling to cancel the toggle back
                             ingredient.setAmountPicked(0);
-                            MainActivity.getmInstanceActivity().cancelUpdateShopIngredient(ingredient);
+                            MainActivity main = (MainActivity)getActivity();
+                            main.cancelUpdateShopIngredient(ingredient);
+
+                            //MainActivity.getmInstanceActivity().cancelUpdateShopIngredient(ingredient);
                         }
                     })
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -109,8 +120,8 @@ public class ShopPickUpFragment extends DialogFragment {
                         public void onClick(DialogInterface dialog, int which) {
                             String cost = editAmountPickUp.getText().toString();
 
-                            //To be Removed
-                            Log.i("Empty", cost);
+
+                            Log.i("CostOfItem", cost);
 
                             float costF;
                             try
@@ -131,8 +142,10 @@ public class ShopPickUpFragment extends DialogFragment {
                             Log.i("Amount Picked up", String.valueOf(costF));
 
                             ingredient.setAmountPicked(costF);
+                            MainActivity main = (MainActivity)getActivity();
+                            main.updateShopIngredient(ingredient);
 
-                            MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
+                            //MainActivity.getmInstanceActivity().updateShopIngredient(ingredient);
                         }
                     })
                     .create();

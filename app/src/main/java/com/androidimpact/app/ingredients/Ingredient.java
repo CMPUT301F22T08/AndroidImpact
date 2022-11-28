@@ -24,8 +24,8 @@ public class Ingredient implements Serializable  {
     protected float amount;
     // although we have a "units" and "categories" collection, we only store the string value here
     // this is for faster speeds
-    private String unit;
-    private String category;
+    protected String unit;
+    protected String category;
 
     /**
      * Empty constructor - used by StoreIngredient for Firebase's auto deserialization

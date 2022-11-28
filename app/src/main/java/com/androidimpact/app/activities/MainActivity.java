@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 import android.widget.Switch;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.ingredients.StoreIngredient;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.meal_plan.MealPlanController;
 import com.androidimpact.app.shopping_list.ShopIngredient;
 import com.androidimpact.app.recipes.Recipe;
 
@@ -28,11 +32,15 @@ import com.androidimpact.app.fragments.RecipeListFragment;
 import com.androidimpact.app.fragments.ShoppingListFragment;
 import com.androidimpact.app.shopping_list.ShoppingListController;
 import com.androidimpact.app.recipes.RecipeList;
+import com.androidimpact.app.shopping_list.automate.ShoppingListAutomator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class is the activity Main Activity
@@ -41,21 +49,29 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     final String TAG = "MainActivity";
+
+    // define ExecutorService (thread pool) so things can run in the background
+    // e.g. ShoppingListAutomator
+    final ExecutorService executorService = Executors.newFixedThreadPool(2);
+
     public static WeakReference<MainActivity> weakActivity;
+    private final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
+    private final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance(executorService);
+    private final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
+    private final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance(executorService);
 
     // adding cities to firebase
-    final IngredientStorageFragment storageFragment = IngredientStorageFragment.newInstance();
-    final ShoppingListFragment shoppingListFragment = ShoppingListFragment.newInstance();
-    final MealPlannerFragment mealPlannerFragment = MealPlannerFragment.newInstance();
-    final RecipeListFragment recipeListFragment = RecipeListFragment.newInstance();
+    IngredientStorageController ingredientStorageController;
+    ShoppingListController shoppingListController;
+    RecipeController recipeController;
+    private MealPlanController mealPlanController;
 
-
-    final IngredientStorageController ingredientStorageController = new IngredientStorageController(this);
-    final ShoppingListController shoppingListController = new ShoppingListController(this);
-    final RecipeController recipeController = new RecipeController(this);
+    // Shopping LIst Automator is stored in the MainActivity as it needs access to some controllers
+    ShoppingListAutomator shoppingListAutomator;
 
     FloatingActionButton navbarFAB;
     Fragment active = storageFragment;
+    String userId, userPath;
 
     BottomNavigationView bottomnav;
 
@@ -71,22 +87,36 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         Bundle extras = getIntent().getExtras();
         String username = extras.getString("username");
+        userId = extras.getString("uid");
+        userPath = extras.getString("user-path-firebase");
 
         View parentLayout = findViewById(R.id.main_activity_layout);
 
-        Toast.makeText(this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Welcome " + (username == null ? "" : username) + "!", Toast.LENGTH_SHORT).show();
 
         // retrieve fab BEFORE we run bottomNav.setSelectedItem
         navbarFAB = findViewById(R.id.navbarFAB);
 
         bottomnav = findViewById(R.id.bottom_navigation_view);
         bottomnav.setBackground(null);
-
         bottomnav.setOnNavigationItemSelectedListener(this);
         bottomnav.setSelectedItemId(R.id.storage_icon);
 
         weakActivity = new WeakReference<>(MainActivity.this);
 
+        ingredientStorageController = new IngredientStorageController(this, this.userPath);
+        shoppingListController = new ShoppingListController(this, this.userPath);
+        recipeController = new RecipeController(this, this.userPath);
+        mealPlanController = new MealPlanController(this, this.userPath, this.recipeController, this.ingredientStorageController);
+
+        // initialize ShoppingListAutomator, as it needs access to some controllers
+        shoppingListAutomator = new ShoppingListAutomator(
+                this.ingredientStorageController,
+                this.mealPlanController,
+                this.shoppingListController,
+                executorService
+        );
+        shoppingListFragment.addAutomator(shoppingListAutomator);
 
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, recipeListFragment, "2").hide(recipeListFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.nav_fragment, shoppingListFragment, "3").hide(shoppingListFragment).commit();
@@ -101,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        FirebaseAuth.getInstance().signOut();
         finish();
         return true;
     }
@@ -159,6 +190,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return recipeController;
     }
 
+    public MealPlanController getMealPlanController() {
+        return this.mealPlanController;
+    }
+
     public static MainActivity getmInstanceActivity() {
         return weakActivity.get();
     }
@@ -181,13 +216,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
     {
-       // shoppingListFragment.cancelPickUp();
-
         getSupportActionBar().setTitle("Shopping List");
         updateActiveFragment(shoppingListFragment);
         shoppingListFragment.editShopIngredientFB(ingredient);
-//        Switch pickup = findViewById(R.id.shop_ingredient_switch);
-//        pickup.setChecked(false);
+
+    }
+
+    public void AddShopListToShopIngredient(ArrayList<ShopIngredient> data)
+    {
+        for (ShopIngredient item: data)
+        {
+            StoreIngredient ingredient = new StoreIngredient(item);
+            ingredientStorageController.addEdit(ingredient);
+            shoppingListController.delete(item);
+        }
+
+        //Maybe move the fragment to storage immediately
+        getSupportActionBar().setTitle("Ingredient Storage");
+        updateActiveFragment(storageFragment);
+        //Delete all the items from Shopping List that were moved
+
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getUserDataPath() {
+        return userPath;
     }
 
 }
