@@ -65,8 +65,6 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
      */
     public StoreIngredientViewAdapter(Context mContext, IngredientStorageController controller) {
         this(mContext, controller.getData());
-        //this.ingredientArrayList = controller.getDataAsList();
-        //this.mContext = mContext;
         this.isSelection = false;
     }
 
