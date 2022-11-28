@@ -235,7 +235,6 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
      */
     public void setEditToggleListener(ShopIngredientToggleListener toAdd)
     {
-      //  toggleListeners.add(toAdd);
         toggleListener = toAdd;
     }
 

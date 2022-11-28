@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.androidimpact.app.R;
+import com.androidimpact.app.activities.MainActivity;
 import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.ingredients.StoreIngredient;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -29,11 +31,13 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
     Context context;
 
 
-    //String key;
-
     /**
-     * Constructor for adapter for MealPlan
-     * @param mealPlan
+     *  Constructor for MealAdapter Add Edit
+     * @param context
+     * @param recipeArrayList (ArrayList<String>)
+     * @param ingredientArrayList (ArrayList<String>)
+     * @param recipeServingsArrayList  (ArrayList<Double>)
+     * @param ingredientServingsArrayList   (ArrayList<Double>)
      */
     public MealAdapterAddEdit(Context context, ArrayList<String> recipeArrayList, ArrayList<String> ingredientArrayList, ArrayList<Double> recipeServingsArrayList, ArrayList<Double> ingredientServingsArrayList/*, String key*/)
     {
@@ -67,7 +71,6 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
      */
     @Override
     public void onBindViewHolder(@NonNull MealAdapterAddEdit.AddEditMealViewHolder holder, int position) {
-        //if(this.getItemCount() > 0) {
             if(position < this.recipeArrayList.size()) {
                 holder.item.setText(this.recipeArrayList.get(position));
                 holder.servings.setText(String.valueOf(this.recipeServingsArrayList.get(position)));
@@ -75,9 +78,6 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
                 holder.item.setText(this.ingredientArrayList.get(position - this.recipeArrayList.size()));
                 holder.servings.setText(String.valueOf(this.ingredientServingsArrayList.get(position - this.recipeArrayList.size())));
             }
-
-        //}
-
     }
 
     /**
@@ -86,7 +86,19 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
      */
     @Override
     public int getItemCount() {
-        return (this.recipeArrayList.size() + this.ingredientArrayList.size());
+        int size = 0;
+        try
+        {
+            size = this.recipeArrayList.size() + this.ingredientArrayList.size();
+        }
+        catch (Exception e)
+        {
+            size = Integer.MAX_VALUE;
+            pushSnackBarToContext("Item Count is too big, so size is capped");
+
+        }
+        return size;
+
     }
 
     /**
@@ -107,4 +119,14 @@ public class MealAdapterAddEdit extends RecyclerView.Adapter<MealAdapterAddEdit.
             servings = itemView.findViewById(R.id.add_edit_meal_serving);
         }
     }
+
+    /**
+     * Creates a SnackBar that pup-up on the screen
+     * @param s (String) - The text to be shown in the SnackBar
+     */
+    private void pushSnackBarToContext(String s) {
+        Snackbar.make(((MainActivity)context).findViewById(R.id.nav_fragment), s, Snackbar.LENGTH_LONG)
+                .setAction("OK", (v)->{}).show();
+    }
+
 }

@@ -171,8 +171,9 @@ public class IngredientStorageController {
         }
         final String finalId = id;
 
-        //Does this necessarily work when Id doesn't exist in ingredient storage collection
 
+        //finding ingredient with similar attribute (except amount)
+        // if there is a similar ingredient in firebase, we merge ingredients instead of allowing duplicates
 
         ingredientStorageCollection.whereEqualTo("description", description).whereEqualTo("location", storeIngredient.getLocation()).whereEqualTo("unit", storeIngredient.getUnit()).whereEqualTo("category", storeIngredient.getCategory())
                 .get()
@@ -233,9 +234,6 @@ public class IngredientStorageController {
                             }
                         });
 
-        //StoreIngredient ingredient = .toObject(StoreIngredient.class);
-        //Will have to change
-      //  ingredientStorageCollection.document(id).set(storeIngredient);
     }
 
     /**
@@ -288,7 +286,7 @@ public class IngredientStorageController {
         return ingredientStorage.getData();
     }
 
-    // TODO: Get rid of this ASAP
+    //getter method for ingredient storage
     public IngredientStorage getIngredientStorage() {
         return ingredientStorage;
     }

@@ -158,7 +158,7 @@ public class EditUnitsActivity extends AppCompatActivity {
 
                             if (count <= 1) {
                                 makeSnackbar("You need at least 1 unit!");
-                                // "swipes" the element back lmao
+                                // "swipes" the element back
                                 unitViewAdapter.notifyItemChanged(position);
                                 return;
                             }
