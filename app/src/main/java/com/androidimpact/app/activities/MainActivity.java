@@ -207,11 +207,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     {
         getSupportActionBar().setTitle("Shopping List");
         updateActiveFragment(shoppingListFragment);
-        //call a function in shoppingListFragment which does the data updation
-//        if (ingredient.getAmountPicked() != 0)
+
         shoppingListFragment.editShopIngredientFB(ingredient);
-//        else
-//            cancelUpdateShopIngredient(ingredient);
+
     }
 
     public void cancelUpdateShopIngredient(ShopIngredient ingredient)
@@ -224,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void AddShopListToShopIngredient(ArrayList<ShopIngredient> data)
     {
+
         for (ShopIngredient item: data)
         {
             StoreIngredient ingredient = new StoreIngredient(item);
@@ -232,8 +231,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         //Maybe move the fragment to storage immediately
-        getSupportActionBar().setTitle("Ingredient Storage");
-        updateActiveFragment(storageFragment);
+        if (data.size() != 0)
+        {
+            //Maybe Remove this
+            String errorMessage = "Some items moved to Ingredient Storage";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            String errorMessage = "No Item Picked Up";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+
         //Delete all the items from Shopping List that were moved
 
     }
