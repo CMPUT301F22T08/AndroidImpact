@@ -118,7 +118,7 @@ public class StoreIngredientTest {
                 "items"
         );
 
-        assertTrue(ingredient.compareCalendar(ingredient2));
+        assertFalse(ingredient.compareCalendar(ingredient2));
         assertTrue(ingredient.compareCalendar(ingredient));
         assertTrue(ingredient2.compareCalendar(ingredient3));
     }
