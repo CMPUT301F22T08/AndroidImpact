@@ -42,7 +42,6 @@ public class EditLocationsActivity extends AppCompatActivity {
     LocationAdapter locationViewAdapter;
 
     // Views
-    Button addLocationBtn;
     EditText newLocationInput;
 
     // Firestore
