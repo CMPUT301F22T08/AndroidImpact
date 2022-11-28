@@ -66,47 +66,64 @@ public class SignUpActivity extends AppCompatActivity {
 
         cancel.setOnClickListener(view -> finish());
 
-        signup.setOnClickListener(view -> firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(SignUpActivity.this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "createUserWithEmail:success");
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
+        signup.setOnClickListener(view -> {
+            try {
+                if (name.getText().toString().isEmpty()) {
+                    throw new Exception ("Name can't be empty!");
+                }
+                if (email.getText().toString().isEmpty()) {
+                    throw new Exception ("Email can't be empty!");
+                }
+                if (password.getText().toString().isEmpty()) {
+                    throw new Exception ("Password can't be empty!");
+                }
+                firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                        .addOnCompleteListener(SignUpActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(name.getText().toString())
-                                .build();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name.getText().toString())
+                                        .build();
 
-                        user.updateProfile(profileUpdates)
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        Log.d(TAG, "User profile updated.");
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                Log.d(TAG, "User profile updated.");
 
-                                        db = FirebaseFirestore.getInstance();
-                                        Map<String, Object> data = new HashMap<>();
-                                        db.collection("userData").document(user.getUid()).set(data);
+                                                db = FirebaseFirestore.getInstance();
+                                                Map<String, Object> data = new HashMap<>();
+                                                db.collection("userData").document(user.getUid()).set(data);
 
-                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                        intent.putExtra("username", user.getDisplayName());
-                                        intent.putExtra("uid", user.getUid());
-                                        intent.putExtra("user-path-firebase", "userData/" + user.getUid());
-                                        // Clear fields
-                                        name.setText("");
-                                        email.setText("");
-                                        password.setText("");
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                });
+                                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                                intent.putExtra("username", user.getDisplayName());
+                                                intent.putExtra("uid", user.getUid());
+                                                intent.putExtra("user-path-firebase", "userData/" + user.getUid());
+                                                // Clear fields
+                                                name.setText("");
+                                                email.setText("");
+                                                password.setText("");
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        });
 
 
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(SignUpActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }));
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(SignUpActivity.this, "Invalid email!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } catch (Exception e) {
+                Toast.makeText(SignUpActivity.this, e.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        });
     }
 
 }
