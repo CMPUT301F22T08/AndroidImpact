@@ -205,6 +205,14 @@ public class ShopIngredientAdapter extends RecyclerView.Adapter<ShopIngredientAd
 
         private FloatingActionButton moveFAB;
 
+        /**
+         * used only in tests
+         * @return the description
+         */
+        public String getDescription() {
+            return this.description.getText().toString();
+        }
+
 
         /**
          * initializing our text views

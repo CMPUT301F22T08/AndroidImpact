@@ -10,6 +10,7 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -18,6 +19,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import android.util.Log;
@@ -28,12 +30,15 @@ import android.view.ViewParent;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.shopping_list.ShopIngredientAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -354,13 +359,33 @@ public class ShoppingListActivity {
                         isDisplayed()));
         materialButton2.perform(click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.shop_ingredient_description), withText("Shopping List Item 1"),
-                        withParent(allOf(withId(R.id.shop_ingredient_item_root),
-                                withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class)))),
-                        isDisplayed()));
-        textView.check(matches(withText("Shopping List Item 1")));
+        // See if the new ingredientDescription is in the list
+        // Check if the ingredient is in the list
+        onView(withId(R.id.shop_ingredient_description))
+                .perform(RecyclerViewActions.actionOnHolderItem(
+                        shopIngredientVHMatcher(equalTo("Shopping List Item 1")),
+                        scrollTo()
+                )).check(matches(hasDescendant(withText("Shopping List Item 1"))));
     }
+
+    // this is a helper function that matches an item in the RecyclerView by its description.
+    public static Matcher<ShopIngredientAdapter.IngredientViewHolder> shopIngredientVHMatcher(Matcher<String> descriptionMatcher){
+        return new TypeSafeMatcher<>(){
+            @Override
+            public boolean matchesSafely(ShopIngredientAdapter.IngredientViewHolder ingredientViewHolder) {
+                Log.i("shopIngredientVHMatcher", ingredientViewHolder.getDescription() + " = " + descriptionMatcher.toString());
+                return descriptionMatcher.matches(ingredientViewHolder.getDescription());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                // this is only used for verbose logs apparently
+                // https://thiagolopessilva.medium.com/creating-custom-viewmatcher-for-espresso-75dde62dd173
+                description.appendText("ViewHolder with description: " + descriptionMatcher.toString());
+            }
+        };
+    }
+
 
     @Test
     public void D_getFromMealPlan() {
