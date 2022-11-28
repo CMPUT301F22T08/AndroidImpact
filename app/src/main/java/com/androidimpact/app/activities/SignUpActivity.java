@@ -77,6 +77,9 @@ public class SignUpActivity extends AppCompatActivity {
                 if (password.getText().toString().isEmpty()) {
                     throw new Exception ("Password can't be empty!");
                 }
+                if (password.getText().toString().length() < 6) {
+                    throw new Exception ("Password must be at least 6 characters!");
+                }
                 firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(SignUpActivity.this, task -> {
                             if (task.isSuccessful()) {

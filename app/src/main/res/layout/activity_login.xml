@@ -40,14 +40,14 @@
         android:id="@+id/username"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="48dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textPersonName"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_200"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_phrase" />
 
@@ -55,16 +55,18 @@
         android:id="@+id/password"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginBottom="50dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="@color/white"
         android:textColorHint="@color/purple_200"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintVertical_bias="0.412" />
 
     <Button
         android:id="@+id/signup"
