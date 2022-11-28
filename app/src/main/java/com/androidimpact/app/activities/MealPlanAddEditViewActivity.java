@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidimpact.app.R;
 import com.androidimpact.app.ingredients.StoreIngredient;
@@ -244,39 +245,48 @@ public class MealPlanAddEditViewActivity extends AppCompatActivity {
     public void addRecipe(String mealType, String recipeId, String recipeTitle, double f) {
         Log.i("data got", mealType + recipeId);
         ArrayList<String> entry = this.recipeIdMap.getOrDefault(mealType, new ArrayList<>());
-        entry.add(recipeId);
-        this.recipeIdMap.put(mealType, entry);
+        if(!entry.contains(recipeId)) {
+            entry.add(recipeId);
+            this.recipeIdMap.put(mealType, entry);
 
-        ArrayList<String> entry2 = this.recipeTitleMap.getOrDefault(mealType, new ArrayList<>());
-        entry2.add(recipeTitle);
-        this.recipeTitleMap.put(mealType, entry2);
+            ArrayList<String> entry2 = this.recipeTitleMap.getOrDefault(mealType, new ArrayList<>());
+            entry2.add(recipeTitle);
+            this.recipeTitleMap.put(mealType, entry2);
 
-        ArrayList<Double> servings = this.recipeServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
-        servings.add(f);
-        this.recipeServingsMap.put(mealType + "Servings", servings);
+            ArrayList<Double> servings = this.recipeServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+            servings.add(f);
+            this.recipeServingsMap.put(mealType + "Servings", servings);
 
-        this.adapterAddEditHashMap.values().forEach(
-                adapter -> adapter.notifyDataSetChanged()
-        );
+            this.adapterAddEditHashMap.values().forEach(
+                    adapter -> adapter.notifyDataSetChanged()
+            );
+        } else {
+            Toast.makeText(this, "Invalid request: Recipe already exists in meal plan", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void addIngredient(String mealType, String ingredientId, String ingredientTitle, double f) {
         Log.i("data got", mealType + ingredientId);
         ArrayList<String> entry = this.ingredientIdMap.getOrDefault(mealType, new ArrayList<>());
-        entry.add(ingredientId);
-        this.ingredientIdMap.put(mealType, entry);
+        if(!entry.contains(ingredientId)) {
+            entry.add(ingredientId);
+            this.ingredientIdMap.put(mealType, entry);
 
-        ArrayList<String> entry2 = this.ingredientDescriptionMap.getOrDefault(mealType, new ArrayList<>());
-        entry2.add(ingredientTitle);
-        this.ingredientDescriptionMap.put(mealType, entry2);
+            ArrayList<String> entry2 = this.ingredientDescriptionMap.getOrDefault(mealType, new ArrayList<>());
+            entry2.add(ingredientTitle);
+            this.ingredientDescriptionMap.put(mealType, entry2);
 
-        ArrayList<Double> servings = this.ingredientServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
-        servings.add(f);
-        this.ingredientServingsMap.put(mealType + "Servings", servings);
+            ArrayList<Double> servings = this.ingredientServingsMap.getOrDefault(mealType + "Servings", new ArrayList<>());
+            servings.add(f);
+            this.ingredientServingsMap.put(mealType + "Servings", servings);
 
-        this.adapterAddEditHashMap.values().forEach(
-                adapter -> adapter.notifyDataSetChanged()
-        );
+
+            this.adapterAddEditHashMap.values().forEach(
+                    adapter -> adapter.notifyDataSetChanged()
+            );
+        } else {
+            Toast.makeText(this, "Invalid request: Ingredient already exists in meal plan", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
