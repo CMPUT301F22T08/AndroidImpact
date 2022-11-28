@@ -63,10 +63,6 @@ jobs:
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
 
-      - name: Import Firebase
-        run: |
-          npm install -g firebase-tools
-
       - name: Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -74,5 +70,4 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: firebase emulators:exec --import data "./gradlew connectedCheck"
-
+          script: ./gradlew connectedCheck
