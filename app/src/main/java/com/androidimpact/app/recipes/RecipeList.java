@@ -30,14 +30,14 @@ public class RecipeList extends SortableItemList<Recipe> {
                         "Number of Servings",
                         "Recipe Category"
                 },
-                (Comparator<Recipe>[]) Arrays.asList(
+                new Comparator[]{
                         Comparator.comparingInt(a -> (int) ((Recipe) a).getDate().getTime()),
                         Comparator.comparing(Recipe::getTitle, String.CASE_INSENSITIVE_ORDER),
                         Comparator.comparingInt(Recipe::getPrep_time),
                         Comparator.comparingInt(Recipe::getServings),
                         Comparator.comparing(Recipe::getCategory, String.CASE_INSENSITIVE_ORDER)
-                ).toArray());
-        //this.recipeArrayList = recipeArrayList;
+                }
+        );
         sortChoices = new String[]{
                 "Date Added",
                 "Title",
