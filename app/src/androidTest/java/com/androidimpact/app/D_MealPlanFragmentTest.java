@@ -5,12 +5,9 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -37,10 +34,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.androidimpact.app.R;
 import com.androidimpact.app.activities.LoginActivity;
-import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
-import com.androidimpact.app.meal_plan.MealPlanList;
 import com.androidimpact.app.meal_plan.MealPlanListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -69,13 +63,16 @@ import java.util.Objects;
  * Written using the built in espresso test recorder
  * Note: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
  * sometimes doesn't. Try re running if it doesn't work.
+ *
+ * NOTE: for some reason when running all the tests at once, this test takes forever to run.
+ * it should work when run individually
  * @version 1.0
  * @author Curtis Kan
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MealPlanFragmentTest {
+public class D_MealPlanFragmentTest {
 
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
@@ -302,7 +299,7 @@ public class MealPlanFragmentTest {
         onView(withId(R.id.meal_plan_list))
                 .perform(RecyclerViewActions.actionOnHolderItem(
                         mealPlanVHMatcher(equalTo("Day 301")),
-                        MealPlanFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_button)
+                        D_MealPlanFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_button)
                 ));
 
         Thread.sleep(1000);

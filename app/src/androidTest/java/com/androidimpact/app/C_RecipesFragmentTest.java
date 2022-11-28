@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.annotation.NonNull;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
@@ -35,27 +34,19 @@ import androidx.test.espresso.action.GeneralSwipeAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Swipe;
 import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.androidimpact.app.activities.LoginActivity;
-import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
-import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.recipes.RecipeIngredientAdapter;
 import com.androidimpact.app.recipes.RecipeListAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -63,7 +54,6 @@ import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
@@ -79,13 +69,16 @@ import java.util.Objects;
  * Written using the built in espresso test recorder
  * Note: these tests are FLAKEY sometimes. Nothing is changed and it works most of the time but
  * sometimes doesn't. Try re running if it doesn't work.
+ *
+ * NOTE: for some reason when running all the tests at once, this test takes forever to run.
+ * it should work when run individually
  * @version 1.0
  * @author Curtis Kan
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RecipesFragmentTest {
+public class C_RecipesFragmentTest {
 
     @Rule
     public ActivityScenarioRule<LoginActivity> mActivityScenarioRule =
@@ -367,7 +360,7 @@ public class RecipesFragmentTest {
         onView(withId(R.id.recipe_listview))
                 .perform(RecyclerViewActions.actionOnHolderItem(
                         recipeVHMatcher(equalTo("Aardvark soup")),
-                        RecipesFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_recipe_fab)
+                        C_RecipesFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_recipe_fab)
                 ));
 
         // Change the prep_time to 5
@@ -401,7 +394,7 @@ public class RecipesFragmentTest {
         onView(withId(R.id.recipe_ingredients_list))
                 .perform(RecyclerViewActions.actionOnHolderItem(
                         recipeIngredientVHMatcher(equalTo("Water")),
-                        RecipesFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_button)
+                        C_RecipesFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_button)
                 ));
 
         Thread.sleep(1000);
