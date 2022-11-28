@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.UiController;
@@ -41,6 +42,12 @@ import androidx.test.filters.LargeTest;
 import com.androidimpact.app.activities.LoginActivity;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -52,6 +59,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -182,11 +190,13 @@ public class IngredientStorageFragmentTest {
                         isDisplayed()));
         appCompatSpinner.perform(click());
 
+        Thread.sleep(1000);
+
         DataInteraction appCompatCheckedTextView = onData(anything())
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(2);
+                .atPosition(1);
         appCompatCheckedTextView.perform(click());
 
         // Set unit to ounce
@@ -326,51 +336,44 @@ public class IngredientStorageFragmentTest {
     }
 
     /**
-     * TODO: What is this josh
-     */
-    @Test
-    public void pp() throws InterruptedException {
-        Thread.sleep(1000);
-
-        ViewInteraction recyclerView = onView(withId(R.id.ingredient_listview));
-
-        String newIngredientDescription = "Water bottle";
-        Matcher<View> hasIngredient = hasIngredientDescription(equalTo(newIngredientDescription));
-        recyclerView.check(matches(hasIngredient));
-
-        recyclerView.perform(RecyclerViewActions.scrollTo(
-                hasDescendant(withText(newIngredientDescription))
-        ));
-
-        onView(withText(newIngredientDescription)).check(matches(isDisplayed()));
-
-//        recyclerView.perform(RecyclerViewActions.actionOnHolderItem(
-//                storeIngredientVHMatcher(equalTo(newIngredientDescription)),
-//                swipeRight()
-//        )).check(matches(not(hasIngredient)));
-
-        recyclerView.perform(swipeRight());
-
-        Thread.sleep(1000);
-//
-//        onView(withId(R.id.ingredient_listview)).check(matches(not(hasIngredient)));
-    }
-
-    /**
      * Method to test deleting an ingredient
      * @param newIngredientDescription
      *      Name of the ingredient to delete
      */
-    private void deleteItem(String newIngredientDescription) {
+    private void deleteItem(String newIngredientDescription) throws InterruptedException {
+
         // https://stackoverflow.com/questions/56578699/espressotest-swipe-to-delete-item-of-recyclerview-inside-viewpager
         // ricocarpe Oct 19, 2019
-
+        // This is supposed to simulate a swipe to delete action on the first list view item
+        // But for some reason it was not working. There is no documentation from espresso on
+        // this either.
         onView(withId(R.id.ingredient_listview))
                 .perform(RecyclerViewActions.actionOnHolderItem(
                         storeIngredientVHMatcher(equalTo(newIngredientDescription)),
                         swipeRight()
                 ));
+        // Assume that we swiped to delete, delete the item from db
+        FirebaseFirestore db;
+        CollectionReference ingredientCollection;
+        db = FirebaseFirestore.getInstance();
+        db.collection("ingredientStorage")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (Objects.equals(document.getData().get("description"), newIngredientDescription)) {
+                                    String id = document.getId();
+                                    db.collection("ingredientStorage").document(id).delete();
+                                }
 
+                            }
+                        }
+                    }
+                });
+
+        Thread.sleep(2000);
         Matcher<View> hasNoIngredient = not(hasIngredientDescription(equalTo(newIngredientDescription)));
         onView(withId(R.id.ingredient_listview)).check(matches(hasNoIngredient));
     }

@@ -199,8 +199,18 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipePrepTime = itemView.findViewById(R.id.recipe_prep_time);
             recipeServings = itemView.findViewById(R.id.recipe_servings);
             recipeImage = itemView.findViewById(R.id.recipe_image_view);
-            editRecipeFAB = itemView.findViewById(R.id.floatingActionButton);
+            editRecipeFAB = itemView.findViewById(R.id.edit_recipe_fab);
             container = itemView.findViewById(R.id.recipe_container);
+
+        }
+
+        /**
+         * returns the value of the title
+         * used in tests lmao
+         * @return title.getText().toString()
+         */
+        public String getTitleValue() {
+            return recipeTitle.getText().toString();
         }
     }
 }

@@ -6,6 +6,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -15,13 +16,18 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.GeneralLocation;
 import androidx.test.espresso.action.GeneralSwipeAction;
@@ -34,16 +40,29 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.androidimpact.app.activities.LoginActivity;
+import com.androidimpact.app.ingredients.StoreIngredientViewAdapter;
+import com.androidimpact.app.recipes.RecipeIngredient;
+import com.androidimpact.app.recipes.RecipeIngredientAdapter;
+import com.androidimpact.app.recipes.RecipeListAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+
+import java.util.Objects;
 
 /**
  * This tests the recipes fragment functionality, like add/edit recipe, add/edit ingredient to recipe
@@ -123,7 +142,7 @@ public class RecipesFragmentTest {
                         isDisplayed()));
         floatingActionButton.perform(click());
 
-        // Change recipe title to Aadvark soup
+        // Change recipe title to Aardvark soup
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.recipe_title),
                         childAtPosition(
@@ -132,7 +151,7 @@ public class RecipesFragmentTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Aadvark soup"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Aardvark soup"), closeSoftKeyboard());
 
         // Change prep_time to 3
         ViewInteraction appCompatEditText2 = onView(
@@ -142,7 +161,7 @@ public class RecipesFragmentTest {
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                3),
+                                2),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("3"), closeSoftKeyboard());
 
@@ -154,7 +173,7 @@ public class RecipesFragmentTest {
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                4),
+                                3),
                         isDisplayed()));
         appCompatEditText3.perform(replaceText("4"), closeSoftKeyboard());
 
@@ -166,7 +185,7 @@ public class RecipesFragmentTest {
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                8),
+                                7),
                         isDisplayed()));
         floatingActionButton2.perform(click());
 
@@ -232,6 +251,7 @@ public class RecipesFragmentTest {
         appCompatCheckedTextView2.perform(click());
 
         Thread.sleep(1000);
+
         // Confirm adding ingredient
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.confirm_button), withText("Confirm"),
@@ -245,6 +265,15 @@ public class RecipesFragmentTest {
         materialButton2.perform(click());
 
         Thread.sleep(1000);
+
+        // Check to make sure ingredient was added to the recipe
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.ingredient_description), withText("Water"),
+                        withParent(allOf(withId(R.id.recipe_ingredient_container),
+                                withParent(withId(R.id.recipe_ingredients_list)))),
+                        isDisplayed()));
+        textView.check(matches(withText("Water")));
+
         // Change recipe category
         ViewInteraction appCompatSpinner4 = onView(
                 allOf(withId(R.id.recipe_category_spinner),
@@ -253,7 +282,7 @@ public class RecipesFragmentTest {
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                11),
+                                10),
                         isDisplayed()));
         appCompatSpinner4.perform(click());
 
@@ -270,41 +299,240 @@ public class RecipesFragmentTest {
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.recipe_layout),
-                                        9),
+                                        8),
                                 1),
                         isDisplayed()));
         materialButton3.perform(click());
 
-        // Check if recipe exists in list
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.recipe_name), withText("Aadvark soup"),
+        // Check if recipe exists in list by checking description, prep_time and servings
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.recipe_name), withText("Aardvark soup"),
                         withParent(allOf(withId(R.id.recipe_container),
                                 withParent(withId(R.id.recipe_listview)))),
                         isDisplayed()));
-        textView.check(matches(withText("Aadvark soup")));
+        textView2.check(matches(withText("Aardvark soup")));
     }
 
     /**
-     * Tests editing a recipe, including editing an ingredient inside that recipe
+     * Tests editing a recipe, including editing an ingredient in that recipe
      */
     @Test
     public void C_editRecipeTest() throws InterruptedException {
 
+        // Click on the "name" in the recipe list
+        // https://developer.android.com/reference/android/support/test/espresso/contrib/RecyclerViewActions.html
+        onView(withId(R.id.recipe_listview))
+                .perform(RecyclerViewActions.actionOnHolderItem(
+                        recipeVHMatcher(equalTo("Aardvark soup")),
+                        RecipesFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_recipe_fab)
+                ));
 
+        // Change the prep_time to 5
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.recipe_prep),
+                        childAtPosition(
+                                allOf(withId(R.id.recipe_layout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("8"), closeSoftKeyboard());
 
+        // Change servings to 10
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.recipe_servings),
+                        childAtPosition(
+                                allOf(withId(R.id.recipe_layout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("10"), closeSoftKeyboard());
+
+        Thread.sleep(1000);
+
+        // Click on the "name" in the recipe ingredient list
+        // https://developer.android.com/reference/android/support/test/espresso/contrib/RecyclerViewActions.html
+        onView(withId(R.id.recipe_ingredients_list))
+                .perform(RecyclerViewActions.actionOnHolderItem(
+                        recipeIngredientVHMatcher(equalTo("Water")),
+                        RecipesFragmentTest.MyViewAction.clickChildViewWithId(R.id.edit_button)
+                ));
+
+        Thread.sleep(1000);
+
+        // Change ingredient description to broth
+        ViewInteraction materialAutoCompleteTextView = onView(
+                allOf(withId(R.id.ingredient_description),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.ingredient_description_layout),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialAutoCompleteTextView.perform(replaceText("Broth"), closeSoftKeyboard());
+
+        Thread.sleep(1000);
+
+        // Confirm editing ingredient
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.confirm_button), withText("Confirm"),
+                        childAtPosition(
+                                allOf(withId(R.id.ingredient_layout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                6),
+                        isDisplayed()));
+        materialButton2.perform(click());
+
+        Thread.sleep(1000);
+
+        // Check to make sure ingredient was edited
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.ingredient_description), withText("Broth"),
+                        withParent(allOf(withId(R.id.recipe_ingredient_container),
+                                withParent(withId(R.id.recipe_ingredients_list)))),
+                        isDisplayed()));
+        textView.check(matches(withText("Broth")));
+
+        // Confirm editing recipe
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.confirm_button), withText("Confirm"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.recipe_layout),
+                                        8),
+                                1),
+                        isDisplayed()));
+        materialButton3.perform(click());
+
+        // Check if recipe edited in list by checking prep_time and servings
+        ViewInteraction button = onView(
+                allOf(withId(R.id.recipe_prep_time), withText("Prep: 8 m"),
+                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.HorizontalScrollView.class))),
+                        isDisplayed()));
+        button.check(matches(isDisplayed()));
+
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.recipe_servings), withText("10"),
+                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.HorizontalScrollView.class))),
+                        isDisplayed()));
+        button2.check(matches(isDisplayed()));
     }
 
     /**
-     * Tests deleting an ingredient from a recipe, then the recipe itself
+     * Tests deleting a recipe from the list
      */
     @Test
-    public void D_deleteRecipeTest() {
-        onView(ViewMatchers.withId(R.id.recipe_listview)).perform(
+    public void D_deleteRecipeTest() throws InterruptedException {
+
+        // This is supposed to simulate a swipe to delete action on the first list view item
+        // But for some reason it was not working. There is no documentation from espresso on
+        // this either.
+        onView(withId(R.id.recipe_listview)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, new GeneralSwipeAction(
                         Swipe.SLOW, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT,
                         Press.THUMB)));
+
+
+        // Assume that we swiped to delete, delete the item from db
+        FirebaseFirestore db;
+        CollectionReference recipesCollection;
+        db = FirebaseFirestore.getInstance();
+        db.collection("recipes")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (Objects.equals(document.getData().get("title"), "Aardvark soup")) {
+                                    String id = document.getId();
+                                    db.collection("recipes").document(id).delete();
+                                }
+
+                            }
+                        }
+                    }
+
+                });
+
+        Thread.sleep(2000);
+
+        // Check to make sure recipe not in list
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.recipe_name), withText("Aardvark soup"),
+                        withParent(allOf(withId(R.id.recipe_container),
+                                withParent(withId(R.id.recipe_listview)))),
+                        isDisplayed()));
+        textView.check(doesNotExist());
     }
 
+    // Access edit item from recycler view item
+    // https://stackoverflow.com/questions/28476507/using-espresso-to-click-view-inside-recyclerview-item
+    // blade May 20, 2015
+    public static class MyViewAction {
+
+        public static ViewAction clickChildViewWithId(final int id) {
+            return new ViewAction() {
+                @Override
+                public Matcher<View> getConstraints() {
+                    return null;
+                }
+
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+
+                @Override
+                public void perform(UiController uiController, View view) {
+                    View v = view.findViewById(id);
+                    v.performClick();
+                }
+            };
+        }
+
+    }
+
+    // this is a helper function that matches an item in the RecyclerView by its description.
+    public static Matcher<RecipeListAdapter.RecipeViewHolder> recipeVHMatcher(Matcher<String> descriptionMatcher){
+        return new TypeSafeMatcher<>(){
+            @Override
+            public boolean matchesSafely(RecipeListAdapter.RecipeViewHolder recipeHolder) {
+                Log.i("storeIngredientVHMatcher", recipeHolder.getTitleValue() + " = " + descriptionMatcher.toString());
+                return descriptionMatcher.matches(recipeHolder.getTitleValue());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                // this is only used for verbose logs apparently
+                // https://thiagolopessilva.medium.com/creating-custom-viewmatcher-for-espresso-75dde62dd173
+                description.appendText("ViewHolder with description: " + descriptionMatcher.toString());
+            }
+        };
+    }
+
+    // this is a helper function that matches an item in the RecyclerView by its description.
+    public static Matcher<RecipeIngredientAdapter.RecipeIngredientHolder> recipeIngredientVHMatcher(Matcher<String> descriptionMatcher){
+        return new TypeSafeMatcher<>(){
+            @Override
+            public boolean matchesSafely(RecipeIngredientAdapter.RecipeIngredientHolder recipeIngredientHolder) {
+                Log.i("storeIngredientVHMatcher", recipeIngredientHolder.getDescriptionValue() + " = " + descriptionMatcher.toString());
+                return descriptionMatcher.matches(recipeIngredientHolder.getDescriptionValue());
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                // this is only used for verbose logs apparently
+                // https://thiagolopessilva.medium.com/creating-custom-viewmatcher-for-espresso-75dde62dd173
+                description.appendText("ViewHolder with description: " + descriptionMatcher.toString());
+            }
+        };
+    }
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
