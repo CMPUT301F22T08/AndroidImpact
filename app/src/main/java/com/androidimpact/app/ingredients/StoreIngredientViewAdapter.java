@@ -179,6 +179,7 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
      * @return
      */
     @Override
+    @NonNull
     public int getItemCount() {
         return ingredientArrayList.size();
     }
@@ -204,6 +205,15 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         private LinearLayout content;
         private TextView amount;
         private TextView date;
+
+        /**
+         * returns the value of the description
+         * used in tests lmao
+         * @return description.getText().toString()
+         */
+        public String getDescriptionValue() {
+            return description.getText().toString();
+        }
 
         /**
          * initializing our text views
@@ -260,4 +270,10 @@ public class StoreIngredientViewAdapter extends RecyclerView.Adapter<StoreIngred
         editListeners.add(toAdd);
     }
 
+    /**
+     * This is purely for testing.
+     */
+    public StoreIngredient getItem(int i) {
+        return ingredientArrayList.get(i);
+    }
 }
