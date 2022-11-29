@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Have to change layout so that amount is not in expandable view-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shop_ingredient_item_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/shop_ingredient_description"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            android:padding="0dp"
+            android:text="@string/description"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/shop_ingredient_dropdown_toggle"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginEnd="4dp"-->
+        <!--            android:backgroundTint="@color/background"-->
+        <!--            android:minHeight="48dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_constraintVertical_bias="0.0"-->
+        <!--            app:srcCompat="@drawable/expand_more_white" />-->
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/shop_ingredient_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:chipBackgroundColor="@color/purple_700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shop_ingredient_description" />
+
+        <TextView
+            android:id="@+id/shop_ingredient_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="13dp"
+            android:text="Amount"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/shop_ingredient_category"
+            app:layout_constraintTop_toTopOf="@+id/shop_ingredient_category" />
+
+        <TextView
+            android:id="@+id/shop_ingredient_amountPick"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:paddingTop="13dp"
+            android:paddingLeft="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="8dp"
+            android:text="Amt picked"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/shop_ingredient_amount"
+            app:layout_constraintTop_toTopOf="@+id/shop_ingredient_category" />
+
+
+
+
+
+        <Switch
+            android:id="@+id/shop_ingredient_switch"
+            android:layout_width="125dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="68dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="30dp"
+            android:text="Picked"
+            android:textColor="@color/white"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintStart_toEndOf="@+id/shop_ingredient_description"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

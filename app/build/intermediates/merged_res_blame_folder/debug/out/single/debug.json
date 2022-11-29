@@ -1,0 +1,422 @@
+[
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_icon_edit.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\icon_edit.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_servings_add.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_servings_add.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_edit_locations.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_edit_locations.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_add_edit_shopping_list_item.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_add_edit_shopping_list_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_meal_plan_add_edit_view.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_meal_plan_add_edit_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_add_meal_item_container_fragment.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\add_meal_item_container_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-hdpi_ic_launcher_new.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-hdpi\\ic_launcher_new.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\navigation_nav_graph.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\navigation\\nav_graph.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_activity_edit_units.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/activity_edit_units.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_recipe_ingredient_item.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/recipe_ingredient_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_recipe_serving_vector.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\recipe_serving_vector.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_ic_baseline_dining_24.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\ic_baseline_dining_24.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_shopping_list_item.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/shopping_list_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_category_background_bubble.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\category_background_bubble.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_activity_meal_plan_add_edit_recipe_ingredient.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/activity_meal_plan_add_edit_recipe_ingredient.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_expand_less_white.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\expand_less_white.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-mdpi_ic_launcher_new_round.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-mdpi\\ic_launcher_new_round.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-xxxhdpi_icon_shoppinglist.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-xxxhdpi\\icon_shoppinglist.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_recipe_in_list.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\recipe_in_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_activity_meal_plan_add_edit_view.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/activity_meal_plan_add_edit_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_add_meal_item_container_fragment.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/add_meal_item_container_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_shop_pick_up.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_shop_pick_up.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-hdpi_icon_storage.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-hdpi\\icon_storage.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_ingredient_storage.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_ingredient_storage.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_meal_plan_meal.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/meal_plan_meal.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_recipe_ingredient_item.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\recipe_ingredient_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xhdpi_ic_launcher_new.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-xhdpi\\ic_launcher_new.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_servings_add_mealplan.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_servings_add_mealplan.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxxhdpi_ic_launcher_new.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-xxxhdpi\\ic_launcher_new.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_recipe_add_mealplan.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_recipe_add_mealplan.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxhdpi_ic_launcher_new.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-xxhdpi\\ic_launcher_new.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_icon_logout.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\icon_logout.png"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_fragment_recipe_add_mealplan.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/fragment_recipe_add_mealplan.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_activity_recipe_addviewedit.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/activity_recipe_addviewedit.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_circle.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\circle.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_recycler_view_item.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\recycler_view_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_login_signup.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_login_signup.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_ingredient_storage_item.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\ingredient_storage_item.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_activity_main.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_recipe_in_list.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/recipe_in_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-xhdpi_icon_storage.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-xhdpi\\icon_storage.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_recipe_addviewedit.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_recipe_addviewedit.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-xxhdpi_icon_storage.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-xxhdpi\\icon_storage.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-xxxhdpi_icon_storage.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-xxxhdpi\\icon_storage.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxhdpi_ic_launcher_new_round.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-xxhdpi\\ic_launcher_new_round.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_add_edit_ingredient_storage.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_add_edit_ingredient_storage.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\anim_fade_in.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\anim\\fade_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_expand_more_white.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\expand_more_white.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-hdpi_ic_launcher_new_round.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-hdpi\\ic_launcher_new_round.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_meal_plan_day.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\meal_plan_day.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_edit_categories.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_edit_categories.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_ingredient_add.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_ingredient_add.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_fragment_recipe_list_mealplan.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/fragment_recipe_list_mealplan.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_edit_units.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_edit_units.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\menu_logout.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\menu\\logout.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_spinner_item.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\spinner_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_recipe_add.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_recipe_add.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-mdpi_ic_launcher_new.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-mdpi\\ic_launcher_new.png"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_fragment_ingredient_storage.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/fragment_ingredient_storage.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_meal_planner.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_meal_planner.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-xxxhdpi_icon_recipes.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-xxxhdpi\\icon_recipes.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_recycler_view_item.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/recycler_view_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_shopping_list.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_shopping_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\menu_bottom_nav.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\menu\\bottom_nav.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xhdpi_ic_launcher_new_round.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-xhdpi\\ic_launcher_new_round.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-anydpi-v26_ic_launcher_new_round.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-anydpi-v26\\ic_launcher_new_round.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_fragment_shop_pick_up.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/fragment_shop_pick_up.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_meal_plan_meal.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\meal_plan_meal.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_shopping_list_item.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\shopping_list_item.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_activity_recipe_addedit_ingredient.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/activity_recipe_addedit_ingredient.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/navigation_nav_graph.xml.flat",
+        "source": "com.androidimpact.app-main-51:/navigation/nav_graph.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_recipe_comment_vector.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\drawable\\recipe_comment_vector.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xxxhdpi_ic_launcher_new_round.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-xxxhdpi\\ic_launcher_new_round.png"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_ingredient_storage_item.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/ingredient_storage_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_recipe_list_mealplan.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_recipe_list_mealplan.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_fragment_servings_add_mealplan.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/fragment_servings_add_mealplan.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-mdpi_icon_storage.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-mdpi\\icon_storage.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_recipe_addedit_ingredient.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_recipe_addedit_ingredient.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_meal_plan_add_edit_recipe_ingredient.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_meal_plan_add_edit_recipe_ingredient.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\xml_fileprovider.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\xml\\fileprovider.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_fragment_recipe_list.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\fragment_recipe_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable-xxxhdpi_icon_mealplan.png.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable-xxxhdpi\\icon_mealplan.png"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_activity_review_recommendations.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\activity_review_recommendations.xml"
+    },
+    {
+        "merged": "com.androidimpact.app-merged_res-49:/layout_meal_plan_day.xml.flat",
+        "source": "com.androidimpact.app-main-51:/layout/meal_plan_day.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\drawable_ic_launcher_new_foreground.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\drawable\\ic_launcher_new_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\mipmap-anydpi-v26_ic_launcher_new.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-debug-50:\\mipmap-anydpi-v26\\ic_launcher_new.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-merged_res-49:\\layout_shopping_list_review_item.xml.flat",
+        "source": "C:\\Users\\ajsin\\.gradle\\daemon\\7.4\\com.androidimpact.app-main-51:\\layout\\shopping_list_review_item.xml"
+    }
+]

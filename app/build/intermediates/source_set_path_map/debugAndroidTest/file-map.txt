@@ -1,0 +1,23 @@
+com.androidimpact.app.test.app-lifecycle-livedata-core-2.5.1-0 C:\Users\ajsin\.gradle\caches\transforms-3\0facc693be2ea2b419c3d85e6b6bce7c\transformed\lifecycle-livedata-core-2.5.1\res
+com.androidimpact.app.test.app-core-1.8.0-1 C:\Users\ajsin\.gradle\caches\transforms-3\102215101d21fdb02f0f27bbfd4ebd5d\transformed\core-1.8.0\res
+com.androidimpact.app.test.app-lifecycle-runtime-ktx-2.5.1-2 C:\Users\ajsin\.gradle\caches\transforms-3\13f938737fccfabcdfd3518bc6a05ae5\transformed\lifecycle-runtime-ktx-2.5.1\res
+com.androidimpact.app.test.app-core-ktx-1.8.0-3 C:\Users\ajsin\.gradle\caches\transforms-3\2de7bbc95825b26bf74a489891976c67\transformed\core-ktx-1.8.0\res
+com.androidimpact.app.test.app-activity-1.5.1-4 C:\Users\ajsin\.gradle\caches\transforms-3\4476652fa3eccc556d25aceed18f91ce\transformed\activity-1.5.1\res
+com.androidimpact.app.test.app-lifecycle-viewmodel-2.5.1-5 C:\Users\ajsin\.gradle\caches\transforms-3\469909d8fd8c906576831ed638faf856\transformed\lifecycle-viewmodel-2.5.1\res
+com.androidimpact.app.test.app-lifecycle-runtime-2.5.1-6 C:\Users\ajsin\.gradle\caches\transforms-3\6c1ccea930ec56c47c399d6791ab7b6c\transformed\lifecycle-runtime-2.5.1\res
+com.androidimpact.app.test.app-lifecycle-viewmodel-ktx-2.5.1-7 C:\Users\ajsin\.gradle\caches\transforms-3\6e24e4b579c63f1a5e0e3b64d63ad01c\transformed\lifecycle-viewmodel-ktx-2.5.1\res
+com.androidimpact.app.test.app-activity-ktx-1.5.1-8 C:\Users\ajsin\.gradle\caches\transforms-3\7d19ade7191dbc00cbc506da81b52c83\transformed\activity-ktx-1.5.1\res
+com.androidimpact.app.test.app-navigation-testing-2.5.3-9 C:\Users\ajsin\.gradle\caches\transforms-3\9d073efc47c1f529e36d4799efa0b027\transformed\navigation-testing-2.5.3\res
+com.androidimpact.app.test.app-lifecycle-viewmodel-savedstate-2.5.1-10 C:\Users\ajsin\.gradle\caches\transforms-3\a91b7991dad90a04254b7ff73649d501\transformed\lifecycle-viewmodel-savedstate-2.5.1\res
+com.androidimpact.app.test.app-savedstate-ktx-1.2.0-11 C:\Users\ajsin\.gradle\caches\transforms-3\c6f5cc79b3f0dd351f422b64472a287c\transformed\savedstate-ktx-1.2.0\res
+com.androidimpact.app.test.app-navigation-runtime-2.5.3-12 C:\Users\ajsin\.gradle\caches\transforms-3\e3d9d5a49572b0149e939bd52d4d160e\transformed\navigation-runtime-2.5.3\res
+com.androidimpact.app.test.app-annotation-experimental-1.1.0-13 C:\Users\ajsin\.gradle\caches\transforms-3\ebc5cdc968831466331bfc76f957101c\transformed\annotation-experimental-1.1.0\res
+com.androidimpact.app.test.app-savedstate-1.2.0-14 C:\Users\ajsin\.gradle\caches\transforms-3\ed198c72db21bb204f52d58b627e783f\transformed\savedstate-1.2.0\res
+com.androidimpact.app.test.app-navigation-common-2.5.3-15 C:\Users\ajsin\.gradle\caches\transforms-3\f104ec3e86a6452d2007e8d5d1d9e289\transformed\navigation-common-2.5.3\res
+com.androidimpact.app.test.app-androidTest-16 E:\Data\Downloads\Code\DevCode\New folder\cmput301\project\AndroidImpact\app\build\generated\res\resValues\androidTest\debug
+com.androidimpact.app.test.app-androidTest-17 E:\Data\Downloads\Code\DevCode\New folder\cmput301\project\AndroidImpact\app\build\generated\res\rs\androidTest\debug
+com.androidimpact.app.test.app-mergeDebugAndroidTestResources-18 E:\Data\Downloads\Code\DevCode\New folder\cmput301\project\AndroidImpact\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.androidimpact.app.test.app-mergeDebugAndroidTestResources-19 E:\Data\Downloads\Code\DevCode\New folder\cmput301\project\AndroidImpact\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.androidimpact.app.test.app-merged_res-20 E:\Data\Downloads\Code\DevCode\New folder\cmput301\project\AndroidImpact\app\build\intermediates\merged_res\debugAndroidTest
+com.androidimpact.app.test.app-androidTest-21 E:\Data\Downloads\Code\DevCode\New folder\cmput301\project\AndroidImpact\app\src\androidTest\res
+com.androidimpact.app.test.app-androidTestDebug-22 E:\Data\Downloads\Code\DevCode\New folder\cmput301\project\AndroidImpact\app\src\androidTestDebug\res
