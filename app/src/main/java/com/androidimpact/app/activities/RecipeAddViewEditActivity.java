@@ -1,6 +1,7 @@
 package com.androidimpact.app.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,10 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -570,6 +575,15 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 }
             });
 
+    // Adding photo from gallery launcher
+    final private ActivityResultLauncher<Intent> addGalleryLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Log.i("pog", "pog");
+                    }
+            });
+
+
 
     /**
      * This is run when R.id.recipe_category_editbtn is clicked
@@ -602,13 +616,43 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      *    ImageView that activates this method
      */
     public void addPhoto(View v) {
-        Log.i(TAG + ":addPhoto", "Adding photo!");
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri("photo.png");
-        fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-        intent.putExtra("data-path", userPath);
-        addPhotoLauncher.launch(intent);
+        try {
+            final CharSequence[] options = {"Take Photo", "Choose From Gallery","Cancel"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Select Option");
+            builder.setItems(options, (dialog, item) -> {
+                // Add photo from camera
+                if (options[item].equals("Take Photo")) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    Log.i(TAG + ":addPhoto", "Adding photo!");
+                    photoFile = getPhotoFileUri(UUID.randomUUID().toString());
+                    fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+                    intent.putExtra("data-path", userPath);
+                    addPhotoLauncher.launch(intent);
+
+                // Add image from gallery
+                } else if (options[item].equals("Choose From Gallery")) {
+                    dialog.dismiss();
+                    Intent intent = new Intent();
+                    intent.setType("image/");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    photoFile = getPhotoFileUri(UUID.randomUUID().toString());
+                    fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+                    intent.putExtra("data-path", userPath);
+                    addGalleryLauncher.launch(intent);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Camera Permission error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
     /**
