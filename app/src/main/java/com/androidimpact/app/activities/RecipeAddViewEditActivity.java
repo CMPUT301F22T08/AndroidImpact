@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ImageDecoder;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -530,8 +532,10 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
                             .streamFor(300, 2000L);
 
-                    MediaPlayer ring = MediaPlayer.create(this, R.raw.success);
-                    ring.start();
+                    MediaPlayer success = MediaPlayer.create(this, R.raw.success);
+                    AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+                    audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);
+                    success.start();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
 
                     // cancelled request - do nothing.
