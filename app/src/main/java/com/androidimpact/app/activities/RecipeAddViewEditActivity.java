@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ImageDecoder;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -528,6 +529,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .addSizes(new Size(8, 4f))
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
                             .streamFor(300, 2000L);
+
+                    MediaPlayer ring = MediaPlayer.create(this, R.raw.success);
+                    ring.start();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
 
                     // cancelled request - do nothing.
