@@ -173,6 +173,7 @@ public class ShoppingListAutomator {
 
 //        double servings = ;
 
+
         for (RecipeIngredient recipeIngredient : recipeIngredients) {
             // check if this recipe ingredient exists inside the ingredientStorage by looping through
             // all ingredients in ingredientStorage
@@ -183,23 +184,51 @@ public class ShoppingListAutomator {
                 // we have a hit! Check if the amounts are compatible
                 // if the units are different, we treat the ingredients as incompatible
                 Log.i("finding ingredient", storeIngredient.getDescription() + " "+ String.valueOf(servings));
-                
-                ShopIngredient difference = getDifference(recipeIngredient, storeIngredient, servings);
-                if (difference.getAmount() > 0) {
-                    available = true;
-                    recommendations.add(difference);
-                    break;
+
+
+
+                boolean nameEqual = Objects.equals(recipeIngredient.getDescription(), storeIngredient.getDescription());
+                boolean unitEqual = Objects.equals(recipeIngredient.getUnit(), storeIngredient.getUnit());
+                if (nameEqual && unitEqual)
+                {
+
+                    ShopIngredient difference = getDifference(recipeIngredient, storeIngredient, servings);
+                    if (difference.getAmount() > 0) {
+
+                        available = true;
+                        recommendations.add(difference);
+                        break;
+
+                    }
+                    else if (difference.getAmount() <= 0)
+                    {
+                        available = true;
+                        break;
+                    }
+
                 }
             }
             if (!available) {
                 // recipe is not found in ingredient storage, add it
                 // String id, String description, float amount, String unit, String category
 
+
+                float amountNeeded = 0;
+                try{
+                    amountNeeded = recipeIngredient.getAmount() * servings.floatValue();
+                }
+                catch(Exception e)
+                {
+                    Log.i("amount needed too big", recipeIngredient.getDescription());
+                    amountNeeded = Float.MAX_VALUE;
+                }
+
                 Log.i("ingredient added", recipeIngredient.getDescription());
+
                 recommendations.add(new ShopIngredient(
                         UUID.randomUUID().toString(),
                         recipeIngredient.getDescription(),
-                        recipeIngredient.getAmount(),
+                        amountNeeded,
                         recipeIngredient.getUnit(),
                         recipeIngredient.getCategory()
                 ));
