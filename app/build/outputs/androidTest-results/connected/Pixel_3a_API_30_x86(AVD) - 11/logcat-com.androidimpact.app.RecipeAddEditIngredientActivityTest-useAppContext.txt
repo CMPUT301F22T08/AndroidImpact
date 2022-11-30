@@ -1,2 +1,0 @@
-11-01 21:27:15.146 18772 18799 I TestRunner: started: useAppContext(com.androidimpact.app.RecipeAddEditIngredientActivityTest)
-11-01 21:27:15.154 18772 18799 I TestRunner: finished: useAppContext(com.androidimpact.app.RecipeAddEditIngredientActivityTest)

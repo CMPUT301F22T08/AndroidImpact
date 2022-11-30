@@ -1,7 +1,6 @@
 package com.androidimpact.app.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ImageDecoder;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -46,7 +43,6 @@ import java.util.Date;
 import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.NullableSpinnerAdapter;
 import com.androidimpact.app.R;
-import com.androidimpact.app.location.Location;
 import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.recipes.RecipeIngredientAdapter;
@@ -86,6 +82,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     String id;
     EditText title, prep_time, servings, comments;
     Button confirmBtn;
+    Context context = this;
 
     RecyclerView ingredientList;
     RecipeIngredientAdapter ingredientAdapter;
@@ -257,7 +254,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 int position = viewHolder.getAdapterPosition();;
                 RecipeIngredient toDelete = recipeIngredients.get(position);
                 ingredientsCollection.document(toDelete.getId()).delete()
-                        .addOnSuccessListener(unused -> generateSnackbar("Deleted " + toDelete.getDescription() + "!"))
+                        .addOnSuccessListener(unused -> {
+                            generateSnackbar("Deleted " + toDelete.getDescription() + "!");
+                            MediaPlayer success = MediaPlayer.create(context, R.raw.delete);
+                            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC), 0);
+                            success.start();
+
+                        })
                         .addOnFailureListener(e -> {
                             Log.i(TAG, "Failed to delete " + toDelete.getId(), e);
                             generateSnackbar("Failed to delete " + toDelete.getDescription() + "!");
@@ -532,9 +536,9 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
                             .streamFor(300, 2000L);
 
-                    MediaPlayer success = MediaPlayer.create(this, R.raw.success);
+                    MediaPlayer success = MediaPlayer.create(this, R.raw.success_little);
                     AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-                    audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),0);
+                    audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC),0);
                     success.start();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
 

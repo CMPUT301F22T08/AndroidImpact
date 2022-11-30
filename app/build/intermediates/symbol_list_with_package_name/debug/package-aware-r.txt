@@ -2665,6 +2665,7 @@ drawable ic_clock_black_24dp
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_launcher_new
 drawable ic_launcher_new_foreground
 drawable ic_m3_chip_check
 drawable ic_m3_chip_checked_circle
@@ -3035,6 +3036,7 @@ id ifRoom
 id ignore
 id ignoreRequest
 id image
+id imageView_splash
 id immediateStop
 id included
 id indeterminate
@@ -3217,6 +3219,7 @@ id place_holder
 id position
 id postLayout
 id pressed
+id progressBar
 id progress_action
 id progress_circular
 id progress_horizontal
@@ -3583,6 +3586,7 @@ layout activity_meal_plan_add_edit_view
 layout activity_recipe_addedit_ingredient
 layout activity_recipe_addviewedit
 layout activity_review_recommendations
+layout activity_splash
 layout add_meal_item_container_fragment
 layout browser_actions_context_menu_page
 layout browser_actions_context_menu_row
@@ -3686,8 +3690,11 @@ mipmap ic_launcher_new_round
 mipmap ic_launcher_round
 navigation nav_graph
 plurals mtrl_badge_content_description
+raw delete
 raw firebase_common_keep
 raw keep
+raw success_little
+raw success_main
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description

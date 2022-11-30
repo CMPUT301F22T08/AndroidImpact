@@ -1,2 +1,0 @@
-11-01 21:26:54.909 18772 18799 I TestRunner: started: useAppContext(com.androidimpact.app.ExampleInstrumentedTest)
-11-01 21:26:54.912 18772 18799 I TestRunner: finished: useAppContext(com.androidimpact.app.ExampleInstrumentedTest)

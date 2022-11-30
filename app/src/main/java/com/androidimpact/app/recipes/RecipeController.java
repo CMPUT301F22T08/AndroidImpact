@@ -1,6 +1,8 @@
 package com.androidimpact.app.recipes;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.androidimpact.app.R;
@@ -145,6 +147,11 @@ public class RecipeController {
                     Log.d(TAG, title + " could not be deleted!" + e);
                     pushSnackBarToContext("Could not delete " + title);
                 });
+
+        MediaPlayer success = MediaPlayer.create(context, R.raw.delete);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC),0);
+        success.start();
 
         return liftToTask(true);
     }

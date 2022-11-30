@@ -19,6 +19,7 @@ drawable expand_more_white
 drawable ic_baseline_dining_24
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_launcher_new
 drawable ic_launcher_new_foreground
 drawable icon_edit
 drawable icon_logout
@@ -85,6 +86,7 @@ id fragment_ingredient_storage_layout
 id frameLayout2
 id frameLayoutContainer
 id has_null_marker
+id imageView_splash
 id ingredientStorageAdd_categoryLabel
 id ingredientStorageAdd_unitLabel
 id ingredientStoreAdd_amount
@@ -145,6 +147,7 @@ id navbarFAB
 id password
 id person_name
 id place_holder
+id progressBar
 id recipeList
 id recipe_category
 id recipe_category_editbtn
@@ -238,6 +241,7 @@ layout activity_meal_plan_add_edit_view
 layout activity_recipe_addedit_ingredient
 layout activity_recipe_addviewedit
 layout activity_review_recommendations
+layout activity_splash
 layout add_meal_item_container_fragment
 layout fragment_ingredient_add
 layout fragment_ingredient_storage
@@ -263,6 +267,9 @@ mipmap ic_launcher_new
 mipmap ic_launcher_new_round
 mipmap ic_launcher_round
 navigation nav_graph
+raw delete
+raw success_little
+raw success_main
 string activity_title
 string add
 string add_category

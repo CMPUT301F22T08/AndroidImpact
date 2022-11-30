@@ -3,8 +3,11 @@ package com.androidimpact.app.fragments;
 import static java.util.Objects.isNull;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -295,6 +298,11 @@ public class IngredientStorageFragment extends Fragment implements NavbarFragmen
                             .addSizes(new Size(8, 4f))
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
                             .streamFor(300, 2000L);
+
+                    MediaPlayer success = MediaPlayer.create(this.getContext(), R.raw.success_main);
+                    AudioManager audioManager = (AudioManager) this.getContext().getSystemService(Context.AUDIO_SERVICE);
+                    audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC),0);
+                    success.start();
 
                     Log.i(TAG + ":addIngredientResult", ingredient.getDescription());
                     ingredientStorageController.addEdit(ingredient);
