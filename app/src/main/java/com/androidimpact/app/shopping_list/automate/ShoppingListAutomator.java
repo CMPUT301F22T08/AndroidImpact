@@ -113,18 +113,34 @@ public class ShoppingListAutomator {
 
         // this is what we return (result)
         ArrayList<ShopIngredient> res = new ArrayList<>();
+        String[] mealTypes = {"breakfast", "lunch", "dinner", "snacks"};
 
         // now, the mealPlan and recipe should be populated
         ArrayList<MealPlan> mealPlans = this.mealPlanController.getData();
         for (MealPlan mealPlan : mealPlans) {
-            ArrayList<Recipe> recipes = getRecipes(mealPlan);
-            for (Recipe recipe : recipes) {
-                ArrayList<ShopIngredient> recipeRecs = Tasks.await(getRecipeRecommendations(recipe));
-                // add unique shopIngredients to result
-                for (ShopIngredient rec : recipeRecs) {
-                    if (!res.contains(rec)) res.add(rec);
+//            ArrayList<Recipe> recipes = getRecipes(mealPlan);
+            for (String mealType: mealTypes)
+            {
+                ArrayList<Double> recipeServings = mealPlan.getRecipeServings(mealType);
+                ArrayList<Recipe> recipes = mealPlan.getRecipes(mealType);
+
+                for(int i = 0; i < recipes.size(); ++i)
+                {
+                    Recipe recipe = recipes.get(i);
+                    Double recipeServing = recipeServings.get(i);
+                    ArrayList<ShopIngredient> recipeRecs = Tasks.await(getRecipeRecommendations(recipe, recipeServing));
+                    // add unique shopIngredients to result
+                    for (ShopIngredient rec : recipeRecs) {
+                        if (!res.contains(rec)) res.add(rec);
+                    }
+
                 }
+
+//                for (Recipe recipe : recipes) {
+//
+//                }
             }
+
         }
         recommendations = res;
         return liftToTask(res);
@@ -147,34 +163,72 @@ public class ShoppingListAutomator {
     /**
      * Given a recipe, get the recommendations by checking its ingredients with our ingredient storage
      */
-    private Task<ArrayList<ShopIngredient>> getRecipeRecommendations(Recipe recipe) throws Exception {
+    private Task<ArrayList<ShopIngredient>> getRecipeRecommendations(Recipe recipe, Double servings) throws Exception {
         ArrayList<ShopIngredient> recommendations = new ArrayList<>();
         CollectionReference recipeIngredientsCollection = db.collection(recipe.getCollectionPath());
 
         ArrayList<RecipeIngredient> recipeIngredients = Tasks.await(fetchCollection(RecipeIngredient.class, recipeIngredientsCollection));
         ArrayList<StoreIngredient> storeIngredients = this.ingredientStorageController.getData();
+//        ArrayList<Double> recipeSercings = mealPlanController
+
+//        double servings = ;
+
 
         for (RecipeIngredient recipeIngredient : recipeIngredients) {
             // check if this recipe ingredient exists inside the ingredientStorage by looping through
             // all ingredients in ingredientStorage
             boolean available = false;
+            Log.i("recipe from mp", recipeIngredient.getDescription());
+
             for (StoreIngredient storeIngredient : storeIngredients) {
                 // we have a hit! Check if the amounts are compatible
                 // if the units are different, we treat the ingredients as incompatible
-                ShopIngredient difference = getDifference(recipeIngredient, storeIngredient);
-                if (difference.getAmount() > 0) {
-                    available = true;
-                    recommendations.add(difference);
-                    break;
+                Log.i("finding ingredient", storeIngredient.getDescription() + " "+ String.valueOf(servings));
+
+
+
+                boolean nameEqual = Objects.equals(recipeIngredient.getDescription(), storeIngredient.getDescription());
+                boolean unitEqual = Objects.equals(recipeIngredient.getUnit(), storeIngredient.getUnit());
+                if (nameEqual && unitEqual)
+                {
+
+                    ShopIngredient difference = getDifference(recipeIngredient, storeIngredient, servings);
+                    if (difference.getAmount() > 0) {
+
+                        available = true;
+                        recommendations.add(difference);
+                        break;
+
+                    }
+                    else if (difference.getAmount() <= 0)
+                    {
+                        available = true;
+                        break;
+                    }
+
                 }
             }
             if (!available) {
                 // recipe is not found in ingredient storage, add it
                 // String id, String description, float amount, String unit, String category
+
+
+                float amountNeeded = 0;
+                try{
+                    amountNeeded = recipeIngredient.getAmount() * servings.floatValue();
+                }
+                catch(Exception e)
+                {
+                    Log.i("amount needed too big", recipeIngredient.getDescription());
+                    amountNeeded = Float.MAX_VALUE;
+                }
+
+                Log.i("ingredient added", recipeIngredient.getDescription());
+
                 recommendations.add(new ShopIngredient(
                         UUID.randomUUID().toString(),
                         recipeIngredient.getDescription(),
-                        recipeIngredient.getAmount(),
+                        amountNeeded,
                         recipeIngredient.getUnit(),
                         recipeIngredient.getCategory()
                 ));
@@ -202,6 +256,17 @@ public class ShoppingListAutomator {
             if (!added) {
                 // current recommendation is a new one, add it to shopping list again
                 // String id, String description, float amount, String unit, String category
+
+                float amountNeeded = 0;
+//                float servingsF =
+//                try{
+//                    amountNeeded = currentRec.getAmount() * (float)servings;
+//                }
+//                catch(Exception e)
+//                {
+//                    Log.i("amount needed too big", watchawatchawant.getDescription());
+//                    amountNeeded = Float.MAX_VALUE;
+//                }
                 returnRecommendations.add(new ShopIngredient(
                         UUID.randomUUID().toString(),
                         currentRec.getDescription(),
@@ -251,23 +316,32 @@ public class ShoppingListAutomator {
      *
      * NOTE: we overwrite the category with the RecipeIngredient category
      */
-    private ShopIngredient getDifference(Ingredient watchawatchawant, Ingredient watchahave) {
+    private ShopIngredient getDifference(Ingredient watchawatchawant, Ingredient watchahave, double servings) {
         // unequal name - incompatible!
         boolean nameEqual = Objects.equals(watchawatchawant.getDescription(), watchahave.getDescription());
         boolean unitEqual = Objects.equals(watchawatchawant.getUnit(), watchahave.getUnit());
 
+        float amountNeeded = 0;
+        try{
+            amountNeeded = watchawatchawant.getAmount() * (float)servings;
+        }
+        catch(Exception e)
+        {
+            Log.i("amount needed too big", watchawatchawant.getDescription());
+            amountNeeded = Float.MAX_VALUE;
+        }
         if (!nameEqual || !unitEqual) {
             return new ShopIngredient(
                     UUID.randomUUID().toString(),
                     watchawatchawant.getDescription(),
-                    watchawatchawant.getAmount(),
+                    amountNeeded,
                     watchawatchawant.getUnit(),
                     watchawatchawant.getCategory()
             );
         }
 
         // now that units and names are equal, let's calculate the amount
-        float newAmount = watchawatchawant.getAmount() - watchahave.getAmount();
+        float newAmount = amountNeeded - watchahave.getAmount();
         return new ShopIngredient(
                 UUID.randomUUID().toString(),
                 watchawatchawant.getDescription(),
