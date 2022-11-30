@@ -112,13 +112,12 @@ public class ShoppingListAutomator {
         Log.i(TAG + ":automateShoppingList", "Start automation");
 
         // this is what we return (result)
-        ArrayList<ShopIngredient> res = new ArrayList<>();
+        SmartShoppingRecs res = new SmartShoppingRecs();
         String[] mealTypes = {"breakfast", "lunch", "dinner", "snacks"};
 
         // now, the mealPlan and recipe should be populated
         ArrayList<MealPlan> mealPlans = this.mealPlanController.getData();
         for (MealPlan mealPlan : mealPlans) {
-//            ArrayList<Recipe> recipes = getRecipes(mealPlan);
             for (String mealType: mealTypes)
             {
                 ArrayList<Double> recipeServings = mealPlan.getRecipeServings(mealType);
@@ -131,19 +130,14 @@ public class ShoppingListAutomator {
                     ArrayList<ShopIngredient> recipeRecs = Tasks.await(getRecipeRecommendations(recipe, recipeServing));
                     // add unique shopIngredients to result
                     for (ShopIngredient rec : recipeRecs) {
-                        if (!res.contains(rec)) res.add(rec);
+                        res.addMerge(rec);
                     }
-
                 }
-
-//                for (Recipe recipe : recipes) {
-//
-//                }
             }
 
         }
-        recommendations = res;
-        return liftToTask(res);
+        recommendations = res.getData();
+        return liftToTask(res.getData());
     }
 
     /**
@@ -254,19 +248,6 @@ public class ShoppingListAutomator {
                 }
             }
             if (!added) {
-                // current recommendation is a new one, add it to shopping list again
-                // String id, String description, float amount, String unit, String category
-
-                float amountNeeded = 0;
-//                float servingsF =
-//                try{
-//                    amountNeeded = currentRec.getAmount() * (float)servings;
-//                }
-//                catch(Exception e)
-//                {
-//                    Log.i("amount needed too big", watchawatchawant.getDescription());
-//                    amountNeeded = Float.MAX_VALUE;
-//                }
                 returnRecommendations.add(new ShopIngredient(
                         UUID.randomUUID().toString(),
                         currentRec.getDescription(),
