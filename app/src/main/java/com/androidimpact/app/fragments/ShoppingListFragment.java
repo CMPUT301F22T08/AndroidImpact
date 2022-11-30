@@ -353,7 +353,7 @@ public class ShoppingListFragment extends Fragment implements NavbarFragment {
                                 intent.putExtra("ingredients", shopIngredients);
                                 reviewAutomatedRecommendations.launch(intent);
                             } else {
-                                Toast.makeText(getActivity(), "Ingredient Storage is sufficient for the Meal Plan!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Items are sufficient for the meal plan!", Toast.LENGTH_SHORT).show();
                             }
                         },
                         e -> Log.i(TAG, "Error running shoppingListAutomator!", e));

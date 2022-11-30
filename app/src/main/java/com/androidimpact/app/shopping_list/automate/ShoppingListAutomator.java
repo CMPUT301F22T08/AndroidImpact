@@ -3,6 +3,7 @@ package com.androidimpact.app.shopping_list.automate;
 
 import android.util.Log;
 
+import com.androidimpact.app.ingredients.Ingredient;
 import com.androidimpact.app.ingredients.IngredientStorageController;
 import com.androidimpact.app.ingredients.StoreIngredient;
 import com.androidimpact.app.meal_plan.MealPlan;
@@ -147,7 +148,7 @@ public class ShoppingListAutomator {
      * Given a recipe, get the recommendations by checking its ingredients with our ingredient storage
      */
     private Task<ArrayList<ShopIngredient>> getRecipeRecommendations(Recipe recipe) throws Exception {
-        ArrayList<ShopIngredient> ret = new ArrayList<>();
+        ArrayList<ShopIngredient> recommendations = new ArrayList<>();
         CollectionReference recipeIngredientsCollection = db.collection(recipe.getCollectionPath());
 
         ArrayList<RecipeIngredient> recipeIngredients = Tasks.await(fetchCollection(RecipeIngredient.class, recipeIngredientsCollection));
@@ -163,14 +164,14 @@ public class ShoppingListAutomator {
                 ShopIngredient difference = getDifference(recipeIngredient, storeIngredient);
                 if (difference.getAmount() > 0) {
                     available = true;
-                    ret.add(difference);
+                    recommendations.add(difference);
                     break;
                 }
             }
             if (!available) {
                 // recipe is not found in ingredient storage, add it
                 // String id, String description, float amount, String unit, String category
-                ret.add(new ShopIngredient(
+                recommendations.add(new ShopIngredient(
                         UUID.randomUUID().toString(),
                         recipeIngredient.getDescription(),
                         recipeIngredient.getAmount(),
@@ -179,9 +180,40 @@ public class ShoppingListAutomator {
                 ));
             }
         }
-        // return a result wrapped in a task
-        return liftToTask(ret);
 
+        // now, we have our recommendations.
+        // we need to filter one last time with the current recipe recommendations, to avoid redundancies
+        // this is kinda the same loop as before but i don't care LOL
+        ArrayList<ShopIngredient> returnRecommendations = new ArrayList<>();
+        for (ShopIngredient currentRec : recommendations) {
+            boolean added = false;
+            for (ShopIngredient currentShopItem : this.shoppingListController.getData()) {
+                // check if this shopItem already exists inside our shop item
+                // this requires an exhaustive check on all attributes
+                boolean sameDescription = Objects.equals(currentRec.getDescription(), currentShopItem.getDescription());
+                boolean sameUnit = Objects.equals(currentRec.getUnit(), currentShopItem.getUnit());
+                boolean sameAmount = currentRec.getAmount() == currentShopItem.getAmount();
+                boolean category = Objects.equals(currentRec.getCategory(), currentShopItem.getCategory());
+                if (sameDescription && sameUnit && sameAmount && category) {
+                    added = true;
+                    break;
+                }
+            }
+            if (!added) {
+                // current recommendation is a new one, add it to shopping list again
+                // String id, String description, float amount, String unit, String category
+                returnRecommendations.add(new ShopIngredient(
+                        UUID.randomUUID().toString(),
+                        currentRec.getDescription(),
+                        currentRec.getAmount(),
+                        currentRec.getUnit(),
+                        currentRec.getCategory()
+                ));
+            }
+        }
+
+        // return a result wrapped in a task
+        return liftToTask(returnRecommendations);
     }
 
     /**
@@ -211,7 +243,7 @@ public class ShoppingListAutomator {
     }
 
     /**
-     * Get the difference between the RecipeIngredient we want, and a StoreIngredient we have
+     * Get the difference between an ingredient we want (to have in a shopping list), and a ingredient we have
      * This "difference" is basically just calculating the amount difference, IF THE UNITS ARE THE SAME
      * it is returned as a new ShopIngredient one can immediately treat as a recommendation
      *
@@ -219,7 +251,7 @@ public class ShoppingListAutomator {
      *
      * NOTE: we overwrite the category with the RecipeIngredient category
      */
-    private ShopIngredient getDifference(RecipeIngredient watchawatchawant, StoreIngredient watchahave) {
+    private ShopIngredient getDifference(Ingredient watchawatchawant, Ingredient watchahave) {
         // unequal name - incompatible!
         boolean nameEqual = Objects.equals(watchawatchawant.getDescription(), watchahave.getDescription());
         boolean unitEqual = Objects.equals(watchawatchawant.getUnit(), watchahave.getUnit());

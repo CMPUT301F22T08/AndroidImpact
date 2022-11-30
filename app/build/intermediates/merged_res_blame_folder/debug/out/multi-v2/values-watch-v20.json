@@ -4,7 +4,7 @@
             "outputFile": "com.androidimpact.app-mergeDebugResources-47:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\curti\\.gradle\\caches\\transforms-3\\3884b320dccfe5fe24360e981acf9b57\\transformed\\appcompat-1.5.1\\res\\values-watch-v20\\values-watch-v20.xml",
+                    "source": "/Users/joshuaji/.gradle/caches/transforms-3/3884b320dccfe5fe24360e981acf9b57/transformed/appcompat-1.5.1/res/values-watch-v20/values-watch-v20.xml",
                     "from": {
                         "startLines": "2,5,8",
                         "startColumns": "4,4,4",

@@ -1,52 +1,52 @@
-com.androidimpact.app-window-1.0.0-0 C:\Users\curti\.gradle\caches\transforms-3\019225cbe2d8874f6a934004f38d130c\transformed\window-1.0.0\res
-com.androidimpact.app-play-services-basement-18.1.0-1 C:\Users\curti\.gradle\caches\transforms-3\0ccd676f36a88f843cf47f86b0f66e38\transformed\play-services-basement-18.1.0\res
-com.androidimpact.app-lifecycle-livedata-core-2.5.1-2 C:\Users\curti\.gradle\caches\transforms-3\0facc693be2ea2b419c3d85e6b6bce7c\transformed\lifecycle-livedata-core-2.5.1\res
-com.androidimpact.app-core-1.8.0-3 C:\Users\curti\.gradle\caches\transforms-3\102215101d21fdb02f0f27bbfd4ebd5d\transformed\core-1.8.0\res
-com.androidimpact.app-cardview-1.0.0-4 C:\Users\curti\.gradle\caches\transforms-3\132f0038de43ddeabec8a216a692e5f1\transformed\cardview-1.0.0\res
-com.androidimpact.app-lifecycle-runtime-ktx-2.5.1-5 C:\Users\curti\.gradle\caches\transforms-3\13f938737fccfabcdfd3518bc6a05ae5\transformed\lifecycle-runtime-ktx-2.5.1\res
-com.androidimpact.app-recyclerview-1.1.0-6 C:\Users\curti\.gradle\caches\transforms-3\14621a386b20c825bf62b01149912eba\transformed\recyclerview-1.1.0\res
-com.androidimpact.app-emoji2-views-helper-1.2.0-7 C:\Users\curti\.gradle\caches\transforms-3\14b83c58c3c6dc64c194a8698de39ccb\transformed\emoji2-views-helper-1.2.0\res
-com.androidimpact.app-navigation-ui-2.5.3-8 C:\Users\curti\.gradle\caches\transforms-3\1ab57c492f421a8bdc7838b54395eaac\transformed\navigation-ui-2.5.3\res
-com.androidimpact.app-viewpager2-1.0.0-9 C:\Users\curti\.gradle\caches\transforms-3\22f9099c2abda7fff94076f7993b08de\transformed\viewpager2-1.0.0\res
-com.androidimpact.app-play-services-base-18.0.1-10 C:\Users\curti\.gradle\caches\transforms-3\26b3666345201c303a3333024bb53271\transformed\play-services-base-18.0.1\res
-com.androidimpact.app-core-ktx-1.8.0-11 C:\Users\curti\.gradle\caches\transforms-3\2de7bbc95825b26bf74a489891976c67\transformed\core-ktx-1.8.0\res
-com.androidimpact.app-fragment-1.5.4-12 C:\Users\curti\.gradle\caches\transforms-3\2ec967980d195b3a93cec25226eb77a9\transformed\fragment-1.5.4\res
-com.androidimpact.app-emoji2-1.2.0-13 C:\Users\curti\.gradle\caches\transforms-3\2ed499a9972c76584289d61187c198e3\transformed\emoji2-1.2.0\res
-com.androidimpact.app-lifecycle-livedata-core-ktx-2.5.1-14 C:\Users\curti\.gradle\caches\transforms-3\305e3dd11bf4b0836a32917dd986d5bf\transformed\lifecycle-livedata-core-ktx-2.5.1\res
-com.androidimpact.app-appcompat-1.5.1-15 C:\Users\curti\.gradle\caches\transforms-3\3884b320dccfe5fe24360e981acf9b57\transformed\appcompat-1.5.1\res
-com.androidimpact.app-core-1.10.3-16 C:\Users\curti\.gradle\caches\transforms-3\4366ff685accfdc37b4bfc55195f8cd5\transformed\core-1.10.3\res
-com.androidimpact.app-activity-1.5.1-17 C:\Users\curti\.gradle\caches\transforms-3\4476652fa3eccc556d25aceed18f91ce\transformed\activity-1.5.1\res
-com.androidimpact.app-constraintlayout-2.1.4-18 C:\Users\curti\.gradle\caches\transforms-3\44c24a0ba9562c7bda90cd6278db8032\transformed\constraintlayout-2.1.4\res
-com.androidimpact.app-lifecycle-viewmodel-2.5.1-19 C:\Users\curti\.gradle\caches\transforms-3\469909d8fd8c906576831ed638faf856\transformed\lifecycle-viewmodel-2.5.1\res
-com.androidimpact.app-firebase-common-20.2.0-20 C:\Users\curti\.gradle\caches\transforms-3\480b3dae7120d0220412229c8f9a6223\transformed\firebase-common-20.2.0\res
-com.androidimpact.app-lifecycle-process-2.4.1-21 C:\Users\curti\.gradle\caches\transforms-3\4f04b5d013d4e9a91b26580011dee398\transformed\lifecycle-process-2.4.1\res
-com.androidimpact.app-navigation-fragment-2.5.3-22 C:\Users\curti\.gradle\caches\transforms-3\6c0822a3334be9729c4491b158bcd446\transformed\navigation-fragment-2.5.3\res
-com.androidimpact.app-lifecycle-runtime-2.5.1-23 C:\Users\curti\.gradle\caches\transforms-3\6c1ccea930ec56c47c399d6791ab7b6c\transformed\lifecycle-runtime-2.5.1\res
-com.androidimpact.app-lifecycle-viewmodel-ktx-2.5.1-24 C:\Users\curti\.gradle\caches\transforms-3\6e24e4b579c63f1a5e0e3b64d63ad01c\transformed\lifecycle-viewmodel-ktx-2.5.1\res
-com.androidimpact.app-browser-1.4.0-25 C:\Users\curti\.gradle\caches\transforms-3\7941da3a4176cc86aa5dcbb619fbea47\transformed\browser-1.4.0\res
-com.androidimpact.app-activity-ktx-1.5.1-26 C:\Users\curti\.gradle\caches\transforms-3\7d19ade7191dbc00cbc506da81b52c83\transformed\activity-ktx-1.5.1\res
-com.androidimpact.app-navigation-dynamic-features-fragment-2.5.3-27 C:\Users\curti\.gradle\caches\transforms-3\815caaa19c498a2c86ca46ee46bc6ed9\transformed\navigation-dynamic-features-fragment-2.5.3\res
-com.androidimpact.app-material-1.7.0-28 C:\Users\curti\.gradle\caches\transforms-3\888ee2e8fcc41cb2c09b6c71362471b0\transformed\material-1.7.0\res
-com.androidimpact.app-fragment-ktx-1.5.4-29 C:\Users\curti\.gradle\caches\transforms-3\9a0d8b32e35ec5303214ec1cccbe199e\transformed\fragment-ktx-1.5.4\res
-com.androidimpact.app-navigation-dynamic-features-runtime-2.5.3-30 C:\Users\curti\.gradle\caches\transforms-3\a2a491757530690ca3cb2930d6c81249\transformed\navigation-dynamic-features-runtime-2.5.3\res
-com.androidimpact.app-transition-1.4.1-31 C:\Users\curti\.gradle\caches\transforms-3\a2e98504cc42a488cbf8da6e209b1568\transformed\transition-1.4.1\res
-com.androidimpact.app-lifecycle-viewmodel-savedstate-2.5.1-32 C:\Users\curti\.gradle\caches\transforms-3\a91b7991dad90a04254b7ff73649d501\transformed\lifecycle-viewmodel-savedstate-2.5.1\res
-com.androidimpact.app-startup-runtime-1.1.1-33 C:\Users\curti\.gradle\caches\transforms-3\aa727ded08411910cde21ce578b6f6a8\transformed\startup-runtime-1.1.1\res
-com.androidimpact.app-savedstate-ktx-1.2.0-34 C:\Users\curti\.gradle\caches\transforms-3\c6f5cc79b3f0dd351f422b64472a287c\transformed\savedstate-ktx-1.2.0\res
-com.androidimpact.app-slidingpanelayout-1.2.0-35 C:\Users\curti\.gradle\caches\transforms-3\cbc19b5943c72c24fa79ea7f17019289\transformed\slidingpanelayout-1.2.0\res
-com.androidimpact.app-coordinatorlayout-1.1.0-36 C:\Users\curti\.gradle\caches\transforms-3\d1350ca4937108931d93b191bc9e14c3\transformed\coordinatorlayout-1.1.0\res
-com.androidimpact.app-navigation-runtime-2.5.3-37 C:\Users\curti\.gradle\caches\transforms-3\e3d9d5a49572b0149e939bd52d4d160e\transformed\navigation-runtime-2.5.3\res
-com.androidimpact.app-drawerlayout-1.1.1-38 C:\Users\curti\.gradle\caches\transforms-3\e64ec69f51d51c1870f65d11fa39ae28\transformed\drawerlayout-1.1.1\res
-com.androidimpact.app-annotation-experimental-1.1.0-39 C:\Users\curti\.gradle\caches\transforms-3\ebc5cdc968831466331bfc76f957101c\transformed\annotation-experimental-1.1.0\res
-com.androidimpact.app-savedstate-1.2.0-40 C:\Users\curti\.gradle\caches\transforms-3\ed198c72db21bb204f52d58b627e783f\transformed\savedstate-1.2.0\res
-com.androidimpact.app-navigation-common-2.5.3-41 C:\Users\curti\.gradle\caches\transforms-3\f104ec3e86a6452d2007e8d5d1d9e289\transformed\navigation-common-2.5.3\res
-com.androidimpact.app-appcompat-resources-1.5.1-42 C:\Users\curti\.gradle\caches\transforms-3\f50893122efcee79e80072a2d630c9f0\transformed\appcompat-resources-1.5.1\res
-com.androidimpact.app-google-services-43 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\build\generated\res\google-services\debug
-com.androidimpact.app-pngs-44 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\build\generated\res\pngs\debug
-com.androidimpact.app-resValues-45 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\build\generated\res\resValues\debug
-com.androidimpact.app-rs-46 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\build\generated\res\rs\debug
-com.androidimpact.app-packageDebugResources-47 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.androidimpact.app-packageDebugResources-48 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.androidimpact.app-merged_res-49 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\build\intermediates\merged_res\debug
-com.androidimpact.app-debug-50 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\src\debug\res
-com.androidimpact.app-main-51 C:\Users\curti\OneDrive\School\CMPUT 301\AndroidImpact\app\src\main\res
+com.androidimpact.app-window-1.0.0-0 /Users/joshuaji/.gradle/caches/transforms-3/019225cbe2d8874f6a934004f38d130c/transformed/window-1.0.0/res
+com.androidimpact.app-play-services-basement-18.1.0-1 /Users/joshuaji/.gradle/caches/transforms-3/0ccd676f36a88f843cf47f86b0f66e38/transformed/play-services-basement-18.1.0/res
+com.androidimpact.app-lifecycle-livedata-core-2.5.1-2 /Users/joshuaji/.gradle/caches/transforms-3/0facc693be2ea2b419c3d85e6b6bce7c/transformed/lifecycle-livedata-core-2.5.1/res
+com.androidimpact.app-core-1.8.0-3 /Users/joshuaji/.gradle/caches/transforms-3/102215101d21fdb02f0f27bbfd4ebd5d/transformed/core-1.8.0/res
+com.androidimpact.app-cardview-1.0.0-4 /Users/joshuaji/.gradle/caches/transforms-3/132f0038de43ddeabec8a216a692e5f1/transformed/cardview-1.0.0/res
+com.androidimpact.app-lifecycle-runtime-ktx-2.5.1-5 /Users/joshuaji/.gradle/caches/transforms-3/13f938737fccfabcdfd3518bc6a05ae5/transformed/lifecycle-runtime-ktx-2.5.1/res
+com.androidimpact.app-recyclerview-1.1.0-6 /Users/joshuaji/.gradle/caches/transforms-3/14621a386b20c825bf62b01149912eba/transformed/recyclerview-1.1.0/res
+com.androidimpact.app-emoji2-views-helper-1.2.0-7 /Users/joshuaji/.gradle/caches/transforms-3/14b83c58c3c6dc64c194a8698de39ccb/transformed/emoji2-views-helper-1.2.0/res
+com.androidimpact.app-navigation-ui-2.5.3-8 /Users/joshuaji/.gradle/caches/transforms-3/1ab57c492f421a8bdc7838b54395eaac/transformed/navigation-ui-2.5.3/res
+com.androidimpact.app-viewpager2-1.0.0-9 /Users/joshuaji/.gradle/caches/transforms-3/22f9099c2abda7fff94076f7993b08de/transformed/viewpager2-1.0.0/res
+com.androidimpact.app-play-services-base-18.0.1-10 /Users/joshuaji/.gradle/caches/transforms-3/26b3666345201c303a3333024bb53271/transformed/play-services-base-18.0.1/res
+com.androidimpact.app-core-ktx-1.8.0-11 /Users/joshuaji/.gradle/caches/transforms-3/2de7bbc95825b26bf74a489891976c67/transformed/core-ktx-1.8.0/res
+com.androidimpact.app-fragment-1.5.4-12 /Users/joshuaji/.gradle/caches/transforms-3/2ec967980d195b3a93cec25226eb77a9/transformed/fragment-1.5.4/res
+com.androidimpact.app-emoji2-1.2.0-13 /Users/joshuaji/.gradle/caches/transforms-3/2ed499a9972c76584289d61187c198e3/transformed/emoji2-1.2.0/res
+com.androidimpact.app-lifecycle-livedata-core-ktx-2.5.1-14 /Users/joshuaji/.gradle/caches/transforms-3/305e3dd11bf4b0836a32917dd986d5bf/transformed/lifecycle-livedata-core-ktx-2.5.1/res
+com.androidimpact.app-appcompat-1.5.1-15 /Users/joshuaji/.gradle/caches/transforms-3/3884b320dccfe5fe24360e981acf9b57/transformed/appcompat-1.5.1/res
+com.androidimpact.app-core-1.10.3-16 /Users/joshuaji/.gradle/caches/transforms-3/4366ff685accfdc37b4bfc55195f8cd5/transformed/core-1.10.3/res
+com.androidimpact.app-activity-1.5.1-17 /Users/joshuaji/.gradle/caches/transforms-3/4476652fa3eccc556d25aceed18f91ce/transformed/activity-1.5.1/res
+com.androidimpact.app-constraintlayout-2.1.4-18 /Users/joshuaji/.gradle/caches/transforms-3/44c24a0ba9562c7bda90cd6278db8032/transformed/constraintlayout-2.1.4/res
+com.androidimpact.app-lifecycle-viewmodel-2.5.1-19 /Users/joshuaji/.gradle/caches/transforms-3/469909d8fd8c906576831ed638faf856/transformed/lifecycle-viewmodel-2.5.1/res
+com.androidimpact.app-firebase-common-20.2.0-20 /Users/joshuaji/.gradle/caches/transforms-3/480b3dae7120d0220412229c8f9a6223/transformed/firebase-common-20.2.0/res
+com.androidimpact.app-lifecycle-process-2.4.1-21 /Users/joshuaji/.gradle/caches/transforms-3/4f04b5d013d4e9a91b26580011dee398/transformed/lifecycle-process-2.4.1/res
+com.androidimpact.app-navigation-fragment-2.5.3-22 /Users/joshuaji/.gradle/caches/transforms-3/6c0822a3334be9729c4491b158bcd446/transformed/navigation-fragment-2.5.3/res
+com.androidimpact.app-lifecycle-runtime-2.5.1-23 /Users/joshuaji/.gradle/caches/transforms-3/6c1ccea930ec56c47c399d6791ab7b6c/transformed/lifecycle-runtime-2.5.1/res
+com.androidimpact.app-lifecycle-viewmodel-ktx-2.5.1-24 /Users/joshuaji/.gradle/caches/transforms-3/6e24e4b579c63f1a5e0e3b64d63ad01c/transformed/lifecycle-viewmodel-ktx-2.5.1/res
+com.androidimpact.app-browser-1.4.0-25 /Users/joshuaji/.gradle/caches/transforms-3/7941da3a4176cc86aa5dcbb619fbea47/transformed/browser-1.4.0/res
+com.androidimpact.app-activity-ktx-1.5.1-26 /Users/joshuaji/.gradle/caches/transforms-3/7d19ade7191dbc00cbc506da81b52c83/transformed/activity-ktx-1.5.1/res
+com.androidimpact.app-navigation-dynamic-features-fragment-2.5.3-27 /Users/joshuaji/.gradle/caches/transforms-3/815caaa19c498a2c86ca46ee46bc6ed9/transformed/navigation-dynamic-features-fragment-2.5.3/res
+com.androidimpact.app-material-1.7.0-28 /Users/joshuaji/.gradle/caches/transforms-3/888ee2e8fcc41cb2c09b6c71362471b0/transformed/material-1.7.0/res
+com.androidimpact.app-fragment-ktx-1.5.4-29 /Users/joshuaji/.gradle/caches/transforms-3/9a0d8b32e35ec5303214ec1cccbe199e/transformed/fragment-ktx-1.5.4/res
+com.androidimpact.app-navigation-dynamic-features-runtime-2.5.3-30 /Users/joshuaji/.gradle/caches/transforms-3/a2a491757530690ca3cb2930d6c81249/transformed/navigation-dynamic-features-runtime-2.5.3/res
+com.androidimpact.app-transition-1.4.1-31 /Users/joshuaji/.gradle/caches/transforms-3/a2e98504cc42a488cbf8da6e209b1568/transformed/transition-1.4.1/res
+com.androidimpact.app-lifecycle-viewmodel-savedstate-2.5.1-32 /Users/joshuaji/.gradle/caches/transforms-3/a91b7991dad90a04254b7ff73649d501/transformed/lifecycle-viewmodel-savedstate-2.5.1/res
+com.androidimpact.app-startup-runtime-1.1.1-33 /Users/joshuaji/.gradle/caches/transforms-3/aa727ded08411910cde21ce578b6f6a8/transformed/startup-runtime-1.1.1/res
+com.androidimpact.app-savedstate-ktx-1.2.0-34 /Users/joshuaji/.gradle/caches/transforms-3/c6f5cc79b3f0dd351f422b64472a287c/transformed/savedstate-ktx-1.2.0/res
+com.androidimpact.app-slidingpanelayout-1.2.0-35 /Users/joshuaji/.gradle/caches/transforms-3/cbc19b5943c72c24fa79ea7f17019289/transformed/slidingpanelayout-1.2.0/res
+com.androidimpact.app-coordinatorlayout-1.1.0-36 /Users/joshuaji/.gradle/caches/transforms-3/d1350ca4937108931d93b191bc9e14c3/transformed/coordinatorlayout-1.1.0/res
+com.androidimpact.app-navigation-runtime-2.5.3-37 /Users/joshuaji/.gradle/caches/transforms-3/e3d9d5a49572b0149e939bd52d4d160e/transformed/navigation-runtime-2.5.3/res
+com.androidimpact.app-drawerlayout-1.1.1-38 /Users/joshuaji/.gradle/caches/transforms-3/e64ec69f51d51c1870f65d11fa39ae28/transformed/drawerlayout-1.1.1/res
+com.androidimpact.app-annotation-experimental-1.1.0-39 /Users/joshuaji/.gradle/caches/transforms-3/ebc5cdc968831466331bfc76f957101c/transformed/annotation-experimental-1.1.0/res
+com.androidimpact.app-savedstate-1.2.0-40 /Users/joshuaji/.gradle/caches/transforms-3/ed198c72db21bb204f52d58b627e783f/transformed/savedstate-1.2.0/res
+com.androidimpact.app-navigation-common-2.5.3-41 /Users/joshuaji/.gradle/caches/transforms-3/f104ec3e86a6452d2007e8d5d1d9e289/transformed/navigation-common-2.5.3/res
+com.androidimpact.app-appcompat-resources-1.5.1-42 /Users/joshuaji/.gradle/caches/transforms-3/f50893122efcee79e80072a2d630c9f0/transformed/appcompat-resources-1.5.1/res
+com.androidimpact.app-google-services-43 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/build/generated/res/google-services/debug
+com.androidimpact.app-pngs-44 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/build/generated/res/pngs/debug
+com.androidimpact.app-resValues-45 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/build/generated/res/resValues/debug
+com.androidimpact.app-rs-46 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/build/generated/res/rs/debug
+com.androidimpact.app-packageDebugResources-47 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.androidimpact.app-packageDebugResources-48 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.androidimpact.app-merged_res-49 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/build/intermediates/merged_res/debug
+com.androidimpact.app-debug-50 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/src/debug/res
+com.androidimpact.app-main-51 /Users/joshuaji/code/AndroidStudioProjects/AndroidImpact/app/src/main/res
