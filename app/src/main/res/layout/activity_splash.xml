@@ -11,9 +11,9 @@
 
     <ImageView
         android:id="@+id/imageView_splash"
-        android:layout_width="192dp"
-        android:layout_height="192dp"
-        android:src="@mipmap/ic_launcher_new"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/drawing_space_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
