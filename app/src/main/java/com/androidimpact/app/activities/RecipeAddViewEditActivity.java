@@ -591,7 +591,24 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     final private ActivityResultLauncher<Intent> addGalleryLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Log.i("pog", "pog");
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        Bitmap selectedImageBitmap;
+                        try {
+                            selectedImageBitmap
+                                    = MediaStore.Images.Media.getBitmap(
+                                    this.getContentResolver(),
+                                    selectedImageUri);
+                            photo.setImageBitmap(
+                                    selectedImageBitmap);
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     }
             });
 
