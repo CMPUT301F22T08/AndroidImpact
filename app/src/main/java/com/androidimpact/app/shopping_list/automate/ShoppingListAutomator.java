@@ -226,7 +226,7 @@ public class ShoppingListAutomator {
 
         if (!nameEqual || !unitEqual) {
             return new ShopIngredient(
-                    watchawatchawant.getId(),
+                    UUID.randomUUID().toString(),
                     watchawatchawant.getDescription(),
                     watchawatchawant.getAmount(),
                     watchawatchawant.getUnit(),
