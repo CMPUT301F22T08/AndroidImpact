@@ -2,6 +2,8 @@ package com.androidimpact.app.shopping_list;
 
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.androidimpact.app.R;
@@ -91,6 +93,7 @@ public class ShoppingListController {
 
             shoppingList.sortByChoice();
             shopIngredientViewAdapter.notifyDataSetChanged();
+
         });
     }
 
@@ -150,6 +153,11 @@ public class ShoppingListController {
                     pushSnackBarToContext("Could not delete " + description + "!");
                     Log.d(TAG, description + " could not be deleted: " + e);
                 });
+
+        MediaPlayer success = MediaPlayer.create(context, R.raw.delete);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+        success.start();
     }
 
     /**

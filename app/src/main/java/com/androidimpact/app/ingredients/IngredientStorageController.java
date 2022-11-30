@@ -1,6 +1,8 @@
 package com.androidimpact.app.ingredients;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -193,7 +195,9 @@ public class IngredientStorageController {
 
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         StoreIngredient ingredientFB = document.toObject(StoreIngredient.class);
-                                        if (ingredientFB.compareCalendar(storeIngredient) && ingredientFB.getLocation() != "" && finalId != ingredientFB.getId() ) {
+                                        Log.i("found something", String.valueOf(ingredientFB.getId().equals(finalId)));
+                                        boolean idCheck = ingredientFB.getId().equals(finalId);
+                                        if (ingredientFB.compareCalendar(storeIngredient) && ingredientFB.getLocation() != "" && !idCheck ) {
                                             boolean check = storeIngredient.getId() == ingredientFB.getId();
                                             Log.d("found", "Found a matching Ingredient in FB " + ingredientFB.getDescription() + "comparison ID: " + String.valueOf(check));
                                             float newAmount;
@@ -264,6 +268,11 @@ public class IngredientStorageController {
                     pushSnackBarToContext("Could not delete " + description + "!");
                     Log.d(TAG, description + " could not be deleted: " + e);
                 });
+
+        MediaPlayer success = MediaPlayer.create(context, R.raw.delete);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC),0);
+        success.start();
     }
 
     /**

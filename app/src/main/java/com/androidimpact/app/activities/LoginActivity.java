@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         login = findViewById(R.id.login);
 
         // Fade in animation
-        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_slow);
         title.startAnimation(fadeIn);
         saying.startAnimation(fadeIn);
         username.startAnimation(fadeIn);

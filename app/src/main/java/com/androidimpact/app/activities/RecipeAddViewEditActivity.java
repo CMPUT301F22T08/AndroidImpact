@@ -11,10 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +43,6 @@ import java.util.Date;
 import com.androidimpact.app.DocumentRetrievalListener;
 import com.androidimpact.app.NullableSpinnerAdapter;
 import com.androidimpact.app.R;
-import com.androidimpact.app.location.Location;
 import com.androidimpact.app.recipes.Recipe;
 import com.androidimpact.app.recipes.RecipeIngredient;
 import com.androidimpact.app.recipes.RecipeIngredientAdapter;
@@ -78,6 +82,7 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
     String id;
     EditText title, prep_time, servings, comments;
     Button confirmBtn;
+    Context context = this;
 
     RecyclerView ingredientList;
     RecipeIngredientAdapter ingredientAdapter;
@@ -249,7 +254,14 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 int position = viewHolder.getAdapterPosition();;
                 RecipeIngredient toDelete = recipeIngredients.get(position);
                 ingredientsCollection.document(toDelete.getId()).delete()
-                        .addOnSuccessListener(unused -> generateSnackbar("Deleted " + toDelete.getDescription() + "!"))
+                        .addOnSuccessListener(unused -> {
+                            generateSnackbar("Deleted " + toDelete.getDescription() + "!");
+                            MediaPlayer success = MediaPlayer.create(context, R.raw.delete);
+                            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+                            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC), 0);
+                            success.start();
+
+                        })
                         .addOnFailureListener(e -> {
                             Log.i(TAG, "Failed to delete " + toDelete.getId(), e);
                             generateSnackbar("Failed to delete " + toDelete.getDescription() + "!");
@@ -523,6 +535,11 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                             .addSizes(new Size(8, 4f))
                             .setPosition(-50f, confetti.getWidth() + 50f, -50f, -50f)
                             .streamFor(300, 2000L);
+
+                    MediaPlayer success = MediaPlayer.create(this, R.raw.success_little);
+                    AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+                    audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC),0);
+                    success.start();
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
 
                     // cancelled request - do nothing.
@@ -570,6 +587,32 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
                 }
             });
 
+    // Adding photo from gallery launcher
+    final private ActivityResultLauncher<Intent> addGalleryLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        Bitmap selectedImageBitmap;
+                        try {
+                            selectedImageBitmap
+                                    = MediaStore.Images.Media.getBitmap(
+                                    this.getContentResolver(),
+                                    selectedImageUri);
+                            photo.setImageBitmap(
+                                    selectedImageBitmap);
+                        }
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    }
+            });
+
+
 
     /**
      * This is run when R.id.recipe_category_editbtn is clicked
@@ -602,13 +645,43 @@ public class RecipeAddViewEditActivity extends AppCompatActivity {
      *    ImageView that activates this method
      */
     public void addPhoto(View v) {
-        Log.i(TAG + ":addPhoto", "Adding photo!");
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri("photo.png");
-        fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-        intent.putExtra("data-path", userPath);
-        addPhotoLauncher.launch(intent);
+        try {
+            final CharSequence[] options = {"Take Photo", "Choose From Gallery","Cancel"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Select Option");
+            builder.setItems(options, (dialog, item) -> {
+                // Add photo from camera
+                if (options[item].equals("Take Photo")) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    Log.i(TAG + ":addPhoto", "Adding photo!");
+                    photoFile = getPhotoFileUri(UUID.randomUUID().toString());
+                    fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+                    intent.putExtra("data-path", userPath);
+                    addPhotoLauncher.launch(intent);
+
+                // Add image from gallery
+                } else if (options[item].equals("Choose From Gallery")) {
+                    dialog.dismiss();
+                    Intent intent = new Intent();
+                    intent.setType("image/");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    photoFile = getPhotoFileUri(UUID.randomUUID().toString());
+                    fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+                    intent.putExtra("data-path", userPath);
+                    addGalleryLauncher.launch(intent);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Camera Permission error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
     /**

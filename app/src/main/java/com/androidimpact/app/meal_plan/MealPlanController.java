@@ -1,6 +1,8 @@
 package com.androidimpact.app.meal_plan;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.View;
 
@@ -162,6 +164,10 @@ public class MealPlanController {
                 .addOnFailureListener(fl);
 
         mealPlanListAdapter.notifyDataSetChanged();
+        MediaPlayer success = MediaPlayer.create(context, R.raw.delete);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume (AudioManager.STREAM_MUSIC, audioManager.getStreamVolume(AudioManager.STREAM_MUSIC),0);
+        success.start();
     }
 
     /**
