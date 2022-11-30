@@ -237,16 +237,6 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
             }
         };
     }
-    /**
-     * This is run when R.id.shopping_item_addEdit_editLocationsBtn is clicked
-     *
-     * this function jumps to the EditLocations activity.
-     */
-    public void editLocations(View view) {
-        Log.i(TAG + ":editLocations", "Going to Edit Locations");
-        Intent intent = new Intent(this, EditLocationsActivity.class);
-        discardResultLauncher.launch(intent);
-    }
 
     /**
      * This is run when R.id.shopping_item_addEdit_editUnitsBtn is clicked
@@ -256,6 +246,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
     public void editUnits(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditUnitsActivity.class);
+        intent.putExtra("data-path", userPath);
         discardResultLauncher.launch(intent);
     }
 
@@ -267,6 +258,7 @@ public class AddEditShoppingItemActivity extends AppCompatActivity {
     public void editCategories(View view) {
         Log.i(TAG + ":editUnits", "Going to Edit units");
         Intent intent = new Intent(this, EditCategoriesActivity.class);
+        intent.putExtra("data-path", userPath);
         discardResultLauncher.launch(intent);
     }
 
