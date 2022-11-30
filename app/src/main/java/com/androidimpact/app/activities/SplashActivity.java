@@ -37,9 +37,17 @@ public class SplashActivity extends AppCompatActivity {
 
         new Handler().postDelayed(() -> {
             // This method will be executed once the timer is over
+            Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+            imageView.startAnimation(fadeOut);
+            progressBar.startAnimation(fadeOut);
+        }, 1500);
+
+
+        new Handler().postDelayed(() -> {
+            // This method will be executed once the timer is over
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
-        }, 1500);
+        }, 2000);
     }
 }

@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@+id/shopping_item_addEdit_category"
         app:layout_constraintVertical_bias="1.0"
         android:background="@android:color/transparent"
-        app:srcCompat="@drawable/icon_edit"/>
+        app:srcCompat="@android:drawable/ic_menu_edit"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ingredient_store_description_layout"
@@ -128,7 +128,7 @@
         app:layout_constraintEnd_toEndOf="@+id/shopping_item_addEdit_amount"
         app:layout_constraintTop_toTopOf="@+id/shopping_item_addEdit_unit"
         android:background="@android:color/transparent"
-        app:srcCompat="@drawable/icon_edit" />
+        app:srcCompat="@android:drawable/ic_menu_edit"/>
 
     <TextView
         android:id="@+id/ingredientStorageAdd_unitLabel"

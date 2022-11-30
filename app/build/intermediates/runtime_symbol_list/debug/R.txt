@@ -27,6 +27,8 @@ int anim design_bottom_sheet_slide_out 0x7f010019
 int anim design_snackbar_in 0x7f01001a
 int anim design_snackbar_out 0x7f01001b
 int anim fade_in 0x7f01001c
+int anim fade_in_slow 0x7f010029
+int anim fade_out 0x7f01002a
 int anim fragment_fast_out_extra_slow_in 0x7f01001d
 int anim linear_indeterminate_line1_head_interpolator 0x7f01001e
 int anim linear_indeterminate_line1_tail_interpolator 0x7f01001f

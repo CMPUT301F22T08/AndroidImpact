@@ -1,6 +1,8 @@
 R_DEF: Internal format may change without notice
 local
 anim fade_in
+anim fade_in_slow
+anim fade_out
 color background
 color black
 color cancel
